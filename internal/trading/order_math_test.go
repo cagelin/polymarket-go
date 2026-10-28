@@ -26,7 +26,7 @@ func TestPythonOrderMath(t *testing.T) {
 		t.Fatal(err)
 	}
 	for i, tc := range fixture.Cases {
-		t.Run(fmt.Sprintf("%s/%d", tc.Operation, i), func(t *testing.T) {
+		t.Run(fmt.Sprintf("%s/%d", tc.Operation, i), func(subtest *testing.T) {
 			var actual []string
 			var failure error
 			switch tc.Operation {
@@ -51,14 +51,14 @@ func TestPythonOrderMath(t *testing.T) {
 				actual = []string{tc.Price}
 			}
 			if (failure != nil) != (tc.Error != "") {
-				t.Fatalf("error %v; Python %s", failure, tc.Error)
+				subtest.Fatalf("error %v; Python %s", failure, tc.Error)
 			}
 			if failure != nil {
 				return
 			}
 			for j, value := range actual {
 				if dec(value).Cmp(dec(tc.Expected[j])) != 0 {
-					t.Fatalf("got %v want %v", actual, tc.Expected)
+					subtest.Fatalf("got %v want %v", actual, tc.Expected)
 				}
 			}
 		})

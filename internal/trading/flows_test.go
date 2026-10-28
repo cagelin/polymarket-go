@@ -69,36 +69,36 @@ func TestPythonOrderPost(t *testing.T) {
 		t.Fatal(err)
 	}
 	for i, tc := range fixture.Cases {
-		t.Run(fmt.Sprintf("payload/%d", i), func(t *testing.T) {
-			client := fixtureClient(t, func(w http.ResponseWriter, r *http.Request) {
+		t.Run(fmt.Sprintf("payload/%d", i), func(subtest *testing.T) {
+			client := fixtureClient(subtest, func(w http.ResponseWriter, r *http.Request) {
 				body, readErr := io.ReadAll(r.Body)
 				if readErr != nil {
-					t.Error(readErr)
+					subtest.Error(readErr)
 				}
-				equalJSON(t, json.RawMessage(body), tc.Body)
+				equalJSON(subtest, json.RawMessage(body), tc.Body)
 				if r.Header.Get("POLY_SIGNATURE") != tc.Signature {
-					t.Error("wire body differs from the Python HMAC payload")
+					subtest.Error("wire body differs from the Python HMAC payload")
 				}
-				writeResponse(t, w, map[string]any{"errorMsg": "", "makingAmount": "1", "takingAmount": "2", "orderID": "order", "success": true, "status": "live"})
+				writeResponse(subtest, w, map[string]any{"errorMsg": "", "makingAmount": "1", "takingAmount": "2", "orderID": "order", "success": true, "status": "live"})
 			})
-			result, callErr := client.PostOrder(t.Context(), tc.Order)
+			result, callErr := client.PostOrder(subtest.Context(), tc.Order)
 			if callErr != nil {
-				t.Fatal(callErr)
+				subtest.Fatal(callErr)
 			}
 			if _, ok := result.(*models.AcceptedOrder); !ok {
-				t.Fatal("successful response not accepted")
+				subtest.Fatal("successful response not accepted")
 			}
 		})
 	}
 	for i, tc := range fixture.Responses {
-		t.Run(fmt.Sprintf("response/%d", i), func(t *testing.T) {
-			var response models.RawOrderResponse
-			parseErr := json.Unmarshal(tc.Response, &response)
+		t.Run(fmt.Sprintf("response/%d", i), func(subtest *testing.T) {
+			var orderResponse models.RawOrderResponse
+			parseErr := json.Unmarshal(tc.Response, &orderResponse)
 			if (parseErr != nil) != (tc.Expected.Error != "") {
-				t.Fatalf("error %v; Python %s", parseErr, tc.Expected.Error)
+				subtest.Fatalf("error %v; Python %s", parseErr, tc.Expected.Error)
 			}
 			if parseErr == nil {
-				equalJSON(t, models.NormalizeOrderResponse(response), tc.Expected.Value)
+				equalJSON(subtest, models.NormalizeOrderResponse(orderResponse), tc.Expected.Value)
 			}
 		})
 	}
@@ -204,8 +204,8 @@ func tradeFixture(t *testing.T) map[string]any {
 }
 func TestSettlementLifecycle(t *testing.T) {
 	for _, outcome := range []string{"CONFIRMED", "FAILED", "MINED", "missing-hash"} {
-		t.Run(outcome, func(t *testing.T) {
-			trade := tradeFixture(t)
+		t.Run(outcome, func(subtest *testing.T) {
+			trade := tradeFixture(subtest)
 			trade["id"] = "trade"
 			trade["status"] = outcome
 			trade["transaction_hash"] = "hash"
@@ -213,29 +213,29 @@ func TestSettlementLifecycle(t *testing.T) {
 				trade["status"] = "CONFIRMED"
 				trade["transaction_hash"] = nil
 			}
-			client := fixtureClient(t, func(w http.ResponseWriter, r *http.Request) {
+			client := fixtureClient(subtest, func(w http.ResponseWriter, r *http.Request) {
 				if r.URL.Path != "/data/trades" || r.URL.Query().Get("id") != "trade" {
-					t.Error("incorrect settlement query")
+					subtest.Error("incorrect settlement query")
 				}
-				writeResponse(t, w, map[string]any{"data": []any{trade}, "next_cursor": "LTE="})
+				writeResponse(subtest, w, map[string]any{"data": []any{trade}, "next_cursor": "LTE="})
 			})
-			hashes, err := client.WaitForOrderFillSettlement(t.Context(), models.AcceptedOrder{TradeIDs: []string{"trade", "trade"}}, time.Millisecond)
+			hashes, err := client.WaitForOrderFillSettlement(subtest.Context(), models.AcceptedOrder{TradeIDs: []string{"trade", "trade"}}, time.Millisecond)
 			switch outcome {
 			case "CONFIRMED":
 				if err != nil || len(hashes) != 1 || hashes[0] != "hash" {
-					t.Fatalf("settlement %v %v", hashes, err)
+					subtest.Fatalf("settlement %v %v", hashes, err)
 				}
 			case "FAILED":
 				if _, ok := errors.AsType[*sdkerrors.TransactionFailedError](err); !ok {
-					t.Fatalf("failure %v", err)
+					subtest.Fatalf("failure %v", err)
 				}
 			case "MINED":
 				if _, ok := errors.AsType[*sdkerrors.SettlementTimeoutError](err); !ok {
-					t.Fatalf("MINED incorrectly treated as settled: %v", err)
+					subtest.Fatalf("MINED incorrectly treated as settled: %v", err)
 				}
 			case "missing-hash":
 				if _, ok := errors.AsType[*sdkerrors.UnexpectedResponseError](err); !ok {
-					t.Fatalf("missing confirmed hash accepted: %v", err)
+					subtest.Fatalf("missing confirmed hash accepted: %v", err)
 				}
 			}
 		})
@@ -310,29 +310,29 @@ func TestPythonSettlement(t *testing.T) {
 		t.Fatal("missing Python settlement cases")
 	}
 	for _, tc := range fixture.Settlements {
-		t.Run(strings.Join(tc.States, "/"), func(t *testing.T) {
-			client := fixtureClient(t, func(w http.ResponseWriter, r *http.Request) {
+		t.Run(strings.Join(tc.States, "/"), func(subtest *testing.T) {
+			client := fixtureClient(subtest, func(w http.ResponseWriter, r *http.Request) {
 				items := make([]any, 0) // The protocol requires an empty array, not JSON null.
 				for _, trade := range tc.Trades {
 					if trade["id"] == r.URL.Query().Get("id") {
 						items = append(items, trade)
 					}
 				}
-				writeResponse(t, w, map[string]any{"data": items, "next_cursor": "LTE="})
+				writeResponse(subtest, w, map[string]any{"data": items, "next_cursor": "LTE="})
 			})
-			value, callErr := client.WaitForOrderFillSettlement(t.Context(), models.AcceptedOrder{TradeIDs: tc.TradeIDs, TransactionsHashes: tc.Existing}, time.Millisecond)
+			value, callErr := client.WaitForOrderFillSettlement(subtest.Context(), models.AcceptedOrder{TradeIDs: tc.TradeIDs, TransactionsHashes: tc.Existing}, time.Millisecond)
 			if tc.Expected.Error == "" {
 				if callErr != nil {
-					t.Fatal(callErr)
+					subtest.Fatal(callErr)
 				}
-				equalJSON(t, value, tc.Expected.Value)
+				equalJSON(subtest, value, tc.Expected.Value)
 			} else {
 				kind := tc.Expected.Error
 				if kind == "TimeoutError" {
 					kind = "SettlementTimeoutError"
 				}
 				if callErr == nil || !strings.HasSuffix(fmt.Sprintf("%T", callErr), "."+kind) {
-					t.Fatalf("error %v; Python %s", callErr, tc.Expected.Error)
+					subtest.Fatalf("error %v; Python %s", callErr, tc.Expected.Error)
 				}
 			}
 		})

@@ -68,39 +68,39 @@ func TestPythonCLOBParity(t *testing.T) {
 		t.Fatal("no parity cases")
 	}
 	for _, test := range fixture.Cases {
-		t.Run(test.Name, func(t *testing.T) {
-			t.Parallel()
+		t.Run(test.Name, func(subtest *testing.T) {
+			subtest.Parallel()
 			var calls atomic.Int32
 			server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 				calls.Add(1)
 				if test.Request == nil {
-					t.Error("unexpected HTTP request after invalid input")
+					subtest.Error("unexpected HTTP request after invalid input")
 					w.WriteHeader(500)
 					return
 				}
 				if r.Method != test.Request.Method || r.URL.Path != test.Request.Path {
-					t.Errorf("request = %s %s, want %s %s", r.Method, r.URL.Path, test.Request.Method, test.Request.Path)
+					subtest.Errorf("request = %s %s, want %s %s", r.Method, r.URL.Path, test.Request.Method, test.Request.Path)
 				}
 				query := r.URL.Query()
 				if len(query) != len(test.Request.Query) {
-					t.Errorf("query = %v, want %v", query, test.Request.Query)
+					subtest.Errorf("query = %v, want %v", query, test.Request.Query)
 				}
 				for k, v := range test.Request.Query {
 					if query.Get(k) != v {
-						t.Errorf("query %s = %q, want %q", k, query.Get(k), v)
+						subtest.Errorf("query %s = %q, want %q", k, query.Get(k), v)
 					}
 				}
 				body, err := io.ReadAll(r.Body)
 				if err != nil {
-					t.Error(err)
+					subtest.Error(err)
 				}
 				if test.Request.Method == http.MethodPost {
 					if r.Header.Get("Content-Type") != "application/json" {
-						t.Error("missing JSON content type")
+						subtest.Error("missing JSON content type")
 					}
-					compareJSON(t, body, test.Request.Body)
+					compareJSON(subtest, body, test.Request.Body)
 				} else if len(body) != 0 {
-					t.Error("GET request contains a body")
+					subtest.Error("GET request contains a body")
 				}
 				w.Header().Set("Content-Type", "application/json")
 				_, _ = w.Write(test.Response)
@@ -108,25 +108,25 @@ func TestPythonCLOBParity(t *testing.T) {
 			defer server.Close()
 			client, err := NewPublicClient(ClientConfig{CLOBURL: server.URL})
 			if err != nil {
-				t.Fatal(err)
+				subtest.Fatal(err)
 			}
 			defer func() { _ = client.Close() }() // Close only releases local resources and always returns nil.
-			value, err := callParity(t, client, test)
+			value, err := callParity(subtest, client, test)
 			if got := errorClass(err); got != test.Expected.Error {
-				t.Fatalf("error = %s (%v), Python = %s", got, err, test.Expected.Error)
+				subtest.Fatalf("error = %s (%v), Python = %s", got, err, test.Expected.Error)
 			}
 			if test.Request == nil && calls.Load() != 0 {
-				t.Fatal("invalid input performed network I/O")
+				subtest.Fatal("invalid input performed network I/O")
 			}
 			if test.Request != nil && calls.Load() != 1 {
-				t.Fatalf("requests = %d, want 1", calls.Load())
+				subtest.Fatalf("requests = %d, want 1", calls.Load())
 			}
 			if err == nil {
 				encoded, encodeErr := json.Marshal(value)
 				if encodeErr != nil {
-					t.Fatal(encodeErr)
+					subtest.Fatal(encodeErr)
 				}
-				compareJSON(t, encoded, test.Expected.Value)
+				compareJSON(subtest, encoded, test.Expected.Value)
 			}
 		})
 	}

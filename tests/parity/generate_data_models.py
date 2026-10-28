@@ -52,6 +52,7 @@ def payload(cls,full):
   alias=field.validation_alias
   wire=alias.choices[0] if hasattr(alias,'choices') else alias if isinstance(alias,str) else name
   result[wire]=value_for(field.annotation,name,full)
+  if cls.__name__ in ["CollateralReturnOperation","CollateralReturnPositionAmount"] and name=="amount":result[wire]="1234567"
   if (cls.__module__.startswith('polymarket.models.gamma') or cls.__name__=='CommentRemovedPayload') and cls.__name__!='ImageOptimization' and result[wire] is not None and (field.annotation is datetime or datetime in get_args(field.annotation)):
    result[wire]='2024-07-03T09:46:40Z'
  if cls.__module__=='polymarket.models.clob.market_events' and 'timestamp' in result and result['timestamp'] is not None:result['timestamp']='1720000000000'
@@ -118,13 +119,13 @@ func TestPythonDataModels(t *testing.T) {
  if err!=nil { t.Fatal(err) }
  var fixture struct { Cases []struct { Name,Model string; Response json.RawMessage; Expected struct { Value json.RawMessage; Error string } } }
  if err=json.Unmarshal(raw,&fixture);err!=nil { t.Fatal(err) }
- for _,test:=range fixture.Cases { t.Run(test.Name,func(t *testing.T){
+ for _,test:=range fixture.Cases { t.Run(test.Name,func(subtest *testing.T){
   target:=newDataParityTarget(test.Model)
-  if target==nil { t.Fatalf("unknown model %s",test.Model) }
+  if target==nil { subtest.Fatalf("unknown model %s",test.Model) }
   decodeErr:=json.Unmarshal(test.Response,target)
-  if (decodeErr!=nil)!=(test.Expected.Error!="") { t.Fatalf("%s decode error = %v, Python = %s",test.Model,decodeErr,test.Expected.Error) }
+  if (decodeErr!=nil)!=(test.Expected.Error!="") { subtest.Fatalf("%s decode error = %v, Python = %s",test.Model,decodeErr,test.Expected.Error) }
   if decodeErr!=nil { return }
-  testutil.EqualJSON(t,target,test.Expected.Value)
+  testutil.EqualJSON(subtest,target,test.Expected.Value)
  }) }
 }
 

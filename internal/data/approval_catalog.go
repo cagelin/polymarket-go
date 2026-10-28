@@ -2,10 +2,10 @@ package data
 
 import "github.com/cagelam/polymarket-go/models"
 
-// requiredApprovals returns fresh values so callers cannot mutate the pinned catalog.
+// RequiredApprovals returns fresh values so callers cannot mutate the pinned catalog.
 //
 //nolint:gosec // This catalog contains public contract addresses, not credentials.
-func requiredApprovals() models.MissingTradingApprovals {
+func RequiredApprovals() models.MissingTradingApprovals {
 	return models.MissingTradingApprovals{
 		ERC20: []models.ERC20TradingApproval{
 			{TokenAddress: "0xC011a7E12a19f7B1f670d46F03B03f3342E82DFB", Spender: "0xE111180000d2663C0091e4f400237545B87B996B", Amount: maxUint256()},

@@ -33,6 +33,7 @@ func TestSecureClientSurface(t *testing.T) {
 		Members []struct {
 			Python, Go string
 			Stage      int
+			Excluded   bool
 		}
 	}
 	if err = json.Unmarshal(raw, &fixture); err != nil {
@@ -40,7 +41,7 @@ func TestSecureClientSurface(t *testing.T) {
 	}
 	client := reflect.TypeFor[*SecureClient]()
 	for _, member := range fixture.Members {
-		if member.Stage == 3 {
+		if member.Excluded {
 			continue
 		}
 		if member.Python == "create" {

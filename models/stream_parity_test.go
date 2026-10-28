@@ -34,15 +34,15 @@ func testStreamEvents(t *testing.T, path string) {
 		t.Fatal(err)
 	}
 	for _, test := range fixture.Cases {
-		t.Run(test.Name, func(t *testing.T) {
+		t.Run(test.Name, func(subtest *testing.T) {
 			event, parseErr := ParseStreamEvent(test.Service, test.Raw)
 			if (parseErr != nil) != test.Expected.Error {
-				t.Fatalf("error = %v; Python error = %v", parseErr, test.Expected.Error)
+				subtest.Fatalf("error = %v; Python error = %v", parseErr, test.Expected.Error)
 			}
 			if parseErr != nil {
 				return
 			}
-			testutil.EqualJSON(t, event, test.Expected.Value)
+			testutil.EqualJSON(subtest, event, test.Expected.Value)
 		})
 	}
 }

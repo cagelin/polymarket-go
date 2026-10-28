@@ -12,7 +12,9 @@ import (
 	"github.com/cagelam/polymarket-go/internal/trading"
 	"github.com/cagelam/polymarket-go/models"
 	"github.com/cagelam/polymarket-go/pagination"
+	rfqsession "github.com/cagelam/polymarket-go/rfq"
 	"github.com/cagelam/polymarket-go/streams"
+	"github.com/cagelam/polymarket-go/transactions"
 )
 
 // APIKey is the canonical SDK type.
@@ -89,6 +91,15 @@ type AssetType = trading.AssetType
 
 // AssetsQuery is the canonical SDK type.
 type AssetsQuery = clob.AssetsQuery
+
+// AuthorizeSessionKeyParams is the canonical SDK type.
+type AuthorizeSessionKeyParams = models.AuthorizeSessionKeyParams
+
+// AuthorizeSessionKeyResult is the canonical SDK type.
+type AuthorizeSessionKeyResult = models.AuthorizeSessionKeyResult
+
+// AuthorizedSessionKey is the canonical SDK type.
+type AuthorizedSessionKey = models.AuthorizedSessionKey
 
 // AutoRedeemedNotification is the canonical SDK type.
 type AutoRedeemedNotification = models.AutoRedeemedNotification
@@ -176,6 +187,21 @@ type ClobRewardID = models.ClobRewardID
 
 // ClobTrade is the canonical SDK type.
 type ClobTrade = models.ClobTrade
+
+// CollateralReturnOperation is the canonical SDK type.
+type CollateralReturnOperation = models.CollateralReturnOperation
+
+// CollateralReturnPlanResponse is the canonical SDK type.
+type CollateralReturnPlanResponse = models.CollateralReturnPlanResponse
+
+// CollateralReturnPositionAmount is the canonical SDK type.
+type CollateralReturnPositionAmount = models.CollateralReturnPositionAmount
+
+// CollateralReturnPositionSummary is the canonical SDK type.
+type CollateralReturnPositionSummary = models.CollateralReturnPositionSummary
+
+// CollateralReturnRouterCall is the canonical SDK type.
+type CollateralReturnRouterCall = models.CollateralReturnRouterCall
 
 // CollectionID is the canonical SDK type.
 type CollectionID = models.CollectionID
@@ -470,6 +496,9 @@ type EstimateMarketPriceParams = clob.EstimateMarketPriceParams
 
 // Event is the canonical SDK type.
 type Event = models.Event
+
+// RFQEvent is the canonical SDK type.
+type RFQEvent = rfqsession.Event
 
 // EventCreator is the canonical SDK type.
 type EventCreator = models.EventCreator
@@ -822,6 +851,12 @@ type MarketTrading = models.MarketTrading
 // MergeActivity is the canonical SDK type.
 type MergeActivity = models.MergeActivity
 
+// MergePositionRequest is the canonical SDK type.
+type MergePositionRequest = models.MergePositionRequest
+
+// MergePositionsParams is the canonical SDK type.
+type MergePositionsParams = models.MergePositionsParams
+
 // MetaHolder is the canonical SDK type.
 type MetaHolder = models.MetaHolder
 
@@ -963,6 +998,12 @@ type PublicProfileUser = models.PublicProfileUser
 // QuestionID is the canonical SDK type.
 type QuestionID = models.QuestionID
 
+// RFQQuoteParams is the canonical SDK type.
+type RFQQuoteParams = rfqsession.QuoteParams
+
+// RFQQuoteReference is the canonical SDK type.
+type RFQQuoteReference = rfqsession.QuoteReference
+
 // RFQErrorDetail is the canonical SDK type.
 type RFQErrorDetail = models.RFQErrorDetail
 
@@ -974,6 +1015,9 @@ type RFQStatusResult = models.RFQStatusResult
 
 // RFQTimeoutError is the canonical SDK type.
 type RFQTimeoutError = errors.RFQTimeoutError
+
+// RPCError is the canonical SDK type.
+type RPCError = errors.RPCError
 
 // RateLimitError is the canonical SDK type.
 type RateLimitError = errors.RateLimitError
@@ -1038,11 +1082,17 @@ const RecurrenceWeekly = gamma.RecurrenceWeekly
 // RedeemActivity is the canonical SDK type.
 type RedeemActivity = models.RedeemActivity
 
+// RedeemPositionsParams is the canonical SDK type.
+type RedeemPositionsParams = models.RedeemPositionsParams
+
 // ReferralRewardActivity is the canonical SDK type.
 type ReferralRewardActivity = models.ReferralRewardActivity
 
 // RejectedOrder is the canonical SDK type.
 type RejectedOrder = models.RejectedOrder
+
+// RFQRejection is the canonical SDK type.
+type RFQRejection = rfqsession.Rejection
 
 // RelatedTag is the canonical SDK type.
 type RelatedTag = models.RelatedTag
@@ -1053,11 +1103,17 @@ type RelatedTagResourcesQuery = gamma.RelatedTagResourcesQuery
 // RelatedTagsQuery is the canonical SDK type.
 type RelatedTagsQuery = gamma.RelatedTagsQuery
 
+// RelayerAPIKey is the canonical SDK type.
+type RelayerAPIKey = models.RelayerAPIKey
+
 // RequestComboQuoteParams is the canonical SDK type.
 type RequestComboQuoteParams = trading.RequestComboQuoteParams
 
 // RequestRejectedError is the canonical SDK type.
 type RequestRejectedError = errors.RequestRejectedError
+
+// RFQRequestedSize is the canonical SDK type.
+type RFQRequestedSize = rfqsession.RequestedSize
 
 // Resolution is the canonical SDK type.
 type Resolution = models.Resolution
@@ -1152,6 +1208,9 @@ const ResolutionStatusReproposed = models.ResolutionStatusReproposed
 // ResolutionStatusResolved is the canonical SDK value.
 const ResolutionStatusResolved = models.ResolutionStatusResolved
 
+// RevokeSessionKeyParams is the canonical SDK type.
+type RevokeSessionKeyParams = models.RevokeSessionKeyParams
+
 // RewardActivity is the canonical SDK type.
 type RewardActivity = models.RewardActivity
 
@@ -1209,6 +1268,21 @@ type SeriesID = models.SeriesID
 // SeriesReference is the canonical SDK type.
 type SeriesReference = models.SeriesReference
 
+// RFQSession is the canonical SDK type.
+type RFQSession = rfqsession.Session
+
+// SessionKeyScope is the canonical SDK type.
+type SessionKeyScope = models.SessionKeyScope
+
+// SessionScopeAll is the canonical SDK value.
+const SessionScopeAll = models.SessionScopeAll
+
+// SessionScopeCLOB is the canonical SDK value.
+const SessionScopeCLOB = models.SessionScopeCLOB
+
+// SessionScopeCombosRFQ is the canonical SDK value.
+const SessionScopeCombosRFQ = models.SessionScopeCombosRFQ
+
 // SettlementTimeoutError is the canonical SDK type.
 type SettlementTimeoutError = errors.SettlementTimeoutError
 
@@ -1232,6 +1306,9 @@ type Spec = streams.Spec
 
 // SplitActivity is the canonical SDK type.
 type SplitActivity = models.SplitActivity
+
+// SplitPositionParams is the canonical SDK type.
+type SplitPositionParams = models.SplitPositionParams
 
 // SportID is the canonical SDK type.
 type SportID = models.SportID
@@ -1371,11 +1448,20 @@ const TradingRestarting = errors.TradingRestarting
 // TradingRestriction is the canonical SDK type.
 type TradingRestriction = errors.TradingRestriction
 
+// TransactionCall is the canonical SDK type.
+type TransactionCall = models.TransactionCall
+
 // TransactionFailedError is the canonical SDK type.
 type TransactionFailedError = errors.TransactionFailedError
 
 // TransactionHash is the canonical SDK type.
 type TransactionHash = models.TransactionHash
+
+// TransactionOutcome is the canonical SDK type.
+type TransactionOutcome = models.TransactionOutcome
+
+// TransactionTimeoutError is the canonical SDK type.
+type TransactionTimeoutError = errors.TransactionTimeoutError
 
 // TransportError is the canonical SDK type.
 type TransportError = errors.TransportError
@@ -1514,6 +1600,9 @@ type YieldPayoutNotification = models.YieldPayoutNotification
 
 // YieldPayoutNotificationPayload is the canonical SDK type.
 type YieldPayoutNotificationPayload = models.YieldPayoutNotificationPayload
+
+// TransactionHandle tracks on-chain submission and confirmation.
+type TransactionHandle = transactions.Handle
 
 // Page holds a batch of results and continuation metadata.
 type Page[T any] = pagination.Page[T]

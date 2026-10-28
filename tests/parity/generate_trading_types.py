@@ -1,12 +1,13 @@
 """Generate authenticated response models from the pinned Python definitions."""
-import inspect,json,re,subprocess
+import inspect,json,re,subprocess,types
 from typing import get_args,get_origin,Literal
 from enum import IntEnum
 from datetime import datetime
 from decimal import Decimal
 from generate_data_types import ROOT,gotype,fieldname,typename,rule,stripped,ids
 from polymarket.models.clob import account,api_key,builder,notifications,rewards,cancel,order_heartbeats,order_response
-classes=[account.OpenOrder,account.MakerOrder,account.ClobTrade,api_key.BuilderApiKeyInfo,builder.BuilderFeeRates,cancel.CancelOrdersResponse,order_heartbeats.OrderHeartbeat,order_heartbeats.OrderHeartbeatMismatchResponse,order_response.RawOrderResponse,order_response.AcceptedOrder,order_response.RejectedOrder,rewards.UserEarning,rewards.TotalUserEarning,rewards.UserRewardsEarning]
+from polymarket.models import collateral_return
+classes=[collateral_return.CollateralReturnPlanResponse,account.OpenOrder,account.MakerOrder,account.ClobTrade,api_key.BuilderApiKeyInfo,builder.BuilderFeeRates,cancel.CancelOrdersResponse,order_heartbeats.OrderHeartbeat,order_heartbeats.OrderHeartbeatMismatchResponse,order_response.RawOrderResponse,order_response.AcceptedOrder,order_response.RejectedOrder,rewards.UserEarning,rewards.TotalUserEarning,rewards.UserRewardsEarning]
 existing=set()
 for path in (ROOT/'models').glob('*.go'):
  if path.name!='trading_models.go':existing.update(re.findall(r'^type (\w+) ',path.read_text(),re.M))
@@ -22,6 +23,7 @@ for cls in classes:
 classes=list(dict.fromkeys(classes))
 def modeltype(a):
  base=stripped(a)
+ if get_origin(base) is types.UnionType and str in get_args(base):return "string"
  if get_origin(base) is dict:
   result='map[string]'+gotype(get_args(base)[1]);return result
  if get_origin(base) is Literal and isinstance(get_args(base)[0],IntEnum):return 'NotificationType'
@@ -40,6 +42,9 @@ for cls in classes:
   sources='\n'.join(inspect.getsource(v.func) for v in cls.__pydantic_decorators__.field_validators.values() if key in v.info.fields)
   extra=[]
   if get_origin(f.default_factory) is dict:r=r.replace('},', ',fallback:json.RawMessage(`{}`)},') if 'fallback:' not in r else r
+  if 'parse_e6_decimal_string' in sources:r=r.replace('kind:"data_decimal"','kind:"e6_decimal"')
+  if 'validate_optional_combo_condition_id' in sources:extra.append('validate_combo_condition_id')
+  if key=='position_summary':r=r[:-2]+',fallback:json.RawMessage(`{}`)},'
   if 'validate_condition_id(' in sources and 'condition_feed' not in r:extra.append('condition_feed')
   if a is Decimal and 'parse_decimal_string' in sources:r=r.replace('kind:"data_decimal"','kind:"string_decimal"')
   if a is datetime:r=re.sub('kind:"[^"]+"','kind:"clob_epoch_iso"',r)

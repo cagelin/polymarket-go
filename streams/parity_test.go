@@ -89,10 +89,10 @@ func TestPythonStreamProtocol(t *testing.T) {
 		t.Fatal(err)
 	}
 	for _, test := range fixture.Cases {
-		t.Run(test.Name, func(t *testing.T) {
-			spec, parseErr := test.Spec.decode(t).normalize()
+		t.Run(test.Name, func(subtest *testing.T) {
+			spec, parseErr := test.Spec.decode(subtest).normalize()
 			if (parseErr != nil) != test.Expected.Error {
-				t.Fatalf("error=%v; Python=%v", parseErr, test.Expected.Error)
+				subtest.Fatalf("error=%v; Python=%v", parseErr, test.Expected.Error)
 			}
 			if parseErr != nil {
 				return
@@ -102,7 +102,7 @@ func TestPythonStreamProtocol(t *testing.T) {
 			if len(frames) > 0 {
 				initial = frames[0]
 			}
-			testutil.EqualJSON(t, initial, test.Expected.Initial)
+			testutil.EqualJSON(subtest, initial, test.Expected.Initial)
 			matches := make([]string, 0) // Match the fixture's empty JSON array.
 			for _, event := range eventFixture.Cases {
 				if event.Service != test.Service || event.Expected.Error {
@@ -110,14 +110,14 @@ func TestPythonStreamProtocol(t *testing.T) {
 				}
 				parsed, decodeErr := models.ParseStreamEvent(event.Service, event.Raw)
 				if decodeErr != nil {
-					t.Fatal(decodeErr)
+					subtest.Fatal(decodeErr)
 				}
 				if spec.matches(parsed) {
 					matches = append(matches, event.Name)
 				}
 			}
 			if !reflect.DeepEqual(matches, test.Expected.Matches) {
-				t.Errorf("matched %v; Python=%v", matches, test.Expected.Matches)
+				subtest.Errorf("matched %v; Python=%v", matches, test.Expected.Matches)
 			}
 		})
 	}

@@ -52,9 +52,9 @@ func TestLiveCLOB(t *testing.T) {
 		{name: "last_trades", read: func() error { _, err := client.GetLastTradePrices(ctx, assets); return err }},
 	}
 	for _, test := range tests {
-		t.Run(test.name, func(t *testing.T) {
+		t.Run(test.name, func(subtest *testing.T) {
 			if err := test.read(); err != nil {
-				t.Fatal(err)
+				subtest.Fatal(err)
 			}
 		})
 	}

@@ -1,0 +1,2166 @@
+{
+  "upstream_version": "0.14.0",
+  "upstream_commit": "7032ed06175b0bbea77b2d9e898bd9f252af2041",
+  "cases": [
+    {
+      "wallet": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+      "kind": "EOA",
+      "request": {
+        "type": "RFQ_REQUEST",
+        "rfq_id": "request-1",
+        "requestor_public_id": "requestor",
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "yes_position_id": "123",
+        "no_position_id": "124",
+        "direction": "BUY",
+        "side": "YES",
+        "requested_size": {
+          "unit": "notional",
+          "value_e6": "7000000"
+        },
+        "submission_deadline": 1720000030
+      },
+      "price": "0.000001",
+      "source": "collateral",
+      "expected": {
+        "type": "RFQ_QUOTE",
+        "rfq_id": "request-1",
+        "price_e6": "1",
+        "size_e6": "7000000000000",
+        "signed_order": {
+          "salt": "19",
+          "maker": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signer": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "tokenId": "124",
+          "makerAmount": "6999993000000",
+          "takerAmount": "7000000000000",
+          "side": 0,
+          "signatureType": 0,
+          "timestamp": "1720000000",
+          "builder": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "signature": "0xe592101bf191efdfef7f0e8369b968d272f02c8717d6e8290b384ae4e92b0d03575c30920b5738ab9e93d9e95b6598c14eb8c19c637dd1a5a73932a40e3bc02d1c"
+        }
+      }
+    },
+    {
+      "wallet": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+      "kind": "EOA",
+      "request": {
+        "type": "RFQ_REQUEST",
+        "rfq_id": "request-1",
+        "requestor_public_id": "requestor",
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "yes_position_id": "123",
+        "no_position_id": "124",
+        "direction": "BUY",
+        "side": "YES",
+        "requested_size": {
+          "unit": "notional",
+          "value_e6": "7000000"
+        },
+        "submission_deadline": 1720000030
+      },
+      "price": "0.333333",
+      "source": "collateral",
+      "expected": {
+        "type": "RFQ_QUOTE",
+        "rfq_id": "request-1",
+        "price_e6": "333333",
+        "size_e6": "21000021",
+        "signed_order": {
+          "salt": "19",
+          "maker": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signer": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "tokenId": "124",
+          "makerAmount": "14000022",
+          "takerAmount": "21000021",
+          "side": 0,
+          "signatureType": 0,
+          "timestamp": "1720000000",
+          "builder": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "signature": "0xcc0872e53441acb49614382a46661270fd5cb5648f541a19c3e68a5348e5fde61df8c505c985f557ca3d51e079586002825ead4d7692672b18e137aa655d490c1b"
+        }
+      }
+    },
+    {
+      "wallet": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+      "kind": "EOA",
+      "request": {
+        "type": "RFQ_REQUEST",
+        "rfq_id": "request-1",
+        "requestor_public_id": "requestor",
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "yes_position_id": "123",
+        "no_position_id": "124",
+        "direction": "BUY",
+        "side": "YES",
+        "requested_size": {
+          "unit": "notional",
+          "value_e6": "7000000"
+        },
+        "submission_deadline": 1720000030
+      },
+      "price": "0.999999",
+      "source": "collateral",
+      "expected": {
+        "type": "RFQ_QUOTE",
+        "rfq_id": "request-1",
+        "price_e6": "999999",
+        "size_e6": "7000007",
+        "signed_order": {
+          "salt": "19",
+          "maker": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signer": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "tokenId": "124",
+          "makerAmount": "8",
+          "takerAmount": "7000007",
+          "side": 0,
+          "signatureType": 0,
+          "timestamp": "1720000000",
+          "builder": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "signature": "0x4f453ac3339432b455b8cff76436dfdb21a7d9abcc4660fc7268d4b2bb7d58bd50d9d792adbfd53e46f6bc50a8999720542da499a1f1fb63a38ef693cfc4514d1b"
+        }
+      }
+    },
+    {
+      "wallet": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+      "kind": "EOA",
+      "request": {
+        "type": "RFQ_REQUEST",
+        "rfq_id": "request-1",
+        "requestor_public_id": "requestor",
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "yes_position_id": "123",
+        "no_position_id": "124",
+        "direction": "BUY",
+        "side": "YES",
+        "requested_size": {
+          "unit": "notional",
+          "value_e6": "7000000"
+        },
+        "submission_deadline": 1720000030
+      },
+      "price": "0.000001",
+      "source": "inventory",
+      "expected": {
+        "type": "RFQ_QUOTE",
+        "rfq_id": "request-1",
+        "price_e6": "1",
+        "size_e6": "7000000000000",
+        "signed_order": {
+          "salt": "19",
+          "maker": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signer": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "tokenId": "123",
+          "makerAmount": "7000000000000",
+          "takerAmount": "7000000",
+          "side": 1,
+          "signatureType": 0,
+          "timestamp": "1720000000",
+          "builder": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "signature": "0x3458f83a15340c3462a46f8d9291dd377bdce3fd442da96f289cc849f32ff1790613c1fb9774747a9814f8e434bede612da37aaf39e2f6ff21dddda858827e3c1c"
+        }
+      }
+    },
+    {
+      "wallet": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+      "kind": "EOA",
+      "request": {
+        "type": "RFQ_REQUEST",
+        "rfq_id": "request-1",
+        "requestor_public_id": "requestor",
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "yes_position_id": "123",
+        "no_position_id": "124",
+        "direction": "BUY",
+        "side": "YES",
+        "requested_size": {
+          "unit": "notional",
+          "value_e6": "7000000"
+        },
+        "submission_deadline": 1720000030
+      },
+      "price": "0.333333",
+      "source": "inventory",
+      "expected": {
+        "type": "RFQ_QUOTE",
+        "rfq_id": "request-1",
+        "price_e6": "333333",
+        "size_e6": "21000021",
+        "signed_order": {
+          "salt": "19",
+          "maker": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signer": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "tokenId": "123",
+          "makerAmount": "21000021",
+          "takerAmount": "6999999",
+          "side": 1,
+          "signatureType": 0,
+          "timestamp": "1720000000",
+          "builder": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "signature": "0x120cc8badff31217b728eaaaf04180704ccb2a19d7b9fe0642568c1235ec659551adcda317ada0789677c00dfb195cba5229640c559548ea233ca0abf6ad73ce1c"
+        }
+      }
+    },
+    {
+      "wallet": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+      "kind": "EOA",
+      "request": {
+        "type": "RFQ_REQUEST",
+        "rfq_id": "request-1",
+        "requestor_public_id": "requestor",
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "yes_position_id": "123",
+        "no_position_id": "124",
+        "direction": "BUY",
+        "side": "YES",
+        "requested_size": {
+          "unit": "notional",
+          "value_e6": "7000000"
+        },
+        "submission_deadline": 1720000030
+      },
+      "price": "0.999999",
+      "source": "inventory",
+      "expected": {
+        "type": "RFQ_QUOTE",
+        "rfq_id": "request-1",
+        "price_e6": "999999",
+        "size_e6": "7000007",
+        "signed_order": {
+          "salt": "19",
+          "maker": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signer": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "tokenId": "123",
+          "makerAmount": "7000007",
+          "takerAmount": "6999999",
+          "side": 1,
+          "signatureType": 0,
+          "timestamp": "1720000000",
+          "builder": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "signature": "0xdcfcfbca3365f1685a14aec328c4f6ee8c4c1e693c1ecd37bb4c0254f7fa2b653db261ffd7912082a4653d12d435b5c8d7e1322bc5acb22877abfc25852526471b"
+        }
+      }
+    },
+    {
+      "wallet": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+      "kind": "EOA",
+      "request": {
+        "type": "RFQ_REQUEST",
+        "rfq_id": "request-1",
+        "requestor_public_id": "requestor",
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "yes_position_id": "123",
+        "no_position_id": "124",
+        "direction": "SELL",
+        "side": "YES",
+        "requested_size": {
+          "unit": "notional",
+          "value_e6": "7000000"
+        },
+        "submission_deadline": 1720000030
+      },
+      "price": "0.000001",
+      "source": "collateral",
+      "expected": {
+        "type": "RFQ_QUOTE",
+        "rfq_id": "request-1",
+        "price_e6": "1",
+        "size_e6": "7000000000000",
+        "signed_order": {
+          "salt": "19",
+          "maker": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signer": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "tokenId": "123",
+          "makerAmount": "7000000",
+          "takerAmount": "7000000000000",
+          "side": 0,
+          "signatureType": 0,
+          "timestamp": "1720000000",
+          "builder": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "signature": "0xa767668027aafa1ddb75dcc42684afff22e18be913a75f7bf1c673b9147a51133d49ac8fd204bbd1b83538c88cf3968ae722993076b82317e4574b96a2a3d87a1b"
+        }
+      }
+    },
+    {
+      "wallet": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+      "kind": "EOA",
+      "request": {
+        "type": "RFQ_REQUEST",
+        "rfq_id": "request-1",
+        "requestor_public_id": "requestor",
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "yes_position_id": "123",
+        "no_position_id": "124",
+        "direction": "SELL",
+        "side": "YES",
+        "requested_size": {
+          "unit": "notional",
+          "value_e6": "7000000"
+        },
+        "submission_deadline": 1720000030
+      },
+      "price": "0.333333",
+      "source": "collateral",
+      "expected": {
+        "type": "RFQ_QUOTE",
+        "rfq_id": "request-1",
+        "price_e6": "333333",
+        "size_e6": "21000021",
+        "signed_order": {
+          "salt": "19",
+          "maker": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signer": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "tokenId": "123",
+          "makerAmount": "7000000",
+          "takerAmount": "21000021",
+          "side": 0,
+          "signatureType": 0,
+          "timestamp": "1720000000",
+          "builder": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "signature": "0x50e7e86ed2dc8c6a2aafedf23e5271710dc864ca0f999f22bcf0ff7a9c2d2b45365f06d062d203f6ec5773b1623aad8af8c865dd9bf10107766619cbf6bba8de1c"
+        }
+      }
+    },
+    {
+      "wallet": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+      "kind": "EOA",
+      "request": {
+        "type": "RFQ_REQUEST",
+        "rfq_id": "request-1",
+        "requestor_public_id": "requestor",
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "yes_position_id": "123",
+        "no_position_id": "124",
+        "direction": "SELL",
+        "side": "YES",
+        "requested_size": {
+          "unit": "notional",
+          "value_e6": "7000000"
+        },
+        "submission_deadline": 1720000030
+      },
+      "price": "0.999999",
+      "source": "collateral",
+      "expected": {
+        "type": "RFQ_QUOTE",
+        "rfq_id": "request-1",
+        "price_e6": "999999",
+        "size_e6": "7000007",
+        "signed_order": {
+          "salt": "19",
+          "maker": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signer": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "tokenId": "123",
+          "makerAmount": "7000000",
+          "takerAmount": "7000007",
+          "side": 0,
+          "signatureType": 0,
+          "timestamp": "1720000000",
+          "builder": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "signature": "0x1ffd4d5a8286cf40bde60a3fbf1cc42bf4ec13effe54f69fbdf2bd7f1b76e5096907560448f87b6051d93fa528bacaeb55902ca058dec2eaf8a4af1103a42fc31b"
+        }
+      }
+    },
+    {
+      "wallet": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+      "kind": "EOA",
+      "request": {
+        "type": "RFQ_REQUEST",
+        "rfq_id": "request-1",
+        "requestor_public_id": "requestor",
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "yes_position_id": "123",
+        "no_position_id": "124",
+        "direction": "SELL",
+        "side": "YES",
+        "requested_size": {
+          "unit": "notional",
+          "value_e6": "7000000"
+        },
+        "submission_deadline": 1720000030
+      },
+      "price": "0.000001",
+      "source": "inventory",
+      "expected": {
+        "type": "RFQ_QUOTE",
+        "rfq_id": "request-1",
+        "price_e6": "1",
+        "size_e6": "7000000000000",
+        "signed_order": {
+          "salt": "19",
+          "maker": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signer": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "tokenId": "124",
+          "makerAmount": "7000000000000",
+          "takerAmount": "6999993000000",
+          "side": 1,
+          "signatureType": 0,
+          "timestamp": "1720000000",
+          "builder": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "signature": "0x823ec1ff961cde9b052832fb451d329784b67d0658ee0b1668cce256b5e63ff640e3588771b94a52a9ec1125988cd3f8c8f2ce8e9f7d2b99ccf81240cf10e01a1c"
+        }
+      }
+    },
+    {
+      "wallet": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+      "kind": "EOA",
+      "request": {
+        "type": "RFQ_REQUEST",
+        "rfq_id": "request-1",
+        "requestor_public_id": "requestor",
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "yes_position_id": "123",
+        "no_position_id": "124",
+        "direction": "SELL",
+        "side": "YES",
+        "requested_size": {
+          "unit": "notional",
+          "value_e6": "7000000"
+        },
+        "submission_deadline": 1720000030
+      },
+      "price": "0.333333",
+      "source": "inventory",
+      "expected": {
+        "type": "RFQ_QUOTE",
+        "rfq_id": "request-1",
+        "price_e6": "333333",
+        "size_e6": "21000021",
+        "signed_order": {
+          "salt": "19",
+          "maker": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signer": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "tokenId": "124",
+          "makerAmount": "21000021",
+          "takerAmount": "14000021",
+          "side": 1,
+          "signatureType": 0,
+          "timestamp": "1720000000",
+          "builder": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "signature": "0xf1aa34ace2c8844b4467d23a074324f339b4a6378bad9042dd6135066268e3a4495117a6370c9877699855ae62a5d40423628ef2a5c2531d265f8c2e4e7ae4b61c"
+        }
+      }
+    },
+    {
+      "wallet": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+      "kind": "EOA",
+      "request": {
+        "type": "RFQ_REQUEST",
+        "rfq_id": "request-1",
+        "requestor_public_id": "requestor",
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "yes_position_id": "123",
+        "no_position_id": "124",
+        "direction": "SELL",
+        "side": "YES",
+        "requested_size": {
+          "unit": "notional",
+          "value_e6": "7000000"
+        },
+        "submission_deadline": 1720000030
+      },
+      "price": "0.999999",
+      "source": "inventory",
+      "expected": {
+        "type": "RFQ_QUOTE",
+        "rfq_id": "request-1",
+        "price_e6": "999999",
+        "size_e6": "7000007",
+        "signed_order": {
+          "salt": "19",
+          "maker": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signer": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "tokenId": "124",
+          "makerAmount": "7000007",
+          "takerAmount": "7",
+          "side": 1,
+          "signatureType": 0,
+          "timestamp": "1720000000",
+          "builder": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "signature": "0xb5041355f1cb56471e77639af65b6eb88b7f94199e190d4e69d5d8d50cf8588d6f3db8dd18ba554b7fb1227f9322c6c84d6e7899c46b69f95ba644683352549e1c"
+        }
+      }
+    },
+    {
+      "wallet": "0x909dEdA326ED2aE677F5F8c2527E32977c9838c3",
+      "kind": "POLY_PROXY",
+      "request": {
+        "type": "RFQ_REQUEST",
+        "rfq_id": "request-1",
+        "requestor_public_id": "requestor",
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "yes_position_id": "123",
+        "no_position_id": "124",
+        "direction": "BUY",
+        "side": "YES",
+        "requested_size": {
+          "unit": "notional",
+          "value_e6": "7000000"
+        },
+        "submission_deadline": 1720000030
+      },
+      "price": "0.000001",
+      "source": "collateral",
+      "expected": {
+        "type": "RFQ_QUOTE",
+        "rfq_id": "request-1",
+        "price_e6": "1",
+        "size_e6": "7000000000000",
+        "signed_order": {
+          "salt": "19",
+          "maker": "0x909dEdA326ED2aE677F5F8c2527E32977c9838c3",
+          "signer": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "tokenId": "124",
+          "makerAmount": "6999993000000",
+          "takerAmount": "7000000000000",
+          "side": 0,
+          "signatureType": 1,
+          "timestamp": "1720000000",
+          "builder": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "signature": "0x4db0d6a7c9e14091b745e1c4bde6c0c8f2ac6fefacbcd0b4d42844c1d6aa1711762a9f885431f81e3238ee77b0af3beb2c1a0a3141d082a2aa70ac03eddc45941c"
+        }
+      }
+    },
+    {
+      "wallet": "0x909dEdA326ED2aE677F5F8c2527E32977c9838c3",
+      "kind": "POLY_PROXY",
+      "request": {
+        "type": "RFQ_REQUEST",
+        "rfq_id": "request-1",
+        "requestor_public_id": "requestor",
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "yes_position_id": "123",
+        "no_position_id": "124",
+        "direction": "BUY",
+        "side": "YES",
+        "requested_size": {
+          "unit": "notional",
+          "value_e6": "7000000"
+        },
+        "submission_deadline": 1720000030
+      },
+      "price": "0.333333",
+      "source": "collateral",
+      "expected": {
+        "type": "RFQ_QUOTE",
+        "rfq_id": "request-1",
+        "price_e6": "333333",
+        "size_e6": "21000021",
+        "signed_order": {
+          "salt": "19",
+          "maker": "0x909dEdA326ED2aE677F5F8c2527E32977c9838c3",
+          "signer": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "tokenId": "124",
+          "makerAmount": "14000022",
+          "takerAmount": "21000021",
+          "side": 0,
+          "signatureType": 1,
+          "timestamp": "1720000000",
+          "builder": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "signature": "0xcce40490797a4554de3cd272b5e611748576a44fcda900c4b33f5e20df89c06c0dd1ddd9004248a4b9d95f3f24df19278882fad4ac597f18fa1bca2b7c80da041c"
+        }
+      }
+    },
+    {
+      "wallet": "0x909dEdA326ED2aE677F5F8c2527E32977c9838c3",
+      "kind": "POLY_PROXY",
+      "request": {
+        "type": "RFQ_REQUEST",
+        "rfq_id": "request-1",
+        "requestor_public_id": "requestor",
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "yes_position_id": "123",
+        "no_position_id": "124",
+        "direction": "BUY",
+        "side": "YES",
+        "requested_size": {
+          "unit": "notional",
+          "value_e6": "7000000"
+        },
+        "submission_deadline": 1720000030
+      },
+      "price": "0.999999",
+      "source": "collateral",
+      "expected": {
+        "type": "RFQ_QUOTE",
+        "rfq_id": "request-1",
+        "price_e6": "999999",
+        "size_e6": "7000007",
+        "signed_order": {
+          "salt": "19",
+          "maker": "0x909dEdA326ED2aE677F5F8c2527E32977c9838c3",
+          "signer": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "tokenId": "124",
+          "makerAmount": "8",
+          "takerAmount": "7000007",
+          "side": 0,
+          "signatureType": 1,
+          "timestamp": "1720000000",
+          "builder": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "signature": "0x707b1e664d603612430cebb0b2af9862f1de522cac03fd85d4d62cc4a3d7aaf654c354ee9c97eaed21145e60da26f26f5ca794c5b92e294fd663cf2cc828e3751c"
+        }
+      }
+    },
+    {
+      "wallet": "0x909dEdA326ED2aE677F5F8c2527E32977c9838c3",
+      "kind": "POLY_PROXY",
+      "request": {
+        "type": "RFQ_REQUEST",
+        "rfq_id": "request-1",
+        "requestor_public_id": "requestor",
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "yes_position_id": "123",
+        "no_position_id": "124",
+        "direction": "BUY",
+        "side": "YES",
+        "requested_size": {
+          "unit": "notional",
+          "value_e6": "7000000"
+        },
+        "submission_deadline": 1720000030
+      },
+      "price": "0.000001",
+      "source": "inventory",
+      "expected": {
+        "type": "RFQ_QUOTE",
+        "rfq_id": "request-1",
+        "price_e6": "1",
+        "size_e6": "7000000000000",
+        "signed_order": {
+          "salt": "19",
+          "maker": "0x909dEdA326ED2aE677F5F8c2527E32977c9838c3",
+          "signer": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "tokenId": "123",
+          "makerAmount": "7000000000000",
+          "takerAmount": "7000000",
+          "side": 1,
+          "signatureType": 1,
+          "timestamp": "1720000000",
+          "builder": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "signature": "0x5b5abc100fab6591caa92b3ddd6a0dcfe30d65eb7b0916d16c57a33291c576fc240d58d0def4f2de58e71e54fa54860d4ca65688a28d5fd4589aedb3ae977fc81c"
+        }
+      }
+    },
+    {
+      "wallet": "0x909dEdA326ED2aE677F5F8c2527E32977c9838c3",
+      "kind": "POLY_PROXY",
+      "request": {
+        "type": "RFQ_REQUEST",
+        "rfq_id": "request-1",
+        "requestor_public_id": "requestor",
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "yes_position_id": "123",
+        "no_position_id": "124",
+        "direction": "BUY",
+        "side": "YES",
+        "requested_size": {
+          "unit": "notional",
+          "value_e6": "7000000"
+        },
+        "submission_deadline": 1720000030
+      },
+      "price": "0.333333",
+      "source": "inventory",
+      "expected": {
+        "type": "RFQ_QUOTE",
+        "rfq_id": "request-1",
+        "price_e6": "333333",
+        "size_e6": "21000021",
+        "signed_order": {
+          "salt": "19",
+          "maker": "0x909dEdA326ED2aE677F5F8c2527E32977c9838c3",
+          "signer": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "tokenId": "123",
+          "makerAmount": "21000021",
+          "takerAmount": "6999999",
+          "side": 1,
+          "signatureType": 1,
+          "timestamp": "1720000000",
+          "builder": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "signature": "0x8500d6e86ba04768c6a8e9a5734d1e7c9314cb22412e269166831564f21642a8282193f7ed70fee58ac9503454cf7f3ffa9223f51b5e9ff2bf0987c852d64d351c"
+        }
+      }
+    },
+    {
+      "wallet": "0x909dEdA326ED2aE677F5F8c2527E32977c9838c3",
+      "kind": "POLY_PROXY",
+      "request": {
+        "type": "RFQ_REQUEST",
+        "rfq_id": "request-1",
+        "requestor_public_id": "requestor",
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "yes_position_id": "123",
+        "no_position_id": "124",
+        "direction": "BUY",
+        "side": "YES",
+        "requested_size": {
+          "unit": "notional",
+          "value_e6": "7000000"
+        },
+        "submission_deadline": 1720000030
+      },
+      "price": "0.999999",
+      "source": "inventory",
+      "expected": {
+        "type": "RFQ_QUOTE",
+        "rfq_id": "request-1",
+        "price_e6": "999999",
+        "size_e6": "7000007",
+        "signed_order": {
+          "salt": "19",
+          "maker": "0x909dEdA326ED2aE677F5F8c2527E32977c9838c3",
+          "signer": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "tokenId": "123",
+          "makerAmount": "7000007",
+          "takerAmount": "6999999",
+          "side": 1,
+          "signatureType": 1,
+          "timestamp": "1720000000",
+          "builder": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "signature": "0xb19f96e439087a5b116a7c6f05ba8e574ab40c81cf190f987bd965c6557fcfe57a2c7bcba0e2013d2c4b7b3433e7d1c172f044b715f61c5bef49aa248f1c96f81c"
+        }
+      }
+    },
+    {
+      "wallet": "0x909dEdA326ED2aE677F5F8c2527E32977c9838c3",
+      "kind": "POLY_PROXY",
+      "request": {
+        "type": "RFQ_REQUEST",
+        "rfq_id": "request-1",
+        "requestor_public_id": "requestor",
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "yes_position_id": "123",
+        "no_position_id": "124",
+        "direction": "SELL",
+        "side": "YES",
+        "requested_size": {
+          "unit": "notional",
+          "value_e6": "7000000"
+        },
+        "submission_deadline": 1720000030
+      },
+      "price": "0.000001",
+      "source": "collateral",
+      "expected": {
+        "type": "RFQ_QUOTE",
+        "rfq_id": "request-1",
+        "price_e6": "1",
+        "size_e6": "7000000000000",
+        "signed_order": {
+          "salt": "19",
+          "maker": "0x909dEdA326ED2aE677F5F8c2527E32977c9838c3",
+          "signer": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "tokenId": "123",
+          "makerAmount": "7000000",
+          "takerAmount": "7000000000000",
+          "side": 0,
+          "signatureType": 1,
+          "timestamp": "1720000000",
+          "builder": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "signature": "0xea74fc377552f8c32432260b3ce9e3e61d2620156ed1bf0ee2e94ad0a74ac5453153d8dc61f70b08fb7202f6f4bfb5c8a4e13553a728039d39e00883a74da7f81c"
+        }
+      }
+    },
+    {
+      "wallet": "0x909dEdA326ED2aE677F5F8c2527E32977c9838c3",
+      "kind": "POLY_PROXY",
+      "request": {
+        "type": "RFQ_REQUEST",
+        "rfq_id": "request-1",
+        "requestor_public_id": "requestor",
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "yes_position_id": "123",
+        "no_position_id": "124",
+        "direction": "SELL",
+        "side": "YES",
+        "requested_size": {
+          "unit": "notional",
+          "value_e6": "7000000"
+        },
+        "submission_deadline": 1720000030
+      },
+      "price": "0.333333",
+      "source": "collateral",
+      "expected": {
+        "type": "RFQ_QUOTE",
+        "rfq_id": "request-1",
+        "price_e6": "333333",
+        "size_e6": "21000021",
+        "signed_order": {
+          "salt": "19",
+          "maker": "0x909dEdA326ED2aE677F5F8c2527E32977c9838c3",
+          "signer": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "tokenId": "123",
+          "makerAmount": "7000000",
+          "takerAmount": "21000021",
+          "side": 0,
+          "signatureType": 1,
+          "timestamp": "1720000000",
+          "builder": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "signature": "0xa09249a32eccaa42ae57c7f14151ee3f828904b21cedf1403a5062925e22345269e4d16af80df8ec32b39393da02d8428d1f9ae0e7b127dfe58ef221a30243441b"
+        }
+      }
+    },
+    {
+      "wallet": "0x909dEdA326ED2aE677F5F8c2527E32977c9838c3",
+      "kind": "POLY_PROXY",
+      "request": {
+        "type": "RFQ_REQUEST",
+        "rfq_id": "request-1",
+        "requestor_public_id": "requestor",
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "yes_position_id": "123",
+        "no_position_id": "124",
+        "direction": "SELL",
+        "side": "YES",
+        "requested_size": {
+          "unit": "notional",
+          "value_e6": "7000000"
+        },
+        "submission_deadline": 1720000030
+      },
+      "price": "0.999999",
+      "source": "collateral",
+      "expected": {
+        "type": "RFQ_QUOTE",
+        "rfq_id": "request-1",
+        "price_e6": "999999",
+        "size_e6": "7000007",
+        "signed_order": {
+          "salt": "19",
+          "maker": "0x909dEdA326ED2aE677F5F8c2527E32977c9838c3",
+          "signer": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "tokenId": "123",
+          "makerAmount": "7000000",
+          "takerAmount": "7000007",
+          "side": 0,
+          "signatureType": 1,
+          "timestamp": "1720000000",
+          "builder": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "signature": "0xe0d9c50e088696fae868a1fa6bdad915abcd72156b9a9f2175ec11b5b49271f97cfcd7687412102d4a0400a0771fe52d8898f9898eb2e571cf57628ae9cfc9161b"
+        }
+      }
+    },
+    {
+      "wallet": "0x909dEdA326ED2aE677F5F8c2527E32977c9838c3",
+      "kind": "POLY_PROXY",
+      "request": {
+        "type": "RFQ_REQUEST",
+        "rfq_id": "request-1",
+        "requestor_public_id": "requestor",
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "yes_position_id": "123",
+        "no_position_id": "124",
+        "direction": "SELL",
+        "side": "YES",
+        "requested_size": {
+          "unit": "notional",
+          "value_e6": "7000000"
+        },
+        "submission_deadline": 1720000030
+      },
+      "price": "0.000001",
+      "source": "inventory",
+      "expected": {
+        "type": "RFQ_QUOTE",
+        "rfq_id": "request-1",
+        "price_e6": "1",
+        "size_e6": "7000000000000",
+        "signed_order": {
+          "salt": "19",
+          "maker": "0x909dEdA326ED2aE677F5F8c2527E32977c9838c3",
+          "signer": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "tokenId": "124",
+          "makerAmount": "7000000000000",
+          "takerAmount": "6999993000000",
+          "side": 1,
+          "signatureType": 1,
+          "timestamp": "1720000000",
+          "builder": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "signature": "0x08b2778f92ed1d81590b15d45a59663e8a17ae5ec84090463a4d1d024e7067400b13f057845e1e667d748f1492610431c1245fcd70b7a422ed550c2ed5422b661b"
+        }
+      }
+    },
+    {
+      "wallet": "0x909dEdA326ED2aE677F5F8c2527E32977c9838c3",
+      "kind": "POLY_PROXY",
+      "request": {
+        "type": "RFQ_REQUEST",
+        "rfq_id": "request-1",
+        "requestor_public_id": "requestor",
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "yes_position_id": "123",
+        "no_position_id": "124",
+        "direction": "SELL",
+        "side": "YES",
+        "requested_size": {
+          "unit": "notional",
+          "value_e6": "7000000"
+        },
+        "submission_deadline": 1720000030
+      },
+      "price": "0.333333",
+      "source": "inventory",
+      "expected": {
+        "type": "RFQ_QUOTE",
+        "rfq_id": "request-1",
+        "price_e6": "333333",
+        "size_e6": "21000021",
+        "signed_order": {
+          "salt": "19",
+          "maker": "0x909dEdA326ED2aE677F5F8c2527E32977c9838c3",
+          "signer": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "tokenId": "124",
+          "makerAmount": "21000021",
+          "takerAmount": "14000021",
+          "side": 1,
+          "signatureType": 1,
+          "timestamp": "1720000000",
+          "builder": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "signature": "0xc292dcd596839974d1db3389be74b1ec1269110fe5368a374a9b1b8a6d46c0466499c392c6c9b80a6b7bee1d55ac7f0e3ad7f24afc17b5c80990b6588b619ce31c"
+        }
+      }
+    },
+    {
+      "wallet": "0x909dEdA326ED2aE677F5F8c2527E32977c9838c3",
+      "kind": "POLY_PROXY",
+      "request": {
+        "type": "RFQ_REQUEST",
+        "rfq_id": "request-1",
+        "requestor_public_id": "requestor",
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "yes_position_id": "123",
+        "no_position_id": "124",
+        "direction": "SELL",
+        "side": "YES",
+        "requested_size": {
+          "unit": "notional",
+          "value_e6": "7000000"
+        },
+        "submission_deadline": 1720000030
+      },
+      "price": "0.999999",
+      "source": "inventory",
+      "expected": {
+        "type": "RFQ_QUOTE",
+        "rfq_id": "request-1",
+        "price_e6": "999999",
+        "size_e6": "7000007",
+        "signed_order": {
+          "salt": "19",
+          "maker": "0x909dEdA326ED2aE677F5F8c2527E32977c9838c3",
+          "signer": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "tokenId": "124",
+          "makerAmount": "7000007",
+          "takerAmount": "7",
+          "side": 1,
+          "signatureType": 1,
+          "timestamp": "1720000000",
+          "builder": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "signature": "0xc02982eea2fb955a94ee7f32c77255612fcba720da05a035fecb61a31f10b01b133ef11ca046463d82dd0208b4233fcbcb2d89428cdfa71d72f45adb21a806d01c"
+        }
+      }
+    },
+    {
+      "wallet": "0x51b7C68A71dCcBc0b7FA4400934a293D8f4d3Ba8",
+      "kind": "GNOSIS_SAFE",
+      "request": {
+        "type": "RFQ_REQUEST",
+        "rfq_id": "request-1",
+        "requestor_public_id": "requestor",
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "yes_position_id": "123",
+        "no_position_id": "124",
+        "direction": "BUY",
+        "side": "YES",
+        "requested_size": {
+          "unit": "notional",
+          "value_e6": "7000000"
+        },
+        "submission_deadline": 1720000030
+      },
+      "price": "0.000001",
+      "source": "collateral",
+      "expected": {
+        "type": "RFQ_QUOTE",
+        "rfq_id": "request-1",
+        "price_e6": "1",
+        "size_e6": "7000000000000",
+        "signed_order": {
+          "salt": "19",
+          "maker": "0x51b7C68A71dCcBc0b7FA4400934a293D8f4d3Ba8",
+          "signer": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "tokenId": "124",
+          "makerAmount": "6999993000000",
+          "takerAmount": "7000000000000",
+          "side": 0,
+          "signatureType": 2,
+          "timestamp": "1720000000",
+          "builder": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "signature": "0x0bec6ae6f2e82168615be32da39f4f520c724ec43b0289b09606890c9904459f23c9615e3ad8f514d441797898e3cbe4732ababb4f3cd07201bf300cddd953ad1c"
+        }
+      }
+    },
+    {
+      "wallet": "0x51b7C68A71dCcBc0b7FA4400934a293D8f4d3Ba8",
+      "kind": "GNOSIS_SAFE",
+      "request": {
+        "type": "RFQ_REQUEST",
+        "rfq_id": "request-1",
+        "requestor_public_id": "requestor",
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "yes_position_id": "123",
+        "no_position_id": "124",
+        "direction": "BUY",
+        "side": "YES",
+        "requested_size": {
+          "unit": "notional",
+          "value_e6": "7000000"
+        },
+        "submission_deadline": 1720000030
+      },
+      "price": "0.333333",
+      "source": "collateral",
+      "expected": {
+        "type": "RFQ_QUOTE",
+        "rfq_id": "request-1",
+        "price_e6": "333333",
+        "size_e6": "21000021",
+        "signed_order": {
+          "salt": "19",
+          "maker": "0x51b7C68A71dCcBc0b7FA4400934a293D8f4d3Ba8",
+          "signer": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "tokenId": "124",
+          "makerAmount": "14000022",
+          "takerAmount": "21000021",
+          "side": 0,
+          "signatureType": 2,
+          "timestamp": "1720000000",
+          "builder": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "signature": "0x60ac67147f80cc4b13c2f742f21609e536b8c2b0739b8b697ad87729d072c3ec41927b5ba79e2ec4592a8fe8f9fcc67e055b51eb649091469e9c38a5f06f0a151c"
+        }
+      }
+    },
+    {
+      "wallet": "0x51b7C68A71dCcBc0b7FA4400934a293D8f4d3Ba8",
+      "kind": "GNOSIS_SAFE",
+      "request": {
+        "type": "RFQ_REQUEST",
+        "rfq_id": "request-1",
+        "requestor_public_id": "requestor",
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "yes_position_id": "123",
+        "no_position_id": "124",
+        "direction": "BUY",
+        "side": "YES",
+        "requested_size": {
+          "unit": "notional",
+          "value_e6": "7000000"
+        },
+        "submission_deadline": 1720000030
+      },
+      "price": "0.999999",
+      "source": "collateral",
+      "expected": {
+        "type": "RFQ_QUOTE",
+        "rfq_id": "request-1",
+        "price_e6": "999999",
+        "size_e6": "7000007",
+        "signed_order": {
+          "salt": "19",
+          "maker": "0x51b7C68A71dCcBc0b7FA4400934a293D8f4d3Ba8",
+          "signer": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "tokenId": "124",
+          "makerAmount": "8",
+          "takerAmount": "7000007",
+          "side": 0,
+          "signatureType": 2,
+          "timestamp": "1720000000",
+          "builder": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "signature": "0x39e41930e1aa95cb99182ee828f241d0e3821538da59faf1e08c16f64e7b7bb41de43109755f0b7dd5c9daa8210475db277c0729f1da026c9bddf040871a10491b"
+        }
+      }
+    },
+    {
+      "wallet": "0x51b7C68A71dCcBc0b7FA4400934a293D8f4d3Ba8",
+      "kind": "GNOSIS_SAFE",
+      "request": {
+        "type": "RFQ_REQUEST",
+        "rfq_id": "request-1",
+        "requestor_public_id": "requestor",
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "yes_position_id": "123",
+        "no_position_id": "124",
+        "direction": "BUY",
+        "side": "YES",
+        "requested_size": {
+          "unit": "notional",
+          "value_e6": "7000000"
+        },
+        "submission_deadline": 1720000030
+      },
+      "price": "0.000001",
+      "source": "inventory",
+      "expected": {
+        "type": "RFQ_QUOTE",
+        "rfq_id": "request-1",
+        "price_e6": "1",
+        "size_e6": "7000000000000",
+        "signed_order": {
+          "salt": "19",
+          "maker": "0x51b7C68A71dCcBc0b7FA4400934a293D8f4d3Ba8",
+          "signer": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "tokenId": "123",
+          "makerAmount": "7000000000000",
+          "takerAmount": "7000000",
+          "side": 1,
+          "signatureType": 2,
+          "timestamp": "1720000000",
+          "builder": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "signature": "0x7efefff20f2073badf7f03366f1d3df44dd62d1ee1e9370d3a42d2b8e029dcfd6459480d1855bbf1e3a401af4cd6aef2c1c5457a1698553930cf1fac900f6ab01b"
+        }
+      }
+    },
+    {
+      "wallet": "0x51b7C68A71dCcBc0b7FA4400934a293D8f4d3Ba8",
+      "kind": "GNOSIS_SAFE",
+      "request": {
+        "type": "RFQ_REQUEST",
+        "rfq_id": "request-1",
+        "requestor_public_id": "requestor",
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "yes_position_id": "123",
+        "no_position_id": "124",
+        "direction": "BUY",
+        "side": "YES",
+        "requested_size": {
+          "unit": "notional",
+          "value_e6": "7000000"
+        },
+        "submission_deadline": 1720000030
+      },
+      "price": "0.333333",
+      "source": "inventory",
+      "expected": {
+        "type": "RFQ_QUOTE",
+        "rfq_id": "request-1",
+        "price_e6": "333333",
+        "size_e6": "21000021",
+        "signed_order": {
+          "salt": "19",
+          "maker": "0x51b7C68A71dCcBc0b7FA4400934a293D8f4d3Ba8",
+          "signer": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "tokenId": "123",
+          "makerAmount": "21000021",
+          "takerAmount": "6999999",
+          "side": 1,
+          "signatureType": 2,
+          "timestamp": "1720000000",
+          "builder": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "signature": "0x5e5f553e0859925fbc1de6fb85553b5a680abf686953c4872af7eb727c7a9be92f7972179a8d3adabbaa892a54cc8dc6d14561366fb5f3ec9360ec594eb33d9c1c"
+        }
+      }
+    },
+    {
+      "wallet": "0x51b7C68A71dCcBc0b7FA4400934a293D8f4d3Ba8",
+      "kind": "GNOSIS_SAFE",
+      "request": {
+        "type": "RFQ_REQUEST",
+        "rfq_id": "request-1",
+        "requestor_public_id": "requestor",
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "yes_position_id": "123",
+        "no_position_id": "124",
+        "direction": "BUY",
+        "side": "YES",
+        "requested_size": {
+          "unit": "notional",
+          "value_e6": "7000000"
+        },
+        "submission_deadline": 1720000030
+      },
+      "price": "0.999999",
+      "source": "inventory",
+      "expected": {
+        "type": "RFQ_QUOTE",
+        "rfq_id": "request-1",
+        "price_e6": "999999",
+        "size_e6": "7000007",
+        "signed_order": {
+          "salt": "19",
+          "maker": "0x51b7C68A71dCcBc0b7FA4400934a293D8f4d3Ba8",
+          "signer": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "tokenId": "123",
+          "makerAmount": "7000007",
+          "takerAmount": "6999999",
+          "side": 1,
+          "signatureType": 2,
+          "timestamp": "1720000000",
+          "builder": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "signature": "0xce157a895faed401cf95b0ff8ec3c4ddab2ddeb5b80a01418a43b7cabf0de2734befe4024c06812b508b85ee3c98df51b0c8b639ec588c7e77387b956ea33d1b1c"
+        }
+      }
+    },
+    {
+      "wallet": "0x51b7C68A71dCcBc0b7FA4400934a293D8f4d3Ba8",
+      "kind": "GNOSIS_SAFE",
+      "request": {
+        "type": "RFQ_REQUEST",
+        "rfq_id": "request-1",
+        "requestor_public_id": "requestor",
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "yes_position_id": "123",
+        "no_position_id": "124",
+        "direction": "SELL",
+        "side": "YES",
+        "requested_size": {
+          "unit": "notional",
+          "value_e6": "7000000"
+        },
+        "submission_deadline": 1720000030
+      },
+      "price": "0.000001",
+      "source": "collateral",
+      "expected": {
+        "type": "RFQ_QUOTE",
+        "rfq_id": "request-1",
+        "price_e6": "1",
+        "size_e6": "7000000000000",
+        "signed_order": {
+          "salt": "19",
+          "maker": "0x51b7C68A71dCcBc0b7FA4400934a293D8f4d3Ba8",
+          "signer": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "tokenId": "123",
+          "makerAmount": "7000000",
+          "takerAmount": "7000000000000",
+          "side": 0,
+          "signatureType": 2,
+          "timestamp": "1720000000",
+          "builder": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "signature": "0x5973ec73e07a78677dfb1667b118e366df5bdfdb37bf934ac482b2bd18debe0551e8fa093c56d90ba00614fc3a116141a9296e064e7fdd6ef359b763399013d01b"
+        }
+      }
+    },
+    {
+      "wallet": "0x51b7C68A71dCcBc0b7FA4400934a293D8f4d3Ba8",
+      "kind": "GNOSIS_SAFE",
+      "request": {
+        "type": "RFQ_REQUEST",
+        "rfq_id": "request-1",
+        "requestor_public_id": "requestor",
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "yes_position_id": "123",
+        "no_position_id": "124",
+        "direction": "SELL",
+        "side": "YES",
+        "requested_size": {
+          "unit": "notional",
+          "value_e6": "7000000"
+        },
+        "submission_deadline": 1720000030
+      },
+      "price": "0.333333",
+      "source": "collateral",
+      "expected": {
+        "type": "RFQ_QUOTE",
+        "rfq_id": "request-1",
+        "price_e6": "333333",
+        "size_e6": "21000021",
+        "signed_order": {
+          "salt": "19",
+          "maker": "0x51b7C68A71dCcBc0b7FA4400934a293D8f4d3Ba8",
+          "signer": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "tokenId": "123",
+          "makerAmount": "7000000",
+          "takerAmount": "21000021",
+          "side": 0,
+          "signatureType": 2,
+          "timestamp": "1720000000",
+          "builder": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "signature": "0x0d7817766aba4ffeba3673b21ff6da65657bb2584d5ece33c6a06c6fb0da4d8c55fe1a53183686f5910366e01a88c98585fb9a2f9f198fa5588d592764fea0b61b"
+        }
+      }
+    },
+    {
+      "wallet": "0x51b7C68A71dCcBc0b7FA4400934a293D8f4d3Ba8",
+      "kind": "GNOSIS_SAFE",
+      "request": {
+        "type": "RFQ_REQUEST",
+        "rfq_id": "request-1",
+        "requestor_public_id": "requestor",
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "yes_position_id": "123",
+        "no_position_id": "124",
+        "direction": "SELL",
+        "side": "YES",
+        "requested_size": {
+          "unit": "notional",
+          "value_e6": "7000000"
+        },
+        "submission_deadline": 1720000030
+      },
+      "price": "0.999999",
+      "source": "collateral",
+      "expected": {
+        "type": "RFQ_QUOTE",
+        "rfq_id": "request-1",
+        "price_e6": "999999",
+        "size_e6": "7000007",
+        "signed_order": {
+          "salt": "19",
+          "maker": "0x51b7C68A71dCcBc0b7FA4400934a293D8f4d3Ba8",
+          "signer": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "tokenId": "123",
+          "makerAmount": "7000000",
+          "takerAmount": "7000007",
+          "side": 0,
+          "signatureType": 2,
+          "timestamp": "1720000000",
+          "builder": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "signature": "0x4044ba697dd4d9b24c0439c844549dd1cb41dcfec1e646195170098ef424fd83086533aeca9689b7d5ff2f8567fdb9206961bfa11739effc6a22f4c72695e2811b"
+        }
+      }
+    },
+    {
+      "wallet": "0x51b7C68A71dCcBc0b7FA4400934a293D8f4d3Ba8",
+      "kind": "GNOSIS_SAFE",
+      "request": {
+        "type": "RFQ_REQUEST",
+        "rfq_id": "request-1",
+        "requestor_public_id": "requestor",
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "yes_position_id": "123",
+        "no_position_id": "124",
+        "direction": "SELL",
+        "side": "YES",
+        "requested_size": {
+          "unit": "notional",
+          "value_e6": "7000000"
+        },
+        "submission_deadline": 1720000030
+      },
+      "price": "0.000001",
+      "source": "inventory",
+      "expected": {
+        "type": "RFQ_QUOTE",
+        "rfq_id": "request-1",
+        "price_e6": "1",
+        "size_e6": "7000000000000",
+        "signed_order": {
+          "salt": "19",
+          "maker": "0x51b7C68A71dCcBc0b7FA4400934a293D8f4d3Ba8",
+          "signer": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "tokenId": "124",
+          "makerAmount": "7000000000000",
+          "takerAmount": "6999993000000",
+          "side": 1,
+          "signatureType": 2,
+          "timestamp": "1720000000",
+          "builder": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "signature": "0xb28f506f54ee260d5b75294e44bf0fc0a819c499853a1a646f39dfbb47e1d3f16d92975215f43d2a8650db68ee1c2f09bd15add0b7a49666115e3cd47e3e1fb81c"
+        }
+      }
+    },
+    {
+      "wallet": "0x51b7C68A71dCcBc0b7FA4400934a293D8f4d3Ba8",
+      "kind": "GNOSIS_SAFE",
+      "request": {
+        "type": "RFQ_REQUEST",
+        "rfq_id": "request-1",
+        "requestor_public_id": "requestor",
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "yes_position_id": "123",
+        "no_position_id": "124",
+        "direction": "SELL",
+        "side": "YES",
+        "requested_size": {
+          "unit": "notional",
+          "value_e6": "7000000"
+        },
+        "submission_deadline": 1720000030
+      },
+      "price": "0.333333",
+      "source": "inventory",
+      "expected": {
+        "type": "RFQ_QUOTE",
+        "rfq_id": "request-1",
+        "price_e6": "333333",
+        "size_e6": "21000021",
+        "signed_order": {
+          "salt": "19",
+          "maker": "0x51b7C68A71dCcBc0b7FA4400934a293D8f4d3Ba8",
+          "signer": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "tokenId": "124",
+          "makerAmount": "21000021",
+          "takerAmount": "14000021",
+          "side": 1,
+          "signatureType": 2,
+          "timestamp": "1720000000",
+          "builder": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "signature": "0xd2cf747e6ad0aadf408f0c1005944a6e4df8fc09d2e76bf067a2c85407c85ea56804c9bdc9c390ee98a70ddabb921a81863affad9a8b134b125b202451148eb01c"
+        }
+      }
+    },
+    {
+      "wallet": "0x51b7C68A71dCcBc0b7FA4400934a293D8f4d3Ba8",
+      "kind": "GNOSIS_SAFE",
+      "request": {
+        "type": "RFQ_REQUEST",
+        "rfq_id": "request-1",
+        "requestor_public_id": "requestor",
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "yes_position_id": "123",
+        "no_position_id": "124",
+        "direction": "SELL",
+        "side": "YES",
+        "requested_size": {
+          "unit": "notional",
+          "value_e6": "7000000"
+        },
+        "submission_deadline": 1720000030
+      },
+      "price": "0.999999",
+      "source": "inventory",
+      "expected": {
+        "type": "RFQ_QUOTE",
+        "rfq_id": "request-1",
+        "price_e6": "999999",
+        "size_e6": "7000007",
+        "signed_order": {
+          "salt": "19",
+          "maker": "0x51b7C68A71dCcBc0b7FA4400934a293D8f4d3Ba8",
+          "signer": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "tokenId": "124",
+          "makerAmount": "7000007",
+          "takerAmount": "7",
+          "side": 1,
+          "signatureType": 2,
+          "timestamp": "1720000000",
+          "builder": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "signature": "0xc55e72590a7288f315d5b485e2f51ebb767a62c54ed58a1d0d26b3c01feb1d861d11b895598082e4e9b5f2177fe7fe9c747920562db9436f7aca72150df3191a1c"
+        }
+      }
+    },
+    {
+      "wallet": "0x6F908B3B67b9F9C40413775fFf48b286aeF9a081",
+      "kind": "DEPOSIT_WALLET",
+      "request": {
+        "type": "RFQ_REQUEST",
+        "rfq_id": "request-1",
+        "requestor_public_id": "requestor",
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "yes_position_id": "123",
+        "no_position_id": "124",
+        "direction": "BUY",
+        "side": "YES",
+        "requested_size": {
+          "unit": "notional",
+          "value_e6": "7000000"
+        },
+        "submission_deadline": 1720000030
+      },
+      "price": "0.000001",
+      "source": "collateral",
+      "expected": {
+        "type": "RFQ_QUOTE",
+        "rfq_id": "request-1",
+        "price_e6": "1",
+        "size_e6": "7000000000000",
+        "signed_order": {
+          "salt": "19",
+          "maker": "0x6F908B3B67b9F9C40413775fFf48b286aeF9a081",
+          "signer": "0x6F908B3B67b9F9C40413775fFf48b286aeF9a081",
+          "tokenId": "124",
+          "makerAmount": "6999993000000",
+          "takerAmount": "7000000000000",
+          "side": 0,
+          "signatureType": 3,
+          "timestamp": "1720000000",
+          "builder": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "signature": "0x1db0983814082ee62968462a8cfb0690da89dc958a7f8f2c1036138b18d8451871f9ac442fb9fa83dc2df9735fa1f3ebbbdb7612688dcb67254db764b562ffa11b466c63910185bbd55e8679264200c4e0abdcbb0c6264eb3d41d13326022e095be29534375cab9f37badc0fac4bd557e61ec365e8fd113a45d22946b13f484fbf4f726465722875696e743235362073616c742c61646472657373206d616b65722c61646472657373207369676e65722c75696e7432353620746f6b656e49642c75696e74323536206d616b6572416d6f756e742c75696e743235362074616b6572416d6f756e742c75696e743820736964652c75696e7438207369676e6174757265547970652c75696e743235362074696d657374616d702c62797465733332206d657461646174612c62797465733332206275696c6465722900ba"
+        }
+      }
+    },
+    {
+      "wallet": "0x6F908B3B67b9F9C40413775fFf48b286aeF9a081",
+      "kind": "DEPOSIT_WALLET",
+      "request": {
+        "type": "RFQ_REQUEST",
+        "rfq_id": "request-1",
+        "requestor_public_id": "requestor",
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "yes_position_id": "123",
+        "no_position_id": "124",
+        "direction": "BUY",
+        "side": "YES",
+        "requested_size": {
+          "unit": "notional",
+          "value_e6": "7000000"
+        },
+        "submission_deadline": 1720000030
+      },
+      "price": "0.333333",
+      "source": "collateral",
+      "expected": {
+        "type": "RFQ_QUOTE",
+        "rfq_id": "request-1",
+        "price_e6": "333333",
+        "size_e6": "21000021",
+        "signed_order": {
+          "salt": "19",
+          "maker": "0x6F908B3B67b9F9C40413775fFf48b286aeF9a081",
+          "signer": "0x6F908B3B67b9F9C40413775fFf48b286aeF9a081",
+          "tokenId": "124",
+          "makerAmount": "14000022",
+          "takerAmount": "21000021",
+          "side": 0,
+          "signatureType": 3,
+          "timestamp": "1720000000",
+          "builder": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "signature": "0xce36d4d17c7179ee49e0860cb7c951b0fd8dae7f52b7c4391e35493d9f327dab715b4046531832a15eb8e43d9e3c9d58e8b5584c8231a5ba35f5bed51bc302871b466c63910185bbd55e8679264200c4e0abdcbb0c6264eb3d41d13326022e095b82bc05c418e07875dbd79cb76b9558feac42ec1eee4b5a6514136bf7a0d629eb4f726465722875696e743235362073616c742c61646472657373206d616b65722c61646472657373207369676e65722c75696e7432353620746f6b656e49642c75696e74323536206d616b6572416d6f756e742c75696e743235362074616b6572416d6f756e742c75696e743820736964652c75696e7438207369676e6174757265547970652c75696e743235362074696d657374616d702c62797465733332206d657461646174612c62797465733332206275696c6465722900ba"
+        }
+      }
+    },
+    {
+      "wallet": "0x6F908B3B67b9F9C40413775fFf48b286aeF9a081",
+      "kind": "DEPOSIT_WALLET",
+      "request": {
+        "type": "RFQ_REQUEST",
+        "rfq_id": "request-1",
+        "requestor_public_id": "requestor",
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "yes_position_id": "123",
+        "no_position_id": "124",
+        "direction": "BUY",
+        "side": "YES",
+        "requested_size": {
+          "unit": "notional",
+          "value_e6": "7000000"
+        },
+        "submission_deadline": 1720000030
+      },
+      "price": "0.999999",
+      "source": "collateral",
+      "expected": {
+        "type": "RFQ_QUOTE",
+        "rfq_id": "request-1",
+        "price_e6": "999999",
+        "size_e6": "7000007",
+        "signed_order": {
+          "salt": "19",
+          "maker": "0x6F908B3B67b9F9C40413775fFf48b286aeF9a081",
+          "signer": "0x6F908B3B67b9F9C40413775fFf48b286aeF9a081",
+          "tokenId": "124",
+          "makerAmount": "8",
+          "takerAmount": "7000007",
+          "side": 0,
+          "signatureType": 3,
+          "timestamp": "1720000000",
+          "builder": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "signature": "0x8570788c3a3d11403804ef83b0f69681297a2c6893b86477291650c8fea5f4216e4f74c77a35642e9e1a172103604ded37e80ca248717d022868ee6fd68e97f51c466c63910185bbd55e8679264200c4e0abdcbb0c6264eb3d41d13326022e095becb1747e0687868c8e0a6a8ce1c0941a6b17e673bb5e8b11ae27d088df229a064f726465722875696e743235362073616c742c61646472657373206d616b65722c61646472657373207369676e65722c75696e7432353620746f6b656e49642c75696e74323536206d616b6572416d6f756e742c75696e743235362074616b6572416d6f756e742c75696e743820736964652c75696e7438207369676e6174757265547970652c75696e743235362074696d657374616d702c62797465733332206d657461646174612c62797465733332206275696c6465722900ba"
+        }
+      }
+    },
+    {
+      "wallet": "0x6F908B3B67b9F9C40413775fFf48b286aeF9a081",
+      "kind": "DEPOSIT_WALLET",
+      "request": {
+        "type": "RFQ_REQUEST",
+        "rfq_id": "request-1",
+        "requestor_public_id": "requestor",
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "yes_position_id": "123",
+        "no_position_id": "124",
+        "direction": "BUY",
+        "side": "YES",
+        "requested_size": {
+          "unit": "notional",
+          "value_e6": "7000000"
+        },
+        "submission_deadline": 1720000030
+      },
+      "price": "0.000001",
+      "source": "inventory",
+      "expected": {
+        "type": "RFQ_QUOTE",
+        "rfq_id": "request-1",
+        "price_e6": "1",
+        "size_e6": "7000000000000",
+        "signed_order": {
+          "salt": "19",
+          "maker": "0x6F908B3B67b9F9C40413775fFf48b286aeF9a081",
+          "signer": "0x6F908B3B67b9F9C40413775fFf48b286aeF9a081",
+          "tokenId": "123",
+          "makerAmount": "7000000000000",
+          "takerAmount": "7000000",
+          "side": 1,
+          "signatureType": 3,
+          "timestamp": "1720000000",
+          "builder": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "signature": "0x71f27e85d5293eef78f9bf6fe47d802e225596866c2daca4223c147eae109ebc38ac47e6c71c479fe581233e4a023858b8a39ce69d1692697c4699cb82fef2231b466c63910185bbd55e8679264200c4e0abdcbb0c6264eb3d41d13326022e095b7089a8d96bc99c37a386d99264adfb3072a97d6e1d0888cc805c9ea0ed4b39fc4f726465722875696e743235362073616c742c61646472657373206d616b65722c61646472657373207369676e65722c75696e7432353620746f6b656e49642c75696e74323536206d616b6572416d6f756e742c75696e743235362074616b6572416d6f756e742c75696e743820736964652c75696e7438207369676e6174757265547970652c75696e743235362074696d657374616d702c62797465733332206d657461646174612c62797465733332206275696c6465722900ba"
+        }
+      }
+    },
+    {
+      "wallet": "0x6F908B3B67b9F9C40413775fFf48b286aeF9a081",
+      "kind": "DEPOSIT_WALLET",
+      "request": {
+        "type": "RFQ_REQUEST",
+        "rfq_id": "request-1",
+        "requestor_public_id": "requestor",
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "yes_position_id": "123",
+        "no_position_id": "124",
+        "direction": "BUY",
+        "side": "YES",
+        "requested_size": {
+          "unit": "notional",
+          "value_e6": "7000000"
+        },
+        "submission_deadline": 1720000030
+      },
+      "price": "0.333333",
+      "source": "inventory",
+      "expected": {
+        "type": "RFQ_QUOTE",
+        "rfq_id": "request-1",
+        "price_e6": "333333",
+        "size_e6": "21000021",
+        "signed_order": {
+          "salt": "19",
+          "maker": "0x6F908B3B67b9F9C40413775fFf48b286aeF9a081",
+          "signer": "0x6F908B3B67b9F9C40413775fFf48b286aeF9a081",
+          "tokenId": "123",
+          "makerAmount": "21000021",
+          "takerAmount": "6999999",
+          "side": 1,
+          "signatureType": 3,
+          "timestamp": "1720000000",
+          "builder": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "signature": "0x075cddb82b9228863aa27d944f8035192eb230b7cd7ddf99f5129a9e435855a645f8a8223ca0cc00b1fc2fd01257278a581ac5e915d00a383274bee0387f3cd31b466c63910185bbd55e8679264200c4e0abdcbb0c6264eb3d41d13326022e095b301abd07423cba2673391b1d23d27b9f49173a38830df172ffa40d697dc032b34f726465722875696e743235362073616c742c61646472657373206d616b65722c61646472657373207369676e65722c75696e7432353620746f6b656e49642c75696e74323536206d616b6572416d6f756e742c75696e743235362074616b6572416d6f756e742c75696e743820736964652c75696e7438207369676e6174757265547970652c75696e743235362074696d657374616d702c62797465733332206d657461646174612c62797465733332206275696c6465722900ba"
+        }
+      }
+    },
+    {
+      "wallet": "0x6F908B3B67b9F9C40413775fFf48b286aeF9a081",
+      "kind": "DEPOSIT_WALLET",
+      "request": {
+        "type": "RFQ_REQUEST",
+        "rfq_id": "request-1",
+        "requestor_public_id": "requestor",
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "yes_position_id": "123",
+        "no_position_id": "124",
+        "direction": "BUY",
+        "side": "YES",
+        "requested_size": {
+          "unit": "notional",
+          "value_e6": "7000000"
+        },
+        "submission_deadline": 1720000030
+      },
+      "price": "0.999999",
+      "source": "inventory",
+      "expected": {
+        "type": "RFQ_QUOTE",
+        "rfq_id": "request-1",
+        "price_e6": "999999",
+        "size_e6": "7000007",
+        "signed_order": {
+          "salt": "19",
+          "maker": "0x6F908B3B67b9F9C40413775fFf48b286aeF9a081",
+          "signer": "0x6F908B3B67b9F9C40413775fFf48b286aeF9a081",
+          "tokenId": "123",
+          "makerAmount": "7000007",
+          "takerAmount": "6999999",
+          "side": 1,
+          "signatureType": 3,
+          "timestamp": "1720000000",
+          "builder": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "signature": "0x2945d154a124f5c63a2f2927561e6714cb653d9b3f1bff7c302cd0e2a2fa615c347ffcddff1c24a10c9382cbfcbf002b70fdc2aedeed13801b2ad66a7cc889fe1b466c63910185bbd55e8679264200c4e0abdcbb0c6264eb3d41d13326022e095b27ee180fe939ba169cff2aa6691cdb7aece80b996ea85f3ae0f0092ec321647e4f726465722875696e743235362073616c742c61646472657373206d616b65722c61646472657373207369676e65722c75696e7432353620746f6b656e49642c75696e74323536206d616b6572416d6f756e742c75696e743235362074616b6572416d6f756e742c75696e743820736964652c75696e7438207369676e6174757265547970652c75696e743235362074696d657374616d702c62797465733332206d657461646174612c62797465733332206275696c6465722900ba"
+        }
+      }
+    },
+    {
+      "wallet": "0x6F908B3B67b9F9C40413775fFf48b286aeF9a081",
+      "kind": "DEPOSIT_WALLET",
+      "request": {
+        "type": "RFQ_REQUEST",
+        "rfq_id": "request-1",
+        "requestor_public_id": "requestor",
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "yes_position_id": "123",
+        "no_position_id": "124",
+        "direction": "SELL",
+        "side": "YES",
+        "requested_size": {
+          "unit": "notional",
+          "value_e6": "7000000"
+        },
+        "submission_deadline": 1720000030
+      },
+      "price": "0.000001",
+      "source": "collateral",
+      "expected": {
+        "type": "RFQ_QUOTE",
+        "rfq_id": "request-1",
+        "price_e6": "1",
+        "size_e6": "7000000000000",
+        "signed_order": {
+          "salt": "19",
+          "maker": "0x6F908B3B67b9F9C40413775fFf48b286aeF9a081",
+          "signer": "0x6F908B3B67b9F9C40413775fFf48b286aeF9a081",
+          "tokenId": "123",
+          "makerAmount": "7000000",
+          "takerAmount": "7000000000000",
+          "side": 0,
+          "signatureType": 3,
+          "timestamp": "1720000000",
+          "builder": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "signature": "0x6a0855d61b541567f17b12fdf0fdd07e9575ca5e4dd28f16a97fe7e96e3b756774c87322fa07c36acff3a6f4ec6a030e1c7b404c7f971ff5cea82cfdbf0490fa1b466c63910185bbd55e8679264200c4e0abdcbb0c6264eb3d41d13326022e095bcf3cbf629aea9885f50b47c5e9a2536cc832899a0d417a06bd1e220d0a146cdc4f726465722875696e743235362073616c742c61646472657373206d616b65722c61646472657373207369676e65722c75696e7432353620746f6b656e49642c75696e74323536206d616b6572416d6f756e742c75696e743235362074616b6572416d6f756e742c75696e743820736964652c75696e7438207369676e6174757265547970652c75696e743235362074696d657374616d702c62797465733332206d657461646174612c62797465733332206275696c6465722900ba"
+        }
+      }
+    },
+    {
+      "wallet": "0x6F908B3B67b9F9C40413775fFf48b286aeF9a081",
+      "kind": "DEPOSIT_WALLET",
+      "request": {
+        "type": "RFQ_REQUEST",
+        "rfq_id": "request-1",
+        "requestor_public_id": "requestor",
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "yes_position_id": "123",
+        "no_position_id": "124",
+        "direction": "SELL",
+        "side": "YES",
+        "requested_size": {
+          "unit": "notional",
+          "value_e6": "7000000"
+        },
+        "submission_deadline": 1720000030
+      },
+      "price": "0.333333",
+      "source": "collateral",
+      "expected": {
+        "type": "RFQ_QUOTE",
+        "rfq_id": "request-1",
+        "price_e6": "333333",
+        "size_e6": "21000021",
+        "signed_order": {
+          "salt": "19",
+          "maker": "0x6F908B3B67b9F9C40413775fFf48b286aeF9a081",
+          "signer": "0x6F908B3B67b9F9C40413775fFf48b286aeF9a081",
+          "tokenId": "123",
+          "makerAmount": "7000000",
+          "takerAmount": "21000021",
+          "side": 0,
+          "signatureType": 3,
+          "timestamp": "1720000000",
+          "builder": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "signature": "0xcd225398029287a57c551fb4f8110a1a9bfcee9fb36ac4040113af62f1bac90c4056ab9f6de0dfd01c9344f25477bdfba31bc73b552ad8ac7edd22be19ee287a1c466c63910185bbd55e8679264200c4e0abdcbb0c6264eb3d41d13326022e095b009666765c1d77725a1a40cbacb47bc03e29d6ae218fe1b8aa39c67aff3fd3f04f726465722875696e743235362073616c742c61646472657373206d616b65722c61646472657373207369676e65722c75696e7432353620746f6b656e49642c75696e74323536206d616b6572416d6f756e742c75696e743235362074616b6572416d6f756e742c75696e743820736964652c75696e7438207369676e6174757265547970652c75696e743235362074696d657374616d702c62797465733332206d657461646174612c62797465733332206275696c6465722900ba"
+        }
+      }
+    },
+    {
+      "wallet": "0x6F908B3B67b9F9C40413775fFf48b286aeF9a081",
+      "kind": "DEPOSIT_WALLET",
+      "request": {
+        "type": "RFQ_REQUEST",
+        "rfq_id": "request-1",
+        "requestor_public_id": "requestor",
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "yes_position_id": "123",
+        "no_position_id": "124",
+        "direction": "SELL",
+        "side": "YES",
+        "requested_size": {
+          "unit": "notional",
+          "value_e6": "7000000"
+        },
+        "submission_deadline": 1720000030
+      },
+      "price": "0.999999",
+      "source": "collateral",
+      "expected": {
+        "type": "RFQ_QUOTE",
+        "rfq_id": "request-1",
+        "price_e6": "999999",
+        "size_e6": "7000007",
+        "signed_order": {
+          "salt": "19",
+          "maker": "0x6F908B3B67b9F9C40413775fFf48b286aeF9a081",
+          "signer": "0x6F908B3B67b9F9C40413775fFf48b286aeF9a081",
+          "tokenId": "123",
+          "makerAmount": "7000000",
+          "takerAmount": "7000007",
+          "side": 0,
+          "signatureType": 3,
+          "timestamp": "1720000000",
+          "builder": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "signature": "0x460f41528392638e473c87197f3139ed47e332cb510fa1307eef7c416fd06feb33103d5f54701c509edc932457ad4f33b0911a48ce73a06aced4cd3640baca511c466c63910185bbd55e8679264200c4e0abdcbb0c6264eb3d41d13326022e095b5781073cf5f35fdfb4592df2600fb3f09180c68d9eac1c2ee34864c9b5ebbc864f726465722875696e743235362073616c742c61646472657373206d616b65722c61646472657373207369676e65722c75696e7432353620746f6b656e49642c75696e74323536206d616b6572416d6f756e742c75696e743235362074616b6572416d6f756e742c75696e743820736964652c75696e7438207369676e6174757265547970652c75696e743235362074696d657374616d702c62797465733332206d657461646174612c62797465733332206275696c6465722900ba"
+        }
+      }
+    },
+    {
+      "wallet": "0x6F908B3B67b9F9C40413775fFf48b286aeF9a081",
+      "kind": "DEPOSIT_WALLET",
+      "request": {
+        "type": "RFQ_REQUEST",
+        "rfq_id": "request-1",
+        "requestor_public_id": "requestor",
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "yes_position_id": "123",
+        "no_position_id": "124",
+        "direction": "SELL",
+        "side": "YES",
+        "requested_size": {
+          "unit": "notional",
+          "value_e6": "7000000"
+        },
+        "submission_deadline": 1720000030
+      },
+      "price": "0.000001",
+      "source": "inventory",
+      "expected": {
+        "type": "RFQ_QUOTE",
+        "rfq_id": "request-1",
+        "price_e6": "1",
+        "size_e6": "7000000000000",
+        "signed_order": {
+          "salt": "19",
+          "maker": "0x6F908B3B67b9F9C40413775fFf48b286aeF9a081",
+          "signer": "0x6F908B3B67b9F9C40413775fFf48b286aeF9a081",
+          "tokenId": "124",
+          "makerAmount": "7000000000000",
+          "takerAmount": "6999993000000",
+          "side": 1,
+          "signatureType": 3,
+          "timestamp": "1720000000",
+          "builder": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "signature": "0xf5e54616b4fa5ed6327d2e0439294fc180403c5f7411d85d1c0b17dc18d0db2e0c432a8885333806f3b5725c0379fa7ba103e45c38b521a7c2b36c760ea13e781c466c63910185bbd55e8679264200c4e0abdcbb0c6264eb3d41d13326022e095b223804509dce3d3dfe262a952dbf181fe72f38dd521c89a40d3731ad42f687734f726465722875696e743235362073616c742c61646472657373206d616b65722c61646472657373207369676e65722c75696e7432353620746f6b656e49642c75696e74323536206d616b6572416d6f756e742c75696e743235362074616b6572416d6f756e742c75696e743820736964652c75696e7438207369676e6174757265547970652c75696e743235362074696d657374616d702c62797465733332206d657461646174612c62797465733332206275696c6465722900ba"
+        }
+      }
+    },
+    {
+      "wallet": "0x6F908B3B67b9F9C40413775fFf48b286aeF9a081",
+      "kind": "DEPOSIT_WALLET",
+      "request": {
+        "type": "RFQ_REQUEST",
+        "rfq_id": "request-1",
+        "requestor_public_id": "requestor",
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "yes_position_id": "123",
+        "no_position_id": "124",
+        "direction": "SELL",
+        "side": "YES",
+        "requested_size": {
+          "unit": "notional",
+          "value_e6": "7000000"
+        },
+        "submission_deadline": 1720000030
+      },
+      "price": "0.333333",
+      "source": "inventory",
+      "expected": {
+        "type": "RFQ_QUOTE",
+        "rfq_id": "request-1",
+        "price_e6": "333333",
+        "size_e6": "21000021",
+        "signed_order": {
+          "salt": "19",
+          "maker": "0x6F908B3B67b9F9C40413775fFf48b286aeF9a081",
+          "signer": "0x6F908B3B67b9F9C40413775fFf48b286aeF9a081",
+          "tokenId": "124",
+          "makerAmount": "21000021",
+          "takerAmount": "14000021",
+          "side": 1,
+          "signatureType": 3,
+          "timestamp": "1720000000",
+          "builder": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "signature": "0x2f173a58d1073f9a5459b519212116b9dd8a764dd94d7fabc9a17ad7a2a5c3711b897befe15f4e7decd15098f30e3803b68277b2af1cd0e99900e22e544e82e81b466c63910185bbd55e8679264200c4e0abdcbb0c6264eb3d41d13326022e095bbdf9713fff2c2b8286a6883efb51d77d6dd2c4810759e266bd94b00732b0eb364f726465722875696e743235362073616c742c61646472657373206d616b65722c61646472657373207369676e65722c75696e7432353620746f6b656e49642c75696e74323536206d616b6572416d6f756e742c75696e743235362074616b6572416d6f756e742c75696e743820736964652c75696e7438207369676e6174757265547970652c75696e743235362074696d657374616d702c62797465733332206d657461646174612c62797465733332206275696c6465722900ba"
+        }
+      }
+    },
+    {
+      "wallet": "0x6F908B3B67b9F9C40413775fFf48b286aeF9a081",
+      "kind": "DEPOSIT_WALLET",
+      "request": {
+        "type": "RFQ_REQUEST",
+        "rfq_id": "request-1",
+        "requestor_public_id": "requestor",
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "yes_position_id": "123",
+        "no_position_id": "124",
+        "direction": "SELL",
+        "side": "YES",
+        "requested_size": {
+          "unit": "notional",
+          "value_e6": "7000000"
+        },
+        "submission_deadline": 1720000030
+      },
+      "price": "0.999999",
+      "source": "inventory",
+      "expected": {
+        "type": "RFQ_QUOTE",
+        "rfq_id": "request-1",
+        "price_e6": "999999",
+        "size_e6": "7000007",
+        "signed_order": {
+          "salt": "19",
+          "maker": "0x6F908B3B67b9F9C40413775fFf48b286aeF9a081",
+          "signer": "0x6F908B3B67b9F9C40413775fFf48b286aeF9a081",
+          "tokenId": "124",
+          "makerAmount": "7000007",
+          "takerAmount": "7",
+          "side": 1,
+          "signatureType": 3,
+          "timestamp": "1720000000",
+          "builder": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+          "signature": "0x48abc39d0397bfa2a1f8e6758891702c03b8bbcd972404b3f86479b5a279b12f044a144a5de9e7140eb902ff8eb20a109810079b81915f9cddded278d20267da1c466c63910185bbd55e8679264200c4e0abdcbb0c6264eb3d41d13326022e095b48a98190715e57630a0795dd90861ae69ead39aa77cd461f0c3472630ddd32154f726465722875696e743235362073616c742c61646472657373206d616b65722c61646472657373207369676e65722c75696e7432353620746f6b656e49642c75696e74323536206d616b6572416d6f756e742c75696e743235362074616b6572416d6f756e742c75696e743820736964652c75696e7438207369676e6174757265547970652c75696e743235362074696d657374616d702c62797465733332206d657461646174612c62797465733332206275696c6465722900ba"
+        }
+      }
+    }
+  ]
+}

@@ -45,7 +45,7 @@ func TestPythonHTTPParity(t *testing.T) {
 		t.Fatal(err)
 	}
 	for _, test := range cases {
-		t.Run(test.Name, func(t *testing.T) {
+		t.Run(test.Name, func(subtest *testing.T) {
 			var calls atomic.Int32
 			server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 				calls.Add(1)
@@ -62,12 +62,12 @@ func TestPythonHTTPParity(t *testing.T) {
 				return errors.New("listener error must not replace response")
 			}})
 			if err != nil {
-				t.Fatal(err)
+				subtest.Fatal(err)
 			}
 			defer func() { _ = client.Close() }() // Close only releases local resources and always returns nil.
-			_, err = client.GetMidpoint(t.Context(), Asset("123"))
+			_, err = client.GetMidpoint(subtest.Context(), Asset("123"))
 			if got := errorClass(err); got != test.Expected.Error {
-				t.Fatalf("error = %s (%v), Python = %s", got, err, test.Expected.Error)
+				subtest.Fatalf("error = %s (%v), Python = %s", got, err, test.Expected.Error)
 			}
 			var after *float64
 			var code string
@@ -75,22 +75,22 @@ func TestPythonHTTPParity(t *testing.T) {
 			if rate, ok := errors.AsType[*RateLimitError](err); ok {
 				after = rate.RetryAfter
 				if rate.RateLimit == nil && update != nil {
-					t.Error("rate error lost rate-limit state")
+					subtest.Error("rate error lost rate-limit state")
 				}
 			} else if rejected, isRejected := errors.AsType[*RequestRejectedError](err); isRejected {
 				after, code, restriction = rejected.RetryAfter, rejected.Code, rejected.Restriction
 				if rejected.Status != test.Status {
-					t.Errorf("HTTP status = %d, want %d", rejected.Status, test.Status)
+					subtest.Errorf("HTTP status = %d, want %d", rejected.Status, test.Status)
 				}
 			}
 			if !reflect.DeepEqual(after, test.Expected.RetryAfter) || code != test.Expected.Code || restriction != test.Expected.Restriction {
-				t.Errorf("error metadata = (%v,%q,%q), Python = (%v,%q,%q)", after, code, restriction, test.Expected.RetryAfter, test.Expected.Code, test.Expected.Restriction)
+				subtest.Errorf("error metadata = (%v,%q,%q), Python = (%v,%q,%q)", after, code, restriction, test.Expected.RetryAfter, test.Expected.Code, test.Expected.Restriction)
 			}
 			if !reflect.DeepEqual(update, test.Expected.RateLimit) {
-				t.Errorf("rate-limit update = %+v, Python = %+v", update, test.Expected.RateLimit)
+				subtest.Errorf("rate-limit update = %+v, Python = %+v", update, test.Expected.RateLimit)
 			}
 			if calls.Load() != 1 {
-				t.Errorf("request count = %d, want 1 (no implicit retry)", calls.Load())
+				subtest.Errorf("request count = %d, want 1 (no implicit retry)", calls.Load())
 			}
 		})
 	}

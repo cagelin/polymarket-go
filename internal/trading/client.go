@@ -9,22 +9,29 @@ import (
 	"net/url"
 	"slices"
 	"strconv"
+	"sync"
 	"time"
+
+	"github.com/cagelam/polymarket-go/rfq"
 
 	sdkerrors "github.com/cagelam/polymarket-go/errors"
 	"github.com/cagelam/polymarket-go/internal/codec"
 	"github.com/cagelam/polymarket-go/internal/signing"
 	"github.com/cagelam/polymarket-go/internal/transport"
+	walletops "github.com/cagelam/polymarket-go/internal/wallet"
 	"github.com/cagelam/polymarket-go/models"
 )
 
 // Config supplies credentials and the wallet to authenticate.
 type Config struct {
-	PrivateKey  string
-	Wallet      string
-	Credentials *models.APIKeyCreds
-	BuilderKey  *models.BuilderAPIKey
-	Nonce       int64
+	PrivateKey              string
+	Wallet                  string
+	Credentials             *models.APIKeyCreds
+	BuilderKey              *models.BuilderAPIKey
+	Nonce                   int64
+	RelayerKey              *models.RelayerAPIKey
+	TransactionPollInterval time.Duration
+	TransactionMaxPolls     int
 }
 
 func (c Config) String() string { return "SecureClientConfig(<redacted>)" }
@@ -34,6 +41,10 @@ func (c Config) GoString() string { return c.String() }
 
 // Client holds immutable authentication state shared by concurrent operations.
 type Client struct {
+	rfqMu       sync.Mutex
+	rfqSession  *rfq.Session
+	rfqClosed   bool
+	onchain     *walletops.Client
 	salt        func(int) (*big.Int, error)
 	metadata    metadataCache
 	transport   *transport.Client
@@ -106,16 +117,14 @@ func New(ctx context.Context, t *transport.Client, p Config) (*Client, error) {
 			return nil, err
 		}
 	}
-	if kind != models.WalletEOA {
-		transactionType := map[models.WalletType]string{models.WalletDeposit: "WALLET", models.WalletProxy: "PROXY", models.WalletSafe: "SAFE"}[kind]
-		ready, checkErr := deployed(ctx, t, wallet, transactionType)
-		if checkErr != nil {
-			return nil, checkErr
-		}
-		if !ready {
-			return nil, input("wallet is not deployed; automatic wallet deployment is not implemented in this milestone")
-		}
+	c.onchain, err = walletops.New(t, walletops.Config{Signer: signer, Wallet: c.wallet, Kind: kind, Authority: authority, BuilderKey: c.builderKey, RelayerKey: p.RelayerKey, PollInterval: p.TransactionPollInterval, MaxPolls: p.TransactionMaxPolls, CLOBHeaders: c.headers})
+	if err != nil {
+		return nil, err
 	}
+	if err = c.onchain.EnsureReady(ctx); err != nil {
+		return nil, err
+	}
+
 	return c, nil
 }
 func deployed(ctx context.Context, t *transport.Client, wallet, kind string) (bool, error) {
@@ -177,3 +186,6 @@ func (c *Client) FetchAPIKeys(ctx context.Context) ([]string, error) {
 	values, err := codec.Required[[]string](fields, "apiKeys")
 	return values, response(err)
 }
+
+// WalletClient exposes the shared on-chain implementation to the facade.
+func (c *Client) WalletClient() *walletops.Client { return c.onchain }

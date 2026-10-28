@@ -162,59 +162,59 @@ func TestPythonAccountQueries(t *testing.T) {
 		t.Fatal(err)
 	}
 	for _, tc := range fixture.Cases {
-		t.Run(tc.Name, func(t *testing.T) {
+		t.Run(tc.Name, func(subtest *testing.T) {
 			var calls int
 			server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 				calls++
 				if tc.Request == nil {
-					t.Error("request after invalid input")
+					subtest.Error("request after invalid input")
 					w.WriteHeader(500)
 					return
 				}
 				if r.Method != tc.Request.Method || r.URL.Path != tc.Request.Path {
-					t.Errorf("got %s %s want %s %s", r.Method, r.URL.Path, tc.Request.Method, tc.Request.Path)
+					subtest.Errorf("got %s %s want %s %s", r.Method, r.URL.Path, tc.Request.Method, tc.Request.Path)
 				}
 				if !reflect.DeepEqual(map[string][]string(r.URL.Query()), tc.Request.Query) {
-					t.Errorf("query %v want %v", r.URL.Query(), tc.Request.Query)
+					subtest.Errorf("query %v want %v", r.URL.Query(), tc.Request.Query)
 				}
 				body, readErr := io.ReadAll(r.Body)
 				if readErr != nil {
-					t.Error(readErr)
+					subtest.Error(readErr)
 				}
 				if len(body) == 0 {
 					body = []byte("null")
 				}
-				equalJSON(t, json.RawMessage(body), tc.Request.Body)
+				equalJSON(subtest, json.RawMessage(body), tc.Request.Body)
 				if r.Header.Get("POLY_ADDRESS") == "" || r.Header.Get("POLY_API_KEY") != "key" || r.Header.Get("POLY_SIGNATURE") == "" {
-					t.Error("missing authentication")
+					subtest.Error("missing authentication")
 				}
 				w.Header().Set("Content-Type", "application/json")
 				if _, writeErr := w.Write(tc.Response); writeErr != nil {
-					t.Error(writeErr)
+					subtest.Error(writeErr)
 				}
 			}))
 			defer server.Close()
 			tr, newErr := transport.New(transport.Config{CLOBURL: server.URL})
 			if newErr != nil {
-				t.Fatal(newErr)
+				subtest.Fatal(newErr)
 			}
 			defer func() { _ = tr.Close() }()
 			signer, signErr := signing.New("0000000000000000000000000000000000000000000000000000000000000001")
 			if signErr != nil {
-				t.Fatal(signErr)
+				subtest.Fatal(signErr)
 			}
 			//nolint:gosec // Deliberately public synthetic credentials for an in-memory server.
 			//noinspection SpellCheckingInspection
 			client := &Client{transport: tr, signer: signer, walletType: models.WalletEOA, credentials: models.APIKeyCreds{Key: "key", Secret: "c2VjcmV0", Passphrase: "pass"}, now: time.Now}
-			result, callErr := callAccount(t.Context(), client, tc.Operation, tc.Input, tc.Cursor)
+			result, callErr := callAccount(subtest.Context(), client, tc.Operation, tc.Input, tc.Cursor)
 			if (callErr != nil) != (tc.Expected.Error != "") {
-				t.Fatalf("error %v; Python %s", callErr, tc.Expected.Error)
+				subtest.Fatalf("error %v; Python %s", callErr, tc.Expected.Error)
 			}
 			if callErr == nil {
-				equalJSON(t, result, tc.Expected.Value)
+				equalJSON(subtest, result, tc.Expected.Value)
 			}
 			if tc.Request != nil && calls != 1 {
-				t.Errorf("request count %d", calls)
+				subtest.Errorf("request count %d", calls)
 			}
 		})
 	}

@@ -143,6 +143,28 @@ func dataValue(value json.RawMessage, rule dataField) (json.RawMessage, error) {
 		}
 		return json.Marshal(integer)
 
+	case "e6_decimal":
+		text, textErr := codec.Required[string](fields, rule.name)
+		if textErr != nil {
+			return nil, textErr
+		}
+		digits := codec.ASCIIDigits(text)
+		if digits == "" || strings.Trim(digits, "0123456789") != "" {
+			return nil, fmt.Errorf("invalid base-unit integer string")
+		}
+		fields[rule.name], err = json.Marshal(digits)
+		if err != nil {
+			return nil, err
+		}
+		amount, parseErr := codec.DecimalField(fields, rule.name)
+		if parseErr != nil {
+			return nil, parseErr
+		}
+		scaled := new(decimal.Big)
+		if parseErr = codec.DecimalArithmetic("mul", scaled, amount, decimal.New(1, 6)); parseErr != nil {
+			return nil, parseErr
+		}
+		return json.Marshal(scaled.String())
 	case "string_decimal":
 		amount, parseErr := codec.DecimalField(fields, rule.name)
 		if parseErr != nil {

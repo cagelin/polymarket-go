@@ -3,14 +3,14 @@
 对标 `polymarket-client==0.14.0`，提交 `7032ed06175b0bbea77b2d9e898bd9f252af2041`。
 生成前验证压缩包版本和 202 个源码文件哈希。普通 Go 测试不需要 Python，也不依赖 `docs/`。
 
-目前有 **13,078 条固定对照用例**，覆盖公开查询、账户请求、模型、分页、金额、
+目前有 **13,322 条固定对照用例**，覆盖公开查询、账户请求、模型、分页、金额、
 订单签名／提交／成交等待、组合报价及实时事件。公开客户端核对 62 个成员；
-认证客户端清单共 120 个成员，其中 102 个属于当前阶段，18 个留在钱包阶段。
+认证客户端核对 120 个成员：117 个方法、构造入口，以及明确排除的 2 个废弃空操作。
 接口存在检查与行为对照分别执行，不以存在检查代替行为验收。
 
 本地 HTTP／WebSocket 测试覆盖认证回退、重定向隔离、并发缓存、撤单、订阅确认／拒绝、
 断线恢复、共享过滤、64 个过滤条件上限、取消和关闭。所有账户与交易测试均用合成密钥
-及本地服务；没有真实账户或资金验收。严格 lint 同样检查生成代码。
+及本地服务；专用 EOA 已通过认证和只读实测，资金操作尚未验收。严格 lint 同样检查生成代码。
 
 生成模型和全部固定数据：
 
@@ -49,22 +49,29 @@ Go 不保留重复废弃字段；固定用例仍比较当前字段和服务端�
   Go 返回 `UnexpectedResponseError`；原值、修正值及输入保留在 `order-post-parity.json`。
 
 金额测试包含极端指数、28 位 half-even、下溢、溢出和费用计算。其他期望值直接来自
-固定 Python SDK／默认 Decimal 上下文。自动部署钱包、授权不足后的链上恢复和长期
-RFQ 会话属于第三阶段，当前未计入完成范围。
+固定 Python SDK／默认 Decimal 上下文。第三阶段增加交易 ABI／签名字节、组合条件推导、
+资金回收模型、会话权限参数和 RFQ 报价签名对照。本地服务覆盖部署、授权恢复、确认、
+部分失败、nonce 修正、幂等重试、撤权等待和 RFQ 应答关联。
 
 ---
 
-Fixtures execute the pinned Python SDK and default decimal context. All 13,078
+Fixtures execute the pinned Python SDK and default decimal context. All 13,322
 cases are offline. Source hashes are checked before generation; ordinary Go tests
 need neither Python nor docs. Surface checks are separate from behavioral tests.
 
 `make generate` regenerates models and fixtures. `make check` runs strict lint,
 CGO-free tests and race detection. Live public checks remain opt-in. Authenticated
-live/funded flows have not been validated. Wallet deployment, chain allowance
-recovery, and persistent RFQ sessions remain in stage 3.
+live authentication passed for a dedicated EOA; funded flows remain unverified. Stage 3 adds
+ABI/signature parity, wallet flows, session keys, collateral plans, and persistent RFQ sessions.
 
 `UP-001` corrects negative fractional timestamps using Python's standard library.
 `UP-002` rejects a confirmed trade without a transaction hash rather than returning
 Python's `(None,)`. Fixtures preserve both original outputs and explicit corrections.
 Deprecated duplicate fields and Python framework-only APIs are omitted; public
 legacy feeds remain supported where they provide otherwise unavailable capabilities.
+
+第三阶段补充差异：不保留 `setup_gasless_wallet` / `is_gasless_ready` 两个废弃空操作；
+Go 以 `TransactionHandle` 统一 EOA 和 relayer 等待，合并／授权用 nil 表示最大金额。
+会话 scope 按固定 Python 源码保留大小写，其文档宣称的自动大写并未实现。
+RPC 和 relayer 返回不匹配的请求／交易标识时拒绝响应；代理 gas 估算不吞掉 context 取消。
+超时 RFQ 的迟到应答不能确认后续报价；断线后重新建会话，不重放资金操作。

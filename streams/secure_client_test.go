@@ -114,36 +114,36 @@ func TestPriceAcceptanceSharingAndReconnect(t *testing.T) {
 }
 func TestPriceRejectionAndCancellation(t *testing.T) {
 	for _, cancelled := range []bool{false, true} {
-		t.Run(map[bool]string{true: "cancelled", false: "rejected"}[cancelled], func(t *testing.T) {
-			address, peers := startServer(t)
+		t.Run(map[bool]string{true: "cancelled", false: "rejected"}[cancelled], func(subtest *testing.T) {
+			address, peers := startServer(subtest)
 			client, err := New(secureStreamConfig(address))
 			if err != nil {
-				t.Fatal(err)
+				subtest.Fatal(err)
 			}
-			t.Cleanup(func() { _ = client.Close() })
-			ctx, cancel := context.WithCancel(t.Context())
+			subtest.Cleanup(func() { _ = client.Close() })
+			ctx, cancel := context.WithCancel(subtest.Context())
 			defer cancel()
 			waiting := beginSubscription(ctx, client, EquityPriceSpec{Symbol: " AAPL "})
-			peer := receive(t, peers)
-			acknowledge(t, peer, "auth")
-			raw := receive(t, peer.frames)
+			peer := receive(subtest, peers)
+			acknowledge(subtest, peer, "auth")
+			raw := receive(subtest, peer.frames)
 			var frame struct{ Rid string }
 			if err = json.Unmarshal(raw, &frame); err != nil {
-				t.Fatal(err)
+				subtest.Fatal(err)
 			}
 			if cancelled {
 				cancel()
 			} else {
-				writePeer(t, peer, `{"op":"error","rid":"`+frame.Rid+`","channel":"price.equity","code":"bad_filter"}`)
+				writePeer(subtest, peer, `{"op":"error","rid":"`+frame.Rid+`","channel":"price.equity","code":"bad_filter"}`)
 			}
-			result := receive(t, waiting)
+			result := receive(subtest, waiting)
 			if result.err == nil {
-				t.Fatal("unaccepted subscription returned success")
+				subtest.Fatal("unaccepted subscription returned success")
 			}
 			if !cancelled {
 				var rejected *sdkerrors.RequestRejectedError
 				if !errors.As(result.err, &rejected) || rejected.Code != "bad_filter" {
-					t.Fatalf("rejection %v", result.err)
+					subtest.Fatalf("rejection %v", result.err)
 				}
 			}
 		})

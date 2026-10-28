@@ -246,13 +246,13 @@ func events(values []int64) ([]string, error) {
 }
 func tokenSelectors(q map[string]any) error {
 	assets, hasAssets := q["asset_ids"].([]string)
-	conditions, hasConditions := q["condition_ids"].([]string)
+	conditionIDs, hasConditions := q["condition_ids"].([]string)
 	if hasAssets == hasConditions {
 		return input("provide exactly one of asset_ids or condition_ids")
 	}
 	values, key, maximum := assets, "token_id", 50
 	if hasConditions {
-		values, key, maximum = conditions, "condition", 10
+		values, key, maximum = conditionIDs, "condition", 10
 	}
 	result := make([]string, 0, len(values))
 	for _, raw := range values {

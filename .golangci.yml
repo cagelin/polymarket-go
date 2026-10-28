@@ -33,7 +33,7 @@ linters:
     errcheck:
       check-type-assertions: true
   exclusions:
-    generated: strict
+    generated: disable
     presets: []
 issues:
   max-issues-per-linter: 0

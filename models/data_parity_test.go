@@ -27,19 +27,19 @@ func TestPythonDataModels(t *testing.T) {
 		t.Fatal(err)
 	}
 	for _, test := range fixture.Cases {
-		t.Run(test.Name, func(t *testing.T) {
+		t.Run(test.Name, func(subtest *testing.T) {
 			target := newDataParityTarget(test.Model)
 			if target == nil {
-				t.Fatalf("unknown model %s", test.Model)
+				subtest.Fatalf("unknown model %s", test.Model)
 			}
 			decodeErr := json.Unmarshal(test.Response, target)
 			if (decodeErr != nil) != (test.Expected.Error != "") {
-				t.Fatalf("%s decode error = %v, Python = %s", test.Model, decodeErr, test.Expected.Error)
+				subtest.Fatalf("%s decode error = %v, Python = %s", test.Model, decodeErr, test.Expected.Error)
 			}
 			if decodeErr != nil {
 				return
 			}
-			testutil.EqualJSON(t, target, test.Expected.Value)
+			testutil.EqualJSON(subtest, target, test.Expected.Value)
 		})
 	}
 }
@@ -304,6 +304,8 @@ func newDataParityTarget(name string) any {
 		return &RealtimeTwapSnapshot{}
 	case "RealtimeTwapUpdate":
 		return &RealtimeTwapUpdate{}
+	case "CollateralReturnPlanResponse":
+		return &CollateralReturnPlanResponse{}
 	case "OpenOrder":
 		return &OpenOrder{}
 	case "MakerOrder":
@@ -376,6 +378,14 @@ func newDataParityTarget(name string) any {
 		return &YieldPayoutNotification{}
 	case "YieldPayoutNotificationPayload":
 		return &YieldPayoutNotificationPayload{}
+	case "CollateralReturnOperation":
+		return &CollateralReturnOperation{}
+	case "CollateralReturnPositionAmount":
+		return &CollateralReturnPositionAmount{}
+	case "CollateralReturnPositionSummary":
+		return &CollateralReturnPositionSummary{}
+	case "CollateralReturnRouterCall":
+		return &CollateralReturnRouterCall{}
 	case "EarningBreakdown":
 		return &EarningBreakdown{}
 	case "UserRewardsConfig":

@@ -309687,6 +309687,3012 @@
       }
     },
     {
+      "name": "CollateralReturnPlanResponse/minimal",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1.234567890123456789",
+        "operations": [],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [],
+        "candidate_position_ids": [],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "value": {
+          "plan_hash": "123",
+          "chain_id": 7,
+          "wallet": "123",
+          "block_number": 7,
+          "starting_pusd": "1.234567890123456789",
+          "net_pusd_out": "1.234567890123456789",
+          "final_pusd": "1.234567890123456789",
+          "operations": [],
+          "operation_count": 7,
+          "truncated": true,
+          "estimated_cost": 1.25,
+          "required_pusd_input": "1.234567890123456789",
+          "required_positions": [],
+          "position_summary": {
+            "consumed": [],
+            "created": []
+          },
+          "candidate_position_ids": [],
+          "router_call": {
+            "to": "123",
+            "data": "123"
+          }
+        }
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/full",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "value": {
+          "plan_hash": "123",
+          "chain_id": 7,
+          "wallet": "123",
+          "block_number": 7,
+          "starting_pusd": "1.234567890123456789",
+          "net_pusd_out": "1.234567890123456789",
+          "final_pusd": "1.234567890123456789",
+          "operations": [
+            {
+              "kind": "split",
+              "condition_id": "0x03abababababababababababababababababababababababababababababab",
+              "event_id": "123",
+              "position_id": "123",
+              "condition_index": 7,
+              "amount": "1.234567"
+            }
+          ],
+          "operation_count": 7,
+          "truncated": true,
+          "estimated_cost": 1.25,
+          "required_pusd_input": "1.234567890123456789",
+          "required_positions": [
+            {
+              "position_id": "123",
+              "amount": "1.234567"
+            }
+          ],
+          "position_summary": {
+            "consumed": [
+              {
+                "position_id": "123",
+                "amount": "1.234567"
+              }
+            ],
+            "created": [
+              {
+                "position_id": "123",
+                "amount": "1.234567"
+              }
+            ]
+          },
+          "candidate_position_ids": [
+            "123"
+          ],
+          "router_call": {
+            "to": "123",
+            "data": "123"
+          }
+        }
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/null/plan_hash",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": null,
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/missing/plan_hash",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/invalid/plan_hash",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": {},
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/empty/plan_hash",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "value": {
+          "plan_hash": "",
+          "chain_id": 7,
+          "wallet": "123",
+          "block_number": 7,
+          "starting_pusd": "1.234567890123456789",
+          "net_pusd_out": "1.234567890123456789",
+          "final_pusd": "1.234567890123456789",
+          "operations": [
+            {
+              "kind": "split",
+              "condition_id": "0x03abababababababababababababababababababababababababababababab",
+              "event_id": "123",
+              "position_id": "123",
+              "condition_index": 7,
+              "amount": "1.234567"
+            }
+          ],
+          "operation_count": 7,
+          "truncated": true,
+          "estimated_cost": 1.25,
+          "required_pusd_input": "1.234567890123456789",
+          "required_positions": [
+            {
+              "position_id": "123",
+              "amount": "1.234567"
+            }
+          ],
+          "position_summary": {
+            "consumed": [
+              {
+                "position_id": "123",
+                "amount": "1.234567"
+              }
+            ],
+            "created": [
+              {
+                "position_id": "123",
+                "amount": "1.234567"
+              }
+            ]
+          },
+          "candidate_position_ids": [
+            "123"
+          ],
+          "router_call": {
+            "to": "123",
+            "data": "123"
+          }
+        }
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/null/chain_id",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": null,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/missing/chain_id",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/invalid/chain_id",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": {},
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/null/wallet",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": null,
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/missing/wallet",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/invalid/wallet",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": {},
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/empty/wallet",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "value": {
+          "plan_hash": "123",
+          "chain_id": 7,
+          "wallet": "",
+          "block_number": 7,
+          "starting_pusd": "1.234567890123456789",
+          "net_pusd_out": "1.234567890123456789",
+          "final_pusd": "1.234567890123456789",
+          "operations": [
+            {
+              "kind": "split",
+              "condition_id": "0x03abababababababababababababababababababababababababababababab",
+              "event_id": "123",
+              "position_id": "123",
+              "condition_index": 7,
+              "amount": "1.234567"
+            }
+          ],
+          "operation_count": 7,
+          "truncated": true,
+          "estimated_cost": 1.25,
+          "required_pusd_input": "1.234567890123456789",
+          "required_positions": [
+            {
+              "position_id": "123",
+              "amount": "1.234567"
+            }
+          ],
+          "position_summary": {
+            "consumed": [
+              {
+                "position_id": "123",
+                "amount": "1.234567"
+              }
+            ],
+            "created": [
+              {
+                "position_id": "123",
+                "amount": "1.234567"
+              }
+            ]
+          },
+          "candidate_position_ids": [
+            "123"
+          ],
+          "router_call": {
+            "to": "123",
+            "data": "123"
+          }
+        }
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/null/block_number",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": null,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/missing/block_number",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/invalid/block_number",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": {},
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/null/starting_pusd",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": null,
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/missing/starting_pusd",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/invalid/starting_pusd",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": {},
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/empty/starting_pusd",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/null/net_pusd_out",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": null,
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/missing/net_pusd_out",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/invalid/net_pusd_out",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": {},
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/empty/net_pusd_out",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/null/final_pusd",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": null,
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/missing/final_pusd",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/invalid/final_pusd",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": {},
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/empty/final_pusd",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/null/operations",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1.234567890123456789",
+        "operations": null,
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/missing/operations",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1.234567890123456789",
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/null/operation_count",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": null,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/missing/operation_count",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/invalid/operation_count",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": {},
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/null/truncated",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": null,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/missing/truncated",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/invalid/truncated",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": {},
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/null/estimated_cost",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": null,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/missing/estimated_cost",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/invalid/estimated_cost",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": {},
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/null/required_pusd_input",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": null,
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/missing/required_pusd_input",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/invalid/required_pusd_input",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": {},
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/empty/required_pusd_input",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/null/required_positions",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": null,
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/missing/required_positions",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/null/position_summary",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": null,
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/missing/position_summary",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "value": {
+          "plan_hash": "123",
+          "chain_id": 7,
+          "wallet": "123",
+          "block_number": 7,
+          "starting_pusd": "1.234567890123456789",
+          "net_pusd_out": "1.234567890123456789",
+          "final_pusd": "1.234567890123456789",
+          "operations": [
+            {
+              "kind": "split",
+              "condition_id": "0x03abababababababababababababababababababababababababababababab",
+              "event_id": "123",
+              "position_id": "123",
+              "condition_index": 7,
+              "amount": "1.234567"
+            }
+          ],
+          "operation_count": 7,
+          "truncated": true,
+          "estimated_cost": 1.25,
+          "required_pusd_input": "1.234567890123456789",
+          "required_positions": [
+            {
+              "position_id": "123",
+              "amount": "1.234567"
+            }
+          ],
+          "position_summary": {
+            "consumed": [],
+            "created": []
+          },
+          "candidate_position_ids": [
+            "123"
+          ],
+          "router_call": {
+            "to": "123",
+            "data": "123"
+          }
+        }
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/null/candidate_position_ids",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": null,
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/missing/candidate_position_ids",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/null/router_call",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": null
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/missing/router_call",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ]
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
       "name": "OpenOrder/minimal",
       "model": "OpenOrder",
       "response": {
@@ -348823,6 +351829,1060 @@
           "proxy_wallet": "123",
           "amount": "1.234567890123456789",
           "transaction_hash": ""
+        }
+      }
+    },
+    {
+      "name": "CollateralReturnOperation/minimal",
+      "model": "CollateralReturnOperation",
+      "response": {
+        "kind": "split",
+        "amount": "1234567"
+      },
+      "expected": {
+        "value": {
+          "kind": "split",
+          "condition_id": null,
+          "event_id": null,
+          "position_id": null,
+          "condition_index": 0,
+          "amount": "1.234567"
+        }
+      }
+    },
+    {
+      "name": "CollateralReturnOperation/full",
+      "model": "CollateralReturnOperation",
+      "response": {
+        "kind": "split",
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "event_id": "123",
+        "position_id": "123",
+        "condition_index": 7,
+        "amount": "1234567"
+      },
+      "expected": {
+        "value": {
+          "kind": "split",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "event_id": "123",
+          "position_id": "123",
+          "condition_index": 7,
+          "amount": "1.234567"
+        }
+      }
+    },
+    {
+      "name": "CollateralReturnOperation/null/kind",
+      "model": "CollateralReturnOperation",
+      "response": {
+        "kind": null,
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "event_id": "123",
+        "position_id": "123",
+        "condition_index": 7,
+        "amount": "1234567"
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnOperation/missing/kind",
+      "model": "CollateralReturnOperation",
+      "response": {
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "event_id": "123",
+        "position_id": "123",
+        "condition_index": 7,
+        "amount": "1234567"
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnOperation/invalid/kind",
+      "model": "CollateralReturnOperation",
+      "response": {
+        "kind": {},
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "event_id": "123",
+        "position_id": "123",
+        "condition_index": 7,
+        "amount": "1234567"
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnOperation/empty/kind",
+      "model": "CollateralReturnOperation",
+      "response": {
+        "kind": "",
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "event_id": "123",
+        "position_id": "123",
+        "condition_index": 7,
+        "amount": "1234567"
+      },
+      "expected": {
+        "value": {
+          "kind": "",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "event_id": "123",
+          "position_id": "123",
+          "condition_index": 7,
+          "amount": "1.234567"
+        }
+      }
+    },
+    {
+      "name": "CollateralReturnOperation/null/condition_id",
+      "model": "CollateralReturnOperation",
+      "response": {
+        "kind": "split",
+        "condition_id": null,
+        "event_id": "123",
+        "position_id": "123",
+        "condition_index": 7,
+        "amount": "1234567"
+      },
+      "expected": {
+        "value": {
+          "kind": "split",
+          "condition_id": null,
+          "event_id": "123",
+          "position_id": "123",
+          "condition_index": 7,
+          "amount": "1.234567"
+        }
+      }
+    },
+    {
+      "name": "CollateralReturnOperation/missing/condition_id",
+      "model": "CollateralReturnOperation",
+      "response": {
+        "kind": "split",
+        "event_id": "123",
+        "position_id": "123",
+        "condition_index": 7,
+        "amount": "1234567"
+      },
+      "expected": {
+        "value": {
+          "kind": "split",
+          "condition_id": null,
+          "event_id": "123",
+          "position_id": "123",
+          "condition_index": 7,
+          "amount": "1.234567"
+        }
+      }
+    },
+    {
+      "name": "CollateralReturnOperation/invalid/condition_id",
+      "model": "CollateralReturnOperation",
+      "response": {
+        "kind": "split",
+        "condition_id": {},
+        "event_id": "123",
+        "position_id": "123",
+        "condition_index": 7,
+        "amount": "1234567"
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnOperation/empty/condition_id",
+      "model": "CollateralReturnOperation",
+      "response": {
+        "kind": "split",
+        "condition_id": "",
+        "event_id": "123",
+        "position_id": "123",
+        "condition_index": 7,
+        "amount": "1234567"
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnOperation/null/event_id",
+      "model": "CollateralReturnOperation",
+      "response": {
+        "kind": "split",
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "event_id": null,
+        "position_id": "123",
+        "condition_index": 7,
+        "amount": "1234567"
+      },
+      "expected": {
+        "value": {
+          "kind": "split",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "event_id": null,
+          "position_id": "123",
+          "condition_index": 7,
+          "amount": "1.234567"
+        }
+      }
+    },
+    {
+      "name": "CollateralReturnOperation/missing/event_id",
+      "model": "CollateralReturnOperation",
+      "response": {
+        "kind": "split",
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "position_id": "123",
+        "condition_index": 7,
+        "amount": "1234567"
+      },
+      "expected": {
+        "value": {
+          "kind": "split",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "event_id": null,
+          "position_id": "123",
+          "condition_index": 7,
+          "amount": "1.234567"
+        }
+      }
+    },
+    {
+      "name": "CollateralReturnOperation/invalid/event_id",
+      "model": "CollateralReturnOperation",
+      "response": {
+        "kind": "split",
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "event_id": {},
+        "position_id": "123",
+        "condition_index": 7,
+        "amount": "1234567"
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnOperation/empty/event_id",
+      "model": "CollateralReturnOperation",
+      "response": {
+        "kind": "split",
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "event_id": "",
+        "position_id": "123",
+        "condition_index": 7,
+        "amount": "1234567"
+      },
+      "expected": {
+        "value": {
+          "kind": "split",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "event_id": "",
+          "position_id": "123",
+          "condition_index": 7,
+          "amount": "1.234567"
+        }
+      }
+    },
+    {
+      "name": "CollateralReturnOperation/null/position_id",
+      "model": "CollateralReturnOperation",
+      "response": {
+        "kind": "split",
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "event_id": "123",
+        "position_id": null,
+        "condition_index": 7,
+        "amount": "1234567"
+      },
+      "expected": {
+        "value": {
+          "kind": "split",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "event_id": "123",
+          "position_id": null,
+          "condition_index": 7,
+          "amount": "1.234567"
+        }
+      }
+    },
+    {
+      "name": "CollateralReturnOperation/missing/position_id",
+      "model": "CollateralReturnOperation",
+      "response": {
+        "kind": "split",
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "event_id": "123",
+        "condition_index": 7,
+        "amount": "1234567"
+      },
+      "expected": {
+        "value": {
+          "kind": "split",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "event_id": "123",
+          "position_id": null,
+          "condition_index": 7,
+          "amount": "1.234567"
+        }
+      }
+    },
+    {
+      "name": "CollateralReturnOperation/invalid/position_id",
+      "model": "CollateralReturnOperation",
+      "response": {
+        "kind": "split",
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "event_id": "123",
+        "position_id": {},
+        "condition_index": 7,
+        "amount": "1234567"
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnOperation/empty/position_id",
+      "model": "CollateralReturnOperation",
+      "response": {
+        "kind": "split",
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "event_id": "123",
+        "position_id": "",
+        "condition_index": 7,
+        "amount": "1234567"
+      },
+      "expected": {
+        "value": {
+          "kind": "split",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "event_id": "123",
+          "position_id": "",
+          "condition_index": 7,
+          "amount": "1.234567"
+        }
+      }
+    },
+    {
+      "name": "CollateralReturnOperation/null/condition_index",
+      "model": "CollateralReturnOperation",
+      "response": {
+        "kind": "split",
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "event_id": "123",
+        "position_id": "123",
+        "condition_index": null,
+        "amount": "1234567"
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnOperation/missing/condition_index",
+      "model": "CollateralReturnOperation",
+      "response": {
+        "kind": "split",
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "event_id": "123",
+        "position_id": "123",
+        "amount": "1234567"
+      },
+      "expected": {
+        "value": {
+          "kind": "split",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "event_id": "123",
+          "position_id": "123",
+          "condition_index": 0,
+          "amount": "1.234567"
+        }
+      }
+    },
+    {
+      "name": "CollateralReturnOperation/invalid/condition_index",
+      "model": "CollateralReturnOperation",
+      "response": {
+        "kind": "split",
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "event_id": "123",
+        "position_id": "123",
+        "condition_index": {},
+        "amount": "1234567"
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnOperation/null/amount",
+      "model": "CollateralReturnOperation",
+      "response": {
+        "kind": "split",
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "event_id": "123",
+        "position_id": "123",
+        "condition_index": 7,
+        "amount": null
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnOperation/missing/amount",
+      "model": "CollateralReturnOperation",
+      "response": {
+        "kind": "split",
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "event_id": "123",
+        "position_id": "123",
+        "condition_index": 7
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnOperation/invalid/amount",
+      "model": "CollateralReturnOperation",
+      "response": {
+        "kind": "split",
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "event_id": "123",
+        "position_id": "123",
+        "condition_index": 7,
+        "amount": {}
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnOperation/empty/amount",
+      "model": "CollateralReturnOperation",
+      "response": {
+        "kind": "split",
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "event_id": "123",
+        "position_id": "123",
+        "condition_index": 7,
+        "amount": ""
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnOperation/boundary/condition_id/0",
+      "model": "CollateralReturnOperation",
+      "response": {
+        "kind": "split",
+        "condition_id": 0,
+        "event_id": "123",
+        "position_id": "123",
+        "condition_index": 7,
+        "amount": "1234567"
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnOperation/boundary/condition_id/999",
+      "model": "CollateralReturnOperation",
+      "response": {
+        "kind": "split",
+        "condition_id": 999,
+        "event_id": "123",
+        "position_id": "123",
+        "condition_index": 7,
+        "amount": "1234567"
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnOperation/boundary/condition_id/'999'",
+      "model": "CollateralReturnOperation",
+      "response": {
+        "kind": "split",
+        "condition_id": "999",
+        "event_id": "123",
+        "position_id": "123",
+        "condition_index": 7,
+        "amount": "1234567"
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnOperation/boundary/condition_id/'0x03ABABABABABABABABABABABABABABABABABABABABABABABABABABABABABAB'",
+      "model": "CollateralReturnOperation",
+      "response": {
+        "kind": "split",
+        "condition_id": "0x03ABABABABABABABABABABABABABABABABABABABABABABABABABABABABABAB",
+        "event_id": "123",
+        "position_id": "123",
+        "condition_index": 7,
+        "amount": "1234567"
+      },
+      "expected": {
+        "value": {
+          "kind": "split",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "event_id": "123",
+          "position_id": "123",
+          "condition_index": 7,
+          "amount": "1.234567"
+        }
+      }
+    },
+    {
+      "name": "CollateralReturnOperation/boundary/condition_id/'0xab'",
+      "model": "CollateralReturnOperation",
+      "response": {
+        "kind": "split",
+        "condition_id": "0xab",
+        "event_id": "123",
+        "position_id": "123",
+        "condition_index": 7,
+        "amount": "1234567"
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnOperation/boundary/condition_id/True",
+      "model": "CollateralReturnOperation",
+      "response": {
+        "kind": "split",
+        "condition_id": true,
+        "event_id": "123",
+        "position_id": "123",
+        "condition_index": 7,
+        "amount": "1234567"
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnOperation/boundary/condition_id/'1720000000.123456'",
+      "model": "CollateralReturnOperation",
+      "response": {
+        "kind": "split",
+        "condition_id": "1720000000.123456",
+        "event_id": "123",
+        "position_id": "123",
+        "condition_index": 7,
+        "amount": "1234567"
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnOperation/boundary/event_id/0",
+      "model": "CollateralReturnOperation",
+      "response": {
+        "kind": "split",
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "event_id": 0,
+        "position_id": "123",
+        "condition_index": 7,
+        "amount": "1234567"
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnOperation/boundary/event_id/999",
+      "model": "CollateralReturnOperation",
+      "response": {
+        "kind": "split",
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "event_id": 999,
+        "position_id": "123",
+        "condition_index": 7,
+        "amount": "1234567"
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnOperation/boundary/event_id/'999'",
+      "model": "CollateralReturnOperation",
+      "response": {
+        "kind": "split",
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "event_id": "999",
+        "position_id": "123",
+        "condition_index": 7,
+        "amount": "1234567"
+      },
+      "expected": {
+        "value": {
+          "kind": "split",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "event_id": "999",
+          "position_id": "123",
+          "condition_index": 7,
+          "amount": "1.234567"
+        }
+      }
+    },
+    {
+      "name": "CollateralReturnOperation/boundary/event_id/'0x03ABABABABABABABABABABABABABABABABABABABABABABABABABABABABABAB'",
+      "model": "CollateralReturnOperation",
+      "response": {
+        "kind": "split",
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "event_id": "0x03ABABABABABABABABABABABABABABABABABABABABABABABABABABABABABAB",
+        "position_id": "123",
+        "condition_index": 7,
+        "amount": "1234567"
+      },
+      "expected": {
+        "value": {
+          "kind": "split",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "event_id": "0x03ABABABABABABABABABABABABABABABABABABABABABABABABABABABABABAB",
+          "position_id": "123",
+          "condition_index": 7,
+          "amount": "1.234567"
+        }
+      }
+    },
+    {
+      "name": "CollateralReturnOperation/boundary/event_id/'0xab'",
+      "model": "CollateralReturnOperation",
+      "response": {
+        "kind": "split",
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "event_id": "0xab",
+        "position_id": "123",
+        "condition_index": 7,
+        "amount": "1234567"
+      },
+      "expected": {
+        "value": {
+          "kind": "split",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "event_id": "0xab",
+          "position_id": "123",
+          "condition_index": 7,
+          "amount": "1.234567"
+        }
+      }
+    },
+    {
+      "name": "CollateralReturnOperation/boundary/event_id/True",
+      "model": "CollateralReturnOperation",
+      "response": {
+        "kind": "split",
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "event_id": true,
+        "position_id": "123",
+        "condition_index": 7,
+        "amount": "1234567"
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnOperation/boundary/event_id/'1720000000.123456'",
+      "model": "CollateralReturnOperation",
+      "response": {
+        "kind": "split",
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "event_id": "1720000000.123456",
+        "position_id": "123",
+        "condition_index": 7,
+        "amount": "1234567"
+      },
+      "expected": {
+        "value": {
+          "kind": "split",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "event_id": "1720000000.123456",
+          "position_id": "123",
+          "condition_index": 7,
+          "amount": "1.234567"
+        }
+      }
+    },
+    {
+      "name": "CollateralReturnPositionAmount/minimal",
+      "model": "CollateralReturnPositionAmount",
+      "response": {
+        "position_id": "123",
+        "amount": "1234567"
+      },
+      "expected": {
+        "value": {
+          "position_id": "123",
+          "amount": "1.234567"
+        }
+      }
+    },
+    {
+      "name": "CollateralReturnPositionAmount/full",
+      "model": "CollateralReturnPositionAmount",
+      "response": {
+        "position_id": "123",
+        "amount": "1234567"
+      },
+      "expected": {
+        "value": {
+          "position_id": "123",
+          "amount": "1.234567"
+        }
+      }
+    },
+    {
+      "name": "CollateralReturnPositionAmount/null/position_id",
+      "model": "CollateralReturnPositionAmount",
+      "response": {
+        "position_id": null,
+        "amount": "1234567"
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPositionAmount/missing/position_id",
+      "model": "CollateralReturnPositionAmount",
+      "response": {
+        "amount": "1234567"
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPositionAmount/invalid/position_id",
+      "model": "CollateralReturnPositionAmount",
+      "response": {
+        "position_id": {},
+        "amount": "1234567"
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPositionAmount/empty/position_id",
+      "model": "CollateralReturnPositionAmount",
+      "response": {
+        "position_id": "",
+        "amount": "1234567"
+      },
+      "expected": {
+        "value": {
+          "position_id": "",
+          "amount": "1.234567"
+        }
+      }
+    },
+    {
+      "name": "CollateralReturnPositionAmount/null/amount",
+      "model": "CollateralReturnPositionAmount",
+      "response": {
+        "position_id": "123",
+        "amount": null
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPositionAmount/missing/amount",
+      "model": "CollateralReturnPositionAmount",
+      "response": {
+        "position_id": "123"
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPositionAmount/invalid/amount",
+      "model": "CollateralReturnPositionAmount",
+      "response": {
+        "position_id": "123",
+        "amount": {}
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPositionAmount/empty/amount",
+      "model": "CollateralReturnPositionAmount",
+      "response": {
+        "position_id": "123",
+        "amount": ""
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPositionSummary/minimal",
+      "model": "CollateralReturnPositionSummary",
+      "response": {},
+      "expected": {
+        "value": {
+          "consumed": [],
+          "created": []
+        }
+      }
+    },
+    {
+      "name": "CollateralReturnPositionSummary/full",
+      "model": "CollateralReturnPositionSummary",
+      "response": {
+        "consumed": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "created": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ]
+      },
+      "expected": {
+        "value": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1.234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1.234567"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "CollateralReturnPositionSummary/null/consumed",
+      "model": "CollateralReturnPositionSummary",
+      "response": {
+        "consumed": null,
+        "created": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ]
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPositionSummary/missing/consumed",
+      "model": "CollateralReturnPositionSummary",
+      "response": {
+        "created": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ]
+      },
+      "expected": {
+        "value": {
+          "consumed": [],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1.234567"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "CollateralReturnPositionSummary/null/created",
+      "model": "CollateralReturnPositionSummary",
+      "response": {
+        "consumed": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "created": null
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPositionSummary/missing/created",
+      "model": "CollateralReturnPositionSummary",
+      "response": {
+        "consumed": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ]
+      },
+      "expected": {
+        "value": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1.234567"
+            }
+          ],
+          "created": []
+        }
+      }
+    },
+    {
+      "name": "CollateralReturnRouterCall/minimal",
+      "model": "CollateralReturnRouterCall",
+      "response": {
+        "to": "123",
+        "data": "123"
+      },
+      "expected": {
+        "value": {
+          "to": "123",
+          "data": "123"
+        }
+      }
+    },
+    {
+      "name": "CollateralReturnRouterCall/full",
+      "model": "CollateralReturnRouterCall",
+      "response": {
+        "to": "123",
+        "data": "123"
+      },
+      "expected": {
+        "value": {
+          "to": "123",
+          "data": "123"
+        }
+      }
+    },
+    {
+      "name": "CollateralReturnRouterCall/null/to",
+      "model": "CollateralReturnRouterCall",
+      "response": {
+        "to": null,
+        "data": "123"
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnRouterCall/missing/to",
+      "model": "CollateralReturnRouterCall",
+      "response": {
+        "data": "123"
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnRouterCall/invalid/to",
+      "model": "CollateralReturnRouterCall",
+      "response": {
+        "to": {},
+        "data": "123"
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnRouterCall/empty/to",
+      "model": "CollateralReturnRouterCall",
+      "response": {
+        "to": "",
+        "data": "123"
+      },
+      "expected": {
+        "value": {
+          "to": "",
+          "data": "123"
+        }
+      }
+    },
+    {
+      "name": "CollateralReturnRouterCall/null/data",
+      "model": "CollateralReturnRouterCall",
+      "response": {
+        "to": "123",
+        "data": null
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnRouterCall/missing/data",
+      "model": "CollateralReturnRouterCall",
+      "response": {
+        "to": "123"
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnRouterCall/invalid/data",
+      "model": "CollateralReturnRouterCall",
+      "response": {
+        "to": "123",
+        "data": {}
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnRouterCall/empty/data",
+      "model": "CollateralReturnRouterCall",
+      "response": {
+        "to": "123",
+        "data": ""
+      },
+      "expected": {
+        "value": {
+          "to": "123",
+          "data": ""
         }
       }
     },
@@ -396122,6 +400182,1702 @@
       }
     },
     {
+      "name": "CollateralReturnPlanResponse/decimal/starting_pusd/1e-100001",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1e-100001",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "value": {
+          "plan_hash": "123",
+          "chain_id": 7,
+          "wallet": "123",
+          "block_number": 7,
+          "starting_pusd": "1E-100001",
+          "net_pusd_out": "1.234567890123456789",
+          "final_pusd": "1.234567890123456789",
+          "operations": [
+            {
+              "kind": "split",
+              "condition_id": "0x03abababababababababababababababababababababababababababababab",
+              "event_id": "123",
+              "position_id": "123",
+              "condition_index": 7,
+              "amount": "1.234567"
+            }
+          ],
+          "operation_count": 7,
+          "truncated": true,
+          "estimated_cost": 1.25,
+          "required_pusd_input": "1.234567890123456789",
+          "required_positions": [
+            {
+              "position_id": "123",
+              "amount": "1.234567"
+            }
+          ],
+          "position_summary": {
+            "consumed": [
+              {
+                "position_id": "123",
+                "amount": "1.234567"
+              }
+            ],
+            "created": [
+              {
+                "position_id": "123",
+                "amount": "1.234567"
+              }
+            ]
+          },
+          "candidate_position_ids": [
+            "123"
+          ],
+          "router_call": {
+            "to": "123",
+            "data": "123"
+          }
+        }
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/decimal/starting_pusd/1e100001",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1e100001",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "value": {
+          "plan_hash": "123",
+          "chain_id": 7,
+          "wallet": "123",
+          "block_number": 7,
+          "starting_pusd": "1E+100001",
+          "net_pusd_out": "1.234567890123456789",
+          "final_pusd": "1.234567890123456789",
+          "operations": [
+            {
+              "kind": "split",
+              "condition_id": "0x03abababababababababababababababababababababababababababababab",
+              "event_id": "123",
+              "position_id": "123",
+              "condition_index": 7,
+              "amount": "1.234567"
+            }
+          ],
+          "operation_count": 7,
+          "truncated": true,
+          "estimated_cost": 1.25,
+          "required_pusd_input": "1.234567890123456789",
+          "required_positions": [
+            {
+              "position_id": "123",
+              "amount": "1.234567"
+            }
+          ],
+          "position_summary": {
+            "consumed": [
+              {
+                "position_id": "123",
+                "amount": "1.234567"
+              }
+            ],
+            "created": [
+              {
+                "position_id": "123",
+                "amount": "1.234567"
+              }
+            ]
+          },
+          "candidate_position_ids": [
+            "123"
+          ],
+          "router_call": {
+            "to": "123",
+            "data": "123"
+          }
+        }
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/decimal/starting_pusd/1e-999999999999999999",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1e-999999999999999999",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "value": {
+          "plan_hash": "123",
+          "chain_id": 7,
+          "wallet": "123",
+          "block_number": 7,
+          "starting_pusd": "1E-999999999999999999",
+          "net_pusd_out": "1.234567890123456789",
+          "final_pusd": "1.234567890123456789",
+          "operations": [
+            {
+              "kind": "split",
+              "condition_id": "0x03abababababababababababababababababababababababababababababab",
+              "event_id": "123",
+              "position_id": "123",
+              "condition_index": 7,
+              "amount": "1.234567"
+            }
+          ],
+          "operation_count": 7,
+          "truncated": true,
+          "estimated_cost": 1.25,
+          "required_pusd_input": "1.234567890123456789",
+          "required_positions": [
+            {
+              "position_id": "123",
+              "amount": "1.234567"
+            }
+          ],
+          "position_summary": {
+            "consumed": [
+              {
+                "position_id": "123",
+                "amount": "1.234567"
+              }
+            ],
+            "created": [
+              {
+                "position_id": "123",
+                "amount": "1.234567"
+              }
+            ]
+          },
+          "candidate_position_ids": [
+            "123"
+          ],
+          "router_call": {
+            "to": "123",
+            "data": "123"
+          }
+        }
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/decimal/starting_pusd/1e999999999999999999",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1e999999999999999999",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "value": {
+          "plan_hash": "123",
+          "chain_id": 7,
+          "wallet": "123",
+          "block_number": 7,
+          "starting_pusd": "1E+999999999999999999",
+          "net_pusd_out": "1.234567890123456789",
+          "final_pusd": "1.234567890123456789",
+          "operations": [
+            {
+              "kind": "split",
+              "condition_id": "0x03abababababababababababababababababababababababababababababab",
+              "event_id": "123",
+              "position_id": "123",
+              "condition_index": 7,
+              "amount": "1.234567"
+            }
+          ],
+          "operation_count": 7,
+          "truncated": true,
+          "estimated_cost": 1.25,
+          "required_pusd_input": "1.234567890123456789",
+          "required_positions": [
+            {
+              "position_id": "123",
+              "amount": "1.234567"
+            }
+          ],
+          "position_summary": {
+            "consumed": [
+              {
+                "position_id": "123",
+                "amount": "1.234567"
+              }
+            ],
+            "created": [
+              {
+                "position_id": "123",
+                "amount": "1.234567"
+              }
+            ]
+          },
+          "candidate_position_ids": [
+            "123"
+          ],
+          "router_call": {
+            "to": "123",
+            "data": "123"
+          }
+        }
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/decimal/net_pusd_out/1e-100001",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1e-100001",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "value": {
+          "plan_hash": "123",
+          "chain_id": 7,
+          "wallet": "123",
+          "block_number": 7,
+          "starting_pusd": "1.234567890123456789",
+          "net_pusd_out": "1E-100001",
+          "final_pusd": "1.234567890123456789",
+          "operations": [
+            {
+              "kind": "split",
+              "condition_id": "0x03abababababababababababababababababababababababababababababab",
+              "event_id": "123",
+              "position_id": "123",
+              "condition_index": 7,
+              "amount": "1.234567"
+            }
+          ],
+          "operation_count": 7,
+          "truncated": true,
+          "estimated_cost": 1.25,
+          "required_pusd_input": "1.234567890123456789",
+          "required_positions": [
+            {
+              "position_id": "123",
+              "amount": "1.234567"
+            }
+          ],
+          "position_summary": {
+            "consumed": [
+              {
+                "position_id": "123",
+                "amount": "1.234567"
+              }
+            ],
+            "created": [
+              {
+                "position_id": "123",
+                "amount": "1.234567"
+              }
+            ]
+          },
+          "candidate_position_ids": [
+            "123"
+          ],
+          "router_call": {
+            "to": "123",
+            "data": "123"
+          }
+        }
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/decimal/net_pusd_out/1e100001",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1e100001",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "value": {
+          "plan_hash": "123",
+          "chain_id": 7,
+          "wallet": "123",
+          "block_number": 7,
+          "starting_pusd": "1.234567890123456789",
+          "net_pusd_out": "1E+100001",
+          "final_pusd": "1.234567890123456789",
+          "operations": [
+            {
+              "kind": "split",
+              "condition_id": "0x03abababababababababababababababababababababababababababababab",
+              "event_id": "123",
+              "position_id": "123",
+              "condition_index": 7,
+              "amount": "1.234567"
+            }
+          ],
+          "operation_count": 7,
+          "truncated": true,
+          "estimated_cost": 1.25,
+          "required_pusd_input": "1.234567890123456789",
+          "required_positions": [
+            {
+              "position_id": "123",
+              "amount": "1.234567"
+            }
+          ],
+          "position_summary": {
+            "consumed": [
+              {
+                "position_id": "123",
+                "amount": "1.234567"
+              }
+            ],
+            "created": [
+              {
+                "position_id": "123",
+                "amount": "1.234567"
+              }
+            ]
+          },
+          "candidate_position_ids": [
+            "123"
+          ],
+          "router_call": {
+            "to": "123",
+            "data": "123"
+          }
+        }
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/decimal/net_pusd_out/1e-999999999999999999",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1e-999999999999999999",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "value": {
+          "plan_hash": "123",
+          "chain_id": 7,
+          "wallet": "123",
+          "block_number": 7,
+          "starting_pusd": "1.234567890123456789",
+          "net_pusd_out": "1E-999999999999999999",
+          "final_pusd": "1.234567890123456789",
+          "operations": [
+            {
+              "kind": "split",
+              "condition_id": "0x03abababababababababababababababababababababababababababababab",
+              "event_id": "123",
+              "position_id": "123",
+              "condition_index": 7,
+              "amount": "1.234567"
+            }
+          ],
+          "operation_count": 7,
+          "truncated": true,
+          "estimated_cost": 1.25,
+          "required_pusd_input": "1.234567890123456789",
+          "required_positions": [
+            {
+              "position_id": "123",
+              "amount": "1.234567"
+            }
+          ],
+          "position_summary": {
+            "consumed": [
+              {
+                "position_id": "123",
+                "amount": "1.234567"
+              }
+            ],
+            "created": [
+              {
+                "position_id": "123",
+                "amount": "1.234567"
+              }
+            ]
+          },
+          "candidate_position_ids": [
+            "123"
+          ],
+          "router_call": {
+            "to": "123",
+            "data": "123"
+          }
+        }
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/decimal/net_pusd_out/1e999999999999999999",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1e999999999999999999",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "value": {
+          "plan_hash": "123",
+          "chain_id": 7,
+          "wallet": "123",
+          "block_number": 7,
+          "starting_pusd": "1.234567890123456789",
+          "net_pusd_out": "1E+999999999999999999",
+          "final_pusd": "1.234567890123456789",
+          "operations": [
+            {
+              "kind": "split",
+              "condition_id": "0x03abababababababababababababababababababababababababababababab",
+              "event_id": "123",
+              "position_id": "123",
+              "condition_index": 7,
+              "amount": "1.234567"
+            }
+          ],
+          "operation_count": 7,
+          "truncated": true,
+          "estimated_cost": 1.25,
+          "required_pusd_input": "1.234567890123456789",
+          "required_positions": [
+            {
+              "position_id": "123",
+              "amount": "1.234567"
+            }
+          ],
+          "position_summary": {
+            "consumed": [
+              {
+                "position_id": "123",
+                "amount": "1.234567"
+              }
+            ],
+            "created": [
+              {
+                "position_id": "123",
+                "amount": "1.234567"
+              }
+            ]
+          },
+          "candidate_position_ids": [
+            "123"
+          ],
+          "router_call": {
+            "to": "123",
+            "data": "123"
+          }
+        }
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/decimal/final_pusd/1e-100001",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1e-100001",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "value": {
+          "plan_hash": "123",
+          "chain_id": 7,
+          "wallet": "123",
+          "block_number": 7,
+          "starting_pusd": "1.234567890123456789",
+          "net_pusd_out": "1.234567890123456789",
+          "final_pusd": "1E-100001",
+          "operations": [
+            {
+              "kind": "split",
+              "condition_id": "0x03abababababababababababababababababababababababababababababab",
+              "event_id": "123",
+              "position_id": "123",
+              "condition_index": 7,
+              "amount": "1.234567"
+            }
+          ],
+          "operation_count": 7,
+          "truncated": true,
+          "estimated_cost": 1.25,
+          "required_pusd_input": "1.234567890123456789",
+          "required_positions": [
+            {
+              "position_id": "123",
+              "amount": "1.234567"
+            }
+          ],
+          "position_summary": {
+            "consumed": [
+              {
+                "position_id": "123",
+                "amount": "1.234567"
+              }
+            ],
+            "created": [
+              {
+                "position_id": "123",
+                "amount": "1.234567"
+              }
+            ]
+          },
+          "candidate_position_ids": [
+            "123"
+          ],
+          "router_call": {
+            "to": "123",
+            "data": "123"
+          }
+        }
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/decimal/final_pusd/1e100001",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1e100001",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "value": {
+          "plan_hash": "123",
+          "chain_id": 7,
+          "wallet": "123",
+          "block_number": 7,
+          "starting_pusd": "1.234567890123456789",
+          "net_pusd_out": "1.234567890123456789",
+          "final_pusd": "1E+100001",
+          "operations": [
+            {
+              "kind": "split",
+              "condition_id": "0x03abababababababababababababababababababababababababababababab",
+              "event_id": "123",
+              "position_id": "123",
+              "condition_index": 7,
+              "amount": "1.234567"
+            }
+          ],
+          "operation_count": 7,
+          "truncated": true,
+          "estimated_cost": 1.25,
+          "required_pusd_input": "1.234567890123456789",
+          "required_positions": [
+            {
+              "position_id": "123",
+              "amount": "1.234567"
+            }
+          ],
+          "position_summary": {
+            "consumed": [
+              {
+                "position_id": "123",
+                "amount": "1.234567"
+              }
+            ],
+            "created": [
+              {
+                "position_id": "123",
+                "amount": "1.234567"
+              }
+            ]
+          },
+          "candidate_position_ids": [
+            "123"
+          ],
+          "router_call": {
+            "to": "123",
+            "data": "123"
+          }
+        }
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/decimal/final_pusd/1e-999999999999999999",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1e-999999999999999999",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "value": {
+          "plan_hash": "123",
+          "chain_id": 7,
+          "wallet": "123",
+          "block_number": 7,
+          "starting_pusd": "1.234567890123456789",
+          "net_pusd_out": "1.234567890123456789",
+          "final_pusd": "1E-999999999999999999",
+          "operations": [
+            {
+              "kind": "split",
+              "condition_id": "0x03abababababababababababababababababababababababababababababab",
+              "event_id": "123",
+              "position_id": "123",
+              "condition_index": 7,
+              "amount": "1.234567"
+            }
+          ],
+          "operation_count": 7,
+          "truncated": true,
+          "estimated_cost": 1.25,
+          "required_pusd_input": "1.234567890123456789",
+          "required_positions": [
+            {
+              "position_id": "123",
+              "amount": "1.234567"
+            }
+          ],
+          "position_summary": {
+            "consumed": [
+              {
+                "position_id": "123",
+                "amount": "1.234567"
+              }
+            ],
+            "created": [
+              {
+                "position_id": "123",
+                "amount": "1.234567"
+              }
+            ]
+          },
+          "candidate_position_ids": [
+            "123"
+          ],
+          "router_call": {
+            "to": "123",
+            "data": "123"
+          }
+        }
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/decimal/final_pusd/1e999999999999999999",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1e999999999999999999",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1.234567890123456789",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "value": {
+          "plan_hash": "123",
+          "chain_id": 7,
+          "wallet": "123",
+          "block_number": 7,
+          "starting_pusd": "1.234567890123456789",
+          "net_pusd_out": "1.234567890123456789",
+          "final_pusd": "1E+999999999999999999",
+          "operations": [
+            {
+              "kind": "split",
+              "condition_id": "0x03abababababababababababababababababababababababababababababab",
+              "event_id": "123",
+              "position_id": "123",
+              "condition_index": 7,
+              "amount": "1.234567"
+            }
+          ],
+          "operation_count": 7,
+          "truncated": true,
+          "estimated_cost": 1.25,
+          "required_pusd_input": "1.234567890123456789",
+          "required_positions": [
+            {
+              "position_id": "123",
+              "amount": "1.234567"
+            }
+          ],
+          "position_summary": {
+            "consumed": [
+              {
+                "position_id": "123",
+                "amount": "1.234567"
+              }
+            ],
+            "created": [
+              {
+                "position_id": "123",
+                "amount": "1.234567"
+              }
+            ]
+          },
+          "candidate_position_ids": [
+            "123"
+          ],
+          "router_call": {
+            "to": "123",
+            "data": "123"
+          }
+        }
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/decimal/required_pusd_input/1e-100001",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1e-100001",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "value": {
+          "plan_hash": "123",
+          "chain_id": 7,
+          "wallet": "123",
+          "block_number": 7,
+          "starting_pusd": "1.234567890123456789",
+          "net_pusd_out": "1.234567890123456789",
+          "final_pusd": "1.234567890123456789",
+          "operations": [
+            {
+              "kind": "split",
+              "condition_id": "0x03abababababababababababababababababababababababababababababab",
+              "event_id": "123",
+              "position_id": "123",
+              "condition_index": 7,
+              "amount": "1.234567"
+            }
+          ],
+          "operation_count": 7,
+          "truncated": true,
+          "estimated_cost": 1.25,
+          "required_pusd_input": "1E-100001",
+          "required_positions": [
+            {
+              "position_id": "123",
+              "amount": "1.234567"
+            }
+          ],
+          "position_summary": {
+            "consumed": [
+              {
+                "position_id": "123",
+                "amount": "1.234567"
+              }
+            ],
+            "created": [
+              {
+                "position_id": "123",
+                "amount": "1.234567"
+              }
+            ]
+          },
+          "candidate_position_ids": [
+            "123"
+          ],
+          "router_call": {
+            "to": "123",
+            "data": "123"
+          }
+        }
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/decimal/required_pusd_input/1e100001",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1e100001",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "value": {
+          "plan_hash": "123",
+          "chain_id": 7,
+          "wallet": "123",
+          "block_number": 7,
+          "starting_pusd": "1.234567890123456789",
+          "net_pusd_out": "1.234567890123456789",
+          "final_pusd": "1.234567890123456789",
+          "operations": [
+            {
+              "kind": "split",
+              "condition_id": "0x03abababababababababababababababababababababababababababababab",
+              "event_id": "123",
+              "position_id": "123",
+              "condition_index": 7,
+              "amount": "1.234567"
+            }
+          ],
+          "operation_count": 7,
+          "truncated": true,
+          "estimated_cost": 1.25,
+          "required_pusd_input": "1E+100001",
+          "required_positions": [
+            {
+              "position_id": "123",
+              "amount": "1.234567"
+            }
+          ],
+          "position_summary": {
+            "consumed": [
+              {
+                "position_id": "123",
+                "amount": "1.234567"
+              }
+            ],
+            "created": [
+              {
+                "position_id": "123",
+                "amount": "1.234567"
+              }
+            ]
+          },
+          "candidate_position_ids": [
+            "123"
+          ],
+          "router_call": {
+            "to": "123",
+            "data": "123"
+          }
+        }
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/decimal/required_pusd_input/1e-999999999999999999",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1e-999999999999999999",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "value": {
+          "plan_hash": "123",
+          "chain_id": 7,
+          "wallet": "123",
+          "block_number": 7,
+          "starting_pusd": "1.234567890123456789",
+          "net_pusd_out": "1.234567890123456789",
+          "final_pusd": "1.234567890123456789",
+          "operations": [
+            {
+              "kind": "split",
+              "condition_id": "0x03abababababababababababababababababababababababababababababab",
+              "event_id": "123",
+              "position_id": "123",
+              "condition_index": 7,
+              "amount": "1.234567"
+            }
+          ],
+          "operation_count": 7,
+          "truncated": true,
+          "estimated_cost": 1.25,
+          "required_pusd_input": "1E-999999999999999999",
+          "required_positions": [
+            {
+              "position_id": "123",
+              "amount": "1.234567"
+            }
+          ],
+          "position_summary": {
+            "consumed": [
+              {
+                "position_id": "123",
+                "amount": "1.234567"
+              }
+            ],
+            "created": [
+              {
+                "position_id": "123",
+                "amount": "1.234567"
+              }
+            ]
+          },
+          "candidate_position_ids": [
+            "123"
+          ],
+          "router_call": {
+            "to": "123",
+            "data": "123"
+          }
+        }
+      }
+    },
+    {
+      "name": "CollateralReturnPlanResponse/decimal/required_pusd_input/1e999999999999999999",
+      "model": "CollateralReturnPlanResponse",
+      "response": {
+        "plan_hash": "123",
+        "chain_id": 7,
+        "wallet": "123",
+        "block_number": 7,
+        "starting_pusd": "1.234567890123456789",
+        "net_pusd_out": "1.234567890123456789",
+        "final_pusd": "1.234567890123456789",
+        "operations": [
+          {
+            "kind": "split",
+            "condition_id": "0x03abababababababababababababababababababababababababababababab",
+            "event_id": "123",
+            "position_id": "123",
+            "condition_index": 7,
+            "amount": "1234567"
+          }
+        ],
+        "operation_count": 7,
+        "truncated": true,
+        "estimated_cost": 1.25,
+        "required_pusd_input": "1e999999999999999999",
+        "required_positions": [
+          {
+            "position_id": "123",
+            "amount": "1234567"
+          }
+        ],
+        "position_summary": {
+          "consumed": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ],
+          "created": [
+            {
+              "position_id": "123",
+              "amount": "1234567"
+            }
+          ]
+        },
+        "candidate_position_ids": [
+          "123"
+        ],
+        "router_call": {
+          "to": "123",
+          "data": "123"
+        }
+      },
+      "expected": {
+        "value": {
+          "plan_hash": "123",
+          "chain_id": 7,
+          "wallet": "123",
+          "block_number": 7,
+          "starting_pusd": "1.234567890123456789",
+          "net_pusd_out": "1.234567890123456789",
+          "final_pusd": "1.234567890123456789",
+          "operations": [
+            {
+              "kind": "split",
+              "condition_id": "0x03abababababababababababababababababababababababababababababab",
+              "event_id": "123",
+              "position_id": "123",
+              "condition_index": 7,
+              "amount": "1.234567"
+            }
+          ],
+          "operation_count": 7,
+          "truncated": true,
+          "estimated_cost": 1.25,
+          "required_pusd_input": "1E+999999999999999999",
+          "required_positions": [
+            {
+              "position_id": "123",
+              "amount": "1.234567"
+            }
+          ],
+          "position_summary": {
+            "consumed": [
+              {
+                "position_id": "123",
+                "amount": "1.234567"
+              }
+            ],
+            "created": [
+              {
+                "position_id": "123",
+                "amount": "1.234567"
+              }
+            ]
+          },
+          "candidate_position_ids": [
+            "123"
+          ],
+          "router_call": {
+            "to": "123",
+            "data": "123"
+          }
+        }
+      }
+    },
+    {
       "name": "OpenOrder/decimal/price/1e-100001",
       "model": "OpenOrder",
       "response": {
@@ -401599,6 +407355,110 @@
           "amount": "1E+999999999999999999",
           "transaction_hash": "123"
         }
+      }
+    },
+    {
+      "name": "CollateralReturnOperation/decimal/amount/1e-100001",
+      "model": "CollateralReturnOperation",
+      "response": {
+        "kind": "split",
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "event_id": "123",
+        "position_id": "123",
+        "condition_index": 7,
+        "amount": "1e-100001"
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnOperation/decimal/amount/1e100001",
+      "model": "CollateralReturnOperation",
+      "response": {
+        "kind": "split",
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "event_id": "123",
+        "position_id": "123",
+        "condition_index": 7,
+        "amount": "1e100001"
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnOperation/decimal/amount/1e-999999999999999999",
+      "model": "CollateralReturnOperation",
+      "response": {
+        "kind": "split",
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "event_id": "123",
+        "position_id": "123",
+        "condition_index": 7,
+        "amount": "1e-999999999999999999"
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnOperation/decimal/amount/1e999999999999999999",
+      "model": "CollateralReturnOperation",
+      "response": {
+        "kind": "split",
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "event_id": "123",
+        "position_id": "123",
+        "condition_index": 7,
+        "amount": "1e999999999999999999"
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPositionAmount/decimal/amount/1e-100001",
+      "model": "CollateralReturnPositionAmount",
+      "response": {
+        "position_id": "123",
+        "amount": "1e-100001"
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPositionAmount/decimal/amount/1e100001",
+      "model": "CollateralReturnPositionAmount",
+      "response": {
+        "position_id": "123",
+        "amount": "1e100001"
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPositionAmount/decimal/amount/1e-999999999999999999",
+      "model": "CollateralReturnPositionAmount",
+      "response": {
+        "position_id": "123",
+        "amount": "1e-999999999999999999"
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "CollateralReturnPositionAmount/decimal/amount/1e999999999999999999",
+      "model": "CollateralReturnPositionAmount",
+      "response": {
+        "position_id": "123",
+        "amount": "1e999999999999999999"
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
       }
     },
     {

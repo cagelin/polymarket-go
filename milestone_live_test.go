@@ -125,11 +125,11 @@ func TestLivePublicMilestone(t *testing.T) {
 		}},
 	}
 	for _, check := range checks {
-		t.Run(check.name, func(t *testing.T) {
-			ctx, cancel := context.WithTimeout(t.Context(), 15*time.Second)
+		t.Run(check.name, func(subtest *testing.T) {
+			ctx, cancel := context.WithTimeout(subtest.Context(), 15*time.Second)
 			defer cancel()
 			if readErr := check.read(ctx); readErr != nil {
-				t.Fatal(readErr)
+				subtest.Fatal(readErr)
 			}
 		})
 	}
@@ -148,25 +148,25 @@ func TestLivePublicStreams(t *testing.T) {
 		name string
 		spec Spec
 	}{{"comments", CommentsSpec{}}, {"twap-30", CryptoPricesChainlinkTwapSpec{WindowSeconds: 30}}, {"twap-60", CryptoPricesChainlinkTwapSpec{WindowSeconds: 60}}, {"equity", EquityPricesSpec{Symbol: "AAPL"}}, {"binance", CryptoPricesSpec{Topic: "prices.crypto.binance"}}, {"chainlink", CryptoPricesSpec{Topic: "prices.crypto.chainlink"}}, {"sports", SportsSpec{}}} {
-		t.Run(check.name, func(t *testing.T) {
-			t.Parallel()
+		t.Run(check.name, func(subtest *testing.T) {
+			subtest.Parallel()
 			client, createErr := NewPublicClient(ClientConfig{})
 			if createErr != nil {
-				t.Fatal(createErr)
+				subtest.Fatal(createErr)
 			}
 			defer func() { _ = client.Close() }() // Close only releases local resources and always returns nil.
-			ctx, cancel := context.WithTimeout(t.Context(), 45*time.Second)
+			ctx, cancel := context.WithTimeout(subtest.Context(), 45*time.Second)
 			defer cancel()
 			h, subscribeErr := client.Subscribe(ctx, check.spec)
 			if subscribeErr != nil {
-				t.Fatal(subscribeErr)
+				subtest.Fatal(subscribeErr)
 			}
 			defer func() { _ = h.Close() }()
 			event, readErr := h.Next(ctx)
 			if readErr != nil {
-				t.Fatal(readErr)
+				subtest.Fatal(readErr)
 			}
-			t.Logf("received typed %s/%s event", event.StreamTopic(), event.StreamType())
+			subtest.Logf("received typed %s/%s event", event.StreamTopic(), event.StreamType())
 		})
 	}
 }

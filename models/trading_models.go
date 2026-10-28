@@ -15,6 +15,54 @@ type APIKey string
 // OrderID identifies an account resource.
 type OrderID string
 
+// CollateralReturnPlanResponse is an authenticated exchange response.
+type CollateralReturnPlanResponse struct {
+	PlanHash             HexString                        `json:"plan_hash"`
+	ChainID              int64                            `json:"chain_id"`
+	Wallet               EVMAddress                       `json:"wallet"`
+	BlockNumber          int64                            `json:"block_number"`
+	StartingPusd         *decimal.Big                     `json:"starting_pusd"`
+	NetPusdOut           *decimal.Big                     `json:"net_pusd_out"`
+	FinalPusd            *decimal.Big                     `json:"final_pusd"`
+	Operations           []CollateralReturnOperation      `json:"operations"`
+	OperationCount       int64                            `json:"operation_count"`
+	Truncated            bool                             `json:"truncated"`
+	EstimatedCost        float64                          `json:"estimated_cost"`
+	RequiredPusdInput    *decimal.Big                     `json:"required_pusd_input"`
+	RequiredPositions    []CollateralReturnPositionAmount `json:"required_positions"`
+	PositionSummary      CollateralReturnPositionSummary  `json:"position_summary"`
+	CandidatePositionIDs []PositionID                     `json:"candidate_position_ids"`
+	RouterCall           CollateralReturnRouterCall       `json:"router_call"`
+}
+
+// UnmarshalJSON validates canonical fields and exchange wire aliases.
+func (m *CollateralReturnPlanResponse) UnmarshalJSON(raw []byte) error {
+	type plain CollateralReturnPlanResponse
+	var result plain
+	if err := decodeData(raw, &result, []dataField{
+		{name: "plan_hash", required: true},
+		{name: "chain_id", kind: "int", required: true},
+		{name: "wallet", required: true},
+		{name: "block_number", kind: "int", required: true},
+		{name: "starting_pusd", kind: "string_decimal", required: true},
+		{name: "net_pusd_out", kind: "string_decimal", required: true},
+		{name: "final_pusd", kind: "string_decimal", required: true},
+		{name: "operations", kind: "sequence", required: true},
+		{name: "operation_count", kind: "int", required: true},
+		{name: "truncated", kind: "bool", required: true},
+		{name: "estimated_cost", kind: "float", required: true},
+		{name: "required_pusd_input", kind: "string_decimal", required: true},
+		{name: "required_positions", kind: "sequence", required: true},
+		{name: "position_summary", fallback: json.RawMessage(`{}`)},
+		{name: "candidate_position_ids", kind: "sequence", required: true},
+		{name: "router_call", required: true},
+	}); err != nil {
+		return err
+	}
+	*m = CollateralReturnPlanResponse(result)
+	return nil
+}
+
 // OpenOrder is an authenticated exchange response.
 type OpenOrder struct {
 	ID              string       `json:"id"`
@@ -1095,6 +1143,94 @@ func (m *YieldPayoutNotificationPayload) UnmarshalJSON(raw []byte) error {
 		return err
 	}
 	*m = YieldPayoutNotificationPayload(result)
+	return nil
+}
+
+// CollateralReturnOperation is an authenticated exchange response.
+type CollateralReturnOperation struct {
+	Kind           string            `json:"kind"`
+	ConditionID    *ComboConditionID `json:"condition_id"`
+	EventID        *EventID          `json:"event_id"`
+	PositionID     *PositionID       `json:"position_id"`
+	ConditionIndex int64             `json:"condition_index"`
+	Amount         *decimal.Big      `json:"amount"`
+}
+
+// UnmarshalJSON validates canonical fields and exchange wire aliases.
+func (m *CollateralReturnOperation) UnmarshalJSON(raw []byte) error {
+	type plain CollateralReturnOperation
+	var result plain
+	if err := decodeData(raw, &result, []dataField{
+		{name: "kind", required: true},
+		{name: "condition_id", nullable: true, steps: []string{"validate_combo_condition_id", "condition_feed"}},
+		{name: "event_id", nullable: true},
+		{name: "position_id", nullable: true},
+		{name: "condition_index", kind: "int", fallback: json.RawMessage("0")},
+		{name: "amount", kind: "e6_decimal", required: true},
+	}); err != nil {
+		return err
+	}
+	*m = CollateralReturnOperation(result)
+	return nil
+}
+
+// CollateralReturnPositionAmount is an authenticated exchange response.
+type CollateralReturnPositionAmount struct {
+	PositionID PositionID   `json:"position_id"`
+	Amount     *decimal.Big `json:"amount"`
+}
+
+// UnmarshalJSON validates canonical fields and exchange wire aliases.
+func (m *CollateralReturnPositionAmount) UnmarshalJSON(raw []byte) error {
+	type plain CollateralReturnPositionAmount
+	var result plain
+	if err := decodeData(raw, &result, []dataField{
+		{name: "position_id", required: true},
+		{name: "amount", kind: "e6_decimal", required: true},
+	}); err != nil {
+		return err
+	}
+	*m = CollateralReturnPositionAmount(result)
+	return nil
+}
+
+// CollateralReturnPositionSummary is an authenticated exchange response.
+type CollateralReturnPositionSummary struct {
+	Consumed []CollateralReturnPositionAmount `json:"consumed"`
+	Created  []CollateralReturnPositionAmount `json:"created"`
+}
+
+// UnmarshalJSON validates canonical fields and exchange wire aliases.
+func (m *CollateralReturnPositionSummary) UnmarshalJSON(raw []byte) error {
+	type plain CollateralReturnPositionSummary
+	var result plain
+	if err := decodeData(raw, &result, []dataField{
+		{name: "consumed", kind: "sequence", fallback: json.RawMessage("[]")},
+		{name: "created", kind: "sequence", fallback: json.RawMessage("[]")},
+	}); err != nil {
+		return err
+	}
+	*m = CollateralReturnPositionSummary(result)
+	return nil
+}
+
+// CollateralReturnRouterCall is an authenticated exchange response.
+type CollateralReturnRouterCall struct {
+	To   EVMAddress `json:"to"`
+	Data HexString  `json:"data"`
+}
+
+// UnmarshalJSON validates canonical fields and exchange wire aliases.
+func (m *CollateralReturnRouterCall) UnmarshalJSON(raw []byte) error {
+	type plain CollateralReturnRouterCall
+	var result plain
+	if err := decodeData(raw, &result, []dataField{
+		{name: "to", required: true},
+		{name: "data", required: true},
+	}); err != nil {
+		return err
+	}
+	*m = CollateralReturnRouterCall(result)
 	return nil
 }
 

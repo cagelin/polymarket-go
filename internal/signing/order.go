@@ -8,7 +8,6 @@ import (
 
 	sdkerrors "github.com/cagelam/polymarket-go/errors"
 	"github.com/cagelam/polymarket-go/models"
-	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/math"
 	"github.com/ethereum/go-ethereum/signer/core/apitypes"
 )
@@ -85,21 +84,7 @@ func (s *Signer) Order(order models.SignedOrder, exchange string, authority mode
 		return "", &sdkerrors.SigningError{Cause: err}
 	}
 	signature += hex.EncodeToString(domain) + hex.EncodeToString(contents) + hex.EncodeToString([]byte(orderTypeString)) + fmt.Sprintf("%04x", len(orderTypeString))
-	if authority == models.SignerSessionKey {
-		bytes, decodeErr := hex.DecodeString(strings.TrimPrefix(signature, "0x"))
-		if decodeErr != nil {
-			return "", &sdkerrors.SigningError{Cause: decodeErr}
-		}
-		payload := common.LeftPadBytes(common.HexToAddress(s.Address()).Bytes(), 32)
-		payload = append(payload, make([]byte, 32)...)
-		payload = append(payload, common.LeftPadBytes(big.NewInt(96).Bytes(), 32)...)
-		payload = append(payload, common.LeftPadBytes(big.NewInt(int64(len(bytes))).Bytes(), 32)...)
-		payload = append(payload, bytes...)
-		payload = append(payload, make([]byte, (32-len(bytes)%32)%32)...)
-		payload = append(payload, fixedHex(strings.Repeat("6492", 16))...)
-		signature = "0x" + hex.EncodeToString(payload)
-	}
-	return signature, nil
+	return wrapDepositSignature(signature, s.Address(), authority)
 }
 func orderData(order models.SignedOrder, exchange string) (apitypes.TypedData, error) {
 	asset, ok := new(big.Int).SetString(string(order.AssetID), 10)

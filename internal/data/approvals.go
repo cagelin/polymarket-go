@@ -63,7 +63,7 @@ func parseApprovals(raw []byte, owner string) (*models.TradingApprovalsState, er
 	if err != nil {
 		return nil, err
 	}
-	required := requiredApprovals()
+	required := RequiredApprovals()
 	pairs := map[string]bool{}
 	for _, a := range required.ERC20 {
 		pairs[strings.ToLower(string(a.TokenAddress)+"/"+string(a.Spender))] = true

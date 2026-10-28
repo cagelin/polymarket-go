@@ -35,10 +35,10 @@ func TestPythonComboParity(t *testing.T) {
 	legs := []string{"123", "456"}
 	fixture.Request["leg_position_ids"] = legs
 	for _, tc := range fixture.Cases {
-		t.Run(tc.Name, func(t *testing.T) {
+		t.Run(tc.Name, func(subtest *testing.T) {
 			signer, signErr := signing.New("0000000000000000000000000000000000000000000000000000000000000001")
 			if signErr != nil {
-				t.Fatal(signErr)
+				subtest.Fatal(signErr)
 			}
 			client := &Client{signer: signer, wallet: models.EVMAddress(signer.Address()), walletType: models.WalletEOA, signerType: models.SignerOwner, now: func() time.Time { return time.Unix(1720000000, 0) }, salt: func(int) (*big.Int, error) { return big.NewInt(12345), nil }}
 			var result any
@@ -52,7 +52,7 @@ func TestPythonComboParity(t *testing.T) {
 					Side           *string
 				}
 				if err = json.Unmarshal(tc.Input, &p); err != nil {
-					t.Fatal(err)
+					subtest.Fatal(err)
 				}
 				params := RequestComboQuoteParams{LegPositionIDs: p.LegPositionIDs, Direction: p.Direction, Side: p.Side}
 				if p.Amount != nil {
@@ -75,15 +75,15 @@ func TestPythonComboParity(t *testing.T) {
 				client.walletType = tc.WalletType
 				var quote models.ComboQuote
 				if err = json.Unmarshal(tc.Input, &quote); err != nil {
-					t.Fatal(err)
+					subtest.Fatal(err)
 				}
 				result, callErr = client.comboAcceptanceBody(quote)
 			}
 			if (callErr != nil) != (tc.Expected.Error != "") {
-				t.Fatalf("error %v; Python %s", callErr, tc.Expected.Error)
+				subtest.Fatalf("error %v; Python %s", callErr, tc.Expected.Error)
 			}
 			if callErr == nil {
-				equalJSON(t, result, tc.Expected.Value)
+				equalJSON(subtest, result, tc.Expected.Value)
 			}
 		})
 	}

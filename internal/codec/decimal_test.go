@@ -20,22 +20,22 @@ func TestPythonDecimalArithmetic(t *testing.T) {
 		t.Fatal(err)
 	}
 	for _, test := range fixture.Cases {
-		t.Run(test.Operation+"/"+test.X+"/"+test.Y, func(t *testing.T) {
+		t.Run(test.Operation+"/"+test.X+"/"+test.Y, func(subtest *testing.T) {
 			x, ok := new(decimal.Big).SetString(test.X)
 			if !ok {
-				t.Fatal(test.X)
+				subtest.Fatal(test.X)
 			}
 			y, ok := new(decimal.Big).SetString(test.Y)
 			if !ok {
-				t.Fatal(test.Y)
+				subtest.Fatal(test.Y)
 			}
 			result := decimal.WithContext(DecimalContext())
 			arithmeticErr := DecimalArithmetic(test.Operation, result, x, y)
 			if (arithmeticErr != nil) != (test.Error != "") {
-				t.Fatalf("error = %v; Python = %s", arithmeticErr, test.Error)
+				subtest.Fatalf("error = %v; Python = %s", arithmeticErr, test.Error)
 			}
 			if arithmeticErr == nil && result.String() != test.Value {
-				t.Errorf("result = %s; Python = %s", result, test.Value)
+				subtest.Errorf("result = %s; Python = %s", result, test.Value)
 			}
 		})
 	}

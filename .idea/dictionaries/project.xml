@@ -7,10 +7,12 @@
       <w>btcusd</w>
       <w>btcusdt</w>
       <w>cagelam</w>
+      <w>calldata</w>
       <w>cashflow</w>
       <w>chainlink</w>
       <w>checksummed</w>
       <w>cloburl</w>
+      <w>combosrfq</w>
       <w>consensys</w>
       <w>contextcheck</w>
       <w>copyloopvar</w>
@@ -41,10 +43,13 @@
       <w>golangci</w>
       <w>gosec</w>
       <w>govet</w>
+      <w>gwei</w>
       <w>holiman</w>
       <w>ineffassign</w>
+      <w>jsonrpc</w>
       <w>lagergren</w>
       <w>matchtime</w>
+      <w>multisend</w>
       <w>negrisk</w>
       <w>negriskfeebips</w>
       <w>nilerr</w>
@@ -55,8 +60,10 @@
       <w>onchain</w>
       <w>onchaineventid</w>
       <w>orderbook</w>
+      <w>pUSD</w>
       <w>perps</w>
       <w>polymarket</w>
+      <w>pusd</w>
       <w>pydantic</w>
       <w>pyth</w>
       <w>pythtokenid</w>
@@ -68,6 +75,8 @@
       <w>relname</w>
       <w>rfqid</w>
       <w>rfqurl</w>
+      <w>rfqwsurl</w>
+      <w>rpcurl</w>
       <w>rtds</w>
       <w>rtdsurl</w>
       <w>rtdswsurl</w>

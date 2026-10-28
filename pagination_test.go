@@ -33,7 +33,7 @@ func TestPythonPaginationParity(t *testing.T) {
 		t.Fatal(err)
 	}
 	for _, test := range tests {
-		t.Run(test.Name, func(t *testing.T) {
+		t.Run(test.Name, func(subtest *testing.T) {
 			calls := make([]*string, 0)
 			pager := pagination.New(func(_ context.Context, cursor *string) (Page[string], error) {
 				calls = append(calls, cursor)
@@ -44,7 +44,7 @@ func TestPythonPaginationParity(t *testing.T) {
 			}, test.Initial)
 			var pages []Page[string]
 			var resultErr error
-			for page, err := range pager.Pages(t.Context()) {
+			for page, err := range pager.Pages(subtest.Context()) {
 				if err != nil {
 					resultErr = err
 					break
@@ -52,13 +52,13 @@ func TestPythonPaginationParity(t *testing.T) {
 				pages = append(pages, page)
 			}
 			if !reflect.DeepEqual(pages, test.Expected) {
-				t.Errorf("pages = %+v, Python = %+v", pages, test.Expected)
+				subtest.Errorf("pages = %+v, Python = %+v", pages, test.Expected)
 			}
 			if !reflect.DeepEqual(calls, test.Calls) {
-				t.Errorf("cursors = %+v, Python = %+v", calls, test.Calls)
+				subtest.Errorf("cursors = %+v, Python = %+v", calls, test.Calls)
 			}
 			if got := errorClass(resultErr); got != test.Error {
-				t.Errorf("error = %s, Python = %s", got, test.Error)
+				subtest.Errorf("error = %s, Python = %s", got, test.Error)
 			}
 		})
 	}
@@ -76,8 +76,8 @@ func TestPaginatorEmptyAndEarlyStop(t *testing.T) {
 	if err != nil || len(page.Items) != 0 || page.HasMore {
 		t.Fatalf("empty page = %+v, %v", page, err)
 	}
-	for page, pageErr := range empty.Pages(t.Context()) {
-		t.Errorf("empty paginator yielded %+v, %v", page, pageErr)
+	for yieldedPage, pageErr := range empty.Pages(t.Context()) {
+		t.Errorf("empty paginator yielded %+v, %v", yieldedPage, pageErr)
 	}
 	if calls != 0 {
 		t.Fatal("empty paginator fetched data")
@@ -159,7 +159,7 @@ func TestHistoryRateLimitRetry(t *testing.T) {
 		{name: "long_delay", status: 429, delay: "6", failures: 1, wantCalls: 1, wantError: "RateLimitError"},
 		{name: "server_error", status: 503, delay: "0", failures: 1, wantCalls: 1, wantError: "RequestRejectedError"},
 	} {
-		t.Run(test.name, func(t *testing.T) {
+		t.Run(test.name, func(subtest *testing.T) {
 			var calls atomic.Int32
 			server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 				if int(calls.Add(1)) <= test.failures {
@@ -172,17 +172,17 @@ func TestHistoryRateLimitRetry(t *testing.T) {
 			defer server.Close()
 			client, createErr := NewPublicClient(ClientConfig{DataURL: server.URL})
 			if createErr != nil {
-				t.Fatal(createErr)
+				subtest.Fatal(createErr)
 			}
 			defer func() { _ = client.Close() }() // Close only releases local resources and always returns nil.
 			interval := HistoryHour
 			pager, err := client.ListPriceHistory(PriceHistoryParams{AssetID: "123", Interval: &interval})
 			if err != nil {
-				t.Fatal(err)
+				subtest.Fatal(err)
 			}
-			_, err = pager.FirstPage(t.Context())
+			_, err = pager.FirstPage(subtest.Context())
 			if errorClass(err) != test.wantError || int(calls.Load()) != test.wantCalls {
-				t.Errorf("error = %v, requests = %d; want %s, %d", err, calls.Load(), test.wantError, test.wantCalls)
+				subtest.Errorf("error = %v, requests = %d; want %s, %d", err, calls.Load(), test.wantError, test.wantCalls)
 			}
 		})
 	}

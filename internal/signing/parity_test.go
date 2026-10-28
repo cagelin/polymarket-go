@@ -28,7 +28,7 @@ func TestPythonSigning(t *testing.T) {
 		t.Fatal(err)
 	}
 	for _, test := range fixture.Cases {
-		t.Run(test.Operation, func(t *testing.T) {
+		t.Run(test.Operation, func(subtest *testing.T) {
 			var value any
 			var operationErr error
 			if test.Operation == "hmac" {
@@ -40,7 +40,7 @@ func TestPythonSigning(t *testing.T) {
 			} else {
 				signer, createErr := New(test.Key)
 				if createErr != nil {
-					t.Fatal(createErr)
+					subtest.Fatal(createErr)
 				}
 				switch test.Operation {
 				case "l1":
@@ -60,28 +60,28 @@ func TestPythonSigning(t *testing.T) {
 					}
 					value, operationErr = signer.Order(test.Order, test.Exchange, authority)
 				default:
-					t.Fatal(test.Operation)
+					subtest.Fatal(test.Operation)
 				}
 			}
 			if (operationErr != nil) != (test.Error != "") {
-				t.Fatalf("%s error=%v; Python=%s", test.Operation, operationErr, test.Error)
+				subtest.Fatalf("%s error=%v; Python=%s", test.Operation, operationErr, test.Error)
 			}
 			if operationErr != nil {
 				return
 			}
 			encoded, encodeErr := json.Marshal(value)
 			if encodeErr != nil {
-				t.Fatal(encodeErr)
+				subtest.Fatal(encodeErr)
 			}
 			var got, want any
 			if err = json.Unmarshal(encoded, &got); err != nil {
-				t.Fatal(err)
+				subtest.Fatal(err)
 			}
 			if err = json.Unmarshal(test.Expected, &want); err != nil {
-				t.Fatal(err)
+				subtest.Fatal(err)
 			}
 			if !reflect.DeepEqual(got, want) {
-				t.Errorf("%s got=%s; Python=%s", test.Operation, encoded, test.Expected)
+				subtest.Errorf("%s got=%s; Python=%s", test.Operation, encoded, test.Expected)
 			}
 		})
 	}

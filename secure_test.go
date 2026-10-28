@@ -39,20 +39,20 @@ func TestSecureCredentialLifecycle(t *testing.T) {
 	}{
 		{name: "existing", probe: 200, provided: true}, {name: "401-create", probe: 401, provided: true, create: 200}, {name: "missing-create", create: 200}, {name: "400-derive", create: 400, derive: true}, {name: "403-not-retried", probe: 403, provided: true, wantError: true}, {name: "500-not-derived", create: 500, wantError: true},
 	} {
-		t.Run(tc.name, func(t *testing.T) {
+		t.Run(tc.name, func(subtest *testing.T) {
 			var posts, derives, deletes atomic.Int32
 			server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 				switch r.Method + " " + r.URL.Path {
 				case "GET /auth/api-keys":
 					if r.Header.Get("POLY_API_KEY") != "synthetic-key" || r.Header.Get("POLY_SIGNATURE") == "" {
-						t.Error("missing L2 credentials")
+						subtest.Error("missing L2 credentials")
 					}
 					w.Header().Set("Content-Type", "application/json")
 					w.WriteHeader(tc.probe)
-					writeTestJSON(t, w, map[string]any{"apiKeys": []string{"synthetic-key"}})
+					writeTestJSON(subtest, w, map[string]any{"apiKeys": []string{"synthetic-key"}})
 				case "POST /auth/api-key", "GET /auth/derive-api-key":
 					if r.Header.Get("POLY_ADDRESS") != testSigner || r.Header.Get("POLY_NONCE") != "0" || r.Header.Get("POLY_SIGNATURE") == "" || r.Header.Get("POLY_API_KEY") != "" {
-						t.Error("invalid L1 authentication")
+						subtest.Error("invalid L1 authentication")
 					}
 					status := 200
 					if r.Method == "POST" {
@@ -65,17 +65,17 @@ func TestSecureCredentialLifecycle(t *testing.T) {
 					w.WriteHeader(status)
 					//nolint:gosec // Public synthetic credentials; no funded account.
 					//noinspection SpellCheckingInspection
-					writeTestJSON(t, w, map[string]string{"apiKey": "synthetic-key", "secret": "c2VjcmV0", "passphrase": "synthetic-pass"})
+					writeTestJSON(subtest, w, map[string]string{"apiKey": "synthetic-key", "secret": "c2VjcmV0", "passphrase": "synthetic-pass"})
 				case "DELETE /auth/api-key":
 					deletes.Add(1)
-					writeTestJSON(t, w, "OK")
+					writeTestJSON(subtest, w, "OK")
 				case "GET /midpoint":
 					if r.Header.Get("POLY_API_KEY") != "" {
-						t.Error("credentials leaked into public request")
+						subtest.Error("credentials leaked into public request")
 					}
-					writeTestJSON(t, w, map[string]string{"mid": "0.5"})
+					writeTestJSON(subtest, w, map[string]string{"mid": "0.5"})
 				default:
-					t.Errorf("unexpected %s %s", r.Method, r.URL)
+					subtest.Errorf("unexpected %s %s", r.Method, r.URL)
 					w.WriteHeader(500)
 				}
 			}))
@@ -84,68 +84,68 @@ func TestSecureCredentialLifecycle(t *testing.T) {
 			if !tc.provided {
 				cfg.Credentials = nil
 			}
-			client, err := sdk.NewSecureClient(t.Context(), cfg)
+			client, err := sdk.NewSecureClient(subtest.Context(), cfg)
 			if (err != nil) != tc.wantError {
-				t.Fatalf("constructor error %v", err)
+				subtest.Fatalf("constructor error %v", err)
 			}
 			if err != nil {
 				return
 			}
 			defer func() { _ = client.Close() }() // Close only releases local resources and always returns nil.
 			if client.Wallet() != testSigner || client.Signer() != testSigner || client.WalletType() != sdk.WalletEOA {
-				t.Fatal("wrong identity")
+				subtest.Fatal("wrong identity")
 			}
-			if _, err = client.GetMidpoint(t.Context(), sdk.Asset("123")); err != nil {
-				t.Fatal(err)
+			if _, err = client.GetMidpoint(subtest.Context(), sdk.Asset("123")); err != nil {
+				subtest.Fatal(err)
 			}
-			public, err := client.EndAuthentication(t.Context())
+			public, err := client.EndAuthentication(subtest.Context())
 			if err != nil {
-				t.Fatal(err)
+				subtest.Fatal(err)
 			}
 			defer func() { _ = public.Close() }() // Close only releases local resources and always returns nil.
 			if deletes.Load() != 1 {
-				t.Fatal("credential revocation not performed")
+				subtest.Fatal("credential revocation not performed")
 			}
 			if tc.derive != (derives.Load() == 1) {
-				t.Fatal("incorrect derive fallback")
+				subtest.Fatal("incorrect derive fallback")
 			}
 			if tc.name == "existing" && posts.Load() != 0 {
-				t.Fatal("valid credentials recreated")
+				subtest.Fatal("valid credentials recreated")
 			}
-			if _, err = client.FetchAPIKeys(t.Context()); err == nil {
-				t.Fatal("closed client still usable")
+			if _, err = client.FetchAPIKeys(subtest.Context()); err == nil {
+				subtest.Fatal("closed client still usable")
 			}
 		})
 	}
 }
 func TestSecureRevocationErrorsAndRedaction(t *testing.T) {
 	for _, status := range []int{401, 404, 500} {
-		t.Run(fmt.Sprint(status), func(t *testing.T) {
+		t.Run(fmt.Sprint(status), func(subtest *testing.T) {
 			server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 				if r.Method == "DELETE" {
 					w.WriteHeader(status)
 					return
 				}
-				writeTestJSON(t, w, map[string]any{"apiKeys": []string{"synthetic-key"}})
+				writeTestJSON(subtest, w, map[string]any{"apiKeys": []string{"synthetic-key"}})
 			}))
 			defer server.Close()
-			client, err := sdk.NewSecureClient(t.Context(), secureConfig(server.URL))
+			client, err := sdk.NewSecureClient(subtest.Context(), secureConfig(server.URL))
 			if err != nil {
-				t.Fatal(err)
+				subtest.Fatal(err)
 			}
 			defer func() { _ = client.Close() }() // Close only releases local resources and always returns nil.
-			public, err := client.EndAuthentication(t.Context())
+			public, err := client.EndAuthentication(subtest.Context())
 			if status == 500 && err == nil {
-				t.Fatal("revocation failure suppressed")
+				subtest.Fatal("revocation failure suppressed")
 			}
 			if status != 500 && err != nil {
-				t.Fatal(err)
+				subtest.Fatal(err)
 			}
 			if public != nil {
 				defer func() { _ = public.Close() }() // Close only releases local resources and always returns nil.
 			}
-			if _, err = client.FetchAPIKeys(t.Context()); err == nil {
-				t.Fatal("revocation failure left client open")
+			if _, err = client.FetchAPIKeys(subtest.Context()); err == nil {
+				subtest.Fatal("revocation failure left client open")
 			}
 		})
 	}

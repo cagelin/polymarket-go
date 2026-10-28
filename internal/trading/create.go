@@ -224,7 +224,7 @@ func (c *Client) PlaceLimitOrder(ctx context.Context, p CreateLimitOrderParams) 
 	if err != nil {
 		return nil, err
 	}
-	return c.PostOrder(ctx, *order)
+	return c.postWithAllowanceRecovery(ctx, *order)
 }
 
 // PlaceMarketOrder creates, signs and submits a market order. Chain allowance recovery belongs to the wallet milestone.
@@ -233,7 +233,7 @@ func (c *Client) PlaceMarketOrder(ctx context.Context, p CreateMarketOrderParams
 	if err != nil {
 		return nil, err
 	}
-	return c.PostOrder(ctx, *order)
+	return c.postWithAllowanceRecovery(ctx, *order)
 }
 
 func (c *Client) newSalt(bits int) (*big.Int, error) {

@@ -72,3 +72,68 @@ func (e *InsufficientLiquidityError) Error() string { return e.Message }
 type PaginationLimitError struct{ Message string }
 
 func (e *PaginationLimitError) Error() string { return e.Message }
+
+// SigningError reports invalid signing inputs or a cryptographic operation failure.
+type SigningError struct{ Cause error }
+
+func (e *SigningError) Error() string { return "polymarket signing failed" }
+func (e *SigningError) Unwrap() error { return e.Cause }
+
+// OrderHeartbeatMismatchError reports the heartbeat ID currently expected by the exchange.
+type OrderHeartbeatMismatchError struct {
+	HeartbeatID string
+	Rejection   *RequestRejectedError
+}
+
+func (e *OrderHeartbeatMismatchError) Error() string { return e.Rejection.Error() }
+func (e *OrderHeartbeatMismatchError) Unwrap() error { return e.Rejection }
+
+// SettlementTimeoutError identifies fills that did not settle before the deadline.
+type SettlementTimeoutError struct{ PendingTradeIDs []string }
+
+func (e *SettlementTimeoutError) Error() string {
+	return "order fills did not settle before the deadline"
+}
+
+// TransactionFailedError reports that all placement fills failed settlement.
+type TransactionFailedError struct{ Message string }
+
+func (e *TransactionFailedError) Error() string {
+	if e.Message != "" {
+		return e.Message
+	}
+	return "all order fills failed settlement"
+}
+
+// RFQRequestRejectedError reports a builder gateway refusal and retains the original HTTP details.
+type RFQRequestRejectedError struct{ Rejection *RequestRejectedError }
+
+func (e *RFQRequestRejectedError) Error() string { return e.Rejection.Error() }
+func (e *RFQRequestRejectedError) Unwrap() error { return e.Rejection }
+
+// RFQTimeoutError reports a pending quote acceptance or fill; it does not imply failure.
+type RFQTimeoutError struct{ RFQID string }
+
+func (e *RFQTimeoutError) Error() string { return "RFQ outcome is still pending: " + e.RFQID }
+
+// RPCError is a JSON-RPC server rejection returned with a successful HTTP response.
+type RPCError struct {
+	Method  string
+	Code    int
+	Message string
+	Data    []byte
+}
+
+func (e *RPCError) Error() string {
+	return fmt.Sprintf("JSON-RPC %s failed (%d): %s", e.Method, e.Code, e.Message)
+}
+
+// TransactionTimeoutError retains the submitted identifiers for later reconciliation.
+type TransactionTimeoutError struct {
+	TransactionID   string
+	TransactionHash string
+}
+
+func (e *TransactionTimeoutError) Error() string {
+	return "transaction confirmation timed out; outcome remains unknown"
+}

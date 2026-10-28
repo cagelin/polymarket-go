@@ -28,7 +28,7 @@ func TestPythonResponseVariants(t *testing.T) {
 		t.Fatal(err)
 	}
 	for _, test := range fixture.Cases {
-		t.Run(test.Name, func(t *testing.T) {
+		t.Run(test.Name, func(subtest *testing.T) {
 			var value any
 			var parseErr error
 			switch test.Union {
@@ -39,18 +39,18 @@ func TestPythonResponseVariants(t *testing.T) {
 			case "BiggestWinner":
 				value, parseErr = ParseBiggestWinner(test.Response)
 			default:
-				t.Fatal(test.Union)
+				subtest.Fatal(test.Union)
 			}
 			if (parseErr != nil) != (test.Expected.Error != "") {
-				t.Fatalf("error = %v; Python = %s", parseErr, test.Expected.Error)
+				subtest.Fatalf("error = %v; Python = %s", parseErr, test.Expected.Error)
 			}
 			if parseErr != nil {
 				return
 			}
 			if fmt.Sprintf("%T", value) != "*models."+test.Expected.Variant {
-				t.Fatalf("variant = %T; Python = %s", value, test.Expected.Variant)
+				subtest.Fatalf("variant = %T; Python = %s", value, test.Expected.Variant)
 			}
-			testutil.EqualJSON(t, value, test.Expected.Value)
+			testutil.EqualJSON(subtest, value, test.Expected.Value)
 		})
 	}
 }

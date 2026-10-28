@@ -20,18 +20,21 @@ import (
 
 // Config configures public requests. Its zero value uses production URLs.
 type Config struct {
-	UserWSURL         string
-	PriceWSURL        string
-	RelayerURL        string
-	BuilderGatewayURL string
-	MarketWSURL       string
-	SportsWSURL       string
-	RTDSWSURL         string
-	StreamQueueSize   int
-	CLOBURL           string
-	GammaURL          string
-	DataURL           string
-	RFQURL            string
+	RFQWSURL            string
+	UserWSURL           string
+	PriceWSURL          string
+	RPCURL              string
+	CollateralReturnURL string
+	RelayerURL          string
+	BuilderGatewayURL   string
+	MarketWSURL         string
+	SportsWSURL         string
+	RTDSWSURL           string
+	StreamQueueSize     int
+	CLOBURL             string
+	GammaURL            string
+	DataURL             string
+	RFQURL              string
 	// HTTPClient is borrowed and is never closed or modified by the SDK.
 	HTTPClient *http.Client
 	// OnRateLimitUpdate may run concurrently. Returned errors are ignored.
@@ -40,17 +43,19 @@ type Config struct {
 
 // Client performs unauthenticated queries and supports concurrent use.
 type Client struct {
-	RelayerURL        string
-	BuilderGatewayURL string
-	CLOBURL           string
-	GammaURL          string
-	DataURL           string
-	RFQURL            string
-	http              *http.Client
-	owned             *http.Transport
-	held              *http.Transport
-	closed            atomic.Bool
-	onRateLimitUpdate func(sdkerrors.RateLimitUpdate) error
+	RPCURL              string
+	CollateralReturnURL string
+	RelayerURL          string
+	BuilderGatewayURL   string
+	CLOBURL             string
+	GammaURL            string
+	DataURL             string
+	RFQURL              string
+	http                *http.Client
+	owned               *http.Transport
+	held                *http.Transport
+	closed              atomic.Bool
+	onRateLimitUpdate   func(sdkerrors.RateLimitUpdate) error
 }
 
 // New constructs a client without making any network requests.
@@ -79,7 +84,16 @@ func New(config Config) (*Client, error) {
 	if err != nil {
 		return nil, err
 	}
-	c := &Client{
+	rpcURL, err := serviceURL(config.RPCURL, "https://polygon.drpc.org")
+	if err != nil {
+		return nil, err
+	}
+	collateralURL, err := serviceURL(config.CollateralReturnURL, "https://combos-rfq-collateral-return.polymarket.com")
+	if err != nil {
+		return nil, err
+	}
+	c := &Client{CollateralReturnURL: collateralURL,
+		RPCURL:     rpcURL,
 		RelayerURL: relayerURL, BuilderGatewayURL: builderURL,
 		RFQURL:            rfqURL,
 		CLOBURL:           clobURL,
@@ -145,14 +159,19 @@ type HeaderResolver func(method, path string, body []byte) (http.Header, error)
 
 // AuthenticatedRequest applies optional authentication only to this request.
 func (c *Client) AuthenticatedRequest(ctx context.Context, baseURL, method, path string, query url.Values, body any, headers HeaderResolver) ([]byte, error) {
-	return c.request(ctx, baseURL, method, path, query, body, headers, false)
+	return c.request(ctx, baseURL, method, path, query, body, headers, 0)
 }
 
 // HeldRequest permits a thirty-second response wait for RFQ competition and acceptance.
 func (c *Client) HeldRequest(ctx context.Context, baseURL, method, path string, body any, headers HeaderResolver) ([]byte, error) {
-	return c.request(ctx, baseURL, method, path, nil, body, headers, true)
+	return c.request(ctx, baseURL, method, path, nil, body, headers, 30*time.Second)
 }
-func (c *Client) request(ctx context.Context, baseURL, method, path string, query url.Values, body any, headers HeaderResolver, held bool) ([]byte, error) {
+
+// LongRequest uses an explicit response budget for slow wallet workflows.
+func (c *Client) LongRequest(ctx context.Context, baseURL, method, path string, body any, headers HeaderResolver, timeout time.Duration) ([]byte, error) {
+	return c.request(ctx, baseURL, method, path, nil, body, headers, timeout)
+}
+func (c *Client) request(ctx context.Context, baseURL, method, path string, query url.Values, body any, headers HeaderResolver, timeout time.Duration) ([]byte, error) {
 	if c.closed.Load() {
 		return nil, &sdkerrors.UserInputError{Message: "client is closed"}
 	}
@@ -187,11 +206,14 @@ func (c *Client) request(ctx context.Context, baseURL, method, path string, quer
 		}
 	}
 	client := c.http
-	if held {
+	if timeout > 0 {
 		requestClient := *client
-		requestClient.Timeout = 30 * time.Second
+		requestClient.Timeout = timeout
 		if c.held != nil {
-			requestClient.Transport = c.held
+			heldTransport := c.held.Clone()
+			heldTransport.ResponseHeaderTimeout = timeout
+			defer heldTransport.CloseIdleConnections()
+			requestClient.Transport = heldTransport
 		}
 		client = &requestClient
 	}
