@@ -1,0 +1,235 @@
+[
+  {
+    "name": "normal",
+    "pages": [
+      {
+        "items": [
+          "a"
+        ],
+        "has_more": true,
+        "next_cursor": "a",
+        "total_count": null,
+        "limit_reached": false
+      },
+      {
+        "items": [
+          "b"
+        ],
+        "has_more": false,
+        "next_cursor": null,
+        "total_count": null,
+        "limit_reached": false
+      }
+    ],
+    "initial": null,
+    "expected": [
+      {
+        "items": [
+          "a"
+        ],
+        "has_more": true,
+        "next_cursor": "a",
+        "total_count": null,
+        "limit_reached": false
+      },
+      {
+        "items": [
+          "b"
+        ],
+        "has_more": false,
+        "next_cursor": null,
+        "total_count": null,
+        "limit_reached": false
+      }
+    ],
+    "error": "",
+    "calls": [
+      null,
+      "a"
+    ]
+  },
+  {
+    "name": "missing",
+    "pages": [
+      {
+        "items": [
+          "a"
+        ],
+        "has_more": true,
+        "next_cursor": null,
+        "total_count": null,
+        "limit_reached": false
+      }
+    ],
+    "initial": null,
+    "expected": [
+      {
+        "items": [
+          "a"
+        ],
+        "has_more": true,
+        "next_cursor": null,
+        "total_count": null,
+        "limit_reached": false
+      }
+    ],
+    "error": "UnexpectedResponseError",
+    "calls": [
+      null
+    ]
+  },
+  {
+    "name": "repeat",
+    "pages": [
+      {
+        "items": [
+          "a"
+        ],
+        "has_more": true,
+        "next_cursor": "a",
+        "total_count": null,
+        "limit_reached": false
+      },
+      {
+        "items": [
+          "b"
+        ],
+        "has_more": true,
+        "next_cursor": "a",
+        "total_count": null,
+        "limit_reached": false
+      }
+    ],
+    "initial": null,
+    "expected": [
+      {
+        "items": [
+          "a"
+        ],
+        "has_more": true,
+        "next_cursor": "a",
+        "total_count": null,
+        "limit_reached": false
+      },
+      {
+        "items": [
+          "b"
+        ],
+        "has_more": true,
+        "next_cursor": "a",
+        "total_count": null,
+        "limit_reached": false
+      }
+    ],
+    "error": "UnexpectedResponseError",
+    "calls": [
+      null,
+      "a"
+    ]
+  },
+  {
+    "name": "initial_repeat",
+    "pages": [
+      {
+        "items": [
+          "a"
+        ],
+        "has_more": true,
+        "next_cursor": "a",
+        "total_count": null,
+        "limit_reached": false
+      }
+    ],
+    "initial": "a",
+    "expected": [
+      {
+        "items": [
+          "a"
+        ],
+        "has_more": true,
+        "next_cursor": "a",
+        "total_count": null,
+        "limit_reached": false
+      }
+    ],
+    "error": "UnexpectedResponseError",
+    "calls": [
+      "a"
+    ]
+  },
+  {
+    "name": "limit",
+    "pages": [
+      {
+        "items": [
+          "a"
+        ],
+        "has_more": true,
+        "next_cursor": "a",
+        "total_count": null,
+        "limit_reached": true
+      }
+    ],
+    "initial": null,
+    "expected": [
+      {
+        "items": [
+          "a"
+        ],
+        "has_more": true,
+        "next_cursor": "a",
+        "total_count": null,
+        "limit_reached": true
+      }
+    ],
+    "error": "",
+    "calls": [
+      null
+    ]
+  },
+  {
+    "name": "empty_continuing",
+    "pages": [
+      {
+        "items": [],
+        "has_more": true,
+        "next_cursor": "a",
+        "total_count": null,
+        "limit_reached": false
+      },
+      {
+        "items": [
+          "b"
+        ],
+        "has_more": false,
+        "next_cursor": null,
+        "total_count": null,
+        "limit_reached": false
+      }
+    ],
+    "initial": null,
+    "expected": [
+      {
+        "items": [],
+        "has_more": true,
+        "next_cursor": "a",
+        "total_count": null,
+        "limit_reached": false
+      },
+      {
+        "items": [
+          "b"
+        ],
+        "has_more": false,
+        "next_cursor": null,
+        "total_count": null,
+        "limit_reached": false
+      }
+    ],
+    "error": "",
+    "calls": [
+      null,
+      "a"
+    ]
+  }
+]

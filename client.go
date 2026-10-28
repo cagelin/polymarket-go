@@ -16,7 +16,9 @@ import (
 
 // ClientConfig configures public requests. Its zero value uses production URLs.
 type ClientConfig struct {
-	CLOBURL string
+	CLOBURL  string
+	GammaURL string
+	DataURL  string
 	// HTTPClient is borrowed and is never closed or modified by the SDK.
 	HTTPClient *http.Client
 	// OnRateLimitUpdate may run concurrently. Returned errors are ignored.
@@ -26,6 +28,8 @@ type ClientConfig struct {
 // PublicClient performs unauthenticated queries and supports concurrent use.
 type PublicClient struct {
 	clobURL           string
+	gammaURL          string
+	dataURL           string
 	http              *http.Client
 	owned             *http.Transport
 	closed            atomic.Bool
@@ -34,16 +38,22 @@ type PublicClient struct {
 
 // NewPublicClient constructs a client without making any network requests.
 func NewPublicClient(config ClientConfig) (*PublicClient, error) {
-	baseURL := config.CLOBURL
-	if baseURL == "" {
-		baseURL = "https://clob.polymarket.com"
+	clobURL, err := serviceURL(config.CLOBURL, "https://clob.polymarket.com")
+	if err != nil {
+		return nil, err
 	}
-	u, err := url.Parse(baseURL)
-	if err != nil || (u.Scheme != "http" && u.Scheme != "https") || u.Host == "" || u.User != nil || u.RawQuery != "" || u.Fragment != "" {
-		return nil, &UserInputError{Message: "CLOBURL must be an absolute HTTP(S) URL without credentials, query or fragment"}
+	gammaURL, err := serviceURL(config.GammaURL, "https://gamma-api.polymarket.com")
+	if err != nil {
+		return nil, err
+	}
+	dataURL, err := serviceURL(config.DataURL, "https://data-api.polymarket.com")
+	if err != nil {
+		return nil, err
 	}
 	c := &PublicClient{
-		clobURL:           strings.TrimRight(baseURL, "/"),
+		clobURL:           clobURL,
+		gammaURL:          gammaURL,
+		dataURL:           dataURL,
 		http:              config.HTTPClient,
 		onRateLimitUpdate: config.OnRateLimitUpdate,
 	}
@@ -69,6 +79,17 @@ func NewPublicClient(config ClientConfig) (*PublicClient, error) {
 	return c, nil
 }
 
+func serviceURL(value, fallback string) (string, error) {
+	if value == "" {
+		value = fallback
+	}
+	u, err := url.Parse(value)
+	if err != nil || (u.Scheme != "http" && u.Scheme != "https") || u.Host == "" || u.User != nil || u.RawQuery != "" || u.Fragment != "" {
+		return "", &UserInputError{Message: "service URL must be an absolute HTTP(S) URL without credentials, query or fragment"}
+	}
+	return strings.TrimRight(value, "/"), nil
+}
+
 // Close releases owned idle connections and prevents new SDK requests.
 // It is idempotent. Cancel each request's context to stop in-flight requests.
 func (c *PublicClient) Close() error {
@@ -79,6 +100,10 @@ func (c *PublicClient) Close() error {
 }
 
 func (c *PublicClient) request(ctx context.Context, method, path string, query url.Values, body any) ([]byte, error) {
+	return c.requestAt(ctx, c.clobURL, method, path, query, body)
+}
+
+func (c *PublicClient) requestAt(ctx context.Context, baseURL, method, path string, query url.Values, body any) ([]byte, error) {
 	if c.closed.Load() {
 		return nil, &UserInputError{Message: "client is closed"}
 	}
@@ -90,7 +115,7 @@ func (c *PublicClient) request(ctx context.Context, method, path string, query u
 		}
 		reader = bytes.NewReader(encoded)
 	}
-	endpoint := c.clobURL + path
+	endpoint := baseURL + path
 	if len(query) > 0 {
 		endpoint += "?" + query.Encode()
 	}
