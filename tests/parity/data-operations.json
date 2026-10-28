@@ -1,0 +1,162 @@
+[
+  {
+    "op": "list_trades",
+    "method": "ListTrades",
+    "params": "ListTradesParams",
+    "output": "Trade",
+    "paginated": true,
+    "path": "/v2/trades"
+  },
+  {
+    "op": "list_activity",
+    "method": "ListActivity",
+    "params": "ListActivityParams",
+    "output": "Activity",
+    "paginated": true,
+    "path": "/v2/activity"
+  },
+  {
+    "op": "list_combo_activity",
+    "method": "ListComboActivity",
+    "params": "ListComboActivityParams",
+    "output": "ComboActivity",
+    "paginated": true,
+    "path": "/v2/activity/combos"
+  },
+  {
+    "op": "list_positions",
+    "method": "ListPositions",
+    "params": "ListPositionsParams",
+    "output": "Position",
+    "paginated": true,
+    "path": "/v2/positions"
+  },
+  {
+    "op": "list_combo_positions",
+    "method": "ListComboPositions",
+    "params": "ListComboPositionsParams",
+    "output": "ComboPosition",
+    "paginated": true,
+    "path": "/v2/positions/combos"
+  },
+  {
+    "op": "get_portfolio_value",
+    "method": "GetPortfolioValue",
+    "params": "GetPortfolioValueParams",
+    "output": "PortfolioValue",
+    "paginated": false,
+    "path": "/v2/value"
+  },
+  {
+    "op": "get_user_stats",
+    "method": "GetUserStats",
+    "params": "GetUserStatsParams",
+    "output": "UserStats",
+    "paginated": false,
+    "path": "/v2/user-stats"
+  },
+  {
+    "op": "get_user_pnl",
+    "method": "GetUserPnL",
+    "params": "GetUserPnLParams",
+    "output": "UserPnLSeries",
+    "paginated": false,
+    "path": "/v2/user-pnl"
+  },
+  {
+    "op": "get_user_volume",
+    "method": "GetUserVolume",
+    "params": "GetUserVolumeParams",
+    "output": "UserVolume",
+    "paginated": false,
+    "path": "/v2/user-volume"
+  },
+  {
+    "op": "list_market_holders",
+    "method": "ListMarketHolders",
+    "params": "ListMarketHoldersParams",
+    "output": "MetaHolder",
+    "paginated": true,
+    "path": "/v2/holders"
+  },
+  {
+    "op": "get_open_interests",
+    "method": "GetOpenInterests",
+    "params": "GetOpenInterestsParams",
+    "output": "[]OpenInterest",
+    "paginated": false,
+    "path": "/v2/oi"
+  },
+  {
+    "op": "get_event_live_volume",
+    "method": "GetEventLiveVolume",
+    "params": "GetEventLiveVolumeParams",
+    "output": "LiveVolume",
+    "paginated": false,
+    "path": "/v2/live-volume"
+  },
+  {
+    "op": "get_token_references",
+    "method": "GetTokenReferences",
+    "params": "GetTokenReferencesParams",
+    "output": "[]TokenReference",
+    "paginated": false,
+    "path": "/v2/tokens"
+  },
+  {
+    "op": "get_resolutions",
+    "method": "GetResolutions",
+    "params": "GetResolutionsParams",
+    "output": "[]Resolution",
+    "paginated": false,
+    "path": "/v2/resolutions"
+  },
+  {
+    "op": "list_trader_leaderboard",
+    "method": "ListTraderLeaderboard",
+    "params": "ListTraderLeaderboardParams",
+    "output": "TraderLeaderboardEntry",
+    "paginated": true,
+    "path": "/v2/leaderboard"
+  },
+  {
+    "op": "get_trader_leaderboard_standing",
+    "method": "GetTraderLeaderboardStanding",
+    "params": "GetTraderLeaderboardStandingParams",
+    "output": "TraderLeaderboardStanding",
+    "paginated": false,
+    "path": "/v2/leaderboard"
+  },
+  {
+    "op": "list_biggest_winners",
+    "method": "ListBiggestWinners",
+    "params": "ListBiggestWinnersParams",
+    "output": "BiggestWinner",
+    "paginated": true,
+    "path": "/v2/biggest-winners"
+  },
+  {
+    "op": "list_builder_leaderboard",
+    "method": "ListBuilderLeaderboard",
+    "params": "ListBuilderLeaderboardParams",
+    "output": "BuilderStanding",
+    "paginated": true,
+    "path": "/v2/builders/leaderboard"
+  },
+  {
+    "op": "get_builder_volumes",
+    "method": "GetBuilderVolumes",
+    "params": "GetBuilderVolumesParams",
+    "output": "[]BuilderVolumePoint",
+    "paginated": false,
+    "path": "/v2/builders/volume"
+  },
+  {
+    "op": "download_accounting_snapshot",
+    "method": "DownloadAccountingSnapshot",
+    "params": "DownloadAccountingSnapshotParams",
+    "output": "bytes",
+    "paginated": false,
+    "path": "/v1/accounting/snapshot"
+  }
+]

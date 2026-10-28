@@ -1,7 +1,7 @@
 // Package polymarket provides access to Polymarket APIs.
 //
-// This initial implementation covers public CLOB prices and order books.
-// Monetary values use apd.Decimal; no binary floating-point conversion is used.
+// This implementation covers public queries, pagination, and real-time streams.
+// Decimal fields use decimal.Big and retain their decimal-string precision.
 // Network operations accept a context, and clients support concurrent use.
 package polymarket
 

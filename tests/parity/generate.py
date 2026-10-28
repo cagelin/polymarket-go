@@ -105,7 +105,7 @@ for operation, response in responses.items():
     add(operation + "/wrong_shape", operation, args, [False] if isinstance(response, dict) else {})
 
 for value in [None, True, 0.5, 1, "", "NaN", "Infinity", "-Infinity", "garbage", " 0.1230 ",
-              "1_0", "١.٢", "1e-20", "1E+30", "-0.00", "0.123456789012345678901234567890123"]:
+              "1_0", "١.٢", "1e-20", "1E+30", "1e-100001", "1e100001", "1e-999999999999999999", "1e999999999999999999", "1e1000000000000000000", "1e-1000000000000000000", "1e-1999999999999999997", "1e-1999999999999999998", "99e999999999999999999", "-0.00", "0.123456789012345678901234567890123"]:
     add("decimal/" + repr(value), "midpoint", {"asset_id": "123"}, {"mid": value})
 for response in [{}, {"mid": "0.5", "future_field": True}]:
     add("midpoint/fields/" + str(len(response)), "midpoint", {"asset_id": "123"}, response)

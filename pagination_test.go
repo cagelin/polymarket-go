@@ -12,6 +12,8 @@ import (
 	"sync/atomic"
 	"testing"
 	"time"
+
+	"github.com/cagelam/polymarket-go/pagination"
 )
 
 func TestPythonPaginationParity(t *testing.T) {
@@ -33,13 +35,13 @@ func TestPythonPaginationParity(t *testing.T) {
 	for _, test := range tests {
 		t.Run(test.Name, func(t *testing.T) {
 			calls := make([]*string, 0)
-			pager := &Paginator[string]{initialCursor: test.Initial, fetch: func(_ context.Context, cursor *string) (Page[string], error) {
+			pager := pagination.New(func(_ context.Context, cursor *string) (Page[string], error) {
 				calls = append(calls, cursor)
 				if len(calls) > len(test.Pages) {
 					return Page[string]{}, errors.New("too many page requests")
 				}
 				return test.Pages[len(calls)-1], nil
-			}}
+			}, test.Initial)
 			var pages []Page[string]
 			var resultErr error
 			for page, err := range pager.Pages(t.Context()) {
@@ -64,11 +66,11 @@ func TestPythonPaginationParity(t *testing.T) {
 
 func TestPaginatorEmptyAndEarlyStop(t *testing.T) {
 	calls := 0
-	pager := &Paginator[int]{fetch: func(_ context.Context, _ *string) (Page[int], error) {
+	pager := pagination.New(func(_ context.Context, _ *string) (Page[int], error) {
 		calls++
 		next := "next"
 		return Page[int]{Items: []int{1, 2}, HasMore: true, NextCursor: &next}, nil
-	}}
+	}, nil)
 	empty := pager.FromCursor(nil)
 	page, err := empty.FirstPage(t.Context())
 	if err != nil || len(page.Items) != 0 || page.HasMore {
@@ -131,7 +133,7 @@ func TestPaginatorCopiesInputsAndSupportsConcurrentReads(t *testing.T) {
 		t.Errorf("requests = %d, want 8", calls.Load())
 	}
 	var seen string
-	custom := &Paginator[int]{fetch: func(_ context.Context, cursor *string) (Page[int], error) { seen = *cursor; return Page[int]{}, nil }}
+	custom := pagination.New(func(_ context.Context, cursor *string) (Page[int], error) { seen = *cursor; return Page[int]{}, nil }, nil)
 	cursor := "original"
 	resumed := custom.FromCursor(&cursor)
 	cursor = "changed"

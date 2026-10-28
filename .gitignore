@@ -5,3 +5,7 @@ coverage.out
 /docs/
 .DS_Store
 .idea/
+
+# Python fixture generation caches.
+__pycache__/
+*.pyc

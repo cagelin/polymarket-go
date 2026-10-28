@@ -1,0 +1,1990 @@
+{
+  "upstream_version": "0.14.0",
+  "upstream_commit": "7032ed06175b0bbea77b2d9e898bd9f252af2041",
+  "cases": [
+    {
+      "name": "Activity/TradeActivity",
+      "union": "Activity",
+      "response": {
+        "proxy_wallet": "123",
+        "timestamp": 1720000000,
+        "transaction_hash": "123",
+        "name": "sample",
+        "pseudonym": "sample",
+        "bio": "sample",
+        "profile_image": "sample",
+        "profile_image_optimized": "sample",
+        "type": "TRADE",
+        "is_combo": false,
+        "condition_id": "0xabababababababababababababababababababababababababababababababab",
+        "token_id": "123",
+        "side": "BUY",
+        "size": "1.234567890123456789",
+        "usdc_size": "1.234567890123456789",
+        "price": "1.234567890123456789",
+        "outcome": "sample",
+        "outcome_index": 7,
+        "title": "sample",
+        "slug": "sample",
+        "icon": "sample",
+        "event_slug": "sample"
+      },
+      "expected": {
+        "value": {
+          "wallet": "123",
+          "timestamp": "2024-07-03T09:46:40Z",
+          "transaction_hash": "123",
+          "name": "sample",
+          "pseudonym": "sample",
+          "bio": "sample",
+          "profile_image": "sample",
+          "profile_image_optimized": "sample",
+          "type": "TRADE",
+          "is_combo": false,
+          "condition_id": "0xabababababababababababababababababababababababababababababababab",
+          "asset_id": "123",
+          "side": "BUY",
+          "shares": "1.234567890123456789",
+          "amount": "1.234567890123456789",
+          "price": "1.234567890123456789",
+          "outcome": "sample",
+          "outcome_index": 7,
+          "title": "sample",
+          "slug": "sample",
+          "icon": "sample",
+          "event_slug": "sample"
+        },
+        "variant": "TradeActivity"
+      }
+    },
+    {
+      "name": "Activity/SplitActivity",
+      "union": "Activity",
+      "response": {
+        "proxy_wallet": "123",
+        "timestamp": 1720000000,
+        "transaction_hash": "123",
+        "name": "sample",
+        "pseudonym": "sample",
+        "bio": "sample",
+        "profile_image": "sample",
+        "profile_image_optimized": "sample",
+        "condition_id": "0xabababababababababababababababababababababababababababababababab",
+        "usdc_size": "1.234567890123456789",
+        "title": "sample",
+        "slug": "sample",
+        "icon": "sample",
+        "event_slug": "sample",
+        "type": "SPLIT",
+        "is_combo": true
+      },
+      "expected": {
+        "value": {
+          "wallet": "123",
+          "timestamp": "2024-07-03T09:46:40Z",
+          "transaction_hash": "123",
+          "name": "sample",
+          "pseudonym": "sample",
+          "bio": "sample",
+          "profile_image": "sample",
+          "profile_image_optimized": "sample",
+          "condition_id": "0xabababababababababababababababababababababababababababababababab",
+          "amount": "1.234567890123456789",
+          "title": "sample",
+          "slug": "sample",
+          "icon": "sample",
+          "event_slug": "sample",
+          "type": "SPLIT",
+          "is_combo": true
+        },
+        "variant": "SplitActivity"
+      }
+    },
+    {
+      "name": "Activity/MergeActivity",
+      "union": "Activity",
+      "response": {
+        "proxy_wallet": "123",
+        "timestamp": 1720000000,
+        "transaction_hash": "123",
+        "name": "sample",
+        "pseudonym": "sample",
+        "bio": "sample",
+        "profile_image": "sample",
+        "profile_image_optimized": "sample",
+        "condition_id": "0xabababababababababababababababababababababababababababababababab",
+        "usdc_size": "1.234567890123456789",
+        "title": "sample",
+        "slug": "sample",
+        "icon": "sample",
+        "event_slug": "sample",
+        "type": "MERGE",
+        "is_combo": true
+      },
+      "expected": {
+        "value": {
+          "wallet": "123",
+          "timestamp": "2024-07-03T09:46:40Z",
+          "transaction_hash": "123",
+          "name": "sample",
+          "pseudonym": "sample",
+          "bio": "sample",
+          "profile_image": "sample",
+          "profile_image_optimized": "sample",
+          "condition_id": "0xabababababababababababababababababababababababababababababababab",
+          "amount": "1.234567890123456789",
+          "title": "sample",
+          "slug": "sample",
+          "icon": "sample",
+          "event_slug": "sample",
+          "type": "MERGE",
+          "is_combo": true
+        },
+        "variant": "MergeActivity"
+      }
+    },
+    {
+      "name": "Activity/RedeemActivity",
+      "union": "Activity",
+      "response": {
+        "proxy_wallet": "123",
+        "timestamp": 1720000000,
+        "transaction_hash": "123",
+        "name": "sample",
+        "pseudonym": "sample",
+        "bio": "sample",
+        "profile_image": "sample",
+        "profile_image_optimized": "sample",
+        "condition_id": "0xabababababababababababababababababababababababababababababababab",
+        "usdc_size": "1.234567890123456789",
+        "title": "sample",
+        "slug": "sample",
+        "icon": "sample",
+        "event_slug": "sample",
+        "type": "REDEEM",
+        "is_combo": false,
+        "outcome": "sample",
+        "outcome_index": 7
+      },
+      "expected": {
+        "value": {
+          "wallet": "123",
+          "timestamp": "2024-07-03T09:46:40Z",
+          "transaction_hash": "123",
+          "name": "sample",
+          "pseudonym": "sample",
+          "bio": "sample",
+          "profile_image": "sample",
+          "profile_image_optimized": "sample",
+          "condition_id": "0xabababababababababababababababababababababababababababababababab",
+          "amount": "1.234567890123456789",
+          "title": "sample",
+          "slug": "sample",
+          "icon": "sample",
+          "event_slug": "sample",
+          "type": "REDEEM",
+          "is_combo": false,
+          "outcome": "sample",
+          "outcome_index": 7
+        },
+        "variant": "RedeemActivity"
+      }
+    },
+    {
+      "name": "Activity/ConversionActivity",
+      "union": "Activity",
+      "response": {
+        "proxy_wallet": "123",
+        "timestamp": 1720000000,
+        "transaction_hash": "123",
+        "name": "sample",
+        "pseudonym": "sample",
+        "bio": "sample",
+        "profile_image": "sample",
+        "profile_image_optimized": "sample",
+        "condition_id": "0xabababababababababababababababababababababababababababababababab",
+        "usdc_size": "1.234567890123456789",
+        "title": "sample",
+        "slug": "sample",
+        "icon": "sample",
+        "event_slug": "sample",
+        "type": "CONVERSION"
+      },
+      "expected": {
+        "value": {
+          "wallet": "123",
+          "timestamp": "2024-07-03T09:46:40Z",
+          "transaction_hash": "123",
+          "name": "sample",
+          "pseudonym": "sample",
+          "bio": "sample",
+          "profile_image": "sample",
+          "profile_image_optimized": "sample",
+          "condition_id": "0xabababababababababababababababababababababababababababababababab",
+          "amount": "1.234567890123456789",
+          "title": "sample",
+          "slug": "sample",
+          "icon": "sample",
+          "event_slug": "sample",
+          "type": "CONVERSION"
+        },
+        "variant": "ConversionActivity"
+      }
+    },
+    {
+      "name": "Activity/RewardActivity",
+      "union": "Activity",
+      "response": {
+        "proxy_wallet": "123",
+        "timestamp": 1720000000,
+        "transaction_hash": "123",
+        "name": "sample",
+        "pseudonym": "sample",
+        "bio": "sample",
+        "profile_image": "sample",
+        "profile_image_optimized": "sample",
+        "usdc_size": "1.234567890123456789",
+        "type": "REWARD"
+      },
+      "expected": {
+        "value": {
+          "wallet": "123",
+          "timestamp": "2024-07-03T09:46:40Z",
+          "transaction_hash": "123",
+          "name": "sample",
+          "pseudonym": "sample",
+          "bio": "sample",
+          "profile_image": "sample",
+          "profile_image_optimized": "sample",
+          "amount": "1.234567890123456789",
+          "type": "REWARD"
+        },
+        "variant": "RewardActivity"
+      }
+    },
+    {
+      "name": "Activity/DepositActivity",
+      "union": "Activity",
+      "response": {
+        "proxy_wallet": "123",
+        "timestamp": 1720000000,
+        "transaction_hash": "123",
+        "name": "sample",
+        "pseudonym": "sample",
+        "bio": "sample",
+        "profile_image": "sample",
+        "profile_image_optimized": "sample",
+        "usdc_size": "1.234567890123456789",
+        "type": "DEPOSIT"
+      },
+      "expected": {
+        "value": {
+          "wallet": "123",
+          "timestamp": "2024-07-03T09:46:40Z",
+          "transaction_hash": "123",
+          "name": "sample",
+          "pseudonym": "sample",
+          "bio": "sample",
+          "profile_image": "sample",
+          "profile_image_optimized": "sample",
+          "amount": "1.234567890123456789",
+          "type": "DEPOSIT"
+        },
+        "variant": "DepositActivity"
+      }
+    },
+    {
+      "name": "Activity/WithdrawalActivity",
+      "union": "Activity",
+      "response": {
+        "proxy_wallet": "123",
+        "timestamp": 1720000000,
+        "transaction_hash": "123",
+        "name": "sample",
+        "pseudonym": "sample",
+        "bio": "sample",
+        "profile_image": "sample",
+        "profile_image_optimized": "sample",
+        "usdc_size": "1.234567890123456789",
+        "type": "WITHDRAWAL"
+      },
+      "expected": {
+        "value": {
+          "wallet": "123",
+          "timestamp": "2024-07-03T09:46:40Z",
+          "transaction_hash": "123",
+          "name": "sample",
+          "pseudonym": "sample",
+          "bio": "sample",
+          "profile_image": "sample",
+          "profile_image_optimized": "sample",
+          "amount": "1.234567890123456789",
+          "type": "WITHDRAWAL"
+        },
+        "variant": "WithdrawalActivity"
+      }
+    },
+    {
+      "name": "Activity/MakerRebateActivity",
+      "union": "Activity",
+      "response": {
+        "proxy_wallet": "123",
+        "timestamp": 1720000000,
+        "transaction_hash": "123",
+        "name": "sample",
+        "pseudonym": "sample",
+        "bio": "sample",
+        "profile_image": "sample",
+        "profile_image_optimized": "sample",
+        "usdc_size": "1.234567890123456789",
+        "type": "MAKER_REBATE"
+      },
+      "expected": {
+        "value": {
+          "wallet": "123",
+          "timestamp": "2024-07-03T09:46:40Z",
+          "transaction_hash": "123",
+          "name": "sample",
+          "pseudonym": "sample",
+          "bio": "sample",
+          "profile_image": "sample",
+          "profile_image_optimized": "sample",
+          "amount": "1.234567890123456789",
+          "type": "MAKER_REBATE"
+        },
+        "variant": "MakerRebateActivity"
+      }
+    },
+    {
+      "name": "Activity/TakerRebateActivity",
+      "union": "Activity",
+      "response": {
+        "proxy_wallet": "123",
+        "timestamp": 1720000000,
+        "transaction_hash": "123",
+        "name": "sample",
+        "pseudonym": "sample",
+        "bio": "sample",
+        "profile_image": "sample",
+        "profile_image_optimized": "sample",
+        "usdc_size": "1.234567890123456789",
+        "type": "TAKER_REBATE"
+      },
+      "expected": {
+        "value": {
+          "wallet": "123",
+          "timestamp": "2024-07-03T09:46:40Z",
+          "transaction_hash": "123",
+          "name": "sample",
+          "pseudonym": "sample",
+          "bio": "sample",
+          "profile_image": "sample",
+          "profile_image_optimized": "sample",
+          "amount": "1.234567890123456789",
+          "type": "TAKER_REBATE"
+        },
+        "variant": "TakerRebateActivity"
+      }
+    },
+    {
+      "name": "Activity/ReferralRewardActivity",
+      "union": "Activity",
+      "response": {
+        "proxy_wallet": "123",
+        "timestamp": 1720000000,
+        "transaction_hash": "123",
+        "name": "sample",
+        "pseudonym": "sample",
+        "bio": "sample",
+        "profile_image": "sample",
+        "profile_image_optimized": "sample",
+        "usdc_size": "1.234567890123456789",
+        "type": "REFERRAL_REWARD"
+      },
+      "expected": {
+        "value": {
+          "wallet": "123",
+          "timestamp": "2024-07-03T09:46:40Z",
+          "transaction_hash": "123",
+          "name": "sample",
+          "pseudonym": "sample",
+          "bio": "sample",
+          "profile_image": "sample",
+          "profile_image_optimized": "sample",
+          "amount": "1.234567890123456789",
+          "type": "REFERRAL_REWARD"
+        },
+        "variant": "ReferralRewardActivity"
+      }
+    },
+    {
+      "name": "Activity/YieldActivity",
+      "union": "Activity",
+      "response": {
+        "proxy_wallet": "123",
+        "timestamp": 1720000000,
+        "transaction_hash": "123",
+        "name": "sample",
+        "pseudonym": "sample",
+        "bio": "sample",
+        "profile_image": "sample",
+        "profile_image_optimized": "sample",
+        "usdc_size": "1.234567890123456789",
+        "type": "YIELD"
+      },
+      "expected": {
+        "value": {
+          "wallet": "123",
+          "timestamp": "2024-07-03T09:46:40Z",
+          "transaction_hash": "123",
+          "name": "sample",
+          "pseudonym": "sample",
+          "bio": "sample",
+          "profile_image": "sample",
+          "profile_image_optimized": "sample",
+          "amount": "1.234567890123456789",
+          "type": "YIELD"
+        },
+        "variant": "YieldActivity"
+      }
+    },
+    {
+      "name": "Activity/MigrationActivity",
+      "union": "Activity",
+      "response": {
+        "proxy_wallet": "123",
+        "timestamp": 1720000000,
+        "transaction_hash": "123",
+        "name": "sample",
+        "pseudonym": "sample",
+        "bio": "sample",
+        "profile_image": "sample",
+        "profile_image_optimized": "sample",
+        "usdc_size": "1.234567890123456789",
+        "type": "MIGRATION"
+      },
+      "expected": {
+        "value": {
+          "wallet": "123",
+          "timestamp": "2024-07-03T09:46:40Z",
+          "transaction_hash": "123",
+          "name": "sample",
+          "pseudonym": "sample",
+          "bio": "sample",
+          "profile_image": "sample",
+          "profile_image_optimized": "sample",
+          "amount": "1.234567890123456789",
+          "type": "MIGRATION"
+        },
+        "variant": "MigrationActivity"
+      }
+    },
+    {
+      "name": "Activity/TipActivity",
+      "union": "Activity",
+      "response": {
+        "proxy_wallet": "123",
+        "timestamp": 1720000000,
+        "transaction_hash": "123",
+        "name": "sample",
+        "pseudonym": "sample",
+        "bio": "sample",
+        "profile_image": "sample",
+        "profile_image_optimized": "sample",
+        "usdc_size": "1.234567890123456789",
+        "type": "TIP",
+        "side": "IN"
+      },
+      "expected": {
+        "value": {
+          "wallet": "123",
+          "timestamp": "2024-07-03T09:46:40Z",
+          "transaction_hash": "123",
+          "name": "sample",
+          "pseudonym": "sample",
+          "bio": "sample",
+          "profile_image": "sample",
+          "profile_image_optimized": "sample",
+          "amount": "1.234567890123456789",
+          "type": "TIP",
+          "side": "IN"
+        },
+        "variant": "TipActivity"
+      }
+    },
+    {
+      "name": "Activity/ComboTradeActivity",
+      "union": "Activity",
+      "response": {
+        "proxy_wallet": "123",
+        "timestamp": 1720000000,
+        "transaction_hash": "123",
+        "name": "sample",
+        "pseudonym": "sample",
+        "bio": "sample",
+        "profile_image": "sample",
+        "profile_image_optimized": "sample",
+        "type": "TRADE",
+        "is_combo": true,
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "token_id": "123",
+        "side": "BUY",
+        "size": "1.234567890123456789",
+        "usdc_size": "1.234567890123456789",
+        "price": "1.234567890123456789",
+        "title": "sample",
+        "icon": "sample",
+        "outcome": "sample",
+        "outcome_index": 7
+      },
+      "expected": {
+        "value": {
+          "wallet": "123",
+          "timestamp": "2024-07-03T09:46:40Z",
+          "transaction_hash": "123",
+          "name": "sample",
+          "pseudonym": "sample",
+          "bio": "sample",
+          "profile_image": "sample",
+          "profile_image_optimized": "sample",
+          "type": "TRADE",
+          "is_combo": true,
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "position_id": "123",
+          "side": "BUY",
+          "shares": "1.234567890123456789",
+          "amount": "1.234567890123456789",
+          "price": "1.234567890123456789",
+          "title": "sample",
+          "icon": "sample",
+          "outcome": "sample",
+          "outcome_index": 7
+        },
+        "variant": "ComboTradeActivity"
+      }
+    },
+    {
+      "name": "Activity/UnknownActivity",
+      "union": "Activity",
+      "response": {
+        "type": "sample",
+        "proxy_wallet": "123",
+        "timestamp": 1720000000,
+        "transaction_hash": "123",
+        "name": "sample",
+        "pseudonym": "sample",
+        "bio": "sample",
+        "profile_image": "sample",
+        "profile_image_optimized": "sample",
+        "raw": {
+          "key": "value"
+        }
+      },
+      "expected": {
+        "value": {
+          "type": "sample",
+          "wallet": "123",
+          "timestamp": "2024-07-03T09:46:40Z",
+          "transaction_hash": "123",
+          "name": "sample",
+          "pseudonym": "sample",
+          "bio": "sample",
+          "profile_image": "sample",
+          "profile_image_optimized": "sample",
+          "raw": {
+            "type": "sample",
+            "proxy_wallet": "123",
+            "timestamp": 1720000000,
+            "transaction_hash": "123",
+            "name": "sample",
+            "pseudonym": "sample",
+            "bio": "sample",
+            "profile_image": "sample",
+            "profile_image_optimized": "sample",
+            "raw": {
+              "key": "value"
+            }
+          }
+        },
+        "variant": "UnknownActivity"
+      }
+    },
+    {
+      "name": "Activity/None",
+      "union": "Activity",
+      "response": null,
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "Activity/[]",
+      "union": "Activity",
+      "response": [],
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "Activity/False",
+      "union": "Activity",
+      "response": false,
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "Activity/{}",
+      "union": "Activity",
+      "response": {},
+      "expected": {
+        "value": {
+          "type": "",
+          "wallet": null,
+          "timestamp": null,
+          "transaction_hash": null,
+          "name": null,
+          "pseudonym": null,
+          "bio": null,
+          "profile_image": null,
+          "profile_image_optimized": null,
+          "raw": {}
+        },
+        "variant": "UnknownActivity"
+      }
+    },
+    {
+      "name": "Activity/{'type': 'FUTURE', 'kind': 'future', 'extra': 7}",
+      "union": "Activity",
+      "response": {
+        "type": "FUTURE",
+        "kind": "future",
+        "extra": 7
+      },
+      "expected": {
+        "value": {
+          "type": "FUTURE",
+          "wallet": null,
+          "timestamp": null,
+          "transaction_hash": null,
+          "name": null,
+          "pseudonym": null,
+          "bio": null,
+          "profile_image": null,
+          "profile_image_optimized": null,
+          "raw": {
+            "type": "FUTURE",
+            "kind": "future",
+            "extra": 7
+          }
+        },
+        "variant": "UnknownActivity"
+      }
+    },
+    {
+      "name": "Activity/unknown-type/FUTURE",
+      "union": "Activity",
+      "response": {
+        "type": "FUTURE",
+        "proxy_wallet": "123",
+        "timestamp": 1720000000,
+        "transaction_hash": "123",
+        "name": "sample",
+        "pseudonym": "sample",
+        "bio": "sample",
+        "profile_image": "sample",
+        "profile_image_optimized": "sample",
+        "raw": {
+          "key": "value"
+        }
+      },
+      "expected": {
+        "value": {
+          "type": "FUTURE",
+          "wallet": "123",
+          "timestamp": "2024-07-03T09:46:40Z",
+          "transaction_hash": "123",
+          "name": "sample",
+          "pseudonym": "sample",
+          "bio": "sample",
+          "profile_image": "sample",
+          "profile_image_optimized": "sample",
+          "raw": {
+            "type": "FUTURE",
+            "proxy_wallet": "123",
+            "timestamp": 1720000000,
+            "transaction_hash": "123",
+            "name": "sample",
+            "pseudonym": "sample",
+            "bio": "sample",
+            "profile_image": "sample",
+            "profile_image_optimized": "sample",
+            "raw": {
+              "key": "value"
+            }
+          }
+        },
+        "variant": "UnknownActivity"
+      }
+    },
+    {
+      "name": "Activity/unknown-type/None",
+      "union": "Activity",
+      "response": {
+        "type": null,
+        "proxy_wallet": "123",
+        "timestamp": 1720000000,
+        "transaction_hash": "123",
+        "name": "sample",
+        "pseudonym": "sample",
+        "bio": "sample",
+        "profile_image": "sample",
+        "profile_image_optimized": "sample",
+        "raw": {
+          "key": "value"
+        }
+      },
+      "expected": {
+        "value": {
+          "type": "",
+          "wallet": "123",
+          "timestamp": "2024-07-03T09:46:40Z",
+          "transaction_hash": "123",
+          "name": "sample",
+          "pseudonym": "sample",
+          "bio": "sample",
+          "profile_image": "sample",
+          "profile_image_optimized": "sample",
+          "raw": {
+            "type": null,
+            "proxy_wallet": "123",
+            "timestamp": 1720000000,
+            "transaction_hash": "123",
+            "name": "sample",
+            "pseudonym": "sample",
+            "bio": "sample",
+            "profile_image": "sample",
+            "profile_image_optimized": "sample",
+            "raw": {
+              "key": "value"
+            }
+          }
+        },
+        "variant": "UnknownActivity"
+      }
+    },
+    {
+      "name": "Activity/unknown-type/False",
+      "union": "Activity",
+      "response": {
+        "type": false,
+        "proxy_wallet": "123",
+        "timestamp": 1720000000,
+        "transaction_hash": "123",
+        "name": "sample",
+        "pseudonym": "sample",
+        "bio": "sample",
+        "profile_image": "sample",
+        "profile_image_optimized": "sample",
+        "raw": {
+          "key": "value"
+        }
+      },
+      "expected": {
+        "value": {
+          "type": "",
+          "wallet": "123",
+          "timestamp": "2024-07-03T09:46:40Z",
+          "transaction_hash": "123",
+          "name": "sample",
+          "pseudonym": "sample",
+          "bio": "sample",
+          "profile_image": "sample",
+          "profile_image_optimized": "sample",
+          "raw": {
+            "type": false,
+            "proxy_wallet": "123",
+            "timestamp": 1720000000,
+            "transaction_hash": "123",
+            "name": "sample",
+            "pseudonym": "sample",
+            "bio": "sample",
+            "profile_image": "sample",
+            "profile_image_optimized": "sample",
+            "raw": {
+              "key": "value"
+            }
+          }
+        },
+        "variant": "UnknownActivity"
+      }
+    },
+    {
+      "name": "Activity/unknown-type/7",
+      "union": "Activity",
+      "response": {
+        "type": 7,
+        "proxy_wallet": "123",
+        "timestamp": 1720000000,
+        "transaction_hash": "123",
+        "name": "sample",
+        "pseudonym": "sample",
+        "bio": "sample",
+        "profile_image": "sample",
+        "profile_image_optimized": "sample",
+        "raw": {
+          "key": "value"
+        }
+      },
+      "expected": {
+        "value": {
+          "type": "",
+          "wallet": "123",
+          "timestamp": "2024-07-03T09:46:40Z",
+          "transaction_hash": "123",
+          "name": "sample",
+          "pseudonym": "sample",
+          "bio": "sample",
+          "profile_image": "sample",
+          "profile_image_optimized": "sample",
+          "raw": {
+            "type": 7,
+            "proxy_wallet": "123",
+            "timestamp": 1720000000,
+            "transaction_hash": "123",
+            "name": "sample",
+            "pseudonym": "sample",
+            "bio": "sample",
+            "profile_image": "sample",
+            "profile_image_optimized": "sample",
+            "raw": {
+              "key": "value"
+            }
+          }
+        },
+        "variant": "UnknownActivity"
+      }
+    },
+    {
+      "name": "Activity/unknown-type/{}",
+      "union": "Activity",
+      "response": {
+        "type": {},
+        "proxy_wallet": "123",
+        "timestamp": 1720000000,
+        "transaction_hash": "123",
+        "name": "sample",
+        "pseudonym": "sample",
+        "bio": "sample",
+        "profile_image": "sample",
+        "profile_image_optimized": "sample",
+        "raw": {
+          "key": "value"
+        }
+      },
+      "expected": {
+        "value": {
+          "type": "",
+          "wallet": "123",
+          "timestamp": "2024-07-03T09:46:40Z",
+          "transaction_hash": "123",
+          "name": "sample",
+          "pseudonym": "sample",
+          "bio": "sample",
+          "profile_image": "sample",
+          "profile_image_optimized": "sample",
+          "raw": {
+            "type": {},
+            "proxy_wallet": "123",
+            "timestamp": 1720000000,
+            "transaction_hash": "123",
+            "name": "sample",
+            "pseudonym": "sample",
+            "bio": "sample",
+            "profile_image": "sample",
+            "profile_image_optimized": "sample",
+            "raw": {
+              "key": "value"
+            }
+          }
+        },
+        "variant": "UnknownActivity"
+      }
+    },
+    {
+      "name": "Activity/combo-flag/True",
+      "union": "Activity",
+      "response": {
+        "proxy_wallet": "123",
+        "timestamp": 1720000000,
+        "transaction_hash": "123",
+        "name": "sample",
+        "pseudonym": "sample",
+        "bio": "sample",
+        "profile_image": "sample",
+        "profile_image_optimized": "sample",
+        "type": "TRADE",
+        "is_combo": true,
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "token_id": "123",
+        "side": "BUY",
+        "size": "1.234567890123456789",
+        "usdc_size": "1.234567890123456789",
+        "price": "1.234567890123456789",
+        "title": "sample",
+        "icon": "sample",
+        "outcome": "sample",
+        "outcome_index": 7
+      },
+      "expected": {
+        "value": {
+          "wallet": "123",
+          "timestamp": "2024-07-03T09:46:40Z",
+          "transaction_hash": "123",
+          "name": "sample",
+          "pseudonym": "sample",
+          "bio": "sample",
+          "profile_image": "sample",
+          "profile_image_optimized": "sample",
+          "type": "TRADE",
+          "is_combo": true,
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "position_id": "123",
+          "side": "BUY",
+          "shares": "1.234567890123456789",
+          "amount": "1.234567890123456789",
+          "price": "1.234567890123456789",
+          "title": "sample",
+          "icon": "sample",
+          "outcome": "sample",
+          "outcome_index": 7
+        },
+        "variant": "ComboTradeActivity"
+      }
+    },
+    {
+      "name": "Activity/combo-flag/False",
+      "union": "Activity",
+      "response": {
+        "proxy_wallet": "123",
+        "timestamp": 1720000000,
+        "transaction_hash": "123",
+        "name": "sample",
+        "pseudonym": "sample",
+        "bio": "sample",
+        "profile_image": "sample",
+        "profile_image_optimized": "sample",
+        "type": "TRADE",
+        "is_combo": false,
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "token_id": "123",
+        "side": "BUY",
+        "size": "1.234567890123456789",
+        "usdc_size": "1.234567890123456789",
+        "price": "1.234567890123456789",
+        "title": "sample",
+        "icon": "sample",
+        "outcome": "sample",
+        "outcome_index": 7
+      },
+      "expected": {
+        "value": {
+          "wallet": "123",
+          "timestamp": "2024-07-03T09:46:40Z",
+          "transaction_hash": "123",
+          "name": "sample",
+          "pseudonym": "sample",
+          "bio": "sample",
+          "profile_image": "sample",
+          "profile_image_optimized": "sample",
+          "type": "TRADE",
+          "is_combo": false,
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "asset_id": "123",
+          "side": "BUY",
+          "shares": "1.234567890123456789",
+          "amount": "1.234567890123456789",
+          "price": "1.234567890123456789",
+          "outcome": "sample",
+          "outcome_index": 7,
+          "title": "sample",
+          "slug": null,
+          "icon": "sample",
+          "event_slug": null
+        },
+        "variant": "TradeActivity"
+      }
+    },
+    {
+      "name": "Activity/combo-flag/true",
+      "union": "Activity",
+      "response": {
+        "proxy_wallet": "123",
+        "timestamp": 1720000000,
+        "transaction_hash": "123",
+        "name": "sample",
+        "pseudonym": "sample",
+        "bio": "sample",
+        "profile_image": "sample",
+        "profile_image_optimized": "sample",
+        "type": "TRADE",
+        "is_combo": "true",
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "token_id": "123",
+        "side": "BUY",
+        "size": "1.234567890123456789",
+        "usdc_size": "1.234567890123456789",
+        "price": "1.234567890123456789",
+        "title": "sample",
+        "icon": "sample",
+        "outcome": "sample",
+        "outcome_index": 7
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "Activity/combo-flag/1",
+      "union": "Activity",
+      "response": {
+        "proxy_wallet": "123",
+        "timestamp": 1720000000,
+        "transaction_hash": "123",
+        "name": "sample",
+        "pseudonym": "sample",
+        "bio": "sample",
+        "profile_image": "sample",
+        "profile_image_optimized": "sample",
+        "type": "TRADE",
+        "is_combo": 1,
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "token_id": "123",
+        "side": "BUY",
+        "size": "1.234567890123456789",
+        "usdc_size": "1.234567890123456789",
+        "price": "1.234567890123456789",
+        "title": "sample",
+        "icon": "sample",
+        "outcome": "sample",
+        "outcome_index": 7
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "ComboActivity/ComboSplitActivity",
+      "union": "ComboActivity",
+      "response": {
+        "id": "123",
+        "proxy_wallet": "123",
+        "combo_condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "combo_position_id": "123",
+        "amount_usdc": "1.234567890123456789",
+        "timestamp": 1720000000,
+        "transaction_hash": "123",
+        "block_number": 7,
+        "legs": [
+          {
+            "leg_index": 7,
+            "leg_position_id": "123",
+            "leg_condition_id": "0xabababababababababababababababababababababababababababababababab",
+            "leg_outcome_index": 7,
+            "leg_outcome_label": "sample",
+            "leg_status": "OPEN",
+            "leg_resolved_at": 1720000000,
+            "leg_current_price": "1.234567890123456789",
+            "market": {
+              "market_id": "123",
+              "slug": "sample",
+              "title": "sample",
+              "question": "sample",
+              "group_item_title": "sample",
+              "sports_market_type": "sample",
+              "line": "1.234567890123456789",
+              "outcomes": [
+                "sample"
+              ],
+              "outcome": "sample",
+              "image_url": "sample",
+              "icon_url": "sample",
+              "category": "sample",
+              "subcategory": "sample",
+              "tags": [
+                "sample"
+              ],
+              "end_date": 1720000000,
+              "event": {
+                "event_id": "123",
+                "event_slug": "sample",
+                "event_title": "sample",
+                "event_image": "sample"
+              }
+            }
+          }
+        ],
+        "type": "SPLIT"
+      },
+      "expected": {
+        "value": {
+          "id": "123",
+          "wallet": "123",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "position_id": "123",
+          "amount": "1.234567890123456789",
+          "timestamp": "2024-07-03T09:46:40Z",
+          "transaction_hash": "123",
+          "block_number": 7,
+          "legs": [
+            {
+              "leg_index": 7,
+              "leg_position_id": "123",
+              "leg_condition_id": "0xabababababababababababababababababababababababababababababababab",
+              "leg_outcome_index": 7,
+              "leg_outcome_label": "sample",
+              "leg_status": "OPEN",
+              "leg_resolved_at": "2024-07-03T09:46:40Z",
+              "leg_current_price": "1.234567890123456789",
+              "market": {
+                "market_id": "123",
+                "slug": "sample",
+                "title": "sample",
+                "question": "sample",
+                "group_item_title": "sample",
+                "sports_market_type": "sample",
+                "line": "1.234567890123456789",
+                "outcomes": [
+                  "sample"
+                ],
+                "outcome": "sample",
+                "image_url": "sample",
+                "icon_url": "sample",
+                "category": "sample",
+                "subcategory": "sample",
+                "tags": [
+                  "sample"
+                ],
+                "end_date": "2024-07-03T09:46:40Z",
+                "event": {
+                  "event_id": "123",
+                  "event_slug": "sample",
+                  "event_title": "sample",
+                  "event_image": "sample"
+                }
+              }
+            }
+          ],
+          "type": "SPLIT"
+        },
+        "variant": "ComboSplitActivity"
+      }
+    },
+    {
+      "name": "ComboActivity/ComboMergeActivity",
+      "union": "ComboActivity",
+      "response": {
+        "id": "123",
+        "proxy_wallet": "123",
+        "combo_condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "combo_position_id": "123",
+        "amount_usdc": "1.234567890123456789",
+        "timestamp": 1720000000,
+        "transaction_hash": "123",
+        "block_number": 7,
+        "legs": [
+          {
+            "leg_index": 7,
+            "leg_position_id": "123",
+            "leg_condition_id": "0xabababababababababababababababababababababababababababababababab",
+            "leg_outcome_index": 7,
+            "leg_outcome_label": "sample",
+            "leg_status": "OPEN",
+            "leg_resolved_at": 1720000000,
+            "leg_current_price": "1.234567890123456789",
+            "market": {
+              "market_id": "123",
+              "slug": "sample",
+              "title": "sample",
+              "question": "sample",
+              "group_item_title": "sample",
+              "sports_market_type": "sample",
+              "line": "1.234567890123456789",
+              "outcomes": [
+                "sample"
+              ],
+              "outcome": "sample",
+              "image_url": "sample",
+              "icon_url": "sample",
+              "category": "sample",
+              "subcategory": "sample",
+              "tags": [
+                "sample"
+              ],
+              "end_date": 1720000000,
+              "event": {
+                "event_id": "123",
+                "event_slug": "sample",
+                "event_title": "sample",
+                "event_image": "sample"
+              }
+            }
+          }
+        ],
+        "type": "MERGE"
+      },
+      "expected": {
+        "value": {
+          "id": "123",
+          "wallet": "123",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "position_id": "123",
+          "amount": "1.234567890123456789",
+          "timestamp": "2024-07-03T09:46:40Z",
+          "transaction_hash": "123",
+          "block_number": 7,
+          "legs": [
+            {
+              "leg_index": 7,
+              "leg_position_id": "123",
+              "leg_condition_id": "0xabababababababababababababababababababababababababababababababab",
+              "leg_outcome_index": 7,
+              "leg_outcome_label": "sample",
+              "leg_status": "OPEN",
+              "leg_resolved_at": "2024-07-03T09:46:40Z",
+              "leg_current_price": "1.234567890123456789",
+              "market": {
+                "market_id": "123",
+                "slug": "sample",
+                "title": "sample",
+                "question": "sample",
+                "group_item_title": "sample",
+                "sports_market_type": "sample",
+                "line": "1.234567890123456789",
+                "outcomes": [
+                  "sample"
+                ],
+                "outcome": "sample",
+                "image_url": "sample",
+                "icon_url": "sample",
+                "category": "sample",
+                "subcategory": "sample",
+                "tags": [
+                  "sample"
+                ],
+                "end_date": "2024-07-03T09:46:40Z",
+                "event": {
+                  "event_id": "123",
+                  "event_slug": "sample",
+                  "event_title": "sample",
+                  "event_image": "sample"
+                }
+              }
+            }
+          ],
+          "type": "MERGE"
+        },
+        "variant": "ComboMergeActivity"
+      }
+    },
+    {
+      "name": "ComboActivity/ComboConvertActivity",
+      "union": "ComboActivity",
+      "response": {
+        "id": "123",
+        "proxy_wallet": "123",
+        "combo_condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "combo_position_id": "123",
+        "amount_usdc": "1.234567890123456789",
+        "timestamp": 1720000000,
+        "transaction_hash": "123",
+        "block_number": 7,
+        "legs": [
+          {
+            "leg_index": 7,
+            "leg_position_id": "123",
+            "leg_condition_id": "0xabababababababababababababababababababababababababababababababab",
+            "leg_outcome_index": 7,
+            "leg_outcome_label": "sample",
+            "leg_status": "OPEN",
+            "leg_resolved_at": 1720000000,
+            "leg_current_price": "1.234567890123456789",
+            "market": {
+              "market_id": "123",
+              "slug": "sample",
+              "title": "sample",
+              "question": "sample",
+              "group_item_title": "sample",
+              "sports_market_type": "sample",
+              "line": "1.234567890123456789",
+              "outcomes": [
+                "sample"
+              ],
+              "outcome": "sample",
+              "image_url": "sample",
+              "icon_url": "sample",
+              "category": "sample",
+              "subcategory": "sample",
+              "tags": [
+                "sample"
+              ],
+              "end_date": 1720000000,
+              "event": {
+                "event_id": "123",
+                "event_slug": "sample",
+                "event_title": "sample",
+                "event_image": "sample"
+              }
+            }
+          }
+        ],
+        "type": "CONVERT"
+      },
+      "expected": {
+        "value": {
+          "id": "123",
+          "wallet": "123",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "position_id": "123",
+          "amount": "1.234567890123456789",
+          "timestamp": "2024-07-03T09:46:40Z",
+          "transaction_hash": "123",
+          "block_number": 7,
+          "legs": [
+            {
+              "leg_index": 7,
+              "leg_position_id": "123",
+              "leg_condition_id": "0xabababababababababababababababababababababababababababababababab",
+              "leg_outcome_index": 7,
+              "leg_outcome_label": "sample",
+              "leg_status": "OPEN",
+              "leg_resolved_at": "2024-07-03T09:46:40Z",
+              "leg_current_price": "1.234567890123456789",
+              "market": {
+                "market_id": "123",
+                "slug": "sample",
+                "title": "sample",
+                "question": "sample",
+                "group_item_title": "sample",
+                "sports_market_type": "sample",
+                "line": "1.234567890123456789",
+                "outcomes": [
+                  "sample"
+                ],
+                "outcome": "sample",
+                "image_url": "sample",
+                "icon_url": "sample",
+                "category": "sample",
+                "subcategory": "sample",
+                "tags": [
+                  "sample"
+                ],
+                "end_date": "2024-07-03T09:46:40Z",
+                "event": {
+                  "event_id": "123",
+                  "event_slug": "sample",
+                  "event_title": "sample",
+                  "event_image": "sample"
+                }
+              }
+            }
+          ],
+          "type": "CONVERT"
+        },
+        "variant": "ComboConvertActivity"
+      }
+    },
+    {
+      "name": "ComboActivity/ComboCompressActivity",
+      "union": "ComboActivity",
+      "response": {
+        "id": "123",
+        "proxy_wallet": "123",
+        "combo_condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "combo_position_id": "123",
+        "amount_usdc": "1.234567890123456789",
+        "timestamp": 1720000000,
+        "transaction_hash": "123",
+        "block_number": 7,
+        "legs": [
+          {
+            "leg_index": 7,
+            "leg_position_id": "123",
+            "leg_condition_id": "0xabababababababababababababababababababababababababababababababab",
+            "leg_outcome_index": 7,
+            "leg_outcome_label": "sample",
+            "leg_status": "OPEN",
+            "leg_resolved_at": 1720000000,
+            "leg_current_price": "1.234567890123456789",
+            "market": {
+              "market_id": "123",
+              "slug": "sample",
+              "title": "sample",
+              "question": "sample",
+              "group_item_title": "sample",
+              "sports_market_type": "sample",
+              "line": "1.234567890123456789",
+              "outcomes": [
+                "sample"
+              ],
+              "outcome": "sample",
+              "image_url": "sample",
+              "icon_url": "sample",
+              "category": "sample",
+              "subcategory": "sample",
+              "tags": [
+                "sample"
+              ],
+              "end_date": 1720000000,
+              "event": {
+                "event_id": "123",
+                "event_slug": "sample",
+                "event_title": "sample",
+                "event_image": "sample"
+              }
+            }
+          }
+        ],
+        "type": "COMPRESS"
+      },
+      "expected": {
+        "value": {
+          "id": "123",
+          "wallet": "123",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "position_id": "123",
+          "amount": "1.234567890123456789",
+          "timestamp": "2024-07-03T09:46:40Z",
+          "transaction_hash": "123",
+          "block_number": 7,
+          "legs": [
+            {
+              "leg_index": 7,
+              "leg_position_id": "123",
+              "leg_condition_id": "0xabababababababababababababababababababababababababababababababab",
+              "leg_outcome_index": 7,
+              "leg_outcome_label": "sample",
+              "leg_status": "OPEN",
+              "leg_resolved_at": "2024-07-03T09:46:40Z",
+              "leg_current_price": "1.234567890123456789",
+              "market": {
+                "market_id": "123",
+                "slug": "sample",
+                "title": "sample",
+                "question": "sample",
+                "group_item_title": "sample",
+                "sports_market_type": "sample",
+                "line": "1.234567890123456789",
+                "outcomes": [
+                  "sample"
+                ],
+                "outcome": "sample",
+                "image_url": "sample",
+                "icon_url": "sample",
+                "category": "sample",
+                "subcategory": "sample",
+                "tags": [
+                  "sample"
+                ],
+                "end_date": "2024-07-03T09:46:40Z",
+                "event": {
+                  "event_id": "123",
+                  "event_slug": "sample",
+                  "event_title": "sample",
+                  "event_image": "sample"
+                }
+              }
+            }
+          ],
+          "type": "COMPRESS"
+        },
+        "variant": "ComboCompressActivity"
+      }
+    },
+    {
+      "name": "ComboActivity/ComboWrapActivity",
+      "union": "ComboActivity",
+      "response": {
+        "id": "123",
+        "proxy_wallet": "123",
+        "combo_condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "combo_position_id": "123",
+        "amount_usdc": "1.234567890123456789",
+        "timestamp": 1720000000,
+        "transaction_hash": "123",
+        "block_number": 7,
+        "legs": [
+          {
+            "leg_index": 7,
+            "leg_position_id": "123",
+            "leg_condition_id": "0xabababababababababababababababababababababababababababababababab",
+            "leg_outcome_index": 7,
+            "leg_outcome_label": "sample",
+            "leg_status": "OPEN",
+            "leg_resolved_at": 1720000000,
+            "leg_current_price": "1.234567890123456789",
+            "market": {
+              "market_id": "123",
+              "slug": "sample",
+              "title": "sample",
+              "question": "sample",
+              "group_item_title": "sample",
+              "sports_market_type": "sample",
+              "line": "1.234567890123456789",
+              "outcomes": [
+                "sample"
+              ],
+              "outcome": "sample",
+              "image_url": "sample",
+              "icon_url": "sample",
+              "category": "sample",
+              "subcategory": "sample",
+              "tags": [
+                "sample"
+              ],
+              "end_date": 1720000000,
+              "event": {
+                "event_id": "123",
+                "event_slug": "sample",
+                "event_title": "sample",
+                "event_image": "sample"
+              }
+            }
+          }
+        ],
+        "type": "WRAP"
+      },
+      "expected": {
+        "value": {
+          "id": "123",
+          "wallet": "123",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "position_id": "123",
+          "amount": "1.234567890123456789",
+          "timestamp": "2024-07-03T09:46:40Z",
+          "transaction_hash": "123",
+          "block_number": 7,
+          "legs": [
+            {
+              "leg_index": 7,
+              "leg_position_id": "123",
+              "leg_condition_id": "0xabababababababababababababababababababababababababababababababab",
+              "leg_outcome_index": 7,
+              "leg_outcome_label": "sample",
+              "leg_status": "OPEN",
+              "leg_resolved_at": "2024-07-03T09:46:40Z",
+              "leg_current_price": "1.234567890123456789",
+              "market": {
+                "market_id": "123",
+                "slug": "sample",
+                "title": "sample",
+                "question": "sample",
+                "group_item_title": "sample",
+                "sports_market_type": "sample",
+                "line": "1.234567890123456789",
+                "outcomes": [
+                  "sample"
+                ],
+                "outcome": "sample",
+                "image_url": "sample",
+                "icon_url": "sample",
+                "category": "sample",
+                "subcategory": "sample",
+                "tags": [
+                  "sample"
+                ],
+                "end_date": "2024-07-03T09:46:40Z",
+                "event": {
+                  "event_id": "123",
+                  "event_slug": "sample",
+                  "event_title": "sample",
+                  "event_image": "sample"
+                }
+              }
+            }
+          ],
+          "type": "WRAP"
+        },
+        "variant": "ComboWrapActivity"
+      }
+    },
+    {
+      "name": "ComboActivity/ComboUnwrapActivity",
+      "union": "ComboActivity",
+      "response": {
+        "id": "123",
+        "proxy_wallet": "123",
+        "combo_condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "combo_position_id": "123",
+        "amount_usdc": "1.234567890123456789",
+        "timestamp": 1720000000,
+        "transaction_hash": "123",
+        "block_number": 7,
+        "legs": [
+          {
+            "leg_index": 7,
+            "leg_position_id": "123",
+            "leg_condition_id": "0xabababababababababababababababababababababababababababababababab",
+            "leg_outcome_index": 7,
+            "leg_outcome_label": "sample",
+            "leg_status": "OPEN",
+            "leg_resolved_at": 1720000000,
+            "leg_current_price": "1.234567890123456789",
+            "market": {
+              "market_id": "123",
+              "slug": "sample",
+              "title": "sample",
+              "question": "sample",
+              "group_item_title": "sample",
+              "sports_market_type": "sample",
+              "line": "1.234567890123456789",
+              "outcomes": [
+                "sample"
+              ],
+              "outcome": "sample",
+              "image_url": "sample",
+              "icon_url": "sample",
+              "category": "sample",
+              "subcategory": "sample",
+              "tags": [
+                "sample"
+              ],
+              "end_date": 1720000000,
+              "event": {
+                "event_id": "123",
+                "event_slug": "sample",
+                "event_title": "sample",
+                "event_image": "sample"
+              }
+            }
+          }
+        ],
+        "type": "UNWRAP"
+      },
+      "expected": {
+        "value": {
+          "id": "123",
+          "wallet": "123",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "position_id": "123",
+          "amount": "1.234567890123456789",
+          "timestamp": "2024-07-03T09:46:40Z",
+          "transaction_hash": "123",
+          "block_number": 7,
+          "legs": [
+            {
+              "leg_index": 7,
+              "leg_position_id": "123",
+              "leg_condition_id": "0xabababababababababababababababababababababababababababababababab",
+              "leg_outcome_index": 7,
+              "leg_outcome_label": "sample",
+              "leg_status": "OPEN",
+              "leg_resolved_at": "2024-07-03T09:46:40Z",
+              "leg_current_price": "1.234567890123456789",
+              "market": {
+                "market_id": "123",
+                "slug": "sample",
+                "title": "sample",
+                "question": "sample",
+                "group_item_title": "sample",
+                "sports_market_type": "sample",
+                "line": "1.234567890123456789",
+                "outcomes": [
+                  "sample"
+                ],
+                "outcome": "sample",
+                "image_url": "sample",
+                "icon_url": "sample",
+                "category": "sample",
+                "subcategory": "sample",
+                "tags": [
+                  "sample"
+                ],
+                "end_date": "2024-07-03T09:46:40Z",
+                "event": {
+                  "event_id": "123",
+                  "event_slug": "sample",
+                  "event_title": "sample",
+                  "event_image": "sample"
+                }
+              }
+            }
+          ],
+          "type": "UNWRAP"
+        },
+        "variant": "ComboUnwrapActivity"
+      }
+    },
+    {
+      "name": "ComboActivity/ComboRedeemActivity",
+      "union": "ComboActivity",
+      "response": {
+        "id": "123",
+        "proxy_wallet": "123",
+        "combo_condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "combo_position_id": "123",
+        "amount_usdc": "1.234567890123456789",
+        "timestamp": 1720000000,
+        "transaction_hash": "123",
+        "block_number": 7,
+        "legs": [
+          {
+            "leg_index": 7,
+            "leg_position_id": "123",
+            "leg_condition_id": "0xabababababababababababababababababababababababababababababababab",
+            "leg_outcome_index": 7,
+            "leg_outcome_label": "sample",
+            "leg_status": "OPEN",
+            "leg_resolved_at": 1720000000,
+            "leg_current_price": "1.234567890123456789",
+            "market": {
+              "market_id": "123",
+              "slug": "sample",
+              "title": "sample",
+              "question": "sample",
+              "group_item_title": "sample",
+              "sports_market_type": "sample",
+              "line": "1.234567890123456789",
+              "outcomes": [
+                "sample"
+              ],
+              "outcome": "sample",
+              "image_url": "sample",
+              "icon_url": "sample",
+              "category": "sample",
+              "subcategory": "sample",
+              "tags": [
+                "sample"
+              ],
+              "end_date": 1720000000,
+              "event": {
+                "event_id": "123",
+                "event_slug": "sample",
+                "event_title": "sample",
+                "event_image": "sample"
+              }
+            }
+          }
+        ],
+        "type": "REDEEM",
+        "payout_usdc": "1.234567890123456789"
+      },
+      "expected": {
+        "value": {
+          "id": "123",
+          "wallet": "123",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "position_id": "123",
+          "amount": "1.234567890123456789",
+          "timestamp": "2024-07-03T09:46:40Z",
+          "transaction_hash": "123",
+          "block_number": 7,
+          "legs": [
+            {
+              "leg_index": 7,
+              "leg_position_id": "123",
+              "leg_condition_id": "0xabababababababababababababababababababababababababababababababab",
+              "leg_outcome_index": 7,
+              "leg_outcome_label": "sample",
+              "leg_status": "OPEN",
+              "leg_resolved_at": "2024-07-03T09:46:40Z",
+              "leg_current_price": "1.234567890123456789",
+              "market": {
+                "market_id": "123",
+                "slug": "sample",
+                "title": "sample",
+                "question": "sample",
+                "group_item_title": "sample",
+                "sports_market_type": "sample",
+                "line": "1.234567890123456789",
+                "outcomes": [
+                  "sample"
+                ],
+                "outcome": "sample",
+                "image_url": "sample",
+                "icon_url": "sample",
+                "category": "sample",
+                "subcategory": "sample",
+                "tags": [
+                  "sample"
+                ],
+                "end_date": "2024-07-03T09:46:40Z",
+                "event": {
+                  "event_id": "123",
+                  "event_slug": "sample",
+                  "event_title": "sample",
+                  "event_image": "sample"
+                }
+              }
+            }
+          ],
+          "type": "REDEEM",
+          "payout": "1.234567890123456789"
+        },
+        "variant": "ComboRedeemActivity"
+      }
+    },
+    {
+      "name": "ComboActivity/None",
+      "union": "ComboActivity",
+      "response": null,
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "ComboActivity/[]",
+      "union": "ComboActivity",
+      "response": [],
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "ComboActivity/False",
+      "union": "ComboActivity",
+      "response": false,
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "ComboActivity/{}",
+      "union": "ComboActivity",
+      "response": {},
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "ComboActivity/{'type': 'FUTURE', 'kind': 'future', 'extra': 7}",
+      "union": "ComboActivity",
+      "response": {
+        "type": "FUTURE",
+        "kind": "future",
+        "extra": 7
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "BiggestWinner/MarketBiggestWinner",
+      "union": "BiggestWinner",
+      "response": {
+        "win_rank": 7,
+        "user_id": "123",
+        "pnl": "1.234567890123456789",
+        "initial_value": "1.234567890123456789",
+        "final_value": "1.234567890123456789",
+        "resolved_at": 1720000000,
+        "user_name": "sample",
+        "profile_image": "sample",
+        "event_title": "sample",
+        "kind": "market",
+        "condition_id": "0xabababababababababababababababababababababababababababababababab",
+        "position_id": "123",
+        "event_id": "123",
+        "event_slug": "sample"
+      },
+      "expected": {
+        "value": {
+          "rank": 7,
+          "wallet": "123",
+          "pnl": "1.234567890123456789",
+          "initial_value": "1.234567890123456789",
+          "final_value": "1.234567890123456789",
+          "resolved_at": "2024-07-03T09:46:40Z",
+          "user_name": "sample",
+          "profile_image": "sample",
+          "event_title": "sample",
+          "kind": "market",
+          "condition_id": "0xabababababababababababababababababababababababababababababababab",
+          "asset_id": "123",
+          "event_id": "123",
+          "event_slug": "sample"
+        },
+        "variant": "MarketBiggestWinner"
+      }
+    },
+    {
+      "name": "BiggestWinner/ComboBiggestWinner",
+      "union": "BiggestWinner",
+      "response": {
+        "win_rank": 7,
+        "user_id": "123",
+        "pnl": "1.234567890123456789",
+        "initial_value": "1.234567890123456789",
+        "final_value": "1.234567890123456789",
+        "resolved_at": 1720000000,
+        "user_name": "sample",
+        "profile_image": "sample",
+        "event_title": "sample",
+        "kind": "combo",
+        "condition_id": "0x03abababababababababababababababababababababababababababababab",
+        "position_id": "123"
+      },
+      "expected": {
+        "value": {
+          "rank": 7,
+          "wallet": "123",
+          "pnl": "1.234567890123456789",
+          "initial_value": "1.234567890123456789",
+          "final_value": "1.234567890123456789",
+          "resolved_at": "2024-07-03T09:46:40Z",
+          "user_name": "sample",
+          "profile_image": "sample",
+          "event_title": "sample",
+          "kind": "combo",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "position_id": "123"
+        },
+        "variant": "ComboBiggestWinner"
+      }
+    },
+    {
+      "name": "BiggestWinner/None",
+      "union": "BiggestWinner",
+      "response": null,
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "BiggestWinner/[]",
+      "union": "BiggestWinner",
+      "response": [],
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "BiggestWinner/False",
+      "union": "BiggestWinner",
+      "response": false,
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "BiggestWinner/{}",
+      "union": "BiggestWinner",
+      "response": {},
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "BiggestWinner/{'type': 'FUTURE', 'kind': 'future', 'extra': 7}",
+      "union": "BiggestWinner",
+      "response": {
+        "type": "FUTURE",
+        "kind": "future",
+        "extra": 7
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    }
+  ]
+}

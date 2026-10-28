@@ -1,0 +1,782 @@
+{
+  "cases": [
+    {
+      "name": "market/0",
+      "spec": {
+        "kind": "market",
+        "input": {
+          "asset_ids": [
+            "123"
+          ]
+        }
+      },
+      "service": "market",
+      "expected": {
+        "initial": {
+          "type": "market",
+          "assets_ids": [
+            "123"
+          ],
+          "custom_feature_enabled": false
+        },
+        "matches": [
+          "MarketBookEvent",
+          "MarketBookEvent/missing/hash",
+          "MarketBookEvent/null/hash",
+          "MarketBookEvent/missing/timestamp",
+          "MarketBookEvent/null/timestamp",
+          "MarketBookEvent/missing/min_order_size",
+          "MarketBookEvent/null/min_order_size",
+          "MarketBookEvent/missing/tick_size",
+          "MarketBookEvent/null/tick_size",
+          "MarketBookEvent/missing/neg_risk",
+          "MarketBookEvent/null/neg_risk",
+          "MarketBookEvent/missing/last_trade_price",
+          "MarketBookEvent/null/last_trade_price",
+          "MarketBookEvent/envelope",
+          "MarketBookEvent/timestamp/'0'",
+          "MarketBookEvent/timestamp/'1720000000001'",
+          "MarketBookEvent/timestamp/''",
+          "MarketLastTradePriceEvent",
+          "MarketLastTradePriceEvent/missing/size",
+          "MarketLastTradePriceEvent/null/size",
+          "MarketLastTradePriceEvent/missing/fee_rate_bps",
+          "MarketLastTradePriceEvent/null/fee_rate_bps",
+          "MarketLastTradePriceEvent/missing/transaction_hash",
+          "MarketLastTradePriceEvent/null/transaction_hash",
+          "MarketLastTradePriceEvent/missing/timestamp",
+          "MarketLastTradePriceEvent/null/timestamp",
+          "MarketLastTradePriceEvent/envelope",
+          "MarketLastTradePriceEvent/timestamp/'0'",
+          "MarketLastTradePriceEvent/timestamp/'1720000000001'",
+          "MarketLastTradePriceEvent/timestamp/''",
+          "MarketPriceChangeEvent",
+          "MarketPriceChangeEvent/missing/timestamp",
+          "MarketPriceChangeEvent/null/timestamp",
+          "MarketPriceChangeEvent/envelope",
+          "MarketPriceChangeEvent/timestamp/'0'",
+          "MarketPriceChangeEvent/timestamp/'1720000000001'",
+          "MarketPriceChangeEvent/timestamp/''",
+          "MarketTickSizeChangeEvent",
+          "MarketTickSizeChangeEvent/missing/old_tick_size",
+          "MarketTickSizeChangeEvent/null/old_tick_size",
+          "MarketTickSizeChangeEvent/missing/timestamp",
+          "MarketTickSizeChangeEvent/null/timestamp",
+          "MarketTickSizeChangeEvent/envelope",
+          "MarketTickSizeChangeEvent/timestamp/'0'",
+          "MarketTickSizeChangeEvent/timestamp/'1720000000001'",
+          "MarketTickSizeChangeEvent/timestamp/''"
+        ]
+      }
+    },
+    {
+      "name": "market/1",
+      "spec": {
+        "kind": "market",
+        "input": {
+          "asset_ids": [
+            "z",
+            "123",
+            "123"
+          ],
+          "custom_feature_enabled": true
+        }
+      },
+      "service": "market",
+      "expected": {
+        "initial": {
+          "type": "market",
+          "assets_ids": [
+            "123",
+            "z"
+          ],
+          "custom_feature_enabled": true
+        },
+        "matches": [
+          "MarketBestBidAskEvent",
+          "MarketBestBidAskEvent/missing/best_bid",
+          "MarketBestBidAskEvent/null/best_bid",
+          "MarketBestBidAskEvent/missing/best_ask",
+          "MarketBestBidAskEvent/null/best_ask",
+          "MarketBestBidAskEvent/missing/spread",
+          "MarketBestBidAskEvent/null/spread",
+          "MarketBestBidAskEvent/missing/timestamp",
+          "MarketBestBidAskEvent/null/timestamp",
+          "MarketBestBidAskEvent/envelope",
+          "MarketBestBidAskEvent/timestamp/'0'",
+          "MarketBestBidAskEvent/timestamp/'1720000000001'",
+          "MarketBestBidAskEvent/timestamp/''",
+          "MarketBookEvent",
+          "MarketBookEvent/missing/hash",
+          "MarketBookEvent/null/hash",
+          "MarketBookEvent/missing/timestamp",
+          "MarketBookEvent/null/timestamp",
+          "MarketBookEvent/missing/min_order_size",
+          "MarketBookEvent/null/min_order_size",
+          "MarketBookEvent/missing/tick_size",
+          "MarketBookEvent/null/tick_size",
+          "MarketBookEvent/missing/neg_risk",
+          "MarketBookEvent/null/neg_risk",
+          "MarketBookEvent/missing/last_trade_price",
+          "MarketBookEvent/null/last_trade_price",
+          "MarketBookEvent/envelope",
+          "MarketBookEvent/timestamp/'0'",
+          "MarketBookEvent/timestamp/'1720000000001'",
+          "MarketBookEvent/timestamp/''",
+          "MarketLastTradePriceEvent",
+          "MarketLastTradePriceEvent/missing/size",
+          "MarketLastTradePriceEvent/null/size",
+          "MarketLastTradePriceEvent/missing/fee_rate_bps",
+          "MarketLastTradePriceEvent/null/fee_rate_bps",
+          "MarketLastTradePriceEvent/missing/transaction_hash",
+          "MarketLastTradePriceEvent/null/transaction_hash",
+          "MarketLastTradePriceEvent/missing/timestamp",
+          "MarketLastTradePriceEvent/null/timestamp",
+          "MarketLastTradePriceEvent/envelope",
+          "MarketLastTradePriceEvent/timestamp/'0'",
+          "MarketLastTradePriceEvent/timestamp/'1720000000001'",
+          "MarketLastTradePriceEvent/timestamp/''",
+          "MarketPriceChangeEvent",
+          "MarketPriceChangeEvent/missing/timestamp",
+          "MarketPriceChangeEvent/null/timestamp",
+          "MarketPriceChangeEvent/envelope",
+          "MarketPriceChangeEvent/timestamp/'0'",
+          "MarketPriceChangeEvent/timestamp/'1720000000001'",
+          "MarketPriceChangeEvent/timestamp/''",
+          "MarketResolvedEvent",
+          "MarketResolvedEvent/missing/winning_asset_id",
+          "MarketResolvedEvent/null/winning_asset_id",
+          "MarketResolvedEvent/missing/winning_outcome",
+          "MarketResolvedEvent/null/winning_outcome",
+          "MarketResolvedEvent/missing/event_message",
+          "MarketResolvedEvent/null/event_message",
+          "MarketResolvedEvent/missing/timestamp",
+          "MarketResolvedEvent/null/timestamp",
+          "MarketResolvedEvent/missing/tags",
+          "MarketResolvedEvent/null/tags",
+          "MarketResolvedEvent/envelope",
+          "MarketResolvedEvent/timestamp/'0'",
+          "MarketResolvedEvent/timestamp/'1720000000001'",
+          "MarketResolvedEvent/timestamp/''",
+          "MarketTickSizeChangeEvent",
+          "MarketTickSizeChangeEvent/missing/old_tick_size",
+          "MarketTickSizeChangeEvent/null/old_tick_size",
+          "MarketTickSizeChangeEvent/missing/timestamp",
+          "MarketTickSizeChangeEvent/null/timestamp",
+          "MarketTickSizeChangeEvent/envelope",
+          "MarketTickSizeChangeEvent/timestamp/'0'",
+          "MarketTickSizeChangeEvent/timestamp/'1720000000001'",
+          "MarketTickSizeChangeEvent/timestamp/''",
+          "NewMarketEvent",
+          "NewMarketEvent/missing/condition_id",
+          "NewMarketEvent/null/condition_id",
+          "NewMarketEvent/missing/question",
+          "NewMarketEvent/null/question",
+          "NewMarketEvent/missing/slug",
+          "NewMarketEvent/null/slug",
+          "NewMarketEvent/missing/description",
+          "NewMarketEvent/null/description",
+          "NewMarketEvent/missing/asset_ids",
+          "NewMarketEvent/null/asset_ids",
+          "NewMarketEvent/missing/outcomes",
+          "NewMarketEvent/null/outcomes",
+          "NewMarketEvent/missing/event_message",
+          "NewMarketEvent/null/event_message",
+          "NewMarketEvent/missing/timestamp",
+          "NewMarketEvent/null/timestamp",
+          "NewMarketEvent/missing/tags",
+          "NewMarketEvent/null/tags",
+          "NewMarketEvent/missing/active",
+          "NewMarketEvent/null/active",
+          "NewMarketEvent/missing/clob_token_ids",
+          "NewMarketEvent/null/clob_token_ids",
+          "NewMarketEvent/missing/sports_market_type",
+          "NewMarketEvent/null/sports_market_type",
+          "NewMarketEvent/missing/line",
+          "NewMarketEvent/null/line",
+          "NewMarketEvent/missing/game_start_time",
+          "NewMarketEvent/null/game_start_time",
+          "NewMarketEvent/missing/order_price_min_tick_size",
+          "NewMarketEvent/null/order_price_min_tick_size",
+          "NewMarketEvent/missing/group_item_title",
+          "NewMarketEvent/null/group_item_title",
+          "NewMarketEvent/missing/taker_base_fee",
+          "NewMarketEvent/null/taker_base_fee",
+          "NewMarketEvent/missing/fees_enabled",
+          "NewMarketEvent/null/fees_enabled",
+          "NewMarketEvent/missing/fee_schedule",
+          "NewMarketEvent/null/fee_schedule",
+          "NewMarketEvent/envelope",
+          "NewMarketEvent/timestamp/'0'",
+          "NewMarketEvent/timestamp/'1720000000001'",
+          "NewMarketEvent/timestamp/''"
+        ]
+      }
+    },
+    {
+      "name": "market/2",
+      "spec": {
+        "kind": "market",
+        "input": {
+          "asset_ids": []
+        }
+      },
+      "expected": {
+        "error": true
+      }
+    },
+    {
+      "name": "market/3",
+      "spec": {
+        "kind": "market",
+        "input": {
+          "asset_ids": [
+            ""
+          ]
+        }
+      },
+      "expected": {
+        "error": true
+      }
+    },
+    {
+      "name": "sports/4",
+      "spec": {
+        "kind": "sports",
+        "input": {}
+      },
+      "service": "sports",
+      "expected": {
+        "initial": null,
+        "matches": [
+          "SportsResultEvent",
+          "SportsResultEvent/missing/sportradarGameId",
+          "SportsResultEvent/null/sportradarGameId",
+          "SportsResultEvent/missing/slug",
+          "SportsResultEvent/null/slug",
+          "SportsResultEvent/missing/homeTeam",
+          "SportsResultEvent/null/homeTeam",
+          "SportsResultEvent/missing/awayTeam",
+          "SportsResultEvent/null/awayTeam",
+          "SportsResultEvent/missing/period",
+          "SportsResultEvent/null/period",
+          "SportsResultEvent/missing/elapsed",
+          "SportsResultEvent/null/elapsed",
+          "SportsResultEvent/missing/finishedTimestamp",
+          "SportsResultEvent/null/finishedTimestamp",
+          "SportsResultEvent/missing/turn",
+          "SportsResultEvent/null/turn",
+          "SportsResultEvent/timestamp-fallback"
+        ]
+      }
+    },
+    {
+      "name": "comments/5",
+      "spec": {
+        "kind": "comments",
+        "input": {}
+      },
+      "service": "rtds",
+      "expected": {
+        "initial": {
+          "action": "subscribe",
+          "subscriptions": [
+            {
+              "topic": "comments",
+              "type": "comment_created"
+            }
+          ]
+        },
+        "matches": [
+          "CommentCreatedEvent",
+          "CommentCreatedEvent/null/timestamp",
+          "CommentCreatedEvent/timestamp/'0'",
+          "CommentCreatedEvent/timestamp/'1720000000001'",
+          "CommentCreatedEvent/timestamp/1720000000001",
+          "CommentCreatedEvent/timestamp/''",
+          "CommentCreatedEvent/timestamp/-1",
+          "CommentCreatedEvent/timestamp/'2024-07-03T09:46:40+08:00'"
+        ]
+      }
+    },
+    {
+      "name": "comments/6",
+      "spec": {
+        "kind": "comments",
+        "input": {
+          "types": [
+            "comment_created",
+            "reaction_removed"
+          ],
+          "parent_entity_id": 123,
+          "parent_entity_type": "Event"
+        }
+      },
+      "service": "rtds",
+      "expected": {
+        "initial": {
+          "action": "subscribe",
+          "subscriptions": [
+            {
+              "topic": "comments",
+              "type": "comment_created"
+            },
+            {
+              "topic": "comments",
+              "type": "reaction_removed"
+            }
+          ]
+        },
+        "matches": []
+      }
+    },
+    {
+      "name": "comments/7",
+      "spec": {
+        "kind": "comments",
+        "input": {
+          "types": []
+        }
+      },
+      "expected": {
+        "error": true
+      }
+    },
+    {
+      "name": "comments/8",
+      "spec": {
+        "kind": "comments",
+        "input": {
+          "types": [
+            "bad"
+          ]
+        }
+      },
+      "expected": {
+        "error": true
+      }
+    },
+    {
+      "name": "comments/9",
+      "spec": {
+        "kind": "comments",
+        "input": {
+          "parent_entity_type": "Series"
+        }
+      },
+      "expected": {
+        "error": true
+      }
+    },
+    {
+      "name": "crypto/10",
+      "spec": {
+        "kind": "crypto",
+        "input": {
+          "topic": "prices.crypto.binance"
+        }
+      },
+      "service": "rtds",
+      "expected": {
+        "initial": {
+          "action": "subscribe",
+          "subscriptions": [
+            {
+              "topic": "crypto_prices",
+              "type": "update"
+            }
+          ]
+        },
+        "matches": [
+          "CryptoPricesBinanceEvent",
+          "CryptoPricesBinanceEvent/null/timestamp",
+          "CryptoPricesBinanceEvent/timestamp/'0'",
+          "CryptoPricesBinanceEvent/timestamp/'1720000000001'",
+          "CryptoPricesBinanceEvent/timestamp/1720000000001",
+          "CryptoPricesBinanceEvent/timestamp/''",
+          "CryptoPricesBinanceEvent/timestamp/-1",
+          "CryptoPricesBinanceEvent/timestamp/'2024-07-03T09:46:40+08:00'"
+        ]
+      }
+    },
+    {
+      "name": "crypto/11",
+      "spec": {
+        "kind": "crypto",
+        "input": {
+          "topic": "prices.crypto.chainlink",
+          "symbols": [
+            "sample"
+          ]
+        }
+      },
+      "service": "rtds",
+      "expected": {
+        "initial": {
+          "action": "subscribe",
+          "subscriptions": [
+            {
+              "topic": "crypto_prices_chainlink",
+              "type": "update"
+            }
+          ]
+        },
+        "matches": [
+          "CryptoPricesChainlinkEvent",
+          "CryptoPricesChainlinkEvent/null/timestamp",
+          "CryptoPricesChainlinkEvent/timestamp/'0'",
+          "CryptoPricesChainlinkEvent/timestamp/'1720000000001'",
+          "CryptoPricesChainlinkEvent/timestamp/1720000000001",
+          "CryptoPricesChainlinkEvent/timestamp/''",
+          "CryptoPricesChainlinkEvent/timestamp/-1",
+          "CryptoPricesChainlinkEvent/timestamp/'2024-07-03T09:46:40+08:00'"
+        ]
+      }
+    },
+    {
+      "name": "crypto/12",
+      "spec": {
+        "kind": "crypto",
+        "input": {
+          "topic": "bad"
+        }
+      },
+      "expected": {
+        "error": true
+      }
+    },
+    {
+      "name": "crypto/13",
+      "spec": {
+        "kind": "crypto",
+        "input": {
+          "topic": "prices.crypto.binance",
+          "symbols": []
+        }
+      },
+      "expected": {
+        "error": true
+      }
+    },
+    {
+      "name": "twap/14",
+      "spec": {
+        "kind": "twap",
+        "input": {
+          "window_seconds": 60
+        }
+      },
+      "service": "rtds",
+      "expected": {
+        "initial": {
+          "action": "subscribe",
+          "subscriptions": [
+            {
+              "topic": "crypto_prices_twap_sixty",
+              "type": "update"
+            }
+          ]
+        },
+        "matches": [
+          "CryptoPricesChainlinkTwapEvent",
+          "CryptoPricesChainlinkTwapEvent/null/timestamp",
+          "CryptoPricesChainlinkTwapEvent/timestamp/'0'",
+          "CryptoPricesChainlinkTwapEvent/timestamp/'1720000000001'",
+          "CryptoPricesChainlinkTwapEvent/timestamp/1720000000001",
+          "CryptoPricesChainlinkTwapEvent/timestamp/''",
+          "CryptoPricesChainlinkTwapEvent/timestamp/-1",
+          "CryptoPricesChainlinkTwapEvent/timestamp/'2024-07-03T09:46:40+08:00'",
+          "CryptoPricesChainlinkTwapEvent/full_accuracy_value/'-1'",
+          "CryptoPricesChainlinkTwapEvent/full_accuracy_value/'0'",
+          "CryptoPricesChainlinkTwapEvent/value/1.25"
+        ]
+      }
+    },
+    {
+      "name": "twap/15",
+      "spec": {
+        "kind": "twap",
+        "input": {
+          "window_seconds": 30,
+          "symbols": [
+            "sample"
+          ]
+        }
+      },
+      "service": "rtds",
+      "expected": {
+        "initial": {
+          "action": "subscribe",
+          "subscriptions": [
+            {
+              "topic": "crypto_prices_twap_thirty",
+              "type": "update"
+            }
+          ]
+        },
+        "matches": []
+      }
+    },
+    {
+      "name": "twap/16",
+      "spec": {
+        "kind": "twap",
+        "input": {
+          "window_seconds": 1
+        }
+      },
+      "expected": {
+        "error": true
+      }
+    },
+    {
+      "name": "equity/17",
+      "spec": {
+        "kind": "equity",
+        "input": {
+          "symbol": "SAMPLE"
+        }
+      },
+      "service": "rtds",
+      "expected": {
+        "initial": {
+          "action": "subscribe",
+          "subscriptions": [
+            {
+              "topic": "equity_prices",
+              "type": "update"
+            }
+          ]
+        },
+        "matches": [
+          "EquityPricesSubscribeEvent",
+          "EquityPricesSubscribeEvent/null/timestamp",
+          "EquityPricesSubscribeEvent/timestamp/'0'",
+          "EquityPricesSubscribeEvent/timestamp/'1720000000001'",
+          "EquityPricesSubscribeEvent/timestamp/1720000000001",
+          "EquityPricesSubscribeEvent/timestamp/''",
+          "EquityPricesSubscribeEvent/timestamp/-1",
+          "EquityPricesSubscribeEvent/timestamp/'2024-07-03T09:46:40+08:00'",
+          "EquityPricesUpdateEvent",
+          "EquityPricesUpdateEvent/null/timestamp",
+          "EquityPricesUpdateEvent/timestamp/'0'",
+          "EquityPricesUpdateEvent/timestamp/'1720000000001'",
+          "EquityPricesUpdateEvent/timestamp/1720000000001",
+          "EquityPricesUpdateEvent/timestamp/''",
+          "EquityPricesUpdateEvent/timestamp/-1",
+          "EquityPricesUpdateEvent/timestamp/'2024-07-03T09:46:40+08:00'",
+          "EquityPricesUpdateEvent/full-accuracy"
+        ]
+      }
+    },
+    {
+      "name": "equity/18",
+      "spec": {
+        "kind": "equity",
+        "input": {
+          "symbol": "sample",
+          "types": [
+            "subscribe"
+          ]
+        }
+      },
+      "service": "rtds",
+      "expected": {
+        "initial": {
+          "action": "subscribe",
+          "subscriptions": [
+            {
+              "topic": "equity_prices",
+              "type": "update"
+            }
+          ]
+        },
+        "matches": [
+          "EquityPricesSubscribeEvent",
+          "EquityPricesSubscribeEvent/null/timestamp",
+          "EquityPricesSubscribeEvent/timestamp/'0'",
+          "EquityPricesSubscribeEvent/timestamp/'1720000000001'",
+          "EquityPricesSubscribeEvent/timestamp/1720000000001",
+          "EquityPricesSubscribeEvent/timestamp/''",
+          "EquityPricesSubscribeEvent/timestamp/-1",
+          "EquityPricesSubscribeEvent/timestamp/'2024-07-03T09:46:40+08:00'"
+        ]
+      }
+    },
+    {
+      "name": "equity/19",
+      "spec": {
+        "kind": "equity",
+        "input": {
+          "symbol": "sample",
+          "types": []
+        }
+      },
+      "expected": {
+        "error": true
+      }
+    },
+    {
+      "name": "equity/20",
+      "spec": {
+        "kind": "equity",
+        "input": {
+          "symbol": ""
+        }
+      },
+      "expected": {
+        "error": true
+      }
+    }
+  ],
+  "transitions": [
+    {
+      "service": "market",
+      "before": [
+        {
+          "kind": "market",
+          "input": {
+            "asset_ids": [
+              "a",
+              "b"
+            ]
+          }
+        }
+      ],
+      "after": [
+        {
+          "kind": "market",
+          "input": {
+            "asset_ids": [
+              "b",
+              "c"
+            ],
+            "custom_feature_enabled": true
+          }
+        }
+      ],
+      "expected": [
+        {
+          "operation": "subscribe",
+          "assets_ids": [
+            "c"
+          ],
+          "custom_feature_enabled": true
+        },
+        {
+          "operation": "unsubscribe",
+          "assets_ids": [
+            "a"
+          ]
+        }
+      ]
+    },
+    {
+      "service": "market",
+      "before": [
+        {
+          "kind": "market",
+          "input": {
+            "asset_ids": [
+              "a"
+            ]
+          }
+        }
+      ],
+      "after": [
+        {
+          "kind": "market",
+          "input": {
+            "asset_ids": [
+              "a"
+            ],
+            "custom_feature_enabled": true
+          }
+        }
+      ],
+      "expected": [
+        {
+          "operation": "subscribe",
+          "assets_ids": [
+            "a"
+          ],
+          "custom_feature_enabled": true
+        }
+      ]
+    },
+    {
+      "service": "market",
+      "before": [
+        {
+          "kind": "market",
+          "input": {
+            "asset_ids": [
+              "a"
+            ]
+          }
+        }
+      ],
+      "after": [],
+      "expected": [
+        {
+          "operation": "unsubscribe",
+          "assets_ids": [
+            "a"
+          ]
+        }
+      ]
+    },
+    {
+      "service": "rtds",
+      "before": [
+        {
+          "kind": "comments",
+          "input": {}
+        }
+      ],
+      "after": [
+        {
+          "kind": "comments",
+          "input": {
+            "types": [
+              "comment_removed",
+              "comment_created"
+            ]
+          }
+        }
+      ],
+      "expected": [
+        {
+          "action": "subscribe",
+          "subscriptions": [
+            {
+              "topic": "comments",
+              "type": "comment_removed"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "service": "rtds",
+      "before": [
+        {
+          "kind": "comments",
+          "input": {}
+        }
+      ],
+      "after": [],
+      "expected": [
+        {
+          "action": "unsubscribe",
+          "subscriptions": [
+            {
+              "topic": "comments",
+              "type": "comment_created"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

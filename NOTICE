@@ -8,10 +8,18 @@ Portions are derived from Polymarket's official Python SDK:
   Copyright (c) 2026 Polymarket
   License: MIT (preserved in LICENSES/Polymarket-MIT.txt)
 
-Go runtime dependency:
-  github.com/cockroachdb/apd/v3 v3.2.3
-  Copyright 2017 The apd Authors
-  License: Apache-2.0 (preserved in LICENSES/apd-Apache-2.0.txt)
+Go runtime dependencies:
+  github.com/coder/websocket v1.8.15
+  Copyright (c) 2025 Coder
+  License: ISC (preserved in LICENSES/websocket-ISC.txt)
+
+  github.com/ericlagergren/decimal v0.0.0-20240411145413-00de7ca16731
+  Copyright (c) 2016, Eric Lagergren
+  License: BSD-3-Clause (preserved in LICENSES/decimal-BSD-3-Clause.txt)
+
+  golang.org/x/crypto v0.58.0; golang.org/x/sys v0.49.0
+  Copyright 2009 The Go Authors.
+  License: BSD-3-Clause (preserved in LICENSES/Go-BSD-3-Clause.txt)
 
 Python packages listed in tests/parity/requirements.txt are test tools only;
 they are not dependencies of the Go runtime. Their own licenses apply.

@@ -1151,6 +1151,186 @@
       }
     },
     {
+      "name": "decimal/'1e-100001'",
+      "operation": "midpoint",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "mid": "1e-100001"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/midpoint",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": "1E-100001"
+      }
+    },
+    {
+      "name": "decimal/'1e100001'",
+      "operation": "midpoint",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "mid": "1e100001"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/midpoint",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": "1E+100001"
+      }
+    },
+    {
+      "name": "decimal/'1e-999999999999999999'",
+      "operation": "midpoint",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "mid": "1e-999999999999999999"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/midpoint",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": "1E-999999999999999999"
+      }
+    },
+    {
+      "name": "decimal/'1e999999999999999999'",
+      "operation": "midpoint",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "mid": "1e999999999999999999"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/midpoint",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": "1E+999999999999999999"
+      }
+    },
+    {
+      "name": "decimal/'1e1000000000000000000'",
+      "operation": "midpoint",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "mid": "1e1000000000000000000"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/midpoint",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "decimal/'1e-1000000000000000000'",
+      "operation": "midpoint",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "mid": "1e-1000000000000000000"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/midpoint",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": "1E-1000000000000000000"
+      }
+    },
+    {
+      "name": "decimal/'1e-1999999999999999997'",
+      "operation": "midpoint",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "mid": "1e-1999999999999999997"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/midpoint",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": "1E-1999999999999999997"
+      }
+    },
+    {
+      "name": "decimal/'1e-1999999999999999998'",
+      "operation": "midpoint",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "mid": "1e-1999999999999999998"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/midpoint",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "decimal/'99e999999999999999999'",
+      "operation": "midpoint",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "mid": "99e999999999999999999"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/midpoint",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
       "name": "decimal/'-0.00'",
       "operation": "midpoint",
       "input": {

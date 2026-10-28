@@ -12,6 +12,9 @@ import (
 	"sync/atomic"
 	"testing"
 	"time"
+
+	"github.com/cagelam/polymarket-go/internal/clob"
+	"github.com/cagelam/polymarket-go/internal/codec"
 )
 
 func TestPythonHTTPParity(t *testing.T) {
@@ -171,7 +174,7 @@ func benchmarkBook(b *testing.B) *OrderBook {
 	}
 	for _, test := range fixture.Cases {
 		if test.Name == "order_book/valid" {
-			book, err := decodeResponse[OrderBook](test.Response)
+			book, err := codec.DecodeResponse[OrderBook](test.Response)
 			if err != nil {
 				b.Fatal(err)
 			}
@@ -187,7 +190,7 @@ func BenchmarkEstimateMarketPrice(b *testing.B) {
 	amount := book.MinOrderSize
 	b.ReportAllocs()
 	for b.Loop() {
-		if _, err := estimatePrice(book, Buy, amount, FOK); err != nil {
+		if _, err := clob.EstimatePrice(book, Buy, amount, FOK); err != nil {
 			b.Fatal(err)
 		}
 	}

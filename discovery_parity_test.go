@@ -11,20 +11,67 @@ import (
 )
 
 func TestPythonDiscoveryParity(t *testing.T) {
-	data, readErr := os.ReadFile("testdata/discovery-parity.json")
-	if readErr != nil {
-		t.Fatal(readErr)
+	data, err := os.ReadFile("testdata/discovery-parity.json")
+	if err != nil {
+		t.Fatal(err)
 	}
+	testPythonDiscoveryParity(t, data)
+}
+
+func TestPythonEventsParity(t *testing.T) {
+	data, err := os.ReadFile("testdata/events-parity.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	testPythonDiscoveryParity(t, data)
+}
+
+func TestPythonApprovals(t *testing.T) {
+	raw, err := os.ReadFile("testdata/approvals-parity.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	testPythonDiscoveryParity(t, raw)
+}
+
+func TestPythonPublicClobQueries(t *testing.T) {
+	raw, err := os.ReadFile("testdata/public-clob-queries-parity.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	testPythonDiscoveryParity(t, raw)
+}
+
+func TestPythonCatalogQueries(t *testing.T) {
+	raw, err := os.ReadFile("testdata/catalog-queries-parity.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	testPythonDiscoveryParity(t, raw)
+}
+
+func TestPythonDataQueries(t *testing.T) {
+	raw, err := os.ReadFile("testdata/data-queries-parity.json")
+	if err != nil {
+		t.Fatal(err)
+	}
+	testPythonDiscoveryParity(t, raw)
+}
+
+func testPythonDiscoveryParity(t *testing.T, data []byte) {
+	t.Helper()
 	var fixture struct {
 		Version string `json:"upstream_version"`
 		Commit  string `json:"upstream_commit"`
 		Cases   []struct {
-			Name      string
-			Operation string
-			Input     json.RawMessage
-			Response  json.RawMessage
-			Cursor    *string
-			Request   *struct {
+			Name                    string
+			CompatibilityDifference string          `json:"compatibility_difference"`
+			PythonValue             json.RawMessage `json:"python_value"`
+			Operation               string
+			Input                   json.RawMessage
+			Response                json.RawMessage
+			Cursor                  *string
+			Request                 *struct {
 				Path  string
 				Query map[string][]string
 			}
@@ -43,6 +90,14 @@ func TestPythonDiscoveryParity(t *testing.T) {
 	for _, test := range fixture.Cases {
 		t.Run(test.Name, func(t *testing.T) {
 			t.Parallel()
+			if test.CompatibilityDifference != "" {
+				if test.CompatibilityDifference != "UP-001" || len(test.PythonValue) == 0 {
+					t.Fatalf("unregistered compatibility difference %q", test.CompatibilityDifference)
+				}
+				if string(test.PythonValue) == string(test.Expected.Value) {
+					t.Fatal("registered compatibility difference must retain the differing Python result")
+				}
+			}
 			var calls atomic.Int32
 			server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 				calls.Add(1)
@@ -58,16 +113,72 @@ func TestPythonDiscoveryParity(t *testing.T) {
 					t.Errorf("query = %#v; Python = %#v", r.URL.Query(), test.Request.Query)
 				}
 				w.Header().Set("Content-Type", "application/json")
-				_, _ = w.Write(test.Response)
+				if test.Operation == "download_accounting_snapshot" {
+					_, _ = w.Write([]byte("accounting data"))
+				} else {
+					_, _ = w.Write(test.Response)
+				}
 			}))
 			defer server.Close()
-			client, err := NewPublicClient(ClientConfig{GammaURL: server.URL, DataURL: server.URL})
+			client, err := NewPublicClient(ClientConfig{CLOBURL: server.URL, RFQURL: server.URL, GammaURL: server.URL, DataURL: server.URL})
 			if err != nil {
 				t.Fatal(err)
 			}
 			defer client.Close()
 			var result any
 			switch test.Operation {
+			case "get_series", "get_tag", "get_related_tags", "get_related_tag_resources", "get_sports", "get_sports_market_types", "get_public_profile", "get_comment_thread", "list_series", "list_tags", "list_teams", "list_comments", "list_comments_by_user_address":
+				result, err = callCatalogParity(t.Context(), client, test.Operation, test.Input, test.Cursor)
+			case "list_builder_trades", "list_reward_markets", "list_current_rewards", "list_market_rewards", "get_current_rebates", "list_combo_markets":
+				result, err = callPublicClobParity(t.Context(), client, test.Operation, test.Input, test.Cursor)
+			case "get_trading_approvals_state":
+				var input struct{ Wallet EVMAddress }
+				if err = json.Unmarshal(test.Input, &input); err != nil {
+					t.Fatal(err)
+				}
+				result, err = client.GetTradingApprovalsState(t.Context(), input.Wallet)
+			case "get_event":
+				var query EventQuery
+				if err = json.Unmarshal(test.Input, &query); err != nil {
+					t.Fatal(err)
+				}
+				result, err = client.GetEvent(t.Context(), query)
+			case "get_event_tags", "get_market_tags":
+				var query struct{ ID string }
+				if err = json.Unmarshal(test.Input, &query); err != nil {
+					t.Fatal(err)
+				}
+				if test.Operation == "get_event_tags" {
+					result, err = client.GetEventTags(t.Context(), EventID(query.ID))
+				} else {
+					result, err = client.GetMarketTags(t.Context(), MarketID(query.ID))
+				}
+			case "list_events":
+				var params ListEventsParams
+				if err = json.Unmarshal(test.Input, &params); err != nil {
+					t.Fatal(err)
+				}
+				var pager *Paginator[Event]
+				pager, err = client.ListEvents(params)
+				if err == nil {
+					if test.Cursor != nil {
+						pager = pager.FromCursor(test.Cursor)
+					}
+					result, err = pager.FirstPage(t.Context())
+				}
+			case "search":
+				var params SearchParams
+				if err = json.Unmarshal(test.Input, &params); err != nil {
+					t.Fatal(err)
+				}
+				var pager *Paginator[SearchResults]
+				pager, err = client.Search(params)
+				if err == nil {
+					if test.Cursor != nil {
+						pager = pager.FromCursor(test.Cursor)
+					}
+					result, err = pager.FirstPage(t.Context())
+				}
 			case "get_market":
 				var query MarketQuery
 				if err = json.Unmarshal(test.Input, &query); err != nil {
@@ -101,7 +212,7 @@ func TestPythonDiscoveryParity(t *testing.T) {
 					result, err = pager.FirstPage(t.Context())
 				}
 			default:
-				t.Fatal("unknown operation")
+				result, err = callDataParity(t.Context(), client, test.Operation, test.Input, test.Cursor)
 			}
 			if got := errorClass(err); got != test.Expected.Error {
 				t.Fatalf("error = %s (%v), Python = %s", got, err, test.Expected.Error)

@@ -12,7 +12,7 @@ import (
 	"sync/atomic"
 	"testing"
 
-	"github.com/cockroachdb/apd/v3"
+	"github.com/ericlagergren/decimal"
 )
 
 type parityInput struct {
@@ -133,6 +133,10 @@ func TestPythonCLOBParity(t *testing.T) {
 }
 
 func errorClass(err error) string {
+	var limit *PaginationLimitError
+	if errors.As(err, &limit) {
+		return "PaginationLimitError"
+	}
 	if err == nil {
 		return ""
 	}
@@ -176,14 +180,14 @@ func compareJSON(t *testing.T, got, want []byte) {
 	}
 }
 
-func parityDecimal(t *testing.T, value *string) *apd.Decimal {
+func parityDecimal(t *testing.T, value *string) *decimal.Big {
 	t.Helper()
 	if value == nil {
 		return nil
 	}
-	d, _, err := apd.NewFromString(*value)
-	if err != nil {
-		t.Fatal(err)
+	d, ok := new(decimal.Big).SetString(*value)
+	if !ok {
+		t.Fatalf("invalid decimal %q", *value)
 	}
 	return d
 }

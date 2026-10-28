@@ -17,7 +17,7 @@ source=Path(polymarket.__file__).parent
 for entry in manifest['source_hashes']:
     assert hashlib.sha256((source/Path(entry['path']).relative_to('src/polymarket')).read_bytes()).hexdigest()==entry['sha256']
 def go_name(name):
-    special={'id':'ID','ids':'IDs','url':'URL','clob':'Clob','amm':'AMM','uma':'UMA','onchain':'Onchain'}
+    special={'id':'ID','ids':'IDs','url':'URL','clob':'Clob','amm':'AMM','uma':'UMA','onchain':'Onchain','utm':'UTM','cyom':'CYOM','gmp':'GMP','kb':'KB'}
     return ''.join(special.get(part, part[:1].upper()+part[1:]) for part in name.split('_'))
 def named(name):
     return {'UmaResolutionStatus':'UMAResolutionStatus','EvmAddress':'EVMAddress'}.get(name,name.replace('Id','ID'))
@@ -28,15 +28,16 @@ def go_type(annotation):
         rest=[a for a in args if a is not type(None)]
         inner=rest[0] if len(rest)==1 else str
         base=go_type(inner)
-        return base if base.startswith(('[]','*')) else '*'+base
+        return base if base.startswith(('[]','*','map[')) else '*'+base
     if annotation is str: return 'string'
     if annotation is bool: return 'bool'
     if annotation is int: return 'int64'
     if annotation is float: return 'float64'
-    if annotation is Decimal: return '*apd.Decimal'
+    if annotation is Decimal: return '*decimal.Big'
     if annotation is datetime: return 'time.Time'
     if annotation is date: return 'Date'
     if get_origin(annotation) is tuple: return '[]'+go_type(args[0])
+    if get_origin(annotation) is dict: return 'map[string]json.RawMessage'
     if set(args)=={int,float}: return 'json.Number'
     if hasattr(annotation,'__supertype__'):
         name=named(annotation.__name__)
@@ -51,6 +52,11 @@ def kind(cls,name,field):
     if cls=='Market' and name=='condition_id': return 'condition'
     if cls=='ClobReward' and name=='condition_id': return 'condition'
     if cls=='MarketEvent' and name=='id': return 'id'
+    if (cls=='Event' and name in {'id','parent_event_id'}) or (cls in {'EventSeries','SeriesReference','Series'} and name=='id'): return 'id'
+    if cls=='EventSchedule' and name=='event_date': return 'optional_date'
+    if cls=='ImageOptimization' and a is datetime: return 'epoch_datetime'
+    if cls=='Team' and name=='ordering': return 'team_ordering'
+    if get_origin(a) is tuple and type(None) not in args: return 'sequence' if field.is_required() else 'default_sequence'
     if cls=='MarketResolution':
         if name=='onchain_event_id': return 'event_id'
         if name=='request_id': return 'request_id'
@@ -66,55 +72,63 @@ def kind(cls,name,field):
     if set(get_args(a))=={int,float}: return 'number'
     if a is market.ProtocolVersion: return 'version'
     return ''
-classes=[getattr(market,n) for n in market.__all__ if hasattr(getattr(market,n),'model_fields')]
-parts=[]
-for cls in classes:
-    name=named(cls.__name__)
-    fields=[(k,f) for k,f in cls.model_fields.items() if not f.deprecated]
-    description=cls.__doc__.splitlines()[0].rstrip('.')
-    parts.append('// '+name+' represents '+description[:1].lower()+description[1:]+'.\ntype '+name+' struct {')
-    for key,field in fields: parts.append(f'\t{go_name(key)} {go_type(field.annotation)} `json:"{key}"`')
-    parts.append('}\n')
-    parts.append('// UnmarshalJSON validates market response fields and normalizes wire names.\nfunc (m *'+name+') UnmarshalJSON(data []byte) error {')
-    if name=='Market': parts.append('\tvar err error\n\tdata, err = normalizeMarket(data)\n\tif err != nil { return err }')
-    parts.append('\ttype plain '+name+'\n\tvar result plain\n\tif err := decodeGamma(data, &result, []gammaField{')
-    if name=='Market': parts[-1]=parts[-1].replace('if err :=','if err =')
-    for key,field in fields:
-        alias=field.validation_alias
-        aliases=alias.choices if hasattr(alias,'choices') else [alias] if isinstance(alias,str) else []
-        values=['name: "'+key+'"']
-        if aliases: values.append('aliases: []string{'+','.join('"'+v+'"' for v in aliases)+'}')
-        k=kind(cls.__name__,key,field)
-        if k: values.append('kind: "'+k+'"')
-        if field.is_required(): values.append('required: true')
-        parts.append('\t\t{'+', '.join(values)+'},')
-    parts.append('\t}); err != nil { return err }\n\t*m = '+name+'(result)\n\treturn nil\n}\n')
-header='''// Market models ported from polymarket-client 0.14.0.
-// Regenerate with tests/parity/generate_market_types.py. These files are linted.
+def emit_classes(classes):
+    parts=[]
+    for cls in classes:
+        name=named(cls.__name__)
+        fields=[(k,f) for k,f in cls.model_fields.items() if not f.deprecated]
+        description=(cls.__doc__ or ('a '+name+' response')).splitlines()[0].rstrip('.')
+        parts.append('// '+name+' represents '+description[:1].lower()+description[1:]+'.\ntype '+name+' struct {')
+        for key,field in fields: parts.append(f'\t{go_name(key)} {go_type(field.annotation)} `json:"{key}"`')
+        parts.append('}\n')
+        parts.append('// UnmarshalJSON validates response fields and normalizes wire names.\nfunc (m *'+name+') UnmarshalJSON(data []byte) error {')
+        if name in {'Market','Event','Profile','PublicProfile','CommentProfile','Comment','SearchResults'}: parts.append('\tvar err error\n\tdata, err = normalize'+name+'(data)\n\tif err != nil { return err }')
+        parts.append('\ttype plain '+name+'\n\tvar result plain\n\tif err := decodeGamma(data, &result, []gammaField{')
+        if name in {'Market','Event','Profile','PublicProfile','CommentProfile','Comment','SearchResults'}: parts[-1]=parts[-1].replace('if err :=','if err =')
+        for key,field in fields:
+            alias=field.validation_alias
+            aliases=alias.choices if hasattr(alias,'choices') else [alias] if isinstance(alias,str) else []
+            values=['name: "'+key+'"']
+            if aliases: values.append('aliases: []string{'+','.join('"'+v+'"' for v in aliases)+'}')
+            k=kind(cls.__name__,key,field)
+            if k: values.append('kind: "'+k+'"')
+            if field.is_required(): values.append('required: true')
+            parts.append('\t\t{'+', '.join(values)+'},')
+        parts.append('\t}); err != nil { return err }\n\t*m = '+name+'(result)\n\treturn nil\n}\n')
+    return '\n'.join(parts)
 
-package polymarket
+def main():
+    classes=[getattr(market,n) for n in market.__all__ if hasattr(getattr(market,n),'model_fields')]
+    parts=emit_classes(classes)
+    header='''// Market models ported from polymarket-client 0.14.0.
+    // Regenerate with tests/parity/generate_market_types.py. These files are linted.
 
-import (
- "encoding/json"
- "time"
+    package models
 
- "github.com/cockroachdb/apd/v3"
-)
+    import (
+     "encoding/json"
+     "time"
 
-// Date is an ISO 8601 calendar date (YYYY-MM-DD).
-type Date string
-'''
-for name,base in sorted(ids):
-    if name not in {'ConditionID'}:
-        header+=f'\n// {name} identifies a {name.removesuffix("ID")} resource.\ntype {name} {base}\n'
-for cls in [market.ProtocolVersion,market.MarketResolutionStatus,market.UmaResolutionStatus]:
-    name=named(cls.__name__)
-    header+=f'\n// {name} describes known market states.\ntype {name} string\n\n// Supported {name} values.\nconst (\n'
-    for v in cls:
-        prefix={'ProtocolVersion':'Protocol','MarketResolutionStatus':'Resolution','UmaResolutionStatus':'UMA'}[cls.__name__]
-        suffix=v.name if cls is market.ProtocolVersion else v.name.title()
-        header+=f'\t{prefix}{suffix} {name} = "{v.value}"\n'
-    header+=')\n'
-(ROOT/'market_models.go').write_text(header+'\n'+'\n'.join(parts))
+     "github.com/ericlagergren/decimal"
+    )
 
-subprocess.run(['gofmt','-w',str(ROOT/'market_models.go')],check=True)
+    // Date is an ISO 8601 calendar date (YYYY-MM-DD).
+    type Date string
+    '''
+    for name,base in sorted(ids):
+        if name not in {'ConditionID'}:
+            header+=f'\n// {name} identifies a {name.removesuffix("ID")} resource.\ntype {name} {base}\n'
+    for cls in [market.ProtocolVersion,market.MarketResolutionStatus,market.UmaResolutionStatus]:
+        name=named(cls.__name__)
+        header+=f'\n// {name} describes known market states.\ntype {name} string\n\n// Supported {name} values.\nconst (\n'
+        for v in cls:
+            prefix={'ProtocolVersion':'Protocol','MarketResolutionStatus':'Resolution','UmaResolutionStatus':'UMA'}[cls.__name__]
+            suffix=v.name if cls is market.ProtocolVersion else v.name.title()
+            header+=f'\t{prefix}{suffix} {name} = "{v.value}"\n'
+        header+=')\n'
+    (ROOT/'models/market_models.go').write_text(header+'\n'+parts)
+
+    subprocess.run(['gofmt','-w',str(ROOT/'models/market_models.go')],check=True)
+
+if __name__ == '__main__':
+    main()

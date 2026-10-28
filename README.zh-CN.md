@@ -2,11 +2,18 @@
 
 [English](README.md)
 
-独立 Go SDK，对标官方 `polymarket-client 0.14.0`。**开发中，尚未完整覆盖官方功能。**
+独立 Go SDK，对标官方 `polymarket-client 0.14.0`，源码提交
+`7032ed06175b0bbea77b2d9e898bd9f252af2041`。需要 Go 1.27+，默认无需 CGO。
 
-目前可用：市场查询与筛选分页、历史价格，以及单个／批量价格、中间价、价差、订单簿、最近成交价和市价估算。事件查询、全文搜索、其他历史数据、实时订阅、交易和钱包功能仍待实现。
+**当前完成第一阶段：公开数据与实时行情。** 认证交易和链上钱包尚未实现；尚未发布。
+后续按“账户与交易 → 钱包与链上操作 → 完整验收”推进。
 
-需要 Go 1.27 或以上，默认无需 CGO。代码位于本地，尚未发布到 GitHub 或 Go 模块代理。
+可用能力：
+
+- 市场、事件、系列、标签、体育、评论、搜索和用户资料。
+- 价格、订单簿、历史行情、市价估算、奖励和公开组合市场。
+- 公开成交、持仓、活动、盈亏、排行榜、授权状态和账务下载。
+- 市场、体育、评论、加密价格及均价、股票价格实时订阅；支持重连、心跳和取消。
 
 ```go
 client, err := polymarket.NewPublicClient(polymarket.ClientConfig{})
@@ -18,33 +25,50 @@ defer client.Close()
 book, err := client.GetOrderBook(ctx, polymarket.Asset(assetID))
 ```
 
-完整可运行示例：
+可运行示例：
 
 ```sh
 go run ./examples/orderbook <资产ID>
 go run ./examples/markets
+go run ./examples/search election
+go run ./examples/streams
 ```
 
-资产 ID 使用字符串类型 `ClobAssetID`；金额直接使用 `github.com/cockroachdb/apd/v3` 的十进制类型。市价估算返回满足指定数量所需的限价，不是平均成交价，也不会下单。
+金额使用 `github.com/ericlagergren/decimal` 的 `*decimal.Big`，保留十进制精度。
+市价估算返回所需限价，不是平均成交价，也不会下单。公开 Go 数据可以修改，调用方
+应避免并发写入共享结果。SDK 内部复制请求参数。
 
-新 SDK 只公开 `ConditionID`、`AssetID` 等当前名称，不继承 Python 的废弃字段和别名。服务端 `market`、`token_id` 的收发转换在内部完成。市场结果中的 `TokenID` 与 `PositionID` 分别表示不同协议的资产编号，不是重复旧别名，因此保留。
+分页使用 `FirstPage`、`Pages`、`Items` 和 `FromCursor`；`FromCursor(nil)` 表示结束。
+达到服务端分页上限时，检查 `LimitReached`，不能视为数据已取全。游标绑定查询条件。
+搜索和评论的续页规则保留 Python 行为，不要自行修改游标。
 
-`GetMarket` 支持 ID、slug 或 Polymarket 链接；`ListMarkets` 保留完整筛选参数，只返回二元市场。分页器支持 `FirstPage`、`FromCursor`、`Pages` 和 `Items`，提前退出循环不会多发请求；`FromCursor(nil)` 表示没有后续数据。`ListPriceHistory` 支持预设时间段、起止时间和指定时刻查询。
+实时订阅通过 `Subscribe(ctx, specs...)` 创建，使用 `Next` 或 `Events` 接收。
+同类订阅共用连接；每个返回的 handle 默认缓存 1024 条，满时丢弃最旧消息，
+`Dropped()` 返回丢弃数量。多个 spec 合并后共用这一缓存；Python 按子订阅分配缓存。
+因此不承诺跨数据源消息顺序。`Close` 结束订阅并释放资源。
 
-网络方法都接受 `context.Context`。客户端可并发使用；`Close` 可重复调用。传入的 `HTTPClient` 由调用方管理。默认请求总超时 10 秒，可通过自定义 HTTP 客户端调整。价格和市场查询不自动重试；历史价格仅对 429 限流按官方规则最多重试两次，等待可取消。
+网络操作支持 context 取消，客户端可以并发使用，`Close` 可重复调用。
+传入的 `HTTPClient` 由调用方管理。普通 HTTP 请求默认超时 10 秒；Data API 查询仅对
+429 按上游规则最多重试两次，账务下载不重试。其他公开 HTTP 查询不自动重试。
 
-测试：
+只公开当前字段名，不保留重复废弃别名。旧协议字段在内部转换。公开 Binance／Chainlink
+订阅虽被上游标为旧接口，仍保留：它们提供无需认证、全品种、原报价币种和 30 秒均价等能力。
 
-```sh
-CGO_ENABLED=0 go test ./...
-go test -race ./...
-go vet ./...
-```
+目录按职责划分：
 
-统一执行 `make check`：格式检查、golangci、测试和并发检查。使用 `golangci-lint v2.15.0`（需用 Go 1.27 或以上构建）；可通过 `GOLANGCI_LINT=/path/to/golangci-lint` 指定位置。严格检查变量遮蔽，测试代码同样适用。
+| 目录 | 内容 |
+|---|---|
+| 根目录 | 客户端入口、统一公开名称及集成测试 |
+| `models/` | 数据类型与解析 |
+| `pagination/`、`streams/`、`errors/` | 分页、实时订阅、错误 |
+| `internal/` | CLOB、Gamma、Data、RFQ 及共享网络实现 |
+| `examples/` | 可运行示例 |
+| `tests/parity/`、`testdata/`、`scripts/` | Python 对照、固定数据、生成工具 |
 
-[Python 对照测试说明](tests/parity/README.md)介绍如何重新生成测试数据。真实公开接口测试需显式设置 `POLYMARKET_LIVE_ASSET_ID`，不会交易或访问钱包。
+执行 `make check`，统一检查格式、18 项 lint、测试和 race。使用 `golangci-lint v2.15.0`
+（由 Go 1.27+ 构建），严格禁止变量遮蔽，生成代码与测试同样检查。
 
-当前限制：极端十进制指数超出 apd 支持范围时会报错，完整金额兼容性尚未验收。
+[对照测试说明](tests/parity/README.md)包含重新生成和实网检查命令。
+六个平台组合已通过无 CGO 构建；实际运行验证目前在 macOS arm64。
 
-MIT 许可证；上游版权及依赖许可见 [NOTICE](NOTICE)。
+MIT 许可证；版权与依赖许可见 [NOTICE](NOTICE)。

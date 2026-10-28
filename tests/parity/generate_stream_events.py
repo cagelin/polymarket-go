@@ -1,0 +1,55 @@
+"""Generate typed stream event dispatch; wire normalization remains explicit Go code."""
+from generate_stream_types import ROOT,classes
+from typing import get_args
+import subprocess,json
+items=[c for c in classes if c.__name__.endswith('Event')]
+s='''package models
+
+import (
+ "encoding/json"
+ "fmt"
+ "github.com/cagelam/polymarket-go/internal/codec"
+)
+
+// StreamEvent is a typed event from a public subscription. Use a type switch for its payload.
+type StreamEvent interface { StreamTopic() string; StreamType() string }
+'''
+for cls in items:
+ n=cls.__name__;s+=f'// StreamTopic identifies the source topic.\nfunc(e *{n}) StreamTopic()string{{return e.Topic}}\n// StreamType identifies the event variant.\nfunc(e *{n}) StreamType()string{{return e.Type}}\n'
+s+='''// ParseStreamEvent decodes market, sports or RTDS wire events.
+func ParseStreamEvent(service string,raw []byte)(StreamEvent,error){
+ fields,err:=codec.Object(raw);if err!=nil{return nil,err}
+ switch service {
+ case "market":
+  _,topic:=fields["topic"];_,kind:=fields["type"];_,payload:=fields["payload"]
+  if !topic||!kind||!payload {
+   eventType:=fields["event_type"]
+   if len(eventType)==0||string(eventType)=="null"||string(eventType)==`""` {eventType=fields["type"]}
+   delete(fields,"event_type");delete(fields,"type");delete(fields,"topic")
+   body,encodeErr:=json.Marshal(fields);if encodeErr!=nil{return nil,encodeErr}
+   fields=map[string]json.RawMessage{"topic":json.RawMessage(`"market"`),"type":eventType,"payload":body}
+  }
+ case "sports":fields=map[string]json.RawMessage{"topic":json.RawMessage(`"sports"`),"type":json.RawMessage(`"sport_result"`),"payload":raw}
+ case "rtds":
+  wire,parseErr:=codec.Required[string](fields,"topic");if parseErr!=nil{return nil,parseErr}
+  api:=map[string]string{"comments":"comments","crypto_prices":"prices.crypto.binance","crypto_prices_chainlink":"prices.crypto.chainlink","crypto_prices_twap_thirty":"prices.crypto.chainlink.twap","crypto_prices_twap_sixty":"prices.crypto.chainlink.twap","equity_prices":"prices.equity.pyth"}[wire]
+  if api==""{return nil,fmt.Errorf("unknown RTDS topic %q",wire)}
+  if wire=="crypto_prices_twap_thirty"||wire=="crypto_prices_twap_sixty" {
+   payload,payloadErr:=codec.Required[map[string]json.RawMessage](fields,"payload");if payloadErr!=nil{return nil,payloadErr}
+   expected:="30";if wire=="crypto_prices_twap_sixty"{expected="60"}
+   if string(payload["window_s"])!=expected{return nil,fmt.Errorf("TWAP window does not match topic")}
+  }
+  fields["topic"],err=json.Marshal(api);if err!=nil{return nil,err}
+ default:return nil,fmt.Errorf("unknown stream service %q",service)
+ }
+ topic,err:=codec.Required[string](fields,"topic");if err!=nil{return nil,err}
+ kind,err:=codec.Required[string](fields,"type");if err!=nil{return nil,err}
+ var event StreamEvent
+ switch topic+":"+kind {
+'''
+for cls in items:
+ topic=get_args(cls.model_fields['topic'].annotation)[0];kind=get_args(cls.model_fields['type'].annotation)[0]
+ s+=f'case {json.dumps(topic+":"+kind)}:event=&{cls.__name__}{{}}\n'
+s+='default:return nil,fmt.Errorf("unknown stream event %s:%s",topic,kind)\n}\nraw,err=json.Marshal(fields);if err!=nil{return nil,err};if err=json.Unmarshal(raw,event);err!=nil{return nil,err};return event,nil\n}\n'
+(ROOT/'models/stream_events.go').write_text(s)
+subprocess.run(['gofmt','-w',str(ROOT/'models/stream_events.go')],check=True)

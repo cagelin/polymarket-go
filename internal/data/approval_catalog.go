@@ -1,0 +1,32 @@
+package data
+
+import "github.com/cagelam/polymarket-go/models"
+
+// requiredApprovals returns fresh values so callers cannot mutate the pinned catalog.
+//
+//nolint:gosec // This catalog contains public contract addresses, not credentials.
+func requiredApprovals() models.MissingTradingApprovals {
+	return models.MissingTradingApprovals{
+		ERC20: []models.ERC20TradingApproval{
+			{TokenAddress: "0xC011a7E12a19f7B1f670d46F03B03f3342E82DFB", Spender: "0xE111180000d2663C0091e4f400237545B87B996B", Amount: maxUint256()},
+			{TokenAddress: "0xC011a7E12a19f7B1f670d46F03B03f3342E82DFB", Spender: "0xe2222d279d744050d28e00520010520000310F59", Amount: maxUint256()},
+			{TokenAddress: "0xC011a7E12a19f7B1f670d46F03B03f3342E82DFB", Spender: "0xAdA100Db00Ca00073811820692005400218FcE1f", Amount: maxUint256()},
+			{TokenAddress: "0xC011a7E12a19f7B1f670d46F03B03f3342E82DFB", Spender: "0xadA2005600Dec949baf300f4C6120000bDB6eAab", Amount: maxUint256()},
+			{TokenAddress: "0xC011a7E12a19f7B1f670d46F03B03f3342E82DFB", Spender: "0x12121212006e4CD160D18e3f00711DA5c3372600", Amount: maxUint256()},
+			{TokenAddress: "0xC011a7E12a19f7B1f670d46F03B03f3342E82DFB", Spender: "0xe3333700cA9d93003F00f0F71f8515005F6c00Aa", Amount: maxUint256()},
+			{TokenAddress: "0xC011a7E12a19f7B1f670d46F03B03f3342E82DFB", Spender: "0xDCa4af75705dbB50f62437045afF9921947917d2", Amount: maxUint256()},
+		},
+		ERC1155: []models.ERC1155TradingApproval{
+			{TokenAddress: "0x4D97DCd97eC945f40cF65F87097ACe5EA0476045", Operator: "0xE111180000d2663C0091e4f400237545B87B996B"},
+			{TokenAddress: "0x4D97DCd97eC945f40cF65F87097ACe5EA0476045", Operator: "0xe2222d279d744050d28e00520010520000310F59"},
+			{TokenAddress: "0x4D97DCd97eC945f40cF65F87097ACe5EA0476045", Operator: "0xAdA100Db00Ca00073811820692005400218FcE1f"},
+			{TokenAddress: "0x4D97DCd97eC945f40cF65F87097ACe5EA0476045", Operator: "0xadA2005600Dec949baf300f4C6120000bDB6eAab"},
+			{TokenAddress: "0x4D97DCd97eC945f40cF65F87097ACe5EA0476045", Operator: "0xa1200000d0002264C9a1698e001292D00E1b00af"},
+			{TokenAddress: "0x4D97DCd97eC945f40cF65F87097ACe5EA0476045", Operator: "0x1000008dD9001B968442c1000017eaE6E0dA00Ba"},
+			{TokenAddress: "0x4D97DCd97eC945f40cF65F87097ACe5EA0476045", Operator: "0x200000900045e3B6259600682756002200028933"},
+			{TokenAddress: "0x006F54F7f9A22e0000CC2AB60031000000ae9fEF", Operator: "0x12121212006e4CD160D18e3f00711DA5c3372600"},
+			{TokenAddress: "0x006F54F7f9A22e0000CC2AB60031000000ae9fEF", Operator: "0xe3333700cA9d93003F00f0F71f8515005F6c00Aa"},
+			{TokenAddress: "0x006F54F7f9A22e0000CC2AB60031000000ae9fEF", Operator: "0xa1200000d0002264C9a1698e001292D00E1b00af"},
+		},
+	}
+}

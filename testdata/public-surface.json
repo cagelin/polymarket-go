@@ -1,0 +1,254 @@
+{
+  "upstream_version": "0.14.0",
+  "upstream_commit": "7032ed06175b0bbea77b2d9e898bd9f252af2041",
+  "members": [
+    {
+      "python": "close",
+      "go": "Close"
+    },
+    {
+      "python": "download_accounting_snapshot",
+      "go": "DownloadAccountingSnapshot"
+    },
+    {
+      "python": "environment",
+      "go": "Environment"
+    },
+    {
+      "python": "estimate_market_price",
+      "go": "EstimateMarketPrice"
+    },
+    {
+      "python": "get_builder_volumes",
+      "go": "GetBuilderVolumes"
+    },
+    {
+      "python": "get_comment_thread",
+      "go": "GetCommentThread"
+    },
+    {
+      "python": "get_current_rebates",
+      "go": "GetCurrentRebates"
+    },
+    {
+      "python": "get_event",
+      "go": "GetEvent"
+    },
+    {
+      "python": "get_event_live_volume",
+      "go": "GetEventLiveVolume"
+    },
+    {
+      "python": "get_event_tags",
+      "go": "GetEventTags"
+    },
+    {
+      "python": "get_last_trade_price",
+      "go": "GetLastTradePrice"
+    },
+    {
+      "python": "get_last_trade_prices",
+      "go": "GetLastTradePrices"
+    },
+    {
+      "python": "get_market",
+      "go": "GetMarket"
+    },
+    {
+      "python": "get_market_tags",
+      "go": "GetMarketTags"
+    },
+    {
+      "python": "get_midpoint",
+      "go": "GetMidpoint"
+    },
+    {
+      "python": "get_midpoints",
+      "go": "GetMidpoints"
+    },
+    {
+      "python": "get_open_interests",
+      "go": "GetOpenInterests"
+    },
+    {
+      "python": "get_order_book",
+      "go": "GetOrderBook"
+    },
+    {
+      "python": "get_order_books",
+      "go": "GetOrderBooks"
+    },
+    {
+      "python": "get_portfolio_value",
+      "go": "GetPortfolioValue"
+    },
+    {
+      "python": "get_price",
+      "go": "GetPrice"
+    },
+    {
+      "python": "get_prices",
+      "go": "GetPrices"
+    },
+    {
+      "python": "get_public_profile",
+      "go": "GetPublicProfile"
+    },
+    {
+      "python": "get_related_tag_resources",
+      "go": "GetRelatedTagResources"
+    },
+    {
+      "python": "get_related_tags",
+      "go": "GetRelatedTags"
+    },
+    {
+      "python": "get_resolutions",
+      "go": "GetResolutions"
+    },
+    {
+      "python": "get_series",
+      "go": "GetSeries"
+    },
+    {
+      "python": "get_sports",
+      "go": "GetSports"
+    },
+    {
+      "python": "get_sports_market_types",
+      "go": "GetSportsMarketTypes"
+    },
+    {
+      "python": "get_spread",
+      "go": "GetSpread"
+    },
+    {
+      "python": "get_spreads",
+      "go": "GetSpreads"
+    },
+    {
+      "python": "get_tag",
+      "go": "GetTag"
+    },
+    {
+      "python": "get_token_references",
+      "go": "GetTokenReferences"
+    },
+    {
+      "python": "get_trader_leaderboard_standing",
+      "go": "GetTraderLeaderboardStanding"
+    },
+    {
+      "python": "get_trading_approvals_state",
+      "go": "GetTradingApprovalsState"
+    },
+    {
+      "python": "get_user_pnl",
+      "go": "GetUserPnL"
+    },
+    {
+      "python": "get_user_stats",
+      "go": "GetUserStats"
+    },
+    {
+      "python": "get_user_volume",
+      "go": "GetUserVolume"
+    },
+    {
+      "python": "list_activity",
+      "go": "ListActivity"
+    },
+    {
+      "python": "list_biggest_winners",
+      "go": "ListBiggestWinners"
+    },
+    {
+      "python": "list_builder_leaderboard",
+      "go": "ListBuilderLeaderboard"
+    },
+    {
+      "python": "list_builder_trades",
+      "go": "ListBuilderTrades"
+    },
+    {
+      "python": "list_combo_activity",
+      "go": "ListComboActivity"
+    },
+    {
+      "python": "list_combo_markets",
+      "go": "ListComboMarkets"
+    },
+    {
+      "python": "list_combo_positions",
+      "go": "ListComboPositions"
+    },
+    {
+      "python": "list_comments",
+      "go": "ListComments"
+    },
+    {
+      "python": "list_comments_by_user_address",
+      "go": "ListCommentsByUserAddress"
+    },
+    {
+      "python": "list_current_rewards",
+      "go": "ListCurrentRewards"
+    },
+    {
+      "python": "list_events",
+      "go": "ListEvents"
+    },
+    {
+      "python": "list_market_holders",
+      "go": "ListMarketHolders"
+    },
+    {
+      "python": "list_market_rewards",
+      "go": "ListMarketRewards"
+    },
+    {
+      "python": "list_markets",
+      "go": "ListMarkets"
+    },
+    {
+      "python": "list_positions",
+      "go": "ListPositions"
+    },
+    {
+      "python": "list_price_history",
+      "go": "ListPriceHistory"
+    },
+    {
+      "python": "list_reward_markets",
+      "go": "ListRewardMarkets"
+    },
+    {
+      "python": "list_series",
+      "go": "ListSeries"
+    },
+    {
+      "python": "list_tags",
+      "go": "ListTags"
+    },
+    {
+      "python": "list_teams",
+      "go": "ListTeams"
+    },
+    {
+      "python": "list_trader_leaderboard",
+      "go": "ListTraderLeaderboard"
+    },
+    {
+      "python": "list_trades",
+      "go": "ListTrades"
+    },
+    {
+      "python": "search",
+      "go": "Search"
+    },
+    {
+      "python": "subscribe",
+      "go": "Subscribe"
+    }
+  ]
+}
