@@ -1,0 +1,606 @@
+{
+  "upstream_version": "0.14.0",
+  "upstream_commit": "7032ed06175b0bbea77b2d9e898bd9f252af2041",
+  "members": [
+    {
+      "python": "accept_combo_quote",
+      "go": "AcceptComboQuote",
+      "stage": 2
+    },
+    {
+      "python": "approve_erc1155_for_all",
+      "go": "ApproveErc1155ForAll",
+      "stage": 3
+    },
+    {
+      "python": "approve_erc20",
+      "go": "ApproveErc20",
+      "stage": 3
+    },
+    {
+      "python": "authorize_session_key",
+      "go": "AuthorizeSessionKey",
+      "stage": 3
+    },
+    {
+      "python": "cancel_all",
+      "go": "CancelAll",
+      "stage": 2
+    },
+    {
+      "python": "cancel_market_orders",
+      "go": "CancelMarketOrders",
+      "stage": 2
+    },
+    {
+      "python": "cancel_order",
+      "go": "CancelOrder",
+      "stage": 2
+    },
+    {
+      "python": "cancel_orders",
+      "go": "CancelOrders",
+      "stage": 2
+    },
+    {
+      "python": "close",
+      "go": "Close",
+      "stage": 2
+    },
+    {
+      "python": "create",
+      "go": "Create",
+      "stage": 2
+    },
+    {
+      "python": "create_builder_api_key",
+      "go": "CreateBuilderAPIKey",
+      "stage": 2
+    },
+    {
+      "python": "create_limit_order",
+      "go": "CreateLimitOrder",
+      "stage": 2
+    },
+    {
+      "python": "create_market_order",
+      "go": "CreateMarketOrder",
+      "stage": 2
+    },
+    {
+      "python": "credentials",
+      "go": "Credentials",
+      "stage": 2
+    },
+    {
+      "python": "delete_api_key",
+      "go": "DeleteAPIKey",
+      "stage": 2
+    },
+    {
+      "python": "download_accounting_snapshot",
+      "go": "DownloadAccountingSnapshot",
+      "stage": 2
+    },
+    {
+      "python": "drop_notifications",
+      "go": "DropNotifications",
+      "stage": 2
+    },
+    {
+      "python": "end_authentication",
+      "go": "EndAuthentication",
+      "stage": 2
+    },
+    {
+      "python": "environment",
+      "go": "Environment",
+      "stage": 2
+    },
+    {
+      "python": "estimate_market_price",
+      "go": "EstimateMarketPrice",
+      "stage": 2
+    },
+    {
+      "python": "execute_collateral_return_plan",
+      "go": "ExecuteCollateralReturnPlan",
+      "stage": 3
+    },
+    {
+      "python": "execute_transaction",
+      "go": "ExecuteTransaction",
+      "stage": 3
+    },
+    {
+      "python": "fetch_api_keys",
+      "go": "FetchAPIKeys",
+      "stage": 2
+    },
+    {
+      "python": "fetch_builder_api_keys",
+      "go": "FetchBuilderAPIKeys",
+      "stage": 2
+    },
+    {
+      "python": "fetch_rfq_status",
+      "go": "FetchRFQStatus",
+      "stage": 2
+    },
+    {
+      "python": "fetch_session_keys",
+      "go": "FetchSessionKeys",
+      "stage": 3
+    },
+    {
+      "python": "get_balance_allowance",
+      "go": "GetBalanceAllowance",
+      "stage": 2
+    },
+    {
+      "python": "get_builder_fee_rates",
+      "go": "GetBuilderFeeRates",
+      "stage": 2
+    },
+    {
+      "python": "get_builder_volumes",
+      "go": "GetBuilderVolumes",
+      "stage": 2
+    },
+    {
+      "python": "get_closed_only_mode",
+      "go": "GetClosedOnlyMode",
+      "stage": 2
+    },
+    {
+      "python": "get_comment_thread",
+      "go": "GetCommentThread",
+      "stage": 2
+    },
+    {
+      "python": "get_current_rebates",
+      "go": "GetCurrentRebates",
+      "stage": 2
+    },
+    {
+      "python": "get_event",
+      "go": "GetEvent",
+      "stage": 2
+    },
+    {
+      "python": "get_event_live_volume",
+      "go": "GetEventLiveVolume",
+      "stage": 2
+    },
+    {
+      "python": "get_event_tags",
+      "go": "GetEventTags",
+      "stage": 2
+    },
+    {
+      "python": "get_last_trade_price",
+      "go": "GetLastTradePrice",
+      "stage": 2
+    },
+    {
+      "python": "get_last_trade_prices",
+      "go": "GetLastTradePrices",
+      "stage": 2
+    },
+    {
+      "python": "get_market",
+      "go": "GetMarket",
+      "stage": 2
+    },
+    {
+      "python": "get_market_tags",
+      "go": "GetMarketTags",
+      "stage": 2
+    },
+    {
+      "python": "get_midpoint",
+      "go": "GetMidpoint",
+      "stage": 2
+    },
+    {
+      "python": "get_midpoints",
+      "go": "GetMidpoints",
+      "stage": 2
+    },
+    {
+      "python": "get_notifications",
+      "go": "GetNotifications",
+      "stage": 2
+    },
+    {
+      "python": "get_open_interests",
+      "go": "GetOpenInterests",
+      "stage": 2
+    },
+    {
+      "python": "get_order",
+      "go": "GetOrder",
+      "stage": 2
+    },
+    {
+      "python": "get_order_book",
+      "go": "GetOrderBook",
+      "stage": 2
+    },
+    {
+      "python": "get_order_books",
+      "go": "GetOrderBooks",
+      "stage": 2
+    },
+    {
+      "python": "get_order_scoring",
+      "go": "GetOrderScoring",
+      "stage": 2
+    },
+    {
+      "python": "get_orders_scoring",
+      "go": "GetOrdersScoring",
+      "stage": 2
+    },
+    {
+      "python": "get_portfolio_value",
+      "go": "GetPortfolioValue",
+      "stage": 2
+    },
+    {
+      "python": "get_price",
+      "go": "GetPrice",
+      "stage": 2
+    },
+    {
+      "python": "get_prices",
+      "go": "GetPrices",
+      "stage": 2
+    },
+    {
+      "python": "get_public_profile",
+      "go": "GetPublicProfile",
+      "stage": 2
+    },
+    {
+      "python": "get_related_tag_resources",
+      "go": "GetRelatedTagResources",
+      "stage": 2
+    },
+    {
+      "python": "get_related_tags",
+      "go": "GetRelatedTags",
+      "stage": 2
+    },
+    {
+      "python": "get_resolutions",
+      "go": "GetResolutions",
+      "stage": 2
+    },
+    {
+      "python": "get_reward_percentages",
+      "go": "GetRewardPercentages",
+      "stage": 2
+    },
+    {
+      "python": "get_series",
+      "go": "GetSeries",
+      "stage": 2
+    },
+    {
+      "python": "get_sports",
+      "go": "GetSports",
+      "stage": 2
+    },
+    {
+      "python": "get_sports_market_types",
+      "go": "GetSportsMarketTypes",
+      "stage": 2
+    },
+    {
+      "python": "get_spread",
+      "go": "GetSpread",
+      "stage": 2
+    },
+    {
+      "python": "get_spreads",
+      "go": "GetSpreads",
+      "stage": 2
+    },
+    {
+      "python": "get_tag",
+      "go": "GetTag",
+      "stage": 2
+    },
+    {
+      "python": "get_token_references",
+      "go": "GetTokenReferences",
+      "stage": 2
+    },
+    {
+      "python": "get_total_earnings_for_user_for_day",
+      "go": "GetTotalEarningsForUserForDay",
+      "stage": 2
+    },
+    {
+      "python": "get_trader_leaderboard_standing",
+      "go": "GetTraderLeaderboardStanding",
+      "stage": 2
+    },
+    {
+      "python": "get_trading_approvals_state",
+      "go": "GetTradingApprovalsState",
+      "stage": 3
+    },
+    {
+      "python": "get_user_pnl",
+      "go": "GetUserPnL",
+      "stage": 2
+    },
+    {
+      "python": "get_user_stats",
+      "go": "GetUserStats",
+      "stage": 2
+    },
+    {
+      "python": "get_user_volume",
+      "go": "GetUserVolume",
+      "stage": 2
+    },
+    {
+      "python": "is_gasless_ready",
+      "go": "IsGaslessReady",
+      "stage": 3
+    },
+    {
+      "python": "list_account_trades",
+      "go": "ListAccountTrades",
+      "stage": 2
+    },
+    {
+      "python": "list_activity",
+      "go": "ListActivity",
+      "stage": 2
+    },
+    {
+      "python": "list_biggest_winners",
+      "go": "ListBiggestWinners",
+      "stage": 2
+    },
+    {
+      "python": "list_builder_leaderboard",
+      "go": "ListBuilderLeaderboard",
+      "stage": 2
+    },
+    {
+      "python": "list_builder_trades",
+      "go": "ListBuilderTrades",
+      "stage": 2
+    },
+    {
+      "python": "list_combo_activity",
+      "go": "ListComboActivity",
+      "stage": 2
+    },
+    {
+      "python": "list_combo_markets",
+      "go": "ListComboMarkets",
+      "stage": 2
+    },
+    {
+      "python": "list_combo_positions",
+      "go": "ListComboPositions",
+      "stage": 2
+    },
+    {
+      "python": "list_comments",
+      "go": "ListComments",
+      "stage": 2
+    },
+    {
+      "python": "list_comments_by_user_address",
+      "go": "ListCommentsByUserAddress",
+      "stage": 2
+    },
+    {
+      "python": "list_current_rewards",
+      "go": "ListCurrentRewards",
+      "stage": 2
+    },
+    {
+      "python": "list_events",
+      "go": "ListEvents",
+      "stage": 2
+    },
+    {
+      "python": "list_market_holders",
+      "go": "ListMarketHolders",
+      "stage": 2
+    },
+    {
+      "python": "list_market_rewards",
+      "go": "ListMarketRewards",
+      "stage": 2
+    },
+    {
+      "python": "list_markets",
+      "go": "ListMarkets",
+      "stage": 2
+    },
+    {
+      "python": "list_open_orders",
+      "go": "ListOpenOrders",
+      "stage": 2
+    },
+    {
+      "python": "list_positions",
+      "go": "ListPositions",
+      "stage": 2
+    },
+    {
+      "python": "list_price_history",
+      "go": "ListPriceHistory",
+      "stage": 2
+    },
+    {
+      "python": "list_reward_markets",
+      "go": "ListRewardMarkets",
+      "stage": 2
+    },
+    {
+      "python": "list_series",
+      "go": "ListSeries",
+      "stage": 2
+    },
+    {
+      "python": "list_tags",
+      "go": "ListTags",
+      "stage": 2
+    },
+    {
+      "python": "list_teams",
+      "go": "ListTeams",
+      "stage": 2
+    },
+    {
+      "python": "list_trader_leaderboard",
+      "go": "ListTraderLeaderboard",
+      "stage": 2
+    },
+    {
+      "python": "list_trades",
+      "go": "ListTrades",
+      "stage": 2
+    },
+    {
+      "python": "list_user_earnings_and_markets_config",
+      "go": "ListUserEarningsAndMarketsConfig",
+      "stage": 2
+    },
+    {
+      "python": "list_user_earnings_for_day",
+      "go": "ListUserEarningsForDay",
+      "stage": 2
+    },
+    {
+      "python": "merge_multiple_positions",
+      "go": "MergeMultiplePositions",
+      "stage": 3
+    },
+    {
+      "python": "merge_positions",
+      "go": "MergePositions",
+      "stage": 3
+    },
+    {
+      "python": "open_rfq_session",
+      "go": "OpenRFQSession",
+      "stage": 3
+    },
+    {
+      "python": "place_limit_order",
+      "go": "PlaceLimitOrder",
+      "stage": 2
+    },
+    {
+      "python": "place_market_order",
+      "go": "PlaceMarketOrder",
+      "stage": 2
+    },
+    {
+      "python": "plan_collateral_return",
+      "go": "PlanCollateralReturn",
+      "stage": 3
+    },
+    {
+      "python": "post_order",
+      "go": "PostOrder",
+      "stage": 2
+    },
+    {
+      "python": "post_orders",
+      "go": "PostOrders",
+      "stage": 2
+    },
+    {
+      "python": "redeem_positions",
+      "go": "RedeemPositions",
+      "stage": 3
+    },
+    {
+      "python": "request_combo_quote",
+      "go": "RequestComboQuote",
+      "stage": 2
+    },
+    {
+      "python": "revoke_builder_api_key",
+      "go": "RevokeBuilderAPIKey",
+      "stage": 2
+    },
+    {
+      "python": "revoke_session_key",
+      "go": "RevokeSessionKey",
+      "stage": 3
+    },
+    {
+      "python": "search",
+      "go": "Search",
+      "stage": 2
+    },
+    {
+      "python": "send_order_heartbeat",
+      "go": "SendOrderHeartbeat",
+      "stage": 2
+    },
+    {
+      "python": "setup_gasless_wallet",
+      "go": "SetupGaslessWallet",
+      "stage": 3
+    },
+    {
+      "python": "setup_trading_approvals",
+      "go": "SetupTradingApprovals",
+      "stage": 3
+    },
+    {
+      "python": "signer",
+      "go": "Signer",
+      "stage": 2
+    },
+    {
+      "python": "split_position",
+      "go": "SplitPosition",
+      "stage": 3
+    },
+    {
+      "python": "subscribe",
+      "go": "Subscribe",
+      "stage": 2
+    },
+    {
+      "python": "transfer_erc20",
+      "go": "TransferErc20",
+      "stage": 3
+    },
+    {
+      "python": "wait_for_combo_fill",
+      "go": "WaitForComboFill",
+      "stage": 2
+    },
+    {
+      "python": "wait_for_order_fill_settlement",
+      "go": "WaitForOrderFillSettlement",
+      "stage": 2
+    },
+    {
+      "python": "wallet",
+      "go": "Wallet",
+      "stage": 2
+    },
+    {
+      "python": "wallet_type",
+      "go": "WalletType",
+      "stage": 2
+    }
+  ]
+}

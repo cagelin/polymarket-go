@@ -17,7 +17,9 @@ def add(service,label,raw):
  events.append(case);return case
 for name,base in baselines.items():
  if not name.endswith('Event') or 'topic' not in base or 'payload' not in base:continue
- raw=copy.deepcopy(base);topic=raw['topic'];service='market' if topic=='market' else 'sports' if topic=='sports' else 'rtds'
+ raw=copy.deepcopy(base);topic=raw['topic']
+ if topic not in wire_topics and topic not in ['market','sports']:continue
+ service='market' if topic=='market' else 'sports' if topic=='sports' else 'rtds'
  if service=='market':raw={'event_type':raw['type']}|raw['payload']
  elif service=='sports':raw=raw['payload']
  else:

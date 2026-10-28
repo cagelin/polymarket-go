@@ -32,9 +32,6 @@ linters:
       require-specific: true
     errcheck:
       check-type-assertions: true
-      exclude-functions:
-        # SDK Close is idempotent and currently always returns nil.
-        - (*github.com/cagelam/polymarket-go.PublicClient).Close
   exclusions:
     generated: strict
     presets: []

@@ -8,12 +8,12 @@ import (
 	"os"
 	"time"
 
-	polymarket "github.com/cagelam/polymarket-go"
+	"github.com/cagelam/polymarket-go"
 )
 
 func main() {
 	if err := run(); err != nil {
-		fmt.Fprintln(os.Stderr, err)
+		_, _ = fmt.Fprintln(os.Stderr, err) // A stderr failure cannot recover this terminal error.
 		os.Exit(1)
 	}
 }
@@ -22,7 +22,7 @@ func run() error {
 	if err != nil {
 		return err
 	}
-	defer client.Close()
+	defer func() { _ = client.Close() }() // Close only releases local resources and always returns nil.
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 	handle, err := client.Subscribe(ctx, polymarket.CryptoPricesSpec{Topic: "prices.crypto.binance", Symbols: []string{"btcusdt"}})

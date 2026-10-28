@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Reference data and generators" pattern="file:testdata//*||file:LICENSE||file:LICENSES//*||file:tests/parity/*.py||file:scripts/*.py||file:tests/parity/requirements.txt" />
+</component>

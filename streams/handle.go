@@ -18,6 +18,7 @@ type Handle struct {
 	head, count int
 	dropped     uint64
 	ended       bool
+	failure     error
 	done        chan struct{}
 	wake        chan struct{}
 	closeOnce   sync.Once
@@ -48,8 +49,12 @@ func (h *Handle) Next(ctx context.Context) (models.StreamEvent, error) {
 			return event, nil
 		}
 		ended := h.ended
+		failure := h.failure
 		h.mu.Unlock()
 		if ended {
+			if failure != nil {
+				return nil, failure
+			}
 			return nil, io.EOF
 		}
 		select {
@@ -129,3 +134,5 @@ func (h *Handle) bindContext(ctx context.Context) {
 		h.stopContext = context.AfterFunc(ctx, func() { _ = h.Close() })
 	}
 }
+
+func (h *Handle) fail(err error) { h.mu.Lock(); h.failure = err; h.mu.Unlock(); h.end() }

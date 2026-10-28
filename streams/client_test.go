@@ -12,6 +12,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/cagelam/polymarket-go/internal/testutil"
+
 	"github.com/cagelam/polymarket-go/models"
 	"github.com/coder/websocket"
 )
@@ -57,14 +59,13 @@ func startServer(t *testing.T) (string, <-chan *testPeer) {
 }
 func receive[T any](t *testing.T, values <-chan T) T {
 	t.Helper()
+	var value T
 	select {
-	case value := <-values:
-		return value
+	case value = <-values:
 	case <-time.After(5 * time.Second):
 		t.Fatal("timed out waiting for stream test event")
-		var zero T
-		return zero
 	}
+	return value
 }
 func writePeer(t *testing.T, peer *testPeer, raw string) {
 	t.Helper()
@@ -91,7 +92,7 @@ func expectFrame(t *testing.T, peer *testPeer, want string) {
 	if err := json.Unmarshal(raw, &actual); err != nil {
 		t.Fatalf("frame %s: %v", raw, err)
 	}
-	equalJSON(t, actual, json.RawMessage(want))
+	testutil.EqualJSON(t, actual, json.RawMessage(want))
 }
 
 func TestMarketMultiplexReconnectAndCancel(t *testing.T) {

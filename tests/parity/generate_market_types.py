@@ -117,7 +117,7 @@ def main():
     '''
     for name,base in sorted(ids):
         if name not in {'ConditionID'}:
-            header+=f'\n// {name} identifies a {name.removesuffix("ID")} resource.\ntype {name} {base}\n'
+            header+=f'\n// {name} identifies the {name.removesuffix("ID")} resource.\ntype {name} {base}\n'
     for cls in [market.ProtocolVersion,market.MarketResolutionStatus,market.UmaResolutionStatus]:
         name=named(cls.__name__)
         header+=f'\n// {name} describes known market states.\ntype {name} string\n\n// Supported {name} values.\nconst (\n'

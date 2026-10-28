@@ -110,7 +110,7 @@ func TestPythonCLOBParity(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			defer client.Close()
+			defer func() { _ = client.Close() }() // Close only releases local resources and always returns nil.
 			value, err := callParity(t, client, test)
 			if got := errorClass(err); got != test.Expected.Error {
 				t.Fatalf("error = %s (%v), Python = %s", got, err, test.Expected.Error)
@@ -133,8 +133,7 @@ func TestPythonCLOBParity(t *testing.T) {
 }
 
 func errorClass(err error) string {
-	var limit *PaginationLimitError
-	if errors.As(err, &limit) {
+	if _, ok := errors.AsType[*PaginationLimitError](err); ok {
 		return "PaginationLimitError"
 	}
 	if err == nil {
@@ -243,7 +242,7 @@ func TestCancellation(t *testing.T) {
 	if createErr != nil {
 		t.Fatal(createErr)
 	}
-	defer client.Close()
+	defer func() { _ = client.Close() }() // Close only releases local resources and always returns nil.
 	ctx, cancel := context.WithCancel(t.Context())
 	defer cancel()
 	done := make(chan error, 1)

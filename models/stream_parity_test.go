@@ -3,12 +3,20 @@ package models
 import (
 	"encoding/json"
 	"os"
-	"reflect"
 	"testing"
+
+	"github.com/cagelam/polymarket-go/internal/testutil"
 )
 
 func TestPythonStreamEvents(t *testing.T) {
-	raw, err := os.ReadFile("../testdata/streams-events-parity.json")
+	testStreamEvents(t, "../testdata/streams-events-parity.json")
+}
+func TestPythonSecureStreamEvents(t *testing.T) {
+	testStreamEvents(t, "../testdata/secure-stream-events-parity.json")
+}
+func testStreamEvents(t *testing.T, path string) {
+	t.Helper()
+	raw, err := os.ReadFile(path) //nolint:gosec // Paths are fixed repository fixtures passed only by the tests above.
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -34,20 +42,7 @@ func TestPythonStreamEvents(t *testing.T) {
 			if parseErr != nil {
 				return
 			}
-			actual, encodeErr := json.Marshal(event)
-			if encodeErr != nil {
-				t.Fatal(encodeErr)
-			}
-			var got, want any
-			if err = json.Unmarshal(actual, &got); err != nil {
-				t.Fatal(err)
-			}
-			if err = json.Unmarshal(test.Expected.Value, &want); err != nil {
-				t.Fatal(err)
-			}
-			if !reflect.DeepEqual(got, want) {
-				t.Errorf("Go = %s; Python = %s", actual, test.Expected.Value)
-			}
+			testutil.EqualJSON(t, event, test.Expected.Value)
 		})
 	}
 }

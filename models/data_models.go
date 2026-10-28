@@ -182,7 +182,7 @@ func (m *ComboPositionMarket) UnmarshalJSON(raw []byte) error {
 	return nil
 }
 
-// ComboPositionLeg represents A combo leg; “leg_current_price“ is USDC per share.
+// ComboPositionLeg represents A combo leg; leg_current_price is USDC per share.
 type ComboPositionLeg struct {
 	LegIndex        int64                `json:"leg_index"`
 	LegPositionID   PositionID           `json:"leg_position_id"`
@@ -216,7 +216,7 @@ func (m *ComboPositionLeg) UnmarshalJSON(raw []byte) error {
 	return nil
 }
 
-// ComboPosition represents A combo position. “current_size“ is shares; prices, costs and payouts are USDC.
+// ComboPosition represents A combo position. current_size is shares; prices, costs and payouts are USDC.
 type ComboPosition struct {
 	ConditionID        ComboConditionID    `json:"condition_id"`
 	PositionID         PositionID          `json:"position_id"`
@@ -292,7 +292,7 @@ func (m *PortfolioValue) UnmarshalJSON(raw []byte) error {
 	return nil
 }
 
-// UserPnLPoint represents Cumulative wallet metrics. “volume“ is shares; all monetary amounts are USDC.
+// UserPnLPoint represents Cumulative wallet metrics. volume is shares; all monetary amounts are USDC.
 type UserPnLPoint struct {
 	Timestamp         time.Time    `json:"timestamp"`
 	SourceBlock       int64        `json:"source_block"`
@@ -362,7 +362,7 @@ func (m *UserPnLPoint) UnmarshalJSON(raw []byte) error {
 	return nil
 }
 
-// UserStats represents Wallet statistics; “biggest_win“ is USDC.
+// UserStats represents Wallet statistics; biggest_win is USDC.
 type UserStats struct {
 	Wallet            EVMAddress    `json:"wallet"`
 	TradedMarketCount int64         `json:"traded_market_count"`
@@ -1463,7 +1463,7 @@ func (m *LiveVolume) UnmarshalJSON(raw []byte) error {
 	return nil
 }
 
-// OpenInterest represents Open interest in USDC; “condition_id=None“ denotes global interest.
+// OpenInterest represents Open interest in USDC; condition_id=None denotes global interest.
 type OpenInterest struct {
 	ConditionID *ConditionID `json:"condition_id"`
 	Value       *decimal.Big `json:"value"`
@@ -1483,7 +1483,7 @@ func (m *OpenInterest) UnmarshalJSON(raw []byte) error {
 	return nil
 }
 
-// Holder represents A holder. “amount“ is shares; prices, cost, value and PnL are USDC.
+// Holder represents A holder. amount is shares; prices, cost, value and PnL are USDC.
 type Holder struct {
 	Wallet                EVMAddress   `json:"wallet"`
 	AssetID               ClobAssetID  `json:"asset_id"`
@@ -1587,7 +1587,7 @@ func (m *TraderLeaderboardEntry) UnmarshalJSON(raw []byte) error {
 	return nil
 }
 
-// TraderLeaderboardStanding represents Trader rankings; PnL is USDC and volume is shares. Unranked values are “None“.
+// TraderLeaderboardStanding represents Trader rankings; PnL is USDC and volume is shares. Unranked values are None.
 type TraderLeaderboardStanding struct {
 	Wallet       EVMAddress   `json:"wallet"`
 	PnL          *decimal.Big `json:"pnl"`

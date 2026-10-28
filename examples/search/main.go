@@ -8,7 +8,7 @@ import (
 	"os"
 	"time"
 
-	polymarket "github.com/cagelam/polymarket-go"
+	"github.com/cagelam/polymarket-go"
 )
 
 func main() {
@@ -28,7 +28,7 @@ func run() error {
 	if err != nil {
 		return err
 	}
-	defer client.Close()
+	defer func() { _ = client.Close() }() // Close only releases local resources and always returns nil.
 	size := 5
 	pager, err := client.Search(polymarket.SearchParams{Query: query, PageSize: &size})
 	if err != nil {

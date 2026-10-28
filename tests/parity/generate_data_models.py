@@ -10,7 +10,8 @@ from support import normalize,manifest
 from generate_public_clob_types import classes as clob_classes
 from generate_catalog_types import classes as catalog_classes
 from generate_stream_types import classes as stream_classes
-classes = classes + clob_classes + catalog_classes + stream_classes
+from generate_trading_types import classes as trading_classes
+classes = classes + clob_classes + catalog_classes + stream_classes + trading_classes
 
 def value_for(a,name,full):
  if name=="onchain_event_id":return "0x"+"ab"*29+"000000"
@@ -61,7 +62,7 @@ def payload(cls,full):
  return result
 cases=[]
 def add(name,cls,raw):
- case=dict(name=name,model=typename(cls.__name__),response=copy.deepcopy(raw))
+ case=dict(name=name,model=typename(cls.__name__).replace("ApiKey","APIKey"),response=copy.deepcopy(raw))
  try:case['expected']={'value':normalize(cls.parse_response(copy.deepcopy(raw)))}
  except Exception as err:case['expected']={'error':type(err).__name__}
  cases.append(case)
@@ -94,8 +95,11 @@ for cls in classes:
    if wire not in raw:continue
    for value in ['1e-100001','1e100001','1e-999999999999999999','1e999999999999999999']:
     add(cls.__name__+'/decimal/'+name+'/'+value,cls,raw|{wire:value})
+ if cls.__name__=='BuilderFeeRates':
+  for value in ['0','10000','1000000','1.2300','1e30']:
+   add('BuilderFeeRates/bps/'+value,cls,{'builder_maker_fee_rate_bps':value,'builder_taker_fee_rate_bps':value})
  if cls.__name__=='Resolution':
-  for value in ['1000000.00','1e-100001','1e-1000020','1e-1000021','1e-1000027','1e1000006','-0.0000000','12345678901234567890123456789012345']:
+  for value in ['1000000000000000000000000000000000000','1000000.00','1e-100001','1e-1000020','1e-1000021','1e-1000027','1e1000006','-0.0000000','12345678901234567890123456789012345']:
    add('Resolution/payout/'+value,cls,raw|{'payouts':[value,value]})
 (ROOT/'testdata/data-models-parity.json').write_text(json.dumps(dict(upstream_version=manifest['version'],upstream_commit=manifest['commit'],cases=cases),ensure_ascii=False,indent=2)+'\n')
 print('Generated',len(cases),'Data model cases')
@@ -103,9 +107,9 @@ print('Generated',len(cases),'Data model cases')
 text='''package models
 
 import (
+ "github.com/cagelam/polymarket-go/internal/testutil"
  "encoding/json"
  "os"
- "reflect"
  "testing"
 )
 
@@ -120,11 +124,7 @@ func TestPythonDataModels(t *testing.T) {
   decodeErr:=json.Unmarshal(test.Response,target)
   if (decodeErr!=nil)!=(test.Expected.Error!="") { t.Fatalf("%s decode error = %v, Python = %s",test.Model,decodeErr,test.Expected.Error) }
   if decodeErr!=nil { return }
-  encoded,encodeErr:=json.Marshal(target);if encodeErr!=nil { t.Fatal(encodeErr) }
-  var got,want any
-  if err=json.Unmarshal(encoded,&got);err!=nil { t.Fatal(err) }
-  if err=json.Unmarshal(test.Expected.Value,&want);err!=nil { t.Fatal(err) }
-  if !reflect.DeepEqual(got,want) { t.Errorf("%s JSON = %s; Python = %s",test.Model,encoded,test.Expected.Value) }
+  testutil.EqualJSON(t,target,test.Expected.Value)
  }) }
 }
 
@@ -132,7 +132,7 @@ func newDataParityTarget(name string) any {
  switch name {
 '''
 for cls in classes:
- name=typename(cls.__name__);text+=f'case "{name}":return &{name}{{}}\n'
+ name=typename(cls.__name__).replace('ApiKey','APIKey');text+=f'case "{name}":return &{name}{{}}\n'
 text+='default:return nil\n}\n}\n'
 (ROOT/'models/data_parity_test.go').write_text(text)
 subprocess.run(['gofmt','-w',str(ROOT/'models/data_parity_test.go')],check=True)

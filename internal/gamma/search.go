@@ -135,16 +135,16 @@ func parseSearchPage(data []byte) (models.SearchResults, bool, *int64, error) {
 	var more bool
 	var total *int64
 	if raw, present := fields["pagination"]; present && string(raw) != "null" {
-		pagination, paginationErr := codec.Object(raw)
+		pageMetadata, paginationErr := codec.Object(raw)
 		if paginationErr != nil {
 			return models.SearchResults{}, false, nil, paginationErr
 		}
-		if value, exists := pagination["hasMore"]; exists && string(value) != "null" {
+		if value, exists := pageMetadata["hasMore"]; exists && string(value) != "null" {
 			if err = json.Unmarshal(value, &more); err != nil {
 				return models.SearchResults{}, false, nil, err
 			}
 		}
-		if value, exists := pagination["totalResults"]; exists && string(value) != "null" {
+		if value, exists := pageMetadata["totalResults"]; exists && string(value) != "null" {
 			if err = json.Unmarshal(value, &total); err != nil {
 				return models.SearchResults{}, false, nil, err
 			}

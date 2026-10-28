@@ -3,8 +3,9 @@ package models
 import (
 	"encoding/json"
 	"os"
-	"reflect"
 	"testing"
+
+	"github.com/cagelam/polymarket-go/internal/testutil"
 )
 
 func TestPythonDataModels(t *testing.T) {
@@ -38,20 +39,7 @@ func TestPythonDataModels(t *testing.T) {
 			if decodeErr != nil {
 				return
 			}
-			encoded, encodeErr := json.Marshal(target)
-			if encodeErr != nil {
-				t.Fatal(encodeErr)
-			}
-			var got, want any
-			if err = json.Unmarshal(encoded, &got); err != nil {
-				t.Fatal(err)
-			}
-			if err = json.Unmarshal(test.Expected.Value, &want); err != nil {
-				t.Fatal(err)
-			}
-			if !reflect.DeepEqual(got, want) {
-				t.Errorf("%s JSON = %s; Python = %s", test.Model, encoded, test.Expected.Value)
-			}
+			testutil.EqualJSON(t, target, test.Expected.Value)
 		})
 	}
 }
@@ -272,6 +260,126 @@ func newDataParityTarget(name string) any {
 		return &ReactionCreatedEvent{}
 	case "ReactionRemovedEvent":
 		return &ReactionRemovedEvent{}
+	case "UserOrderEvent":
+		return &UserOrderEvent{}
+	case "UserOrderPayload":
+		return &UserOrderPayload{}
+	case "UserTradeEvent":
+		return &UserTradeEvent{}
+	case "UserTradeMakerOrder":
+		return &UserTradeMakerOrder{}
+	case "UserTradePayload":
+		return &UserTradePayload{}
+	case "RealtimeEquityTwapSnapshot":
+		return &RealtimeEquityTwapSnapshot{}
+	case "RealtimeEquityTwapUpdate":
+		return &RealtimeEquityTwapUpdate{}
+	case "RealtimeEquityPriceSnapshot":
+		return &RealtimeEquityPriceSnapshot{}
+	case "RealtimeEquityPriceUpdate":
+		return &RealtimeEquityPriceUpdate{}
+	case "CryptoPriceSnapshotEvent":
+		return &CryptoPriceSnapshotEvent{}
+	case "CryptoPriceUpdateEvent":
+		return &CryptoPriceUpdateEvent{}
+	case "CryptoTwapPriceSnapshotEvent":
+		return &CryptoTwapPriceSnapshotEvent{}
+	case "CryptoTwapPriceUpdateEvent":
+		return &CryptoTwapPriceUpdateEvent{}
+	case "EquityPriceSnapshotEvent":
+		return &EquityPriceSnapshotEvent{}
+	case "EquityPriceUpdateEvent":
+		return &EquityPriceUpdateEvent{}
+	case "EquityTwapPriceSnapshotEvent":
+		return &EquityTwapPriceSnapshotEvent{}
+	case "EquityTwapPriceUpdateEvent":
+		return &EquityTwapPriceUpdateEvent{}
+	case "RealtimePricePoint":
+		return &RealtimePricePoint{}
+	case "RealtimePriceSnapshot":
+		return &RealtimePriceSnapshot{}
+	case "RealtimePriceUpdate":
+		return &RealtimePriceUpdate{}
+	case "RealtimeTwapSnapshot":
+		return &RealtimeTwapSnapshot{}
+	case "RealtimeTwapUpdate":
+		return &RealtimeTwapUpdate{}
+	case "OpenOrder":
+		return &OpenOrder{}
+	case "MakerOrder":
+		return &MakerOrder{}
+	case "ClobTrade":
+		return &ClobTrade{}
+	case "BuilderAPIKeyInfo":
+		return &BuilderAPIKeyInfo{}
+	case "BuilderFeeRates":
+		return &BuilderFeeRates{}
+	case "CancelOrdersResponse":
+		return &CancelOrdersResponse{}
+	case "OrderHeartbeat":
+		return &OrderHeartbeat{}
+	case "OrderHeartbeatMismatchResponse":
+		return &OrderHeartbeatMismatchResponse{}
+	case "RawOrderResponse":
+		return &RawOrderResponse{}
+	case "AcceptedOrder":
+		return &AcceptedOrder{}
+	case "RejectedOrder":
+		return &RejectedOrder{}
+	case "UserEarning":
+		return &UserEarning{}
+	case "TotalUserEarning":
+		return &TotalUserEarning{}
+	case "UserRewardsEarning":
+		return &UserRewardsEarning{}
+	case "AutoRedeemedNotification":
+		return &AutoRedeemedNotification{}
+	case "AutoRedeemedNotificationPayload":
+		return &AutoRedeemedNotificationPayload{}
+	case "ChildCommentCreatedNotification":
+		return &ChildCommentCreatedNotification{}
+	case "ChildCommentNotificationPayload":
+		return &ChildCommentNotificationPayload{}
+	case "ComboAutoRedeemedNotification":
+		return &ComboAutoRedeemedNotification{}
+	case "ComboAutoRedeemedNotificationPayload":
+		return &ComboAutoRedeemedNotificationPayload{}
+	case "MarketNotificationPayload":
+		return &MarketNotificationPayload{}
+	case "MarketNotificationRewards":
+		return &MarketNotificationRewards{}
+	case "MarketNotificationRewardsRate":
+		return &MarketNotificationRewardsRate{}
+	case "MarketNotificationToken":
+		return &MarketNotificationToken{}
+	case "MarketRegisteredNotification":
+		return &MarketRegisteredNotification{}
+	case "MarketResolvedNotification":
+		return &MarketResolvedNotification{}
+	case "OrderCancellationNotification":
+		return &OrderCancellationNotification{}
+	case "OrderFillFailedNotification":
+		return &OrderFillFailedNotification{}
+	case "OrderFillNotification":
+		return &OrderFillNotification{}
+	case "OrderNotificationPayload":
+		return &OrderNotificationPayload{}
+	case "RewardPayoutNotification":
+		return &RewardPayoutNotification{}
+	case "RewardPayoutNotificationPayload":
+		return &RewardPayoutNotificationPayload{}
+	case "TakerTierUpgradedNotification":
+		return &TakerTierUpgradedNotification{}
+	case "TakerTierUpgradedNotificationPayload":
+		return &TakerTierUpgradedNotificationPayload{}
+	case "YieldPayoutNotification":
+		return &YieldPayoutNotification{}
+	case "YieldPayoutNotificationPayload":
+		return &YieldPayoutNotificationPayload{}
+	case "EarningBreakdown":
+		return &EarningBreakdown{}
+	case "UserRewardsConfig":
+		return &UserRewardsConfig{}
 	default:
 		return nil
 	}

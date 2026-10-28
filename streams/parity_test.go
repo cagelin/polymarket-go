@@ -6,6 +6,8 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/cagelam/polymarket-go/internal/testutil"
+
 	"github.com/cagelam/polymarket-go/models"
 )
 
@@ -100,8 +102,8 @@ func TestPythonStreamProtocol(t *testing.T) {
 			if len(frames) > 0 {
 				initial = frames[0]
 			}
-			equalJSON(t, initial, test.Expected.Initial)
-			matches := []string{}
+			testutil.EqualJSON(t, initial, test.Expected.Initial)
+			matches := make([]string, 0) // Match the fixture's empty JSON array.
 			for _, event := range eventFixture.Cases {
 				if event.Service != test.Service || event.Expected.Error {
 					continue
@@ -120,7 +122,7 @@ func TestPythonStreamProtocol(t *testing.T) {
 		})
 	}
 	for _, test := range fixture.Transitions {
-		before, after := []selection{}, []selection{}
+		var before, after []selection
 		for _, value := range test.Before {
 			spec, parseErr := value.decode(t).normalize()
 			if parseErr != nil {
@@ -135,23 +137,6 @@ func TestPythonStreamProtocol(t *testing.T) {
 			}
 			after = append(after, spec)
 		}
-		equalJSON(t, diffFrames(test.Service, deriveState(before), deriveState(after)), test.Expected)
-	}
-}
-func equalJSON(t *testing.T, actual any, expected json.RawMessage) {
-	t.Helper()
-	raw, err := json.Marshal(actual)
-	if err != nil {
-		t.Fatal(err)
-	}
-	var got, want any
-	if err = json.Unmarshal(raw, &got); err != nil {
-		t.Fatal(err)
-	}
-	if err = json.Unmarshal(expected, &want); err != nil {
-		t.Fatal(err)
-	}
-	if !reflect.DeepEqual(got, want) {
-		t.Errorf("Go=%s; Python=%s", raw, expected)
+		testutil.EqualJSON(t, diffFrames(test.Service, deriveState(before), deriveState(after)), test.Expected)
 	}
 }

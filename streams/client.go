@@ -18,15 +18,20 @@ import (
 
 // Config controls public stream endpoints. Zero values use production defaults.
 type Config struct {
-	MarketURL  string
-	SportsURL  string
-	RTDSURL    string
-	HTTPClient *http.Client
-	QueueSize  int // Defaults to 1024 per handle, including merged subscriptions.
+	MarketURL   string
+	UserURL     string
+	PriceURL    string
+	Credentials *models.APIKeyCreds
+	SportsURL   string
+	RTDSURL     string
+	HTTPClient  *http.Client
+	QueueSize   int // Defaults to 1024 per handle, including merged subscriptions.
 }
 
 // Client multiplexes subscriptions onto one socket per public service.
 type Client struct {
+	prices     priceManager
+	merged     map[*Handle]struct{}
 	mu         sync.Mutex
 	config     Config
 	ctx        context.Context
@@ -54,14 +59,25 @@ type Stats struct {
 
 // New creates a public stream client without opening sockets.
 func New(config Config) (*Client, error) {
+	if config.PriceURL == "" {
+		config.PriceURL = "wss://ws-live-v2.polymarket.com/ws"
+	}
+	parsedPrice, parseErr := url.Parse(config.PriceURL)
+	if parseErr != nil || (parsedPrice.Scheme != "ws" && parsedPrice.Scheme != "wss") || parsedPrice.Host == "" || parsedPrice.User != nil || parsedPrice.Fragment != "" {
+		return nil, invalid("invalid price stream URL")
+	}
+	if config.Credentials != nil {
+		credentials := *config.Credentials
+		config.Credentials = &credentials
+	}
 	if config.QueueSize == 0 {
 		config.QueueSize = 1024
 	}
 	if config.QueueSize < 1 {
 		return nil, invalid("stream queue size must be positive")
 	}
-	urls := map[string]string{"market": config.MarketURL, "sports": config.SportsURL, "rtds": config.RTDSURL}
-	defaults := map[string]string{"market": "wss://ws-subscriptions-clob.polymarket.com/ws/market", "sports": "wss://sports-api.polymarket.com/ws", "rtds": "wss://ws-live-data.polymarket.com"}
+	urls := map[string]string{"user": config.UserURL, "market": config.MarketURL, "sports": config.SportsURL, "rtds": config.RTDSURL}
+	defaults := map[string]string{"user": "wss://ws-subscriptions-clob.polymarket.com/ws/user", "market": "wss://ws-subscriptions-clob.polymarket.com/ws/market", "sports": "wss://sports-api.polymarket.com/ws", "rtds": "wss://ws-live-data.polymarket.com"}
 	groups := make(map[string]*group, len(urls))
 	for service, address := range urls {
 		if address == "" {
@@ -91,6 +107,16 @@ func (c *Client) Subscribe(ctx context.Context, specs ...Spec) (*Handle, error) 
 	if err != nil {
 		return nil, err
 	}
+	for _, s := range selections {
+		if s.service == "price" {
+			return c.subscribeMixed(ctx, specs, selections)
+		}
+	}
+	for _, s := range selections {
+		if s.service == "user" && c.config.Credentials == nil {
+			return nil, invalid("user subscriptions require authentication")
+		}
+	}
 	if err = ctx.Err(); err != nil {
 		return nil, err
 	}
@@ -116,7 +142,7 @@ func (c *Client) Subscribe(ctx context.Context, specs ...Spec) (*Handle, error) 
 		if g.conn == nil {
 			g.conn, err = c.dial(ctx, g.url)
 			if err == nil {
-				frames = initialFrames(service, after)
+				frames = c.initialFrames(service, after)
 			}
 		}
 		if err == nil {
@@ -146,6 +172,7 @@ func (c *Client) StreamStats() Stats {
 // Close closes sockets, releases workers, and ends every handle.
 func (c *Client) Close() error {
 	c.cancel()
+	c.closePrices()
 	c.mu.Lock()
 	c.closed = true
 	for _, g := range c.groups {
@@ -157,6 +184,10 @@ func (c *Client) Close() error {
 	for h := range c.handles {
 		h.end()
 	}
+	for h := range c.merged {
+		h.end()
+	}
+	clear(c.merged)
 	clear(c.handles)
 	c.order = nil
 	c.mu.Unlock()
@@ -214,11 +245,12 @@ func (c *Client) dial(ctx context.Context, address string) (*websocket.Conn, err
 	//nolint:contextcheck // Either caller cancellation or whole-client closure must interrupt dialing.
 	stop := context.AfterFunc(c.ctx, cancel)
 	defer stop()
+	// Dial closes the network body; a failed handshake may return a buffered diagnostic body.
 	conn, response, err := websocket.Dial(dialCtx, address, &websocket.DialOptions{HTTPClient: c.config.HTTPClient})
+	if response != nil && response.Body != nil {
+		_ = response.Body.Close() // Diagnostic data is not consumed by the SDK.
+	}
 	if err != nil {
-		if response != nil && response.Body != nil {
-			_ = response.Body.Close()
-		}
 		return nil, err
 	}
 	conn.SetReadLimit(10 << 20)
@@ -256,7 +288,7 @@ func (c *Client) run(g *group) {
 			var err error
 			conn, err = c.dial(c.ctx, g.url)
 			if err == nil {
-				err = sendFrames(c.ctx, conn, initialFrames(g.service, deriveState(c.selections(g.service))))
+				err = sendFrames(c.ctx, conn, c.initialFrames(g.service, deriveState(c.selections(g.service))))
 			}
 			if err != nil {
 				if conn != nil {
@@ -289,8 +321,9 @@ func (c *Client) run(g *group) {
 		attempt++
 	}
 }
-func (c *Client) finishGroup(g *group) { c.mu.Lock(); g.running = false; c.mu.Unlock() }
-func (c *Client) backoff(attempt int) bool {
+func (c *Client) finishGroup(g *group)     { c.mu.Lock(); g.running = false; c.mu.Unlock() }
+func (c *Client) backoff(attempt int) bool { return backoffContext(c.ctx, attempt) }
+func backoffContext(ctx context.Context, attempt int) bool {
 	capDelay := 250 * time.Millisecond
 	for i := 0; i < attempt && capDelay < 30*time.Second; i++ {
 		capDelay *= 2
@@ -306,7 +339,7 @@ func (c *Client) backoff(attempt int) bool {
 	timer := time.NewTimer(delay)
 	defer timer.Stop()
 	select {
-	case <-c.ctx.Done():
+	case <-ctx.Done():
 		return false
 	case <-timer.C:
 		return true
@@ -330,7 +363,7 @@ func (c *Client) readConnection(g *group, conn *websocket.Conn) {
 		}
 		text := string(raw)
 		switch g.service {
-		case "market":
+		case "market", "user":
 			if text == "PONG" {
 				alive.Store(time.Now().UnixNano())
 				continue
@@ -373,7 +406,7 @@ func (c *Client) heartbeat(ctx context.Context, g *group, conn *websocket.Conn, 
 }
 func (c *Client) deliver(service string, raw []byte) {
 	items := []json.RawMessage{raw}
-	if service == "market" && len(raw) > 0 && raw[0] == '[' {
+	if (service == "market" || service == "user") && len(raw) > 0 && raw[0] == '[' {
 		if err := json.Unmarshal(raw, &items); err != nil {
 			c.malformed.Add(1)
 			return

@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Protocol input fixtures" pattern="file:testdata//*" />
+</component>

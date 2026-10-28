@@ -9,10 +9,20 @@ import (
 	"github.com/cagelam/polymarket-go/internal/data"
 	"github.com/cagelam/polymarket-go/internal/gamma"
 	"github.com/cagelam/polymarket-go/internal/rfq"
+	"github.com/cagelam/polymarket-go/internal/trading"
 	"github.com/cagelam/polymarket-go/models"
 	"github.com/cagelam/polymarket-go/pagination"
 	"github.com/cagelam/polymarket-go/streams"
 )
+
+// APIKey is the canonical SDK type.
+type APIKey = models.APIKey
+
+// APIKeyCreds is the canonical SDK type.
+type APIKeyCreds = models.APIKeyCreds
+
+// AcceptedOrder is the canonical SDK type.
+type AcceptedOrder = models.AcceptedOrder
 
 // Activity is the canonical SDK type.
 type Activity = models.Activity
@@ -62,11 +72,35 @@ const ActivityTypeWithdrawal = models.ActivityTypeWithdrawal
 // ActivityTypeYield is the canonical SDK value.
 const ActivityTypeYield = models.ActivityTypeYield
 
+// AssetCollateral is the canonical SDK value.
+const AssetCollateral = trading.AssetCollateral
+
+// AssetConditional is the canonical SDK value.
+const AssetConditional = trading.AssetConditional
+
+// AssetConditionalV2 is the canonical SDK value.
+const AssetConditionalV2 = trading.AssetConditionalV2
+
 // AssetQuery is the canonical SDK type.
 type AssetQuery = clob.AssetQuery
 
+// AssetType is the canonical SDK type.
+type AssetType = trading.AssetType
+
 // AssetsQuery is the canonical SDK type.
 type AssetsQuery = clob.AssetsQuery
+
+// AutoRedeemedNotification is the canonical SDK type.
+type AutoRedeemedNotification = models.AutoRedeemedNotification
+
+// AutoRedeemedNotificationPayload is the canonical SDK type.
+type AutoRedeemedNotificationPayload = models.AutoRedeemedNotificationPayload
+
+// BalanceAllowance is the canonical SDK type.
+type BalanceAllowance = models.BalanceAllowance
+
+// BalanceAllowanceParams is the canonical SDK type.
+type BalanceAllowanceParams = trading.BalanceAllowanceParams
 
 // BestLine is the canonical SDK type.
 type BestLine = models.BestLine
@@ -86,6 +120,15 @@ const BiggestWinnerKindCombo = models.BiggestWinnerKindCombo
 // BiggestWinnerKindMarket is the canonical SDK value.
 const BiggestWinnerKindMarket = models.BiggestWinnerKindMarket
 
+// BuilderAPIKey is the canonical SDK type.
+type BuilderAPIKey = models.BuilderAPIKey
+
+// BuilderAPIKeyInfo is the canonical SDK type.
+type BuilderAPIKeyInfo = models.BuilderAPIKeyInfo
+
+// BuilderFeeRates is the canonical SDK type.
+type BuilderFeeRates = models.BuilderFeeRates
+
 // BuilderStanding is the canonical SDK type.
 type BuilderStanding = models.BuilderStanding
 
@@ -97,6 +140,12 @@ type BuilderVolumePoint = models.BuilderVolumePoint
 
 // Buy is the canonical SDK value.
 const Buy = models.Buy
+
+// CancelMarketOrdersParams is the canonical SDK type.
+type CancelMarketOrdersParams = trading.CancelMarketOrdersParams
+
+// CancelOrdersResponse is the canonical SDK type.
+type CancelOrdersResponse = models.CancelOrdersResponse
 
 // CategoryID is the canonical SDK type.
 type CategoryID = models.CategoryID
@@ -110,6 +159,12 @@ type Chat = models.Chat
 // ChatID is the canonical SDK type.
 type ChatID = models.ChatID
 
+// ChildCommentCreatedNotification is the canonical SDK type.
+type ChildCommentCreatedNotification = models.ChildCommentCreatedNotification
+
+// ChildCommentNotificationPayload is the canonical SDK type.
+type ChildCommentNotificationPayload = models.ChildCommentNotificationPayload
+
 // ClobAssetID is the canonical SDK type.
 type ClobAssetID = models.ClobAssetID
 
@@ -118,6 +173,9 @@ type ClobReward = models.ClobReward
 
 // ClobRewardID is the canonical SDK type.
 type ClobRewardID = models.ClobRewardID
+
+// ClobTrade is the canonical SDK type.
+type ClobTrade = models.ClobTrade
 
 // CollectionID is the canonical SDK type.
 type CollectionID = models.CollectionID
@@ -155,6 +213,12 @@ const ComboActivityTypeUnwrap = models.ComboActivityTypeUnwrap
 // ComboActivityTypeWrap is the canonical SDK value.
 const ComboActivityTypeWrap = models.ComboActivityTypeWrap
 
+// ComboAutoRedeemedNotification is the canonical SDK type.
+type ComboAutoRedeemedNotification = models.ComboAutoRedeemedNotification
+
+// ComboAutoRedeemedNotificationPayload is the canonical SDK type.
+type ComboAutoRedeemedNotificationPayload = models.ComboAutoRedeemedNotificationPayload
+
 // ComboBiggestWinner is the canonical SDK type.
 type ComboBiggestWinner = models.ComboBiggestWinner
 
@@ -166,6 +230,9 @@ type ComboConditionID = models.ComboConditionID
 
 // ComboConvertActivity is the canonical SDK type.
 type ComboConvertActivity = models.ComboConvertActivity
+
+// ComboFillResult is the canonical SDK type.
+type ComboFillResult = models.ComboFillResult
 
 // ComboMarket is the canonical SDK type.
 type ComboMarket = models.ComboMarket
@@ -211,6 +278,15 @@ const ComboPositionStatusResolvedPartial = models.ComboPositionStatusResolvedPar
 
 // ComboPositionStatusResolvedWin is the canonical SDK value.
 const ComboPositionStatusResolvedWin = models.ComboPositionStatusResolvedWin
+
+// ComboQuote is the canonical SDK type.
+type ComboQuote = models.ComboQuote
+
+// ComboQuoteAcceptance is the canonical SDK type.
+type ComboQuoteAcceptance = models.ComboQuoteAcceptance
+
+// ComboQuoteResult is the canonical SDK type.
+type ComboQuoteResult = models.ComboQuoteResult
 
 // ComboRedeemActivity is the canonical SDK type.
 type ComboRedeemActivity = models.ComboRedeemActivity
@@ -269,6 +345,21 @@ type ConditionID = models.ConditionID
 // ConversionActivity is the canonical SDK type.
 type ConversionActivity = models.ConversionActivity
 
+// CreateLimitOrderParams is the canonical SDK type.
+type CreateLimitOrderParams = trading.CreateLimitOrderParams
+
+// CreateMarketOrderParams is the canonical SDK type.
+type CreateMarketOrderParams = trading.CreateMarketOrderParams
+
+// CryptoPriceSnapshotEvent is the canonical SDK type.
+type CryptoPriceSnapshotEvent = models.CryptoPriceSnapshotEvent
+
+// CryptoPriceSpec is the canonical SDK type.
+type CryptoPriceSpec = streams.CryptoPriceSpec
+
+// CryptoPriceUpdateEvent is the canonical SDK type.
+type CryptoPriceUpdateEvent = models.CryptoPriceUpdateEvent
+
 // CryptoPricesBinanceEvent is the canonical SDK type.
 type CryptoPricesBinanceEvent = models.CryptoPricesBinanceEvent
 
@@ -286,6 +377,15 @@ type CryptoPricesChainlinkTwapSpec = streams.CryptoPricesChainlinkTwapSpec
 
 // CryptoPricesSpec is the canonical SDK type.
 type CryptoPricesSpec = streams.CryptoPricesSpec
+
+// CryptoTwapPriceSnapshotEvent is the canonical SDK type.
+type CryptoTwapPriceSnapshotEvent = models.CryptoTwapPriceSnapshotEvent
+
+// CryptoTwapPriceSpec is the canonical SDK type.
+type CryptoTwapPriceSpec = streams.CryptoTwapPriceSpec
+
+// CryptoTwapPriceUpdateEvent is the canonical SDK type.
+type CryptoTwapPriceUpdateEvent = models.CryptoTwapPriceUpdateEvent
 
 // CurrentReward is the canonical SDK type.
 type CurrentReward = models.CurrentReward
@@ -311,14 +411,38 @@ type ERC20TradingApproval = models.ERC20TradingApproval
 // EVMAddress is the canonical SDK type.
 type EVMAddress = models.EVMAddress
 
+// EarningBreakdown is the canonical SDK type.
+type EarningBreakdown = models.EarningBreakdown
+
 // Environment is the canonical SDK type.
 type Environment = models.Environment
+
+// EquityMarketClosed is the canonical SDK value.
+const EquityMarketClosed = models.EquityMarketClosed
+
+// EquityMarketOpen is the canonical SDK value.
+const EquityMarketOpen = models.EquityMarketOpen
+
+// EquityMarketStatus is the canonical SDK type.
+type EquityMarketStatus = models.EquityMarketStatus
+
+// EquityMarketUnknown is the canonical SDK value.
+const EquityMarketUnknown = models.EquityMarketUnknown
 
 // EquityPriceSnapshotEntry is the canonical SDK type.
 type EquityPriceSnapshotEntry = models.EquityPriceSnapshotEntry
 
+// EquityPriceSnapshotEvent is the canonical SDK type.
+type EquityPriceSnapshotEvent = models.EquityPriceSnapshotEvent
+
+// EquityPriceSpec is the canonical SDK type.
+type EquityPriceSpec = streams.EquityPriceSpec
+
 // EquityPriceSubscribePayload is the canonical SDK type.
 type EquityPriceSubscribePayload = models.EquityPriceSubscribePayload
+
+// EquityPriceUpdateEvent is the canonical SDK type.
+type EquityPriceUpdateEvent = models.EquityPriceUpdateEvent
 
 // EquityPriceUpdatePayload is the canonical SDK type.
 type EquityPriceUpdatePayload = models.EquityPriceUpdatePayload
@@ -331,6 +455,15 @@ type EquityPricesSubscribeEvent = models.EquityPricesSubscribeEvent
 
 // EquityPricesUpdateEvent is the canonical SDK type.
 type EquityPricesUpdateEvent = models.EquityPricesUpdateEvent
+
+// EquityTwapPriceSnapshotEvent is the canonical SDK type.
+type EquityTwapPriceSnapshotEvent = models.EquityTwapPriceSnapshotEvent
+
+// EquityTwapPriceSpec is the canonical SDK type.
+type EquityTwapPriceSpec = streams.EquityTwapPriceSpec
+
+// EquityTwapPriceUpdateEvent is the canonical SDK type.
+type EquityTwapPriceUpdateEvent = models.EquityTwapPriceUpdateEvent
 
 // EstimateMarketPriceParams is the canonical SDK type.
 type EstimateMarketPriceParams = clob.EstimateMarketPriceParams
@@ -395,6 +528,12 @@ const FOK = clob.FOK
 // FeeSchedule is the canonical SDK type.
 type FeeSchedule = models.FeeSchedule
 
+// GTC is the canonical SDK value.
+const GTC = models.GTC
+
+// GTD is the canonical SDK value.
+const GTD = models.GTD
+
 // GetBuilderVolumesParams is the canonical SDK type.
 type GetBuilderVolumesParams = data.GetBuilderVolumesParams
 
@@ -415,6 +554,9 @@ type GetResolutionsParams = data.GetResolutionsParams
 
 // GetTokenReferencesParams is the canonical SDK type.
 type GetTokenReferencesParams = data.GetTokenReferencesParams
+
+// GetTotalEarningsForUserForDayParams is the canonical SDK type.
+type GetTotalEarningsForUserForDayParams = trading.GetTotalEarningsForUserForDayParams
 
 // GetTraderLeaderboardStandingParams is the canonical SDK type.
 type GetTraderLeaderboardStandingParams = data.GetTraderLeaderboardStandingParams
@@ -473,6 +615,9 @@ type LastTradePrice = models.LastTradePrice
 // LastTradePriceForAsset is the canonical SDK type.
 type LastTradePriceForAsset = models.LastTradePriceForAsset
 
+// ListAccountTradesParams is the canonical SDK type.
+type ListAccountTradesParams = trading.ListAccountTradesParams
+
 // ListActivityParams is the canonical SDK type.
 type ListActivityParams = data.ListActivityParams
 
@@ -515,6 +660,9 @@ type ListMarketRewardsParams = clob.ListMarketRewardsParams
 // ListMarketsParams is the canonical SDK type.
 type ListMarketsParams = gamma.ListMarketsParams
 
+// ListOpenOrdersParams is the canonical SDK type.
+type ListOpenOrdersParams = trading.ListOpenOrdersParams
+
 // ListPositionsParams is the canonical SDK type.
 type ListPositionsParams = data.ListPositionsParams
 
@@ -536,8 +684,14 @@ type ListTraderLeaderboardParams = data.ListTraderLeaderboardParams
 // ListTradesParams is the canonical SDK type.
 type ListTradesParams = data.ListTradesParams
 
+// ListUserEarningsAndMarketsConfigParams is the canonical SDK type.
+type ListUserEarningsAndMarketsConfigParams = trading.ListUserEarningsAndMarketsConfigParams
+
 // LiveVolume is the canonical SDK type.
 type LiveVolume = models.LiveVolume
+
+// MakerOrder is the canonical SDK type.
+type MakerOrder = models.MakerOrder
 
 // MakerRebateActivity is the canonical SDK type.
 type MakerRebateActivity = models.MakerRebateActivity
@@ -581,6 +735,18 @@ type MarketLiveVolume = models.MarketLiveVolume
 // MarketMetrics is the canonical SDK type.
 type MarketMetrics = models.MarketMetrics
 
+// MarketNotificationPayload is the canonical SDK type.
+type MarketNotificationPayload = models.MarketNotificationPayload
+
+// MarketNotificationRewards is the canonical SDK type.
+type MarketNotificationRewards = models.MarketNotificationRewards
+
+// MarketNotificationRewardsRate is the canonical SDK type.
+type MarketNotificationRewardsRate = models.MarketNotificationRewardsRate
+
+// MarketNotificationToken is the canonical SDK type.
+type MarketNotificationToken = models.MarketNotificationToken
+
 // MarketOrderType is the canonical SDK type.
 type MarketOrderType = clob.MarketOrderType
 
@@ -602,6 +768,9 @@ type MarketPrices = models.MarketPrices
 // MarketQuery is the canonical SDK type.
 type MarketQuery = gamma.MarketQuery
 
+// MarketRegisteredNotification is the canonical SDK type.
+type MarketRegisteredNotification = models.MarketRegisteredNotification
+
 // MarketResolution is the canonical SDK type.
 type MarketResolution = models.MarketResolution
 
@@ -610,6 +779,9 @@ type MarketResolutionStatus = models.MarketResolutionStatus
 
 // MarketResolvedEvent is the canonical SDK type.
 type MarketResolvedEvent = models.MarketResolvedEvent
+
+// MarketResolvedNotification is the canonical SDK type.
+type MarketResolvedNotification = models.MarketResolvedNotification
 
 // MarketResolvedPayload is the canonical SDK type.
 type MarketResolvedPayload = models.MarketResolvedPayload
@@ -665,8 +837,17 @@ type NewMarketEvent = models.NewMarketEvent
 // NewMarketPayload is the canonical SDK type.
 type NewMarketPayload = models.NewMarketPayload
 
+// Notification is the canonical SDK type.
+type Notification = models.Notification
+
+// NotificationType is the canonical SDK type.
+type NotificationType = models.NotificationType
+
 // OpenInterest is the canonical SDK type.
 type OpenInterest = models.OpenInterest
+
+// OpenOrder is the canonical SDK type.
+type OpenOrder = models.OpenOrder
 
 // OrderBook is the canonical SDK type.
 type OrderBook = models.OrderBook
@@ -674,8 +855,38 @@ type OrderBook = models.OrderBook
 // OrderBookLevel is the canonical SDK type.
 type OrderBookLevel = models.OrderBookLevel
 
+// OrderCancellationNotification is the canonical SDK type.
+type OrderCancellationNotification = models.OrderCancellationNotification
+
+// OrderFillFailedNotification is the canonical SDK type.
+type OrderFillFailedNotification = models.OrderFillFailedNotification
+
+// OrderFillNotification is the canonical SDK type.
+type OrderFillNotification = models.OrderFillNotification
+
+// OrderHeartbeat is the canonical SDK type.
+type OrderHeartbeat = models.OrderHeartbeat
+
+// OrderHeartbeatMismatchError is the canonical SDK type.
+type OrderHeartbeatMismatchError = errors.OrderHeartbeatMismatchError
+
+// OrderHeartbeatMismatchResponse is the canonical SDK type.
+type OrderHeartbeatMismatchResponse = models.OrderHeartbeatMismatchResponse
+
+// OrderID is the canonical SDK type.
+type OrderID = models.OrderID
+
+// OrderNotificationPayload is the canonical SDK type.
+type OrderNotificationPayload = models.OrderNotificationPayload
+
+// OrderResponse is the canonical SDK type.
+type OrderResponse = models.OrderResponse
+
 // OrderSide is the canonical SDK type.
 type OrderSide = models.OrderSide
+
+// OrderType is the canonical SDK type.
+type OrderType = models.OrderType
 
 // PaginationLimitError is the canonical SDK type.
 type PaginationLimitError = errors.PaginationLimitError
@@ -752,11 +963,26 @@ type PublicProfileUser = models.PublicProfileUser
 // QuestionID is the canonical SDK type.
 type QuestionID = models.QuestionID
 
+// RFQErrorDetail is the canonical SDK type.
+type RFQErrorDetail = models.RFQErrorDetail
+
+// RFQRequestRejectedError is the canonical SDK type.
+type RFQRequestRejectedError = errors.RFQRequestRejectedError
+
+// RFQStatusResult is the canonical SDK type.
+type RFQStatusResult = models.RFQStatusResult
+
+// RFQTimeoutError is the canonical SDK type.
+type RFQTimeoutError = errors.RFQTimeoutError
+
 // RateLimitError is the canonical SDK type.
 type RateLimitError = errors.RateLimitError
 
 // RateLimitUpdate is the canonical SDK type.
 type RateLimitUpdate = errors.RateLimitUpdate
+
+// RawOrderResponse is the canonical SDK type.
+type RawOrderResponse = models.RawOrderResponse
 
 // Reaction is the canonical SDK type.
 type Reaction = models.Reaction
@@ -766,6 +992,33 @@ type ReactionCreatedEvent = models.ReactionCreatedEvent
 
 // ReactionRemovedEvent is the canonical SDK type.
 type ReactionRemovedEvent = models.ReactionRemovedEvent
+
+// RealtimeEquityPriceSnapshot is the canonical SDK type.
+type RealtimeEquityPriceSnapshot = models.RealtimeEquityPriceSnapshot
+
+// RealtimeEquityPriceUpdate is the canonical SDK type.
+type RealtimeEquityPriceUpdate = models.RealtimeEquityPriceUpdate
+
+// RealtimeEquityTwapSnapshot is the canonical SDK type.
+type RealtimeEquityTwapSnapshot = models.RealtimeEquityTwapSnapshot
+
+// RealtimeEquityTwapUpdate is the canonical SDK type.
+type RealtimeEquityTwapUpdate = models.RealtimeEquityTwapUpdate
+
+// RealtimePricePoint is the canonical SDK type.
+type RealtimePricePoint = models.RealtimePricePoint
+
+// RealtimePriceSnapshot is the canonical SDK type.
+type RealtimePriceSnapshot = models.RealtimePriceSnapshot
+
+// RealtimePriceUpdate is the canonical SDK type.
+type RealtimePriceUpdate = models.RealtimePriceUpdate
+
+// RealtimeTwapSnapshot is the canonical SDK type.
+type RealtimeTwapSnapshot = models.RealtimeTwapSnapshot
+
+// RealtimeTwapUpdate is the canonical SDK type.
+type RealtimeTwapUpdate = models.RealtimeTwapUpdate
 
 // RebatedFee is the canonical SDK type.
 type RebatedFee = models.RebatedFee
@@ -788,6 +1041,9 @@ type RedeemActivity = models.RedeemActivity
 // ReferralRewardActivity is the canonical SDK type.
 type ReferralRewardActivity = models.ReferralRewardActivity
 
+// RejectedOrder is the canonical SDK type.
+type RejectedOrder = models.RejectedOrder
+
 // RelatedTag is the canonical SDK type.
 type RelatedTag = models.RelatedTag
 
@@ -796,6 +1052,9 @@ type RelatedTagResourcesQuery = gamma.RelatedTagResourcesQuery
 
 // RelatedTagsQuery is the canonical SDK type.
 type RelatedTagsQuery = gamma.RelatedTagsQuery
+
+// RequestComboQuoteParams is the canonical SDK type.
+type RequestComboQuoteParams = trading.RequestComboQuoteParams
 
 // RequestRejectedError is the canonical SDK type.
 type RequestRejectedError = errors.RequestRejectedError
@@ -899,6 +1158,12 @@ type RewardActivity = models.RewardActivity
 // RewardMarket is the canonical SDK type.
 type RewardMarket = models.RewardMarket
 
+// RewardPayoutNotification is the canonical SDK type.
+type RewardPayoutNotification = models.RewardPayoutNotification
+
+// RewardPayoutNotificationPayload is the canonical SDK type.
+type RewardPayoutNotificationPayload = models.RewardPayoutNotificationPayload
+
 // SearchByClosedTime is the canonical SDK value.
 const SearchByClosedTime = gamma.SearchByClosedTime
 
@@ -943,6 +1208,24 @@ type SeriesID = models.SeriesID
 
 // SeriesReference is the canonical SDK type.
 type SeriesReference = models.SeriesReference
+
+// SettlementTimeoutError is the canonical SDK type.
+type SettlementTimeoutError = errors.SettlementTimeoutError
+
+// SignedOrder is the canonical SDK type.
+type SignedOrder = models.SignedOrder
+
+// SignerOwner is the canonical SDK value.
+const SignerOwner = models.SignerOwner
+
+// SignerSessionKey is the canonical SDK value.
+const SignerSessionKey = models.SignerSessionKey
+
+// SignerType is the canonical SDK type.
+type SignerType = models.SignerType
+
+// SigningError is the canonical SDK type.
+type SigningError = errors.SigningError
 
 // Spec is the canonical SDK type.
 type Spec = streams.Spec
@@ -998,6 +1281,12 @@ type TagReference = models.TagReference
 // TakerRebateActivity is the canonical SDK type.
 type TakerRebateActivity = models.TakerRebateActivity
 
+// TakerTierUpgradedNotification is the canonical SDK type.
+type TakerTierUpgradedNotification = models.TakerTierUpgradedNotification
+
+// TakerTierUpgradedNotificationPayload is the canonical SDK type.
+type TakerTierUpgradedNotificationPayload = models.TakerTierUpgradedNotificationPayload
+
 // Team is the canonical SDK type.
 type Team = models.Team
 
@@ -1052,6 +1341,9 @@ const TokenModuleV1Ctf = models.TokenModuleV1Ctf
 // TokenReference is the canonical SDK type.
 type TokenReference = models.TokenReference
 
+// TotalUserEarning is the canonical SDK type.
+type TotalUserEarning = models.TotalUserEarning
+
 // Trade is the canonical SDK type.
 type Trade = models.Trade
 
@@ -1078,6 +1370,9 @@ const TradingRestarting = errors.TradingRestarting
 
 // TradingRestriction is the canonical SDK type.
 type TradingRestriction = errors.TradingRestriction
+
+// TransactionFailedError is the canonical SDK type.
+type TransactionFailedError = errors.TransactionFailedError
 
 // TransactionHash is the canonical SDK type.
 type TransactionHash = models.TransactionHash
@@ -1109,8 +1404,17 @@ type UnexpectedResponseError = errors.UnexpectedResponseError
 // UnknownActivity is the canonical SDK type.
 type UnknownActivity = models.UnknownActivity
 
+// UserEarning is the canonical SDK type.
+type UserEarning = models.UserEarning
+
 // UserInputError is the canonical SDK type.
 type UserInputError = errors.UserInputError
+
+// UserOrderEvent is the canonical SDK type.
+type UserOrderEvent = models.UserOrderEvent
+
+// UserOrderPayload is the canonical SDK type.
+type UserOrderPayload = models.UserOrderPayload
 
 // UserPnLFidelity is the canonical SDK type.
 type UserPnLFidelity = models.UserPnLFidelity
@@ -1160,17 +1464,56 @@ type UserPnLPoint = models.UserPnLPoint
 // UserPnLSeries is the canonical SDK type.
 type UserPnLSeries = models.UserPnLSeries
 
+// UserRewardsConfig is the canonical SDK type.
+type UserRewardsConfig = models.UserRewardsConfig
+
+// UserRewardsEarning is the canonical SDK type.
+type UserRewardsEarning = models.UserRewardsEarning
+
+// UserSpec is the canonical SDK type.
+type UserSpec = streams.UserSpec
+
 // UserStats is the canonical SDK type.
 type UserStats = models.UserStats
 
+// UserTradeEvent is the canonical SDK type.
+type UserTradeEvent = models.UserTradeEvent
+
+// UserTradeMakerOrder is the canonical SDK type.
+type UserTradeMakerOrder = models.UserTradeMakerOrder
+
+// UserTradePayload is the canonical SDK type.
+type UserTradePayload = models.UserTradePayload
+
 // UserVolume is the canonical SDK type.
 type UserVolume = models.UserVolume
+
+// WalletDeposit is the canonical SDK value.
+const WalletDeposit = models.WalletDeposit
+
+// WalletEOA is the canonical SDK value.
+const WalletEOA = models.WalletEOA
+
+// WalletProxy is the canonical SDK value.
+const WalletProxy = models.WalletProxy
+
+// WalletSafe is the canonical SDK value.
+const WalletSafe = models.WalletSafe
+
+// WalletType is the canonical SDK type.
+type WalletType = models.WalletType
 
 // WithdrawalActivity is the canonical SDK type.
 type WithdrawalActivity = models.WithdrawalActivity
 
 // YieldActivity is the canonical SDK type.
 type YieldActivity = models.YieldActivity
+
+// YieldPayoutNotification is the canonical SDK type.
+type YieldPayoutNotification = models.YieldPayoutNotification
+
+// YieldPayoutNotificationPayload is the canonical SDK type.
+type YieldPayoutNotificationPayload = models.YieldPayoutNotificationPayload
 
 // Page holds a batch of results and continuation metadata.
 type Page[T any] = pagination.Page[T]

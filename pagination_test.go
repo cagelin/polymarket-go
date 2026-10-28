@@ -107,7 +107,7 @@ func TestPaginatorCopiesInputsAndSupportsConcurrentReads(t *testing.T) {
 	if createErr != nil {
 		t.Fatal(createErr)
 	}
-	defer client.Close()
+	defer func() { _ = client.Close() }() // Close only releases local resources and always returns nil.
 	closed, size := false, 2
 	slugs := []string{"original"}
 	pager, err := client.ListMarkets(ListMarketsParams{Slugs: slugs, Closed: &closed, PageSize: &size})
@@ -174,7 +174,7 @@ func TestHistoryRateLimitRetry(t *testing.T) {
 			if createErr != nil {
 				t.Fatal(createErr)
 			}
-			defer client.Close()
+			defer func() { _ = client.Close() }() // Close only releases local resources and always returns nil.
 			interval := HistoryHour
 			pager, err := client.ListPriceHistory(PriceHistoryParams{AssetID: "123", Interval: &interval})
 			if err != nil {
@@ -203,7 +203,7 @@ func TestHistoryRetryCancellation(t *testing.T) {
 	if createErr != nil {
 		t.Fatal(createErr)
 	}
-	defer client.Close()
+	defer func() { _ = client.Close() }() // Close only releases local resources and always returns nil.
 	interval := HistoryHour
 	pager, err := client.ListPriceHistory(PriceHistoryParams{AssetID: "123", Interval: &interval})
 	if err != nil {

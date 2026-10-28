@@ -14,132 +14,198 @@ type StreamEvent interface {
 }
 
 // StreamTopic identifies the source topic.
-func (e *MarketBestBidAskEvent) StreamTopic() string { return e.Topic }
+func (m *MarketBestBidAskEvent) StreamTopic() string { return m.Topic }
 
 // StreamType identifies the event variant.
-func (e *MarketBestBidAskEvent) StreamType() string { return e.Type }
+func (m *MarketBestBidAskEvent) StreamType() string { return m.Type }
 
 // StreamTopic identifies the source topic.
-func (e *MarketBookEvent) StreamTopic() string { return e.Topic }
+func (m *MarketBookEvent) StreamTopic() string { return m.Topic }
 
 // StreamType identifies the event variant.
-func (e *MarketBookEvent) StreamType() string { return e.Type }
+func (m *MarketBookEvent) StreamType() string { return m.Type }
 
 // StreamTopic identifies the source topic.
-func (e *MarketLastTradePriceEvent) StreamTopic() string { return e.Topic }
+func (m *MarketLastTradePriceEvent) StreamTopic() string { return m.Topic }
 
 // StreamType identifies the event variant.
-func (e *MarketLastTradePriceEvent) StreamType() string { return e.Type }
+func (m *MarketLastTradePriceEvent) StreamType() string { return m.Type }
 
 // StreamTopic identifies the source topic.
-func (e *MarketPriceChangeEvent) StreamTopic() string { return e.Topic }
+func (m *MarketPriceChangeEvent) StreamTopic() string { return m.Topic }
 
 // StreamType identifies the event variant.
-func (e *MarketPriceChangeEvent) StreamType() string { return e.Type }
+func (m *MarketPriceChangeEvent) StreamType() string { return m.Type }
 
 // StreamTopic identifies the source topic.
-func (e *MarketResolvedEvent) StreamTopic() string { return e.Topic }
+func (m *MarketResolvedEvent) StreamTopic() string { return m.Topic }
 
 // StreamType identifies the event variant.
-func (e *MarketResolvedEvent) StreamType() string { return e.Type }
+func (m *MarketResolvedEvent) StreamType() string { return m.Type }
 
 // StreamTopic identifies the source topic.
-func (e *MarketTickSizeChangeEvent) StreamTopic() string { return e.Topic }
+func (m *MarketTickSizeChangeEvent) StreamTopic() string { return m.Topic }
 
 // StreamType identifies the event variant.
-func (e *MarketTickSizeChangeEvent) StreamType() string { return e.Type }
+func (m *MarketTickSizeChangeEvent) StreamType() string { return m.Type }
 
 // StreamTopic identifies the source topic.
-func (e *NewMarketEvent) StreamTopic() string { return e.Topic }
+func (m *NewMarketEvent) StreamTopic() string { return m.Topic }
 
 // StreamType identifies the event variant.
-func (e *NewMarketEvent) StreamType() string { return e.Type }
+func (m *NewMarketEvent) StreamType() string { return m.Type }
 
 // StreamTopic identifies the source topic.
-func (e *SportsResultEvent) StreamTopic() string { return e.Topic }
+func (m *SportsResultEvent) StreamTopic() string { return m.Topic }
 
 // StreamType identifies the event variant.
-func (e *SportsResultEvent) StreamType() string { return e.Type }
+func (m *SportsResultEvent) StreamType() string { return m.Type }
 
 // StreamTopic identifies the source topic.
-func (e *CommentCreatedEvent) StreamTopic() string { return e.Topic }
+func (m *CommentCreatedEvent) StreamTopic() string { return m.Topic }
 
 // StreamType identifies the event variant.
-func (e *CommentCreatedEvent) StreamType() string { return e.Type }
+func (m *CommentCreatedEvent) StreamType() string { return m.Type }
 
 // StreamTopic identifies the source topic.
-func (e *CommentRemovedEvent) StreamTopic() string { return e.Topic }
+func (m *CommentRemovedEvent) StreamTopic() string { return m.Topic }
 
 // StreamType identifies the event variant.
-func (e *CommentRemovedEvent) StreamType() string { return e.Type }
+func (m *CommentRemovedEvent) StreamType() string { return m.Type }
 
 // StreamTopic identifies the source topic.
-func (e *CryptoPricesBinanceEvent) StreamTopic() string { return e.Topic }
+func (m *CryptoPricesBinanceEvent) StreamTopic() string { return m.Topic }
 
 // StreamType identifies the event variant.
-func (e *CryptoPricesBinanceEvent) StreamType() string { return e.Type }
+func (m *CryptoPricesBinanceEvent) StreamType() string { return m.Type }
 
 // StreamTopic identifies the source topic.
-func (e *CryptoPricesChainlinkEvent) StreamTopic() string { return e.Topic }
+func (m *CryptoPricesChainlinkEvent) StreamTopic() string { return m.Topic }
 
 // StreamType identifies the event variant.
-func (e *CryptoPricesChainlinkEvent) StreamType() string { return e.Type }
+func (m *CryptoPricesChainlinkEvent) StreamType() string { return m.Type }
 
 // StreamTopic identifies the source topic.
-func (e *CryptoPricesChainlinkTwapEvent) StreamTopic() string { return e.Topic }
+func (m *CryptoPricesChainlinkTwapEvent) StreamTopic() string { return m.Topic }
 
 // StreamType identifies the event variant.
-func (e *CryptoPricesChainlinkTwapEvent) StreamType() string { return e.Type }
+func (m *CryptoPricesChainlinkTwapEvent) StreamType() string { return m.Type }
 
 // StreamTopic identifies the source topic.
-func (e *EquityPricesSubscribeEvent) StreamTopic() string { return e.Topic }
+func (m *EquityPricesSubscribeEvent) StreamTopic() string { return m.Topic }
 
 // StreamType identifies the event variant.
-func (e *EquityPricesSubscribeEvent) StreamType() string { return e.Type }
+func (m *EquityPricesSubscribeEvent) StreamType() string { return m.Type }
 
 // StreamTopic identifies the source topic.
-func (e *EquityPricesUpdateEvent) StreamTopic() string { return e.Topic }
+func (m *EquityPricesUpdateEvent) StreamTopic() string { return m.Topic }
 
 // StreamType identifies the event variant.
-func (e *EquityPricesUpdateEvent) StreamType() string { return e.Type }
+func (m *EquityPricesUpdateEvent) StreamType() string { return m.Type }
 
 // StreamTopic identifies the source topic.
-func (e *ReactionCreatedEvent) StreamTopic() string { return e.Topic }
+func (m *ReactionCreatedEvent) StreamTopic() string { return m.Topic }
 
 // StreamType identifies the event variant.
-func (e *ReactionCreatedEvent) StreamType() string { return e.Type }
+func (m *ReactionCreatedEvent) StreamType() string { return m.Type }
 
 // StreamTopic identifies the source topic.
-func (e *ReactionRemovedEvent) StreamTopic() string { return e.Topic }
+func (m *ReactionRemovedEvent) StreamTopic() string { return m.Topic }
 
 // StreamType identifies the event variant.
-func (e *ReactionRemovedEvent) StreamType() string { return e.Type }
+func (m *ReactionRemovedEvent) StreamType() string { return m.Type }
+
+// StreamTopic identifies the source topic.
+func (m *UserOrderEvent) StreamTopic() string { return m.Topic }
+
+// StreamType identifies the event variant.
+func (m *UserOrderEvent) StreamType() string { return m.Type }
+
+// StreamTopic identifies the source topic.
+func (m *UserTradeEvent) StreamTopic() string { return m.Topic }
+
+// StreamType identifies the event variant.
+func (m *UserTradeEvent) StreamType() string { return m.Type }
+
+// StreamTopic identifies the source topic.
+func (m *CryptoPriceSnapshotEvent) StreamTopic() string { return m.Topic }
+
+// StreamType identifies the event variant.
+func (m *CryptoPriceSnapshotEvent) StreamType() string { return m.Type }
+
+// StreamTopic identifies the source topic.
+func (m *CryptoPriceUpdateEvent) StreamTopic() string { return m.Topic }
+
+// StreamType identifies the event variant.
+func (m *CryptoPriceUpdateEvent) StreamType() string { return m.Type }
+
+// StreamTopic identifies the source topic.
+func (m *CryptoTwapPriceSnapshotEvent) StreamTopic() string { return m.Topic }
+
+// StreamType identifies the event variant.
+func (m *CryptoTwapPriceSnapshotEvent) StreamType() string { return m.Type }
+
+// StreamTopic identifies the source topic.
+func (m *CryptoTwapPriceUpdateEvent) StreamTopic() string { return m.Topic }
+
+// StreamType identifies the event variant.
+func (m *CryptoTwapPriceUpdateEvent) StreamType() string { return m.Type }
+
+// StreamTopic identifies the source topic.
+func (m *EquityPriceSnapshotEvent) StreamTopic() string { return m.Topic }
+
+// StreamType identifies the event variant.
+func (m *EquityPriceSnapshotEvent) StreamType() string { return m.Type }
+
+// StreamTopic identifies the source topic.
+func (m *EquityPriceUpdateEvent) StreamTopic() string { return m.Topic }
+
+// StreamType identifies the event variant.
+func (m *EquityPriceUpdateEvent) StreamType() string { return m.Type }
+
+// StreamTopic identifies the source topic.
+func (m *EquityTwapPriceSnapshotEvent) StreamTopic() string { return m.Topic }
+
+// StreamType identifies the event variant.
+func (m *EquityTwapPriceSnapshotEvent) StreamType() string { return m.Type }
+
+// StreamTopic identifies the source topic.
+func (m *EquityTwapPriceUpdateEvent) StreamTopic() string { return m.Topic }
+
+// StreamType identifies the event variant.
+func (m *EquityTwapPriceUpdateEvent) StreamType() string { return m.Type }
 
 // ParseStreamEvent decodes market, sports or RTDS wire events.
 func ParseStreamEvent(service string, raw []byte) (StreamEvent, error) {
+	if service == "price" {
+		return parsePriceEvent(raw)
+	}
 	fields, err := codec.Object(raw)
 	if err != nil {
 		return nil, err
 	}
 	switch service {
-	case "market":
+	case "market", "user":
 		_, topic := fields["topic"]
 		_, kind := fields["type"]
 		_, payload := fields["payload"]
 		if !topic || !kind || !payload {
 			eventType := fields["event_type"]
-			if len(eventType) == 0 || string(eventType) == "null" || string(eventType) == `""` {
+			if service != "user" && (len(eventType) == 0 || string(eventType) == "null" || string(eventType) == `""`) {
 				eventType = fields["type"]
 			}
 			delete(fields, "event_type")
-			delete(fields, "type")
+			if service != "user" {
+				delete(fields, "type")
+			}
 			delete(fields, "topic")
 			body, encodeErr := json.Marshal(fields)
 			if encodeErr != nil {
 				return nil, encodeErr
 			}
-			fields = map[string]json.RawMessage{"topic": json.RawMessage(`"market"`), "type": eventType, "payload": body}
+			fields = map[string]json.RawMessage{"topic": json.RawMessage(`"` + service + `"`), "type": eventType, "payload": body}
 		}
+	case "price_canonical":
 	case "sports":
 		fields = map[string]json.RawMessage{"topic": json.RawMessage(`"sports"`), "type": json.RawMessage(`"sport_result"`), "payload": raw}
 	case "rtds":
@@ -215,6 +281,26 @@ func ParseStreamEvent(service string, raw []byte) (StreamEvent, error) {
 		event = &ReactionCreatedEvent{}
 	case "comments:reaction_removed":
 		event = &ReactionRemovedEvent{}
+	case "user:order":
+		event = &UserOrderEvent{}
+	case "user:trade":
+		event = &UserTradeEvent{}
+	case "prices.crypto:subscribe":
+		event = &CryptoPriceSnapshotEvent{}
+	case "prices.crypto:update":
+		event = &CryptoPriceUpdateEvent{}
+	case "prices.crypto.twap:subscribe":
+		event = &CryptoTwapPriceSnapshotEvent{}
+	case "prices.crypto.twap:update":
+		event = &CryptoTwapPriceUpdateEvent{}
+	case "prices.equity:subscribe":
+		event = &EquityPriceSnapshotEvent{}
+	case "prices.equity:update":
+		event = &EquityPriceUpdateEvent{}
+	case "prices.equity.twap:subscribe":
+		event = &EquityTwapPriceSnapshotEvent{}
+	case "prices.equity.twap:update":
+		event = &EquityTwapPriceUpdateEvent{}
 	default:
 		return nil, fmt.Errorf("unknown stream event %s:%s", topic, kind)
 	}

@@ -15,20 +15,22 @@ import (
 type StreamEvent interface { StreamTopic() string; StreamType() string }
 '''
 for cls in items:
- n=cls.__name__;s+=f'// StreamTopic identifies the source topic.\nfunc(e *{n}) StreamTopic()string{{return e.Topic}}\n// StreamType identifies the event variant.\nfunc(e *{n}) StreamType()string{{return e.Type}}\n'
+ n=cls.__name__;s+=f'// StreamTopic identifies the source topic.\nfunc(m *{n}) StreamTopic()string{{return m.Topic}}\n// StreamType identifies the event variant.\nfunc(m *{n}) StreamType()string{{return m.Type}}\n'
 s+='''// ParseStreamEvent decodes market, sports or RTDS wire events.
 func ParseStreamEvent(service string,raw []byte)(StreamEvent,error){
+ if service=="price"{return parsePriceEvent(raw)}
  fields,err:=codec.Object(raw);if err!=nil{return nil,err}
  switch service {
- case "market":
+ case "market","user":
   _,topic:=fields["topic"];_,kind:=fields["type"];_,payload:=fields["payload"]
   if !topic||!kind||!payload {
    eventType:=fields["event_type"]
-   if len(eventType)==0||string(eventType)=="null"||string(eventType)==`""` {eventType=fields["type"]}
-   delete(fields,"event_type");delete(fields,"type");delete(fields,"topic")
+   if service!="user"&&(len(eventType)==0||string(eventType)=="null"||string(eventType)==`""`) {eventType=fields["type"]}
+   delete(fields,"event_type");if service!="user"{delete(fields,"type")};delete(fields,"topic")
    body,encodeErr:=json.Marshal(fields);if encodeErr!=nil{return nil,encodeErr}
-   fields=map[string]json.RawMessage{"topic":json.RawMessage(`"market"`),"type":eventType,"payload":body}
+   fields=map[string]json.RawMessage{"topic":json.RawMessage(`"`+service+`"`),"type":eventType,"payload":body}
   }
+ case "price_canonical":
  case "sports":fields=map[string]json.RawMessage{"topic":json.RawMessage(`"sports"`),"type":json.RawMessage(`"sport_result"`),"payload":raw}
  case "rtds":
   wire,parseErr:=codec.Required[string](fields,"topic");if parseErr!=nil{return nil,parseErr}

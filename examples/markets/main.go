@@ -7,7 +7,7 @@ import (
 	"log"
 	"time"
 
-	polymarket "github.com/cagelam/polymarket-go"
+	"github.com/cagelam/polymarket-go"
 )
 
 func main() {
@@ -21,7 +21,7 @@ func run() error {
 	if err != nil {
 		return err
 	}
-	defer client.Close()
+	defer func() { _ = client.Close() }() // Close only releases local resources and always returns nil.
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 	closed, size, order := false, 5, "volume"

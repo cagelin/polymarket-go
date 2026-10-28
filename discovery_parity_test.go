@@ -124,7 +124,7 @@ func testPythonDiscoveryParity(t *testing.T, data []byte) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			defer client.Close()
+			defer func() { _ = client.Close() }() // Close only releases local resources and always returns nil.
 			var result any
 			switch test.Operation {
 			case "get_series", "get_tag", "get_related_tags", "get_related_tag_resources", "get_sports", "get_sports_market_types", "get_public_profile", "get_comment_thread", "list_series", "list_tags", "list_teams", "list_comments", "list_comments_by_user_address":

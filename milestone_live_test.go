@@ -16,7 +16,7 @@ func TestLivePublicMilestone(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	defer c.Close()
+	defer func() { _ = c.Close() }() // Close only releases local resources and always returns nil.
 	size := 2
 	checks := []struct {
 		name string
@@ -143,7 +143,7 @@ func TestLivePublicStreams(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	defer c.Close()
+	defer func() { _ = c.Close() }() // Close only releases local resources and always returns nil.
 	for _, check := range []struct {
 		name string
 		spec Spec
@@ -154,7 +154,7 @@ func TestLivePublicStreams(t *testing.T) {
 			if createErr != nil {
 				t.Fatal(createErr)
 			}
-			defer client.Close()
+			defer func() { _ = client.Close() }() // Close only releases local resources and always returns nil.
 			ctx, cancel := context.WithTimeout(t.Context(), 45*time.Second)
 			defer cancel()
 			h, subscribeErr := client.Subscribe(ctx, check.spec)
@@ -179,7 +179,7 @@ func TestLiveMarketStream(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	defer c.Close()
+	defer func() { _ = c.Close() }() // Close only releases local resources and always returns nil.
 	ctx, cancel := context.WithTimeout(t.Context(), 45*time.Second)
 	defer cancel()
 	closed, size, order := false, 20, "volume24hr"

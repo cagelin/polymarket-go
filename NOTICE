@@ -1,7 +1,7 @@
 Polymarket Go SDK
 Copyright (c) 2026 cagelam
 
-Portions are derived from Polymarket's official Python SDK:
+Portions are derived from the official Python SDK from Polymarket:
   Repository: https://github.com/Polymarket/py-sdk
   Package: polymarket-client 0.14.0
   Commit: 7032ed06175b0bbea77b2d9e898bd9f252af2041
@@ -17,9 +17,25 @@ Go runtime dependencies:
   Copyright (c) 2016, Eric Lagergren
   License: BSD-3-Clause (preserved in LICENSES/decimal-BSD-3-Clause.txt)
 
-  golang.org/x/crypto v0.58.0; golang.org/x/sys v0.49.0
+  golang.org/x/crypto v0.58.0; golang.org/x/sys v0.49.0; golang.org/x/sync v0.22.0
   Copyright 2009 The Go Authors.
   License: BSD-3-Clause (preserved in LICENSES/Go-BSD-3-Clause.txt)
+
+  github.com/ethereum/go-ethereum v1.17.10
+  Library license: LGPL-3.0-or-later; COPYING.LESSER and referenced COPYING
+  preserved in LICENSES/github.com_ethereum_go-ethereum/.
+  Embedded keccak and secp256k1 license notices are also preserved there.
+
+  github.com/bits-and-blooms/bitset v1.20.0 (BSD-3-Clause)
+  github.com/consensys/gnark-crypto v0.18.1 (Apache-2.0)
+  github.com/crate-crypto/go-eth-kzg v1.5.0 (Apache-2.0)
+  github.com/decred/dcrd/dcrec/secp256k1/v4 v4.0.1 (ISC)
+  github.com/holiman/uint256 v1.3.2 (BSD-3-Clause)
+  Original license texts and copyright notices are preserved in matching
+  LICENSES/github.com_* directories. These dependencies retain their own licenses.
+
+The SDK's MIT license does not replace dependency licenses. go.sum can also
+contain optional build-tag and dependency-test modules not linked by default.
 
 Python packages listed in tests/parity/requirements.txt are test tools only;
 they are not dependencies of the Go runtime. Their own licenses apply.

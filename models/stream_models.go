@@ -907,3 +907,643 @@ func (m *ReactionRemovedEvent) UnmarshalJSON(raw []byte) error {
 	*m = ReactionRemovedEvent(result)
 	return nil
 }
+
+// UserOrderEvent represents a public stream message or payload.
+type UserOrderEvent struct {
+	Topic   string           `json:"topic"`
+	Type    string           `json:"type"`
+	Payload UserOrderPayload `json:"payload"`
+}
+
+// UnmarshalJSON validates stream fields and preserves exact amounts.
+func (m *UserOrderEvent) UnmarshalJSON(raw []byte) error {
+	type plain UserOrderEvent
+	var result plain
+	if err := decodeData(raw, &result, []dataField{
+		{name: "topic", allowed: []string{"user"}, fallback: json.RawMessage("\"user\"")},
+		{name: "type", required: true, allowed: []string{"order"}},
+		{name: "payload", required: true},
+	}); err != nil {
+		return err
+	}
+	*m = UserOrderEvent(result)
+	return nil
+}
+
+// UserOrderPayload represents a public stream message or payload.
+type UserOrderPayload struct {
+	ID              string       `json:"id"`
+	Owner           string       `json:"owner"`
+	ConditionID     ConditionID  `json:"condition_id"`
+	AssetID         ClobAssetID  `json:"asset_id"`
+	Side            OrderSide    `json:"side"`
+	OriginalSize    *decimal.Big `json:"original_size"`
+	SizeMatched     *decimal.Big `json:"size_matched"`
+	Price           *decimal.Big `json:"price"`
+	OrderEventType  string       `json:"order_event_type"`
+	Timestamp       *time.Time   `json:"timestamp"`
+	CreatedAt       *time.Time   `json:"created_at"`
+	ExpiresAt       *time.Time   `json:"expires_at"`
+	OrderType       *string      `json:"order_type"`
+	Status          *string      `json:"status"`
+	MakerAddress    *string      `json:"maker_address"`
+	OrderOwner      *string      `json:"order_owner"`
+	AssociateTrades []string     `json:"associate_trades"`
+	Outcome         *string      `json:"outcome"`
+}
+
+// UnmarshalJSON validates stream fields and preserves exact amounts.
+func (m *UserOrderPayload) UnmarshalJSON(raw []byte) error {
+	type plain UserOrderPayload
+	var result plain
+	if err := decodeData(raw, &result, []dataField{
+		{name: "id", required: true},
+		{name: "owner", required: true},
+		{name: "condition_id", aliases: []string{"market"}, required: true},
+		{name: "asset_id", aliases: []string{"asset_id", "token_id"}, required: true},
+		{name: "side", steps: []string{"uppercase"}, required: true, allowed: []string{"BUY", "SELL"}},
+		{name: "original_size", kind: "data_decimal", required: true},
+		{name: "size_matched", kind: "data_decimal", required: true},
+		{name: "price", kind: "data_decimal", required: true},
+		{name: "order_event_type", aliases: []string{"type"}, required: true, allowed: []string{"PLACEMENT", "UPDATE", "CANCELLATION"}},
+		{name: "timestamp", kind: "clob_epoch_iso", nullable: true},
+		{name: "created_at", kind: "clob_epoch_iso", nullable: true},
+		{name: "expires_at", steps: []string{"zero_time"}, aliases: []string{"expiration"}, kind: "clob_epoch_iso", nullable: true},
+		{name: "order_type", nullable: true, allowed: []string{"GTC", "FOK", "IOC", "GTD", "FAK"}},
+		{name: "status", nullable: true},
+		{name: "maker_address", nullable: true},
+		{name: "order_owner", nullable: true},
+		{name: "associate_trades", kind: "sequence", nullable: true},
+		{name: "outcome", nullable: true},
+	}); err != nil {
+		return err
+	}
+	*m = UserOrderPayload(result)
+	return nil
+}
+
+// UserTradeEvent represents a public stream message or payload.
+type UserTradeEvent struct {
+	Topic   string           `json:"topic"`
+	Type    string           `json:"type"`
+	Payload UserTradePayload `json:"payload"`
+}
+
+// UnmarshalJSON validates stream fields and preserves exact amounts.
+func (m *UserTradeEvent) UnmarshalJSON(raw []byte) error {
+	type plain UserTradeEvent
+	var result plain
+	if err := decodeData(raw, &result, []dataField{
+		{name: "topic", allowed: []string{"user"}, fallback: json.RawMessage("\"user\"")},
+		{name: "type", required: true, allowed: []string{"trade"}},
+		{name: "payload", required: true},
+	}); err != nil {
+		return err
+	}
+	*m = UserTradeEvent(result)
+	return nil
+}
+
+// UserTradeMakerOrder represents a public stream message or payload.
+type UserTradeMakerOrder struct {
+	OrderID       string       `json:"order_id"`
+	Owner         string       `json:"owner"`
+	MakerAddress  *string      `json:"maker_address"`
+	MatchedAmount *decimal.Big `json:"matched_amount"`
+	Price         *decimal.Big `json:"price"`
+	FeeRateBps    *decimal.Big `json:"fee_rate_bps"`
+	AssetID       ClobAssetID  `json:"asset_id"`
+	Side          OrderSide    `json:"side"`
+	Outcome       *string      `json:"outcome"`
+	OutcomeIndex  *int64       `json:"outcome_index"`
+}
+
+// UnmarshalJSON validates stream fields and preserves exact amounts.
+func (m *UserTradeMakerOrder) UnmarshalJSON(raw []byte) error {
+	type plain UserTradeMakerOrder
+	var result plain
+	if err := decodeData(raw, &result, []dataField{
+		{name: "order_id", required: true},
+		{name: "owner", required: true},
+		{name: "maker_address", nullable: true},
+		{name: "matched_amount", kind: "data_decimal", required: true},
+		{name: "price", kind: "data_decimal", required: true},
+		{name: "fee_rate_bps", steps: []string{"optional_text"}, kind: "data_decimal", nullable: true},
+		{name: "asset_id", aliases: []string{"asset_id", "token_id"}, required: true},
+		{name: "side", steps: []string{"uppercase"}, required: true, allowed: []string{"BUY", "SELL"}},
+		{name: "outcome", nullable: true},
+		{name: "outcome_index", kind: "int", nullable: true},
+	}); err != nil {
+		return err
+	}
+	*m = UserTradeMakerOrder(result)
+	return nil
+}
+
+// UserTradePayload represents a public stream message or payload.
+type UserTradePayload struct {
+	ID              string                `json:"id"`
+	TakerOrderID    string                `json:"taker_order_id"`
+	ConditionID     ConditionID           `json:"condition_id"`
+	AssetID         ClobAssetID           `json:"asset_id"`
+	Side            OrderSide             `json:"side"`
+	Size            *decimal.Big          `json:"size"`
+	Price           *decimal.Big          `json:"price"`
+	Status          *string               `json:"status"`
+	Owner           string                `json:"owner"`
+	Timestamp       *time.Time            `json:"timestamp"`
+	FeeRateBps      *decimal.Big          `json:"fee_rate_bps"`
+	MatchedAt       *time.Time            `json:"matched_at"`
+	UpdatedAt       *time.Time            `json:"updated_at"`
+	TradeOwner      *string               `json:"trade_owner"`
+	MakerAddress    *string               `json:"maker_address"`
+	TransactionHash *string               `json:"transaction_hash"`
+	BucketIndex     *int64                `json:"bucket_index"`
+	MakerOrders     []UserTradeMakerOrder `json:"maker_orders"`
+	TraderSide      *string               `json:"trader_side"`
+	Outcome         *string               `json:"outcome"`
+}
+
+// UnmarshalJSON validates stream fields and preserves exact amounts.
+func (m *UserTradePayload) UnmarshalJSON(raw []byte) error {
+	type plain UserTradePayload
+	var result plain
+	if err := decodeData(raw, &result, []dataField{
+		{name: "id", required: true},
+		{name: "taker_order_id", required: true},
+		{name: "condition_id", aliases: []string{"market"}, required: true},
+		{name: "asset_id", aliases: []string{"asset_id", "token_id"}, required: true},
+		{name: "side", steps: []string{"uppercase"}, required: true, allowed: []string{"BUY", "SELL"}},
+		{name: "size", kind: "data_decimal", required: true},
+		{name: "price", kind: "data_decimal", required: true},
+		{name: "status", steps: []string{"trade_status"}, required: true, allowed: []string{"MATCHED", "MATCHED_NOT_BROADCASTED", "MINED", "CONFIRMED", "RETRYING", "FAILED"}},
+		{name: "owner", required: true},
+		{name: "timestamp", kind: "clob_epoch_iso", nullable: true},
+		{name: "fee_rate_bps", steps: []string{"optional_text"}, kind: "data_decimal", nullable: true},
+		{name: "matched_at", aliases: []string{"match_time", "matchtime"}, kind: "clob_epoch_iso", nullable: true},
+		{name: "updated_at", aliases: []string{"last_update"}, kind: "clob_epoch_iso", nullable: true},
+		{name: "trade_owner", nullable: true},
+		{name: "maker_address", nullable: true},
+		{name: "transaction_hash", nullable: true},
+		{name: "bucket_index", kind: "int", nullable: true},
+		{name: "maker_orders", kind: "sequence", nullable: true},
+		{name: "trader_side", steps: []string{"uppercase"}, nullable: true, allowed: []string{"TAKER", "MAKER"}},
+		{name: "outcome", nullable: true},
+	}); err != nil {
+		return err
+	}
+	*m = UserTradePayload(result)
+	return nil
+}
+
+// RealtimeEquityTwapSnapshot represents a public stream message or payload.
+type RealtimeEquityTwapSnapshot struct {
+	MarketStatus  *EquityMarketStatus  `json:"market_status"`
+	Symbol        string               `json:"symbol"`
+	Source        string               `json:"source"`
+	Data          []RealtimePricePoint `json:"data"`
+	WindowSeconds int64                `json:"window_seconds"`
+}
+
+// UnmarshalJSON validates stream fields and preserves exact amounts.
+func (m *RealtimeEquityTwapSnapshot) UnmarshalJSON(raw []byte) error {
+	type plain RealtimeEquityTwapSnapshot
+	var result plain
+	if err := decodeData(raw, &result, []dataField{
+		{name: "market_status", nullable: true, allowed: []string{"open", "closed", "unknown"}},
+		{name: "symbol", required: true},
+		{name: "source", required: true},
+		{name: "data", kind: "sequence", required: true},
+		{name: "window_seconds", kind: "int", steps: []string{"price_window"}, fallback: json.RawMessage("60")},
+	}); err != nil {
+		return err
+	}
+	*m = RealtimeEquityTwapSnapshot(result)
+	return nil
+}
+
+// RealtimeEquityTwapUpdate represents a public stream message or payload.
+type RealtimeEquityTwapUpdate struct {
+	MarketStatus  *EquityMarketStatus `json:"market_status"`
+	Timestamp     time.Time           `json:"timestamp"`
+	Value         *decimal.Big        `json:"value"`
+	Symbol        string              `json:"symbol"`
+	Source        string              `json:"source"`
+	WindowSeconds int64               `json:"window_seconds"`
+}
+
+// UnmarshalJSON validates stream fields and preserves exact amounts.
+func (m *RealtimeEquityTwapUpdate) UnmarshalJSON(raw []byte) error {
+	type plain RealtimeEquityTwapUpdate
+	var result plain
+	if err := decodeData(raw, &result, []dataField{
+		{name: "market_status", nullable: true, allowed: []string{"open", "closed", "unknown"}},
+		{name: "timestamp", kind: "epoch_datetime", required: true},
+		{name: "value", kind: "data_decimal", required: true},
+		{name: "symbol", required: true},
+		{name: "source", required: true},
+		{name: "window_seconds", kind: "int", steps: []string{"price_window"}, fallback: json.RawMessage("60")},
+	}); err != nil {
+		return err
+	}
+	*m = RealtimeEquityTwapUpdate(result)
+	return nil
+}
+
+// RealtimeEquityPriceSnapshot represents a public stream message or payload.
+type RealtimeEquityPriceSnapshot struct {
+	MarketStatus *EquityMarketStatus  `json:"market_status"`
+	Symbol       string               `json:"symbol"`
+	Source       string               `json:"source"`
+	Data         []RealtimePricePoint `json:"data"`
+}
+
+// UnmarshalJSON validates stream fields and preserves exact amounts.
+func (m *RealtimeEquityPriceSnapshot) UnmarshalJSON(raw []byte) error {
+	type plain RealtimeEquityPriceSnapshot
+	var result plain
+	if err := decodeData(raw, &result, []dataField{
+		{name: "market_status", nullable: true, allowed: []string{"open", "closed", "unknown"}},
+		{name: "symbol", required: true},
+		{name: "source", required: true},
+		{name: "data", kind: "sequence", required: true},
+	}); err != nil {
+		return err
+	}
+	*m = RealtimeEquityPriceSnapshot(result)
+	return nil
+}
+
+// RealtimeEquityPriceUpdate represents a public stream message or payload.
+type RealtimeEquityPriceUpdate struct {
+	MarketStatus     *EquityMarketStatus `json:"market_status"`
+	Timestamp        time.Time           `json:"timestamp"`
+	Value            *decimal.Big        `json:"value"`
+	Symbol           string              `json:"symbol"`
+	Source           string              `json:"source"`
+	ReceivedAt       *time.Time          `json:"received_at"`
+	IsCarriedForward *bool               `json:"is_carried_forward"`
+}
+
+// UnmarshalJSON validates stream fields and preserves exact amounts.
+func (m *RealtimeEquityPriceUpdate) UnmarshalJSON(raw []byte) error {
+	type plain RealtimeEquityPriceUpdate
+	var result plain
+	if err := decodeData(raw, &result, []dataField{
+		{name: "market_status", nullable: true, allowed: []string{"open", "closed", "unknown"}},
+		{name: "timestamp", kind: "epoch_datetime", required: true},
+		{name: "value", kind: "data_decimal", required: true},
+		{name: "symbol", required: true},
+		{name: "source", required: true},
+		{name: "received_at", kind: "epoch_datetime", nullable: true},
+		{name: "is_carried_forward", kind: "bool", nullable: true},
+	}); err != nil {
+		return err
+	}
+	*m = RealtimeEquityPriceUpdate(result)
+	return nil
+}
+
+// CryptoPriceSnapshotEvent represents a public stream message or payload.
+type CryptoPriceSnapshotEvent struct {
+	Timestamp time.Time             `json:"timestamp"`
+	Seq       *int64                `json:"seq"`
+	Dropped   *int64                `json:"dropped"`
+	Topic     string                `json:"topic"`
+	Type      string                `json:"type"`
+	Payload   RealtimePriceSnapshot `json:"payload"`
+}
+
+// UnmarshalJSON validates stream fields and preserves exact amounts.
+func (m *CryptoPriceSnapshotEvent) UnmarshalJSON(raw []byte) error {
+	type plain CryptoPriceSnapshotEvent
+	var result plain
+	if err := decodeData(raw, &result, []dataField{
+		{name: "timestamp", kind: "epoch_datetime", required: true},
+		{name: "seq", kind: "int", nullable: true},
+		{name: "dropped", kind: "int", nullable: true},
+		{name: "topic", allowed: []string{"prices.crypto"}, fallback: json.RawMessage("\"prices.crypto\"")},
+		{name: "type", allowed: []string{"subscribe"}, fallback: json.RawMessage("\"subscribe\"")},
+		{name: "payload", required: true},
+	}); err != nil {
+		return err
+	}
+	*m = CryptoPriceSnapshotEvent(result)
+	return nil
+}
+
+// CryptoPriceUpdateEvent represents a public stream message or payload.
+type CryptoPriceUpdateEvent struct {
+	Timestamp time.Time           `json:"timestamp"`
+	Seq       *int64              `json:"seq"`
+	Dropped   *int64              `json:"dropped"`
+	Topic     string              `json:"topic"`
+	Type      string              `json:"type"`
+	Payload   RealtimePriceUpdate `json:"payload"`
+}
+
+// UnmarshalJSON validates stream fields and preserves exact amounts.
+func (m *CryptoPriceUpdateEvent) UnmarshalJSON(raw []byte) error {
+	type plain CryptoPriceUpdateEvent
+	var result plain
+	if err := decodeData(raw, &result, []dataField{
+		{name: "timestamp", kind: "epoch_datetime", required: true},
+		{name: "seq", kind: "int", nullable: true},
+		{name: "dropped", kind: "int", nullable: true},
+		{name: "topic", allowed: []string{"prices.crypto"}, fallback: json.RawMessage("\"prices.crypto\"")},
+		{name: "type", allowed: []string{"update"}, fallback: json.RawMessage("\"update\"")},
+		{name: "payload", required: true},
+	}); err != nil {
+		return err
+	}
+	*m = CryptoPriceUpdateEvent(result)
+	return nil
+}
+
+// CryptoTwapPriceSnapshotEvent represents a public stream message or payload.
+type CryptoTwapPriceSnapshotEvent struct {
+	Timestamp time.Time            `json:"timestamp"`
+	Seq       *int64               `json:"seq"`
+	Dropped   *int64               `json:"dropped"`
+	Topic     string               `json:"topic"`
+	Type      string               `json:"type"`
+	Payload   RealtimeTwapSnapshot `json:"payload"`
+}
+
+// UnmarshalJSON validates stream fields and preserves exact amounts.
+func (m *CryptoTwapPriceSnapshotEvent) UnmarshalJSON(raw []byte) error {
+	type plain CryptoTwapPriceSnapshotEvent
+	var result plain
+	if err := decodeData(raw, &result, []dataField{
+		{name: "timestamp", kind: "epoch_datetime", required: true},
+		{name: "seq", kind: "int", nullable: true},
+		{name: "dropped", kind: "int", nullable: true},
+		{name: "topic", allowed: []string{"prices.crypto.twap"}, fallback: json.RawMessage("\"prices.crypto.twap\"")},
+		{name: "type", allowed: []string{"subscribe"}, fallback: json.RawMessage("\"subscribe\"")},
+		{name: "payload", required: true},
+	}); err != nil {
+		return err
+	}
+	*m = CryptoTwapPriceSnapshotEvent(result)
+	return nil
+}
+
+// CryptoTwapPriceUpdateEvent represents a public stream message or payload.
+type CryptoTwapPriceUpdateEvent struct {
+	Timestamp time.Time          `json:"timestamp"`
+	Seq       *int64             `json:"seq"`
+	Dropped   *int64             `json:"dropped"`
+	Topic     string             `json:"topic"`
+	Type      string             `json:"type"`
+	Payload   RealtimeTwapUpdate `json:"payload"`
+}
+
+// UnmarshalJSON validates stream fields and preserves exact amounts.
+func (m *CryptoTwapPriceUpdateEvent) UnmarshalJSON(raw []byte) error {
+	type plain CryptoTwapPriceUpdateEvent
+	var result plain
+	if err := decodeData(raw, &result, []dataField{
+		{name: "timestamp", kind: "epoch_datetime", required: true},
+		{name: "seq", kind: "int", nullable: true},
+		{name: "dropped", kind: "int", nullable: true},
+		{name: "topic", allowed: []string{"prices.crypto.twap"}, fallback: json.RawMessage("\"prices.crypto.twap\"")},
+		{name: "type", allowed: []string{"update"}, fallback: json.RawMessage("\"update\"")},
+		{name: "payload", required: true},
+	}); err != nil {
+		return err
+	}
+	*m = CryptoTwapPriceUpdateEvent(result)
+	return nil
+}
+
+// EquityPriceSnapshotEvent represents a public stream message or payload.
+type EquityPriceSnapshotEvent struct {
+	Timestamp time.Time                   `json:"timestamp"`
+	Seq       *int64                      `json:"seq"`
+	Dropped   *int64                      `json:"dropped"`
+	Topic     string                      `json:"topic"`
+	Type      string                      `json:"type"`
+	Payload   RealtimeEquityPriceSnapshot `json:"payload"`
+}
+
+// UnmarshalJSON validates stream fields and preserves exact amounts.
+func (m *EquityPriceSnapshotEvent) UnmarshalJSON(raw []byte) error {
+	type plain EquityPriceSnapshotEvent
+	var result plain
+	if err := decodeData(raw, &result, []dataField{
+		{name: "timestamp", kind: "epoch_datetime", required: true},
+		{name: "seq", kind: "int", nullable: true},
+		{name: "dropped", kind: "int", nullable: true},
+		{name: "topic", allowed: []string{"prices.equity"}, fallback: json.RawMessage("\"prices.equity\"")},
+		{name: "type", allowed: []string{"subscribe"}, fallback: json.RawMessage("\"subscribe\"")},
+		{name: "payload", required: true},
+	}); err != nil {
+		return err
+	}
+	*m = EquityPriceSnapshotEvent(result)
+	return nil
+}
+
+// EquityPriceUpdateEvent represents a public stream message or payload.
+type EquityPriceUpdateEvent struct {
+	Timestamp time.Time                 `json:"timestamp"`
+	Seq       *int64                    `json:"seq"`
+	Dropped   *int64                    `json:"dropped"`
+	Topic     string                    `json:"topic"`
+	Type      string                    `json:"type"`
+	Payload   RealtimeEquityPriceUpdate `json:"payload"`
+}
+
+// UnmarshalJSON validates stream fields and preserves exact amounts.
+func (m *EquityPriceUpdateEvent) UnmarshalJSON(raw []byte) error {
+	type plain EquityPriceUpdateEvent
+	var result plain
+	if err := decodeData(raw, &result, []dataField{
+		{name: "timestamp", kind: "epoch_datetime", required: true},
+		{name: "seq", kind: "int", nullable: true},
+		{name: "dropped", kind: "int", nullable: true},
+		{name: "topic", allowed: []string{"prices.equity"}, fallback: json.RawMessage("\"prices.equity\"")},
+		{name: "type", allowed: []string{"update"}, fallback: json.RawMessage("\"update\"")},
+		{name: "payload", required: true},
+	}); err != nil {
+		return err
+	}
+	*m = EquityPriceUpdateEvent(result)
+	return nil
+}
+
+// EquityTwapPriceSnapshotEvent represents a public stream message or payload.
+type EquityTwapPriceSnapshotEvent struct {
+	Timestamp time.Time                  `json:"timestamp"`
+	Seq       *int64                     `json:"seq"`
+	Dropped   *int64                     `json:"dropped"`
+	Topic     string                     `json:"topic"`
+	Type      string                     `json:"type"`
+	Payload   RealtimeEquityTwapSnapshot `json:"payload"`
+}
+
+// UnmarshalJSON validates stream fields and preserves exact amounts.
+func (m *EquityTwapPriceSnapshotEvent) UnmarshalJSON(raw []byte) error {
+	type plain EquityTwapPriceSnapshotEvent
+	var result plain
+	if err := decodeData(raw, &result, []dataField{
+		{name: "timestamp", kind: "epoch_datetime", required: true},
+		{name: "seq", kind: "int", nullable: true},
+		{name: "dropped", kind: "int", nullable: true},
+		{name: "topic", allowed: []string{"prices.equity.twap"}, fallback: json.RawMessage("\"prices.equity.twap\"")},
+		{name: "type", allowed: []string{"subscribe"}, fallback: json.RawMessage("\"subscribe\"")},
+		{name: "payload", required: true},
+	}); err != nil {
+		return err
+	}
+	*m = EquityTwapPriceSnapshotEvent(result)
+	return nil
+}
+
+// EquityTwapPriceUpdateEvent represents a public stream message or payload.
+type EquityTwapPriceUpdateEvent struct {
+	Timestamp time.Time                `json:"timestamp"`
+	Seq       *int64                   `json:"seq"`
+	Dropped   *int64                   `json:"dropped"`
+	Topic     string                   `json:"topic"`
+	Type      string                   `json:"type"`
+	Payload   RealtimeEquityTwapUpdate `json:"payload"`
+}
+
+// UnmarshalJSON validates stream fields and preserves exact amounts.
+func (m *EquityTwapPriceUpdateEvent) UnmarshalJSON(raw []byte) error {
+	type plain EquityTwapPriceUpdateEvent
+	var result plain
+	if err := decodeData(raw, &result, []dataField{
+		{name: "timestamp", kind: "epoch_datetime", required: true},
+		{name: "seq", kind: "int", nullable: true},
+		{name: "dropped", kind: "int", nullable: true},
+		{name: "topic", allowed: []string{"prices.equity.twap"}, fallback: json.RawMessage("\"prices.equity.twap\"")},
+		{name: "type", allowed: []string{"update"}, fallback: json.RawMessage("\"update\"")},
+		{name: "payload", required: true},
+	}); err != nil {
+		return err
+	}
+	*m = EquityTwapPriceUpdateEvent(result)
+	return nil
+}
+
+// RealtimePricePoint represents a public stream message or payload.
+type RealtimePricePoint struct {
+	Timestamp time.Time    `json:"timestamp"`
+	Value     *decimal.Big `json:"value"`
+}
+
+// UnmarshalJSON validates stream fields and preserves exact amounts.
+func (m *RealtimePricePoint) UnmarshalJSON(raw []byte) error {
+	type plain RealtimePricePoint
+	var result plain
+	if err := decodeData(raw, &result, []dataField{
+		{name: "timestamp", kind: "epoch_datetime", required: true},
+		{name: "value", kind: "data_decimal", required: true},
+	}); err != nil {
+		return err
+	}
+	*m = RealtimePricePoint(result)
+	return nil
+}
+
+// RealtimePriceSnapshot represents a public stream message or payload.
+type RealtimePriceSnapshot struct {
+	Symbol string               `json:"symbol"`
+	Source string               `json:"source"`
+	Data   []RealtimePricePoint `json:"data"`
+}
+
+// UnmarshalJSON validates stream fields and preserves exact amounts.
+func (m *RealtimePriceSnapshot) UnmarshalJSON(raw []byte) error {
+	type plain RealtimePriceSnapshot
+	var result plain
+	if err := decodeData(raw, &result, []dataField{
+		{name: "symbol", required: true},
+		{name: "source", required: true},
+		{name: "data", kind: "sequence", required: true},
+	}); err != nil {
+		return err
+	}
+	*m = RealtimePriceSnapshot(result)
+	return nil
+}
+
+// RealtimePriceUpdate represents a public stream message or payload.
+type RealtimePriceUpdate struct {
+	Timestamp        time.Time    `json:"timestamp"`
+	Value            *decimal.Big `json:"value"`
+	Symbol           string       `json:"symbol"`
+	Source           string       `json:"source"`
+	ReceivedAt       *time.Time   `json:"received_at"`
+	IsCarriedForward *bool        `json:"is_carried_forward"`
+}
+
+// UnmarshalJSON validates stream fields and preserves exact amounts.
+func (m *RealtimePriceUpdate) UnmarshalJSON(raw []byte) error {
+	type plain RealtimePriceUpdate
+	var result plain
+	if err := decodeData(raw, &result, []dataField{
+		{name: "timestamp", kind: "epoch_datetime", required: true},
+		{name: "value", kind: "data_decimal", required: true},
+		{name: "symbol", required: true},
+		{name: "source", required: true},
+		{name: "received_at", kind: "epoch_datetime", nullable: true},
+		{name: "is_carried_forward", kind: "bool", nullable: true},
+	}); err != nil {
+		return err
+	}
+	*m = RealtimePriceUpdate(result)
+	return nil
+}
+
+// RealtimeTwapSnapshot represents a public stream message or payload.
+type RealtimeTwapSnapshot struct {
+	Symbol        string               `json:"symbol"`
+	Source        string               `json:"source"`
+	Data          []RealtimePricePoint `json:"data"`
+	WindowSeconds int64                `json:"window_seconds"`
+}
+
+// UnmarshalJSON validates stream fields and preserves exact amounts.
+func (m *RealtimeTwapSnapshot) UnmarshalJSON(raw []byte) error {
+	type plain RealtimeTwapSnapshot
+	var result plain
+	if err := decodeData(raw, &result, []dataField{
+		{name: "symbol", required: true},
+		{name: "source", required: true},
+		{name: "data", kind: "sequence", required: true},
+		{name: "window_seconds", kind: "int", steps: []string{"price_window"}, fallback: json.RawMessage("60")},
+	}); err != nil {
+		return err
+	}
+	*m = RealtimeTwapSnapshot(result)
+	return nil
+}
+
+// RealtimeTwapUpdate represents a public stream message or payload.
+type RealtimeTwapUpdate struct {
+	Timestamp     time.Time    `json:"timestamp"`
+	Value         *decimal.Big `json:"value"`
+	Symbol        string       `json:"symbol"`
+	Source        string       `json:"source"`
+	WindowSeconds int64        `json:"window_seconds"`
+}
+
+// UnmarshalJSON validates stream fields and preserves exact amounts.
+func (m *RealtimeTwapUpdate) UnmarshalJSON(raw []byte) error {
+	type plain RealtimeTwapUpdate
+	var result plain
+	if err := decodeData(raw, &result, []dataField{
+		{name: "timestamp", kind: "epoch_datetime", required: true},
+		{name: "value", kind: "data_decimal", required: true},
+		{name: "symbol", required: true},
+		{name: "source", required: true},
+		{name: "window_seconds", kind: "int", steps: []string{"price_window"}, fallback: json.RawMessage("60")},
+	}); err != nil {
+		return err
+	}
+	*m = RealtimeTwapUpdate(result)
+	return nil
+}

@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Generated model schemas" pattern="file:models/data_models.go||file:models/catalog_models.go" />
+</component>

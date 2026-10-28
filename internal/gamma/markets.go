@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"net/http"
 	"net/url"
 	"strings"
 
@@ -83,15 +82,7 @@ func (c *Client) GetMarket(ctx context.Context, query MarketQuery) (*models.Mark
 	params := make(map[string]any)
 	paging.QueryOption(params, "include_tag", query.IncludeTag)
 	paging.QueryOption(params, "locale", query.Locale)
-	data, err := c.transport.Request(ctx, c.transport.GammaURL, http.MethodGet, path, paging.QueryValues(params), nil)
-	if err != nil {
-		return nil, err
-	}
-	market, err := codec.DecodeResponse[models.Market](data)
-	if err != nil {
-		return nil, err
-	}
-	return &market, nil
+	return getCatalog[models.Market](ctx, c, path, params)
 }
 
 // ListMarkets lazily lists binary markets. Nonbinary markets are omitted but
@@ -217,7 +208,7 @@ func escapeSegment(value string) string {
 		if b >= 'a' && b <= 'z' || b >= 'A' && b <= 'Z' || b >= '0' && b <= '9' || strings.ContainsRune("-._~", rune(b)) {
 			escaped.WriteByte(b)
 		} else {
-			fmt.Fprintf(&escaped, "%%%02X", b)
+			_, _ = fmt.Fprintf(&escaped, "%%%02X", b) // Writing to strings.Builder cannot fail.
 		}
 	}
 	return escaped.String()

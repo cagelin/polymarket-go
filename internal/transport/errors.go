@@ -58,6 +58,11 @@ func responseError(res *http.Response, data []byte) error {
 	if res.StatusCode == http.StatusTooManyRequests {
 		return &sdkerrors.RateLimitError{RetryAfter: after, RateLimit: parseRateLimit(res.Header)}
 	}
+	if res.StatusCode == 400 && body["error_msg"] == "Invalid Heartbeat ID" {
+		if id, ok := body["heartbeat_id"].(string); ok {
+			return &sdkerrors.OrderHeartbeatMismatchError{HeartbeatID: id, Rejection: &sdkerrors.RequestRejectedError{Message: "Invalid Heartbeat ID", Status: 400}}
+		}
+	}
 	code, _ := body["code"].(string)
 	message, _ := body["error"].(string)
 	var restriction sdkerrors.TradingRestriction

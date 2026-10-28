@@ -4,8 +4,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
-	"reflect"
 	"testing"
+
+	"github.com/cagelam/polymarket-go/internal/testutil"
 )
 
 func TestPythonResponseVariants(t *testing.T) {
@@ -49,20 +50,7 @@ func TestPythonResponseVariants(t *testing.T) {
 			if fmt.Sprintf("%T", value) != "*models."+test.Expected.Variant {
 				t.Fatalf("variant = %T; Python = %s", value, test.Expected.Variant)
 			}
-			encoded, marshalErr := json.Marshal(value)
-			if marshalErr != nil {
-				t.Fatal(marshalErr)
-			}
-			var got, want any
-			if err = json.Unmarshal(encoded, &got); err != nil {
-				t.Fatal(err)
-			}
-			if err = json.Unmarshal(test.Expected.Value, &want); err != nil {
-				t.Fatal(err)
-			}
-			if !reflect.DeepEqual(got, want) {
-				t.Errorf("JSON = %s; Python = %s", encoded, test.Expected.Value)
-			}
+			testutil.EqualJSON(t, value, test.Expected.Value)
 		})
 	}
 }

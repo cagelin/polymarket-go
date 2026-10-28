@@ -1,0 +1,5717 @@
+{
+  "upstream_version": "0.14.0",
+  "upstream_commit": "7032ed06175b0bbea77b2d9e898bd9f252af2041",
+  "request": {
+    "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+    "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+    "signature_type": 0,
+    "leg_position_ids": [
+      "123",
+      "456"
+    ],
+    "direction": "BUY",
+    "side": "YES",
+    "requested_size": {
+      "unit": "notional",
+      "value_e6": "10000000"
+    }
+  },
+  "cases": [
+    {
+      "operation": "request",
+      "name": "request/default",
+      "input": {
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "direction": "BUY",
+        "amount": "10",
+        "size": null,
+        "side": "YES"
+      },
+      "expected": {
+        "value": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          }
+        }
+      }
+    },
+    {
+      "operation": "request",
+      "name": "request/leg_position_ids/[]",
+      "input": {
+        "leg_position_ids": [],
+        "direction": "BUY",
+        "amount": "10",
+        "size": null,
+        "side": "YES"
+      },
+      "expected": {
+        "error": "UserInputError"
+      }
+    },
+    {
+      "operation": "request",
+      "name": "request/leg_position_ids/['1']",
+      "input": {
+        "leg_position_ids": [
+          "1"
+        ],
+        "direction": "BUY",
+        "amount": "10",
+        "size": null,
+        "side": "YES"
+      },
+      "expected": {
+        "error": "UserInputError"
+      }
+    },
+    {
+      "operation": "request",
+      "name": "request/leg_position_ids/['01', '1']",
+      "input": {
+        "leg_position_ids": [
+          "01",
+          "1"
+        ],
+        "direction": "BUY",
+        "amount": "10",
+        "size": null,
+        "side": "YES"
+      },
+      "expected": {
+        "error": "UserInputError"
+      }
+    },
+    {
+      "operation": "request",
+      "name": "request/leg_position_ids/['\u0664\u0665\u0666', '123']",
+      "input": {
+        "leg_position_ids": [
+          "\u0664\u0665\u0666",
+          "123"
+        ],
+        "direction": "BUY",
+        "amount": "10",
+        "size": null,
+        "side": "YES"
+      },
+      "expected": {
+        "value": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          }
+        }
+      }
+    },
+    {
+      "operation": "request",
+      "name": "request/leg_position_ids/['-1', '2']",
+      "input": {
+        "leg_position_ids": [
+          "-1",
+          "2"
+        ],
+        "direction": "BUY",
+        "amount": "10",
+        "size": null,
+        "side": "YES"
+      },
+      "expected": {
+        "error": "UserInputError"
+      }
+    },
+    {
+      "operation": "request",
+      "name": "request/leg_position_ids/['2', '10']",
+      "input": {
+        "leg_position_ids": [
+          "2",
+          "10"
+        ],
+        "direction": "BUY",
+        "amount": "10",
+        "size": null,
+        "side": "YES"
+      },
+      "expected": {
+        "value": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "2",
+            "10"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          }
+        }
+      }
+    },
+    {
+      "operation": "request",
+      "name": "request/leg_position_ids/['0', '1']",
+      "input": {
+        "leg_position_ids": [
+          "0",
+          "1"
+        ],
+        "direction": "BUY",
+        "amount": "10",
+        "size": null,
+        "side": "YES"
+      },
+      "expected": {
+        "value": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "0",
+            "1"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          }
+        }
+      }
+    },
+    {
+      "operation": "request",
+      "name": "request/amount/'0'",
+      "input": {
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "direction": "BUY",
+        "amount": "0",
+        "size": null,
+        "side": "YES"
+      },
+      "expected": {
+        "error": "UserInputError"
+      }
+    },
+    {
+      "operation": "request",
+      "name": "request/amount/'-1'",
+      "input": {
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "direction": "BUY",
+        "amount": "-1",
+        "size": null,
+        "side": "YES"
+      },
+      "expected": {
+        "error": "UserInputError"
+      }
+    },
+    {
+      "operation": "request",
+      "name": "request/amount/'0.0000001'",
+      "input": {
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "direction": "BUY",
+        "amount": "0.0000001",
+        "size": null,
+        "side": "YES"
+      },
+      "expected": {
+        "error": "UserInputError"
+      }
+    },
+    {
+      "operation": "request",
+      "name": "request/amount/'1.123456'",
+      "input": {
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "direction": "BUY",
+        "amount": "1.123456",
+        "size": null,
+        "side": "YES"
+      },
+      "expected": {
+        "value": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "1123456"
+          }
+        }
+      }
+    },
+    {
+      "operation": "request",
+      "name": "request/amount/'1e30'",
+      "input": {
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "direction": "BUY",
+        "amount": "1e30",
+        "size": null,
+        "side": "YES"
+      },
+      "expected": {
+        "value": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "1000000000000000000000000000000000000"
+          }
+        }
+      }
+    },
+    {
+      "operation": "request",
+      "name": "request/amount/'NaN'",
+      "input": {
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "direction": "BUY",
+        "amount": "NaN",
+        "size": null,
+        "side": "YES"
+      },
+      "expected": {
+        "error": "UserInputError"
+      }
+    },
+    {
+      "operation": "request",
+      "name": "request/direction/'SELL'",
+      "input": {
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "direction": "SELL",
+        "amount": "10",
+        "size": null,
+        "side": "YES"
+      },
+      "expected": {
+        "error": "UserInputError"
+      }
+    },
+    {
+      "operation": "request",
+      "name": "request/direction/'buy'",
+      "input": {
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "direction": "buy",
+        "amount": "10",
+        "size": null,
+        "side": "YES"
+      },
+      "expected": {
+        "error": "UserInputError"
+      }
+    },
+    {
+      "operation": "request",
+      "name": "request/direction/'unknown'",
+      "input": {
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "direction": "unknown",
+        "amount": "10",
+        "size": null,
+        "side": "YES"
+      },
+      "expected": {
+        "error": "UserInputError"
+      }
+    },
+    {
+      "operation": "request",
+      "name": "request/side/'NO'",
+      "input": {
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "direction": "BUY",
+        "amount": "10",
+        "size": null,
+        "side": "NO"
+      },
+      "expected": {
+        "error": "UserInputError"
+      }
+    },
+    {
+      "operation": "request",
+      "name": "request/side/'yes'",
+      "input": {
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "direction": "BUY",
+        "amount": "10",
+        "size": null,
+        "side": "yes"
+      },
+      "expected": {
+        "error": "UserInputError"
+      }
+    },
+    {
+      "operation": "request",
+      "name": "request/side/''",
+      "input": {
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "direction": "BUY",
+        "amount": "10",
+        "size": null,
+        "side": ""
+      },
+      "expected": {
+        "error": "UserInputError"
+      }
+    },
+    {
+      "operation": "request",
+      "name": "request/sell",
+      "input": {
+        "leg_position_ids": [
+          "123",
+          "456"
+        ],
+        "direction": "SELL",
+        "amount": null,
+        "size": "2",
+        "side": "YES"
+      },
+      "expected": {
+        "value": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "SELL",
+          "side": "YES",
+          "requested_size": {
+            "unit": "shares",
+            "value_e6": "2000000"
+          }
+        }
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/default",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "value": {
+          "rfq_id": "rfq-1",
+          "quote": {
+            "rfq_id": "rfq-1",
+            "quote_id": "quote-1",
+            "builder_code": "0xabababababababababababababababababababababababababababababababab",
+            "direction": "BUY",
+            "position_id": "123",
+            "blended_price": "0.5",
+            "maker_amount": "10",
+            "taker_amount": "20",
+            "total_required": "10.1",
+            "net_receive": null,
+            "expires_at": 1720000000000
+          },
+          "reason": null
+        }
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/rfq_idNone",
+      "input": {
+        "rfq_id": null,
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/rfq_id''",
+      "input": {
+        "rfq_id": "",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/rfq_id{}",
+      "input": {
+        "rfq_id": {},
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/rfq_idTrue",
+      "input": {
+        "rfq_id": true,
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/statusNone",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": null,
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/status''",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/status{}",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": {},
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/statusTrue",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": true,
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/expires_atNone",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": null,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/expires_at''",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": "",
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/expires_at{}",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": {},
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/expires_atTrue",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": true,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/builder_codeNone",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": null,
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/builder_code''",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/builder_code{}",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": {},
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/builder_codeTrue",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": true,
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/requestNone",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": null,
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/request''",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": "",
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/request{}",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {},
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/requestTrue",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": true,
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/quoteNone",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": null
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/quote''",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": ""
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/quote{}",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {}
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/quoteTrue",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": true
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/request/signer_addressNone",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": null,
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "value": {
+          "rfq_id": "rfq-1",
+          "quote": {
+            "rfq_id": "rfq-1",
+            "quote_id": "quote-1",
+            "builder_code": "0xabababababababababababababababababababababababababababababababab",
+            "direction": "BUY",
+            "position_id": "123",
+            "blended_price": "0.5",
+            "maker_amount": "10",
+            "taker_amount": "20",
+            "total_required": "10.1",
+            "net_receive": null,
+            "expires_at": 1720000000000
+          },
+          "reason": null
+        }
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/request/signer_address''",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "value": {
+          "rfq_id": "rfq-1",
+          "quote": {
+            "rfq_id": "rfq-1",
+            "quote_id": "quote-1",
+            "builder_code": "0xabababababababababababababababababababababababababababababababab",
+            "direction": "BUY",
+            "position_id": "123",
+            "blended_price": "0.5",
+            "maker_amount": "10",
+            "taker_amount": "20",
+            "total_required": "10.1",
+            "net_receive": null,
+            "expires_at": 1720000000000
+          },
+          "reason": null
+        }
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/request/signer_address{}",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": {},
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "value": {
+          "rfq_id": "rfq-1",
+          "quote": {
+            "rfq_id": "rfq-1",
+            "quote_id": "quote-1",
+            "builder_code": "0xabababababababababababababababababababababababababababababababab",
+            "direction": "BUY",
+            "position_id": "123",
+            "blended_price": "0.5",
+            "maker_amount": "10",
+            "taker_amount": "20",
+            "total_required": "10.1",
+            "net_receive": null,
+            "expires_at": 1720000000000
+          },
+          "reason": null
+        }
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/request/signer_addressTrue",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": true,
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "value": {
+          "rfq_id": "rfq-1",
+          "quote": {
+            "rfq_id": "rfq-1",
+            "quote_id": "quote-1",
+            "builder_code": "0xabababababababababababababababababababababababababababababababab",
+            "direction": "BUY",
+            "position_id": "123",
+            "blended_price": "0.5",
+            "maker_amount": "10",
+            "taker_amount": "20",
+            "total_required": "10.1",
+            "net_receive": null,
+            "expires_at": 1720000000000
+          },
+          "reason": null
+        }
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/request/maker_addressNone",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": null,
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "value": {
+          "rfq_id": "rfq-1",
+          "quote": {
+            "rfq_id": "rfq-1",
+            "quote_id": "quote-1",
+            "builder_code": "0xabababababababababababababababababababababababababababababababab",
+            "direction": "BUY",
+            "position_id": "123",
+            "blended_price": "0.5",
+            "maker_amount": "10",
+            "taker_amount": "20",
+            "total_required": "10.1",
+            "net_receive": null,
+            "expires_at": 1720000000000
+          },
+          "reason": null
+        }
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/request/maker_address''",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "value": {
+          "rfq_id": "rfq-1",
+          "quote": {
+            "rfq_id": "rfq-1",
+            "quote_id": "quote-1",
+            "builder_code": "0xabababababababababababababababababababababababababababababababab",
+            "direction": "BUY",
+            "position_id": "123",
+            "blended_price": "0.5",
+            "maker_amount": "10",
+            "taker_amount": "20",
+            "total_required": "10.1",
+            "net_receive": null,
+            "expires_at": 1720000000000
+          },
+          "reason": null
+        }
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/request/maker_address{}",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": {},
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "value": {
+          "rfq_id": "rfq-1",
+          "quote": {
+            "rfq_id": "rfq-1",
+            "quote_id": "quote-1",
+            "builder_code": "0xabababababababababababababababababababababababababababababababab",
+            "direction": "BUY",
+            "position_id": "123",
+            "blended_price": "0.5",
+            "maker_amount": "10",
+            "taker_amount": "20",
+            "total_required": "10.1",
+            "net_receive": null,
+            "expires_at": 1720000000000
+          },
+          "reason": null
+        }
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/request/maker_addressTrue",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": true,
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "value": {
+          "rfq_id": "rfq-1",
+          "quote": {
+            "rfq_id": "rfq-1",
+            "quote_id": "quote-1",
+            "builder_code": "0xabababababababababababababababababababababababababababababababab",
+            "direction": "BUY",
+            "position_id": "123",
+            "blended_price": "0.5",
+            "maker_amount": "10",
+            "taker_amount": "20",
+            "total_required": "10.1",
+            "net_receive": null,
+            "expires_at": 1720000000000
+          },
+          "reason": null
+        }
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/request/signature_typeNone",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": null,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "value": {
+          "rfq_id": "rfq-1",
+          "quote": {
+            "rfq_id": "rfq-1",
+            "quote_id": "quote-1",
+            "builder_code": "0xabababababababababababababababababababababababababababababababab",
+            "direction": "BUY",
+            "position_id": "123",
+            "blended_price": "0.5",
+            "maker_amount": "10",
+            "taker_amount": "20",
+            "total_required": "10.1",
+            "net_receive": null,
+            "expires_at": 1720000000000
+          },
+          "reason": null
+        }
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/request/signature_type''",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": "",
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "value": {
+          "rfq_id": "rfq-1",
+          "quote": {
+            "rfq_id": "rfq-1",
+            "quote_id": "quote-1",
+            "builder_code": "0xabababababababababababababababababababababababababababababababab",
+            "direction": "BUY",
+            "position_id": "123",
+            "blended_price": "0.5",
+            "maker_amount": "10",
+            "taker_amount": "20",
+            "total_required": "10.1",
+            "net_receive": null,
+            "expires_at": 1720000000000
+          },
+          "reason": null
+        }
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/request/signature_type{}",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": {},
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "value": {
+          "rfq_id": "rfq-1",
+          "quote": {
+            "rfq_id": "rfq-1",
+            "quote_id": "quote-1",
+            "builder_code": "0xabababababababababababababababababababababababababababababababab",
+            "direction": "BUY",
+            "position_id": "123",
+            "blended_price": "0.5",
+            "maker_amount": "10",
+            "taker_amount": "20",
+            "total_required": "10.1",
+            "net_receive": null,
+            "expires_at": 1720000000000
+          },
+          "reason": null
+        }
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/request/signature_typeTrue",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": true,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "value": {
+          "rfq_id": "rfq-1",
+          "quote": {
+            "rfq_id": "rfq-1",
+            "quote_id": "quote-1",
+            "builder_code": "0xabababababababababababababababababababababababababababababababab",
+            "direction": "BUY",
+            "position_id": "123",
+            "blended_price": "0.5",
+            "maker_amount": "10",
+            "taker_amount": "20",
+            "total_required": "10.1",
+            "net_receive": null,
+            "expires_at": 1720000000000
+          },
+          "reason": null
+        }
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/request/leg_position_idsNone",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": null,
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/request/leg_position_ids''",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": "",
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/request/leg_position_ids{}",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": {},
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/request/leg_position_idsTrue",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": true,
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/request/directionNone",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": null,
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/request/direction''",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/request/direction{}",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": {},
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/request/directionTrue",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": true,
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/request/sideNone",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": null,
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/request/side''",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/request/side{}",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": {},
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/request/sideTrue",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": true,
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/request/requested_sizeNone",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": null,
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/request/requested_size''",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": "",
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/request/requested_size{}",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {},
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/request/requested_sizeTrue",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": true,
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/request/rfq_idNone",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": null,
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/request/rfq_id''",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/request/rfq_id{}",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": {},
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/request/rfq_idTrue",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": true,
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/request/condition_idNone",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": null,
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/request/condition_id''",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/request/condition_id{}",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": {},
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/request/condition_idTrue",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": true,
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/request/yes_position_idNone",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": null,
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/request/yes_position_id''",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/request/yes_position_id{}",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": {},
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/request/yes_position_idTrue",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": true,
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/request/no_position_idNone",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": null
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/request/no_position_id''",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": ""
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/request/no_position_id{}",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": {}
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/request/no_position_idTrue",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": true
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/quote/quote_idNone",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": null,
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/quote/quote_id''",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/quote/quote_id{}",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": {},
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/quote/quote_idTrue",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": true,
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/quote/blended_price_e6None",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": null,
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/quote/blended_price_e6''",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/quote/blended_price_e6{}",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": {},
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/quote/blended_price_e6True",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": true,
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/quote/maker_amount_e6None",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": null,
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/quote/maker_amount_e6''",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/quote/maker_amount_e6{}",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": {},
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/quote/maker_amount_e6True",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": true,
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/quote/taker_amount_e6None",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": null,
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/quote/taker_amount_e6''",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/quote/taker_amount_e6{}",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": {},
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/quote/taker_amount_e6True",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": true,
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/quote/total_required_e6None",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": null
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/quote/total_required_e6''",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": ""
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/quote/total_required_e6{}",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": {}
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/quote/total_required_e6True",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "10000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": true
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/no-quote/NO_QUOTES",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "FAILED",
+        "error": {
+          "code": "NO_QUOTES",
+          "message": "no usable quote"
+        }
+      },
+      "expected": {
+        "value": {
+          "rfq_id": "rfq-1",
+          "quote": null,
+          "reason": "NO_QUOTES"
+        }
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/no-quote/SIZE_TOO_LARGE",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "FAILED",
+        "error": {
+          "code": "SIZE_TOO_LARGE",
+          "message": "no usable quote"
+        }
+      },
+      "expected": {
+        "value": {
+          "rfq_id": "rfq-1",
+          "quote": null,
+          "reason": "SIZE_TOO_LARGE"
+        }
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/no-quote/UNKNOWN",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "FAILED",
+        "error": {
+          "code": "UNKNOWN",
+          "message": "no usable quote"
+        }
+      },
+      "expected": {
+        "error": "RfqRequestRejectedError"
+      }
+    },
+    {
+      "operation": "status",
+      "name": "status/EXECUTING",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "EXECUTING",
+        "tx_hash": "0xhash"
+      },
+      "expected": {
+        "value": {
+          "rfq_id": "rfq-1",
+          "status": "EXECUTING",
+          "taker_order_hash": null,
+          "tx_hash": "0xhash",
+          "error": null
+        }
+      }
+    },
+    {
+      "operation": "status",
+      "name": "status/MATCHED",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "MATCHED",
+        "tx_hash": "0xhash"
+      },
+      "expected": {
+        "value": {
+          "rfq_id": "rfq-1",
+          "status": "MATCHED",
+          "taker_order_hash": null,
+          "tx_hash": "0xhash",
+          "error": null
+        }
+      }
+    },
+    {
+      "operation": "status",
+      "name": "status/CONFIRMED",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "CONFIRMED",
+        "tx_hash": "0xhash"
+      },
+      "expected": {
+        "value": {
+          "rfq_id": "rfq-1",
+          "status": "CONFIRMED",
+          "taker_order_hash": null,
+          "tx_hash": "0xhash",
+          "error": null
+        }
+      }
+    },
+    {
+      "operation": "status",
+      "name": "status/FILLED",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "FILLED",
+        "tx_hash": "0xhash"
+      },
+      "expected": {
+        "value": {
+          "rfq_id": "rfq-1",
+          "status": "FILLED",
+          "taker_order_hash": null,
+          "tx_hash": "0xhash",
+          "error": null
+        }
+      }
+    },
+    {
+      "operation": "status",
+      "name": "status/FAILED",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "FAILED",
+        "tx_hash": "0xhash"
+      },
+      "expected": {
+        "value": {
+          "rfq_id": "rfq-1",
+          "status": "FAILED",
+          "taker_order_hash": null,
+          "tx_hash": "0xhash",
+          "error": null
+        }
+      }
+    },
+    {
+      "operation": "status",
+      "name": "status/EXPIRED",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "EXPIRED",
+        "tx_hash": "0xhash"
+      },
+      "expected": {
+        "value": {
+          "rfq_id": "rfq-1",
+          "status": "EXPIRED",
+          "taker_order_hash": null,
+          "tx_hash": "0xhash",
+          "error": null
+        }
+      }
+    },
+    {
+      "operation": "status",
+      "name": "status/CANCELED",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "CANCELED",
+        "tx_hash": "0xhash"
+      },
+      "expected": {
+        "value": {
+          "rfq_id": "rfq-1",
+          "status": "CANCELED",
+          "taker_order_hash": null,
+          "tx_hash": "0xhash",
+          "error": null
+        }
+      }
+    },
+    {
+      "operation": "status",
+      "name": "status/bad",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "bad",
+        "tx_hash": "0xhash"
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "status",
+      "name": "status/{'rfq_id': 'other'}",
+      "input": {
+        "rfq_id": "other",
+        "status": "EXECUTING"
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "status",
+      "name": "status/{'tx_hash': None}",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "EXECUTING",
+        "tx_hash": null
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "status",
+      "name": "status/{'tx_hash': ''}",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "EXECUTING",
+        "tx_hash": ""
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "status",
+      "name": "status/{'taker_order_hash': None}",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "EXECUTING",
+        "taker_order_hash": null
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "status",
+      "name": "status/{'error': {'code': 'future', 'message': 'message'}}",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "EXECUTING",
+        "error": {
+          "code": "future",
+          "message": "message"
+        }
+      },
+      "expected": {
+        "value": {
+          "rfq_id": "rfq-1",
+          "status": "EXECUTING",
+          "taker_order_hash": null,
+          "tx_hash": null,
+          "error": {
+            "code": "future",
+            "message": "message"
+          }
+        }
+      }
+    },
+    {
+      "operation": "status",
+      "name": "status/{'error': {'code': 'future'}}",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "EXECUTING",
+        "error": {
+          "code": "future"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "operation": "model",
+      "name": "model/rfq_id/None",
+      "input": {
+        "rfq_id": null,
+        "quote_id": "quote-1",
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "direction": "BUY",
+        "position_id": "123",
+        "blended_price": "0.5",
+        "maker_amount": "10",
+        "taker_amount": "20",
+        "total_required": "10.1",
+        "net_receive": null,
+        "expires_at": 1720000000000
+      },
+      "expected": {
+        "error": "ValidationError"
+      }
+    },
+    {
+      "operation": "model",
+      "name": "model/rfq_id/{}",
+      "input": {
+        "rfq_id": {},
+        "quote_id": "quote-1",
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "direction": "BUY",
+        "position_id": "123",
+        "blended_price": "0.5",
+        "maker_amount": "10",
+        "taker_amount": "20",
+        "total_required": "10.1",
+        "net_receive": null,
+        "expires_at": 1720000000000
+      },
+      "expected": {
+        "error": "ValidationError"
+      }
+    },
+    {
+      "operation": "model",
+      "name": "model/rfq_id/''",
+      "input": {
+        "rfq_id": "",
+        "quote_id": "quote-1",
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "direction": "BUY",
+        "position_id": "123",
+        "blended_price": "0.5",
+        "maker_amount": "10",
+        "taker_amount": "20",
+        "total_required": "10.1",
+        "net_receive": null,
+        "expires_at": 1720000000000
+      },
+      "expected": {
+        "value": {
+          "rfq_id": "",
+          "quote_id": "quote-1",
+          "builder_code": "0xabababababababababababababababababababababababababababababababab",
+          "direction": "BUY",
+          "position_id": "123",
+          "blended_price": "0.5",
+          "maker_amount": "10",
+          "taker_amount": "20",
+          "total_required": "10.1",
+          "net_receive": null,
+          "expires_at": 1720000000000
+        }
+      }
+    },
+    {
+      "operation": "model",
+      "name": "model/missing/rfq_id",
+      "input": {
+        "quote_id": "quote-1",
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "direction": "BUY",
+        "position_id": "123",
+        "blended_price": "0.5",
+        "maker_amount": "10",
+        "taker_amount": "20",
+        "total_required": "10.1",
+        "net_receive": null,
+        "expires_at": 1720000000000
+      },
+      "expected": {
+        "error": "ValidationError"
+      }
+    },
+    {
+      "operation": "model",
+      "name": "model/quote_id/None",
+      "input": {
+        "rfq_id": "rfq-1",
+        "quote_id": null,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "direction": "BUY",
+        "position_id": "123",
+        "blended_price": "0.5",
+        "maker_amount": "10",
+        "taker_amount": "20",
+        "total_required": "10.1",
+        "net_receive": null,
+        "expires_at": 1720000000000
+      },
+      "expected": {
+        "error": "ValidationError"
+      }
+    },
+    {
+      "operation": "model",
+      "name": "model/quote_id/{}",
+      "input": {
+        "rfq_id": "rfq-1",
+        "quote_id": {},
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "direction": "BUY",
+        "position_id": "123",
+        "blended_price": "0.5",
+        "maker_amount": "10",
+        "taker_amount": "20",
+        "total_required": "10.1",
+        "net_receive": null,
+        "expires_at": 1720000000000
+      },
+      "expected": {
+        "error": "ValidationError"
+      }
+    },
+    {
+      "operation": "model",
+      "name": "model/quote_id/''",
+      "input": {
+        "rfq_id": "rfq-1",
+        "quote_id": "",
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "direction": "BUY",
+        "position_id": "123",
+        "blended_price": "0.5",
+        "maker_amount": "10",
+        "taker_amount": "20",
+        "total_required": "10.1",
+        "net_receive": null,
+        "expires_at": 1720000000000
+      },
+      "expected": {
+        "value": {
+          "rfq_id": "rfq-1",
+          "quote_id": "",
+          "builder_code": "0xabababababababababababababababababababababababababababababababab",
+          "direction": "BUY",
+          "position_id": "123",
+          "blended_price": "0.5",
+          "maker_amount": "10",
+          "taker_amount": "20",
+          "total_required": "10.1",
+          "net_receive": null,
+          "expires_at": 1720000000000
+        }
+      }
+    },
+    {
+      "operation": "model",
+      "name": "model/missing/quote_id",
+      "input": {
+        "rfq_id": "rfq-1",
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "direction": "BUY",
+        "position_id": "123",
+        "blended_price": "0.5",
+        "maker_amount": "10",
+        "taker_amount": "20",
+        "total_required": "10.1",
+        "net_receive": null,
+        "expires_at": 1720000000000
+      },
+      "expected": {
+        "error": "ValidationError"
+      }
+    },
+    {
+      "operation": "model",
+      "name": "model/builder_code/None",
+      "input": {
+        "rfq_id": "rfq-1",
+        "quote_id": "quote-1",
+        "builder_code": null,
+        "direction": "BUY",
+        "position_id": "123",
+        "blended_price": "0.5",
+        "maker_amount": "10",
+        "taker_amount": "20",
+        "total_required": "10.1",
+        "net_receive": null,
+        "expires_at": 1720000000000
+      },
+      "expected": {
+        "error": "ValidationError"
+      }
+    },
+    {
+      "operation": "model",
+      "name": "model/builder_code/{}",
+      "input": {
+        "rfq_id": "rfq-1",
+        "quote_id": "quote-1",
+        "builder_code": {},
+        "direction": "BUY",
+        "position_id": "123",
+        "blended_price": "0.5",
+        "maker_amount": "10",
+        "taker_amount": "20",
+        "total_required": "10.1",
+        "net_receive": null,
+        "expires_at": 1720000000000
+      },
+      "expected": {
+        "error": "ValidationError"
+      }
+    },
+    {
+      "operation": "model",
+      "name": "model/builder_code/''",
+      "input": {
+        "rfq_id": "rfq-1",
+        "quote_id": "quote-1",
+        "builder_code": "",
+        "direction": "BUY",
+        "position_id": "123",
+        "blended_price": "0.5",
+        "maker_amount": "10",
+        "taker_amount": "20",
+        "total_required": "10.1",
+        "net_receive": null,
+        "expires_at": 1720000000000
+      },
+      "expected": {
+        "value": {
+          "rfq_id": "rfq-1",
+          "quote_id": "quote-1",
+          "builder_code": "",
+          "direction": "BUY",
+          "position_id": "123",
+          "blended_price": "0.5",
+          "maker_amount": "10",
+          "taker_amount": "20",
+          "total_required": "10.1",
+          "net_receive": null,
+          "expires_at": 1720000000000
+        }
+      }
+    },
+    {
+      "operation": "model",
+      "name": "model/missing/builder_code",
+      "input": {
+        "rfq_id": "rfq-1",
+        "quote_id": "quote-1",
+        "direction": "BUY",
+        "position_id": "123",
+        "blended_price": "0.5",
+        "maker_amount": "10",
+        "taker_amount": "20",
+        "total_required": "10.1",
+        "net_receive": null,
+        "expires_at": 1720000000000
+      },
+      "expected": {
+        "error": "ValidationError"
+      }
+    },
+    {
+      "operation": "model",
+      "name": "model/direction/None",
+      "input": {
+        "rfq_id": "rfq-1",
+        "quote_id": "quote-1",
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "direction": null,
+        "position_id": "123",
+        "blended_price": "0.5",
+        "maker_amount": "10",
+        "taker_amount": "20",
+        "total_required": "10.1",
+        "net_receive": null,
+        "expires_at": 1720000000000
+      },
+      "expected": {
+        "error": "ValidationError"
+      }
+    },
+    {
+      "operation": "model",
+      "name": "model/direction/{}",
+      "input": {
+        "rfq_id": "rfq-1",
+        "quote_id": "quote-1",
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "direction": {},
+        "position_id": "123",
+        "blended_price": "0.5",
+        "maker_amount": "10",
+        "taker_amount": "20",
+        "total_required": "10.1",
+        "net_receive": null,
+        "expires_at": 1720000000000
+      },
+      "expected": {
+        "error": "ValidationError"
+      }
+    },
+    {
+      "operation": "model",
+      "name": "model/direction/''",
+      "input": {
+        "rfq_id": "rfq-1",
+        "quote_id": "quote-1",
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "direction": "",
+        "position_id": "123",
+        "blended_price": "0.5",
+        "maker_amount": "10",
+        "taker_amount": "20",
+        "total_required": "10.1",
+        "net_receive": null,
+        "expires_at": 1720000000000
+      },
+      "expected": {
+        "error": "ValidationError"
+      }
+    },
+    {
+      "operation": "model",
+      "name": "model/missing/direction",
+      "input": {
+        "rfq_id": "rfq-1",
+        "quote_id": "quote-1",
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "position_id": "123",
+        "blended_price": "0.5",
+        "maker_amount": "10",
+        "taker_amount": "20",
+        "total_required": "10.1",
+        "net_receive": null,
+        "expires_at": 1720000000000
+      },
+      "expected": {
+        "error": "ValidationError"
+      }
+    },
+    {
+      "operation": "model",
+      "name": "model/position_id/None",
+      "input": {
+        "rfq_id": "rfq-1",
+        "quote_id": "quote-1",
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "direction": "BUY",
+        "position_id": null,
+        "blended_price": "0.5",
+        "maker_amount": "10",
+        "taker_amount": "20",
+        "total_required": "10.1",
+        "net_receive": null,
+        "expires_at": 1720000000000
+      },
+      "expected": {
+        "error": "ValidationError"
+      }
+    },
+    {
+      "operation": "model",
+      "name": "model/position_id/{}",
+      "input": {
+        "rfq_id": "rfq-1",
+        "quote_id": "quote-1",
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "direction": "BUY",
+        "position_id": {},
+        "blended_price": "0.5",
+        "maker_amount": "10",
+        "taker_amount": "20",
+        "total_required": "10.1",
+        "net_receive": null,
+        "expires_at": 1720000000000
+      },
+      "expected": {
+        "error": "ValidationError"
+      }
+    },
+    {
+      "operation": "model",
+      "name": "model/position_id/''",
+      "input": {
+        "rfq_id": "rfq-1",
+        "quote_id": "quote-1",
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "direction": "BUY",
+        "position_id": "",
+        "blended_price": "0.5",
+        "maker_amount": "10",
+        "taker_amount": "20",
+        "total_required": "10.1",
+        "net_receive": null,
+        "expires_at": 1720000000000
+      },
+      "expected": {
+        "value": {
+          "rfq_id": "rfq-1",
+          "quote_id": "quote-1",
+          "builder_code": "0xabababababababababababababababababababababababababababababababab",
+          "direction": "BUY",
+          "position_id": "",
+          "blended_price": "0.5",
+          "maker_amount": "10",
+          "taker_amount": "20",
+          "total_required": "10.1",
+          "net_receive": null,
+          "expires_at": 1720000000000
+        }
+      }
+    },
+    {
+      "operation": "model",
+      "name": "model/missing/position_id",
+      "input": {
+        "rfq_id": "rfq-1",
+        "quote_id": "quote-1",
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "direction": "BUY",
+        "blended_price": "0.5",
+        "maker_amount": "10",
+        "taker_amount": "20",
+        "total_required": "10.1",
+        "net_receive": null,
+        "expires_at": 1720000000000
+      },
+      "expected": {
+        "error": "ValidationError"
+      }
+    },
+    {
+      "operation": "model",
+      "name": "model/blended_price/None",
+      "input": {
+        "rfq_id": "rfq-1",
+        "quote_id": "quote-1",
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "direction": "BUY",
+        "position_id": "123",
+        "blended_price": null,
+        "maker_amount": "10",
+        "taker_amount": "20",
+        "total_required": "10.1",
+        "net_receive": null,
+        "expires_at": 1720000000000
+      },
+      "expected": {
+        "error": "ValidationError"
+      }
+    },
+    {
+      "operation": "model",
+      "name": "model/blended_price/{}",
+      "input": {
+        "rfq_id": "rfq-1",
+        "quote_id": "quote-1",
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "direction": "BUY",
+        "position_id": "123",
+        "blended_price": {},
+        "maker_amount": "10",
+        "taker_amount": "20",
+        "total_required": "10.1",
+        "net_receive": null,
+        "expires_at": 1720000000000
+      },
+      "expected": {
+        "error": "ValidationError"
+      }
+    },
+    {
+      "operation": "model",
+      "name": "model/blended_price/''",
+      "input": {
+        "rfq_id": "rfq-1",
+        "quote_id": "quote-1",
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "direction": "BUY",
+        "position_id": "123",
+        "blended_price": "",
+        "maker_amount": "10",
+        "taker_amount": "20",
+        "total_required": "10.1",
+        "net_receive": null,
+        "expires_at": 1720000000000
+      },
+      "expected": {
+        "error": "ValidationError"
+      }
+    },
+    {
+      "operation": "model",
+      "name": "model/missing/blended_price",
+      "input": {
+        "rfq_id": "rfq-1",
+        "quote_id": "quote-1",
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "direction": "BUY",
+        "position_id": "123",
+        "maker_amount": "10",
+        "taker_amount": "20",
+        "total_required": "10.1",
+        "net_receive": null,
+        "expires_at": 1720000000000
+      },
+      "expected": {
+        "error": "ValidationError"
+      }
+    },
+    {
+      "operation": "model",
+      "name": "model/maker_amount/None",
+      "input": {
+        "rfq_id": "rfq-1",
+        "quote_id": "quote-1",
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "direction": "BUY",
+        "position_id": "123",
+        "blended_price": "0.5",
+        "maker_amount": null,
+        "taker_amount": "20",
+        "total_required": "10.1",
+        "net_receive": null,
+        "expires_at": 1720000000000
+      },
+      "expected": {
+        "error": "ValidationError"
+      }
+    },
+    {
+      "operation": "model",
+      "name": "model/maker_amount/{}",
+      "input": {
+        "rfq_id": "rfq-1",
+        "quote_id": "quote-1",
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "direction": "BUY",
+        "position_id": "123",
+        "blended_price": "0.5",
+        "maker_amount": {},
+        "taker_amount": "20",
+        "total_required": "10.1",
+        "net_receive": null,
+        "expires_at": 1720000000000
+      },
+      "expected": {
+        "error": "ValidationError"
+      }
+    },
+    {
+      "operation": "model",
+      "name": "model/maker_amount/''",
+      "input": {
+        "rfq_id": "rfq-1",
+        "quote_id": "quote-1",
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "direction": "BUY",
+        "position_id": "123",
+        "blended_price": "0.5",
+        "maker_amount": "",
+        "taker_amount": "20",
+        "total_required": "10.1",
+        "net_receive": null,
+        "expires_at": 1720000000000
+      },
+      "expected": {
+        "error": "ValidationError"
+      }
+    },
+    {
+      "operation": "model",
+      "name": "model/missing/maker_amount",
+      "input": {
+        "rfq_id": "rfq-1",
+        "quote_id": "quote-1",
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "direction": "BUY",
+        "position_id": "123",
+        "blended_price": "0.5",
+        "taker_amount": "20",
+        "total_required": "10.1",
+        "net_receive": null,
+        "expires_at": 1720000000000
+      },
+      "expected": {
+        "error": "ValidationError"
+      }
+    },
+    {
+      "operation": "model",
+      "name": "model/taker_amount/None",
+      "input": {
+        "rfq_id": "rfq-1",
+        "quote_id": "quote-1",
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "direction": "BUY",
+        "position_id": "123",
+        "blended_price": "0.5",
+        "maker_amount": "10",
+        "taker_amount": null,
+        "total_required": "10.1",
+        "net_receive": null,
+        "expires_at": 1720000000000
+      },
+      "expected": {
+        "error": "ValidationError"
+      }
+    },
+    {
+      "operation": "model",
+      "name": "model/taker_amount/{}",
+      "input": {
+        "rfq_id": "rfq-1",
+        "quote_id": "quote-1",
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "direction": "BUY",
+        "position_id": "123",
+        "blended_price": "0.5",
+        "maker_amount": "10",
+        "taker_amount": {},
+        "total_required": "10.1",
+        "net_receive": null,
+        "expires_at": 1720000000000
+      },
+      "expected": {
+        "error": "ValidationError"
+      }
+    },
+    {
+      "operation": "model",
+      "name": "model/taker_amount/''",
+      "input": {
+        "rfq_id": "rfq-1",
+        "quote_id": "quote-1",
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "direction": "BUY",
+        "position_id": "123",
+        "blended_price": "0.5",
+        "maker_amount": "10",
+        "taker_amount": "",
+        "total_required": "10.1",
+        "net_receive": null,
+        "expires_at": 1720000000000
+      },
+      "expected": {
+        "error": "ValidationError"
+      }
+    },
+    {
+      "operation": "model",
+      "name": "model/missing/taker_amount",
+      "input": {
+        "rfq_id": "rfq-1",
+        "quote_id": "quote-1",
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "direction": "BUY",
+        "position_id": "123",
+        "blended_price": "0.5",
+        "maker_amount": "10",
+        "total_required": "10.1",
+        "net_receive": null,
+        "expires_at": 1720000000000
+      },
+      "expected": {
+        "error": "ValidationError"
+      }
+    },
+    {
+      "operation": "model",
+      "name": "model/total_required/None",
+      "input": {
+        "rfq_id": "rfq-1",
+        "quote_id": "quote-1",
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "direction": "BUY",
+        "position_id": "123",
+        "blended_price": "0.5",
+        "maker_amount": "10",
+        "taker_amount": "20",
+        "total_required": null,
+        "net_receive": null,
+        "expires_at": 1720000000000
+      },
+      "expected": {
+        "error": "ValidationError"
+      }
+    },
+    {
+      "operation": "model",
+      "name": "model/total_required/{}",
+      "input": {
+        "rfq_id": "rfq-1",
+        "quote_id": "quote-1",
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "direction": "BUY",
+        "position_id": "123",
+        "blended_price": "0.5",
+        "maker_amount": "10",
+        "taker_amount": "20",
+        "total_required": {},
+        "net_receive": null,
+        "expires_at": 1720000000000
+      },
+      "expected": {
+        "error": "ValidationError"
+      }
+    },
+    {
+      "operation": "model",
+      "name": "model/total_required/''",
+      "input": {
+        "rfq_id": "rfq-1",
+        "quote_id": "quote-1",
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "direction": "BUY",
+        "position_id": "123",
+        "blended_price": "0.5",
+        "maker_amount": "10",
+        "taker_amount": "20",
+        "total_required": "",
+        "net_receive": null,
+        "expires_at": 1720000000000
+      },
+      "expected": {
+        "error": "ValidationError"
+      }
+    },
+    {
+      "operation": "model",
+      "name": "model/missing/total_required",
+      "input": {
+        "rfq_id": "rfq-1",
+        "quote_id": "quote-1",
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "direction": "BUY",
+        "position_id": "123",
+        "blended_price": "0.5",
+        "maker_amount": "10",
+        "taker_amount": "20",
+        "net_receive": null,
+        "expires_at": 1720000000000
+      },
+      "expected": {
+        "error": "ValidationError"
+      }
+    },
+    {
+      "operation": "model",
+      "name": "model/net_receive/None",
+      "input": {
+        "rfq_id": "rfq-1",
+        "quote_id": "quote-1",
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "direction": "BUY",
+        "position_id": "123",
+        "blended_price": "0.5",
+        "maker_amount": "10",
+        "taker_amount": "20",
+        "total_required": "10.1",
+        "net_receive": null,
+        "expires_at": 1720000000000
+      },
+      "expected": {
+        "value": {
+          "rfq_id": "rfq-1",
+          "quote_id": "quote-1",
+          "builder_code": "0xabababababababababababababababababababababababababababababababab",
+          "direction": "BUY",
+          "position_id": "123",
+          "blended_price": "0.5",
+          "maker_amount": "10",
+          "taker_amount": "20",
+          "total_required": "10.1",
+          "net_receive": null,
+          "expires_at": 1720000000000
+        }
+      }
+    },
+    {
+      "operation": "model",
+      "name": "model/net_receive/{}",
+      "input": {
+        "rfq_id": "rfq-1",
+        "quote_id": "quote-1",
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "direction": "BUY",
+        "position_id": "123",
+        "blended_price": "0.5",
+        "maker_amount": "10",
+        "taker_amount": "20",
+        "total_required": "10.1",
+        "net_receive": {},
+        "expires_at": 1720000000000
+      },
+      "expected": {
+        "error": "ValidationError"
+      }
+    },
+    {
+      "operation": "model",
+      "name": "model/net_receive/''",
+      "input": {
+        "rfq_id": "rfq-1",
+        "quote_id": "quote-1",
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "direction": "BUY",
+        "position_id": "123",
+        "blended_price": "0.5",
+        "maker_amount": "10",
+        "taker_amount": "20",
+        "total_required": "10.1",
+        "net_receive": "",
+        "expires_at": 1720000000000
+      },
+      "expected": {
+        "error": "ValidationError"
+      }
+    },
+    {
+      "operation": "model",
+      "name": "model/missing/net_receive",
+      "input": {
+        "rfq_id": "rfq-1",
+        "quote_id": "quote-1",
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "direction": "BUY",
+        "position_id": "123",
+        "blended_price": "0.5",
+        "maker_amount": "10",
+        "taker_amount": "20",
+        "total_required": "10.1",
+        "expires_at": 1720000000000
+      },
+      "expected": {
+        "value": {
+          "rfq_id": "rfq-1",
+          "quote_id": "quote-1",
+          "builder_code": "0xabababababababababababababababababababababababababababababababab",
+          "direction": "BUY",
+          "position_id": "123",
+          "blended_price": "0.5",
+          "maker_amount": "10",
+          "taker_amount": "20",
+          "total_required": "10.1",
+          "net_receive": null,
+          "expires_at": 1720000000000
+        }
+      }
+    },
+    {
+      "operation": "model",
+      "name": "model/expires_at/None",
+      "input": {
+        "rfq_id": "rfq-1",
+        "quote_id": "quote-1",
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "direction": "BUY",
+        "position_id": "123",
+        "blended_price": "0.5",
+        "maker_amount": "10",
+        "taker_amount": "20",
+        "total_required": "10.1",
+        "net_receive": null,
+        "expires_at": null
+      },
+      "expected": {
+        "error": "ValidationError"
+      }
+    },
+    {
+      "operation": "model",
+      "name": "model/expires_at/{}",
+      "input": {
+        "rfq_id": "rfq-1",
+        "quote_id": "quote-1",
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "direction": "BUY",
+        "position_id": "123",
+        "blended_price": "0.5",
+        "maker_amount": "10",
+        "taker_amount": "20",
+        "total_required": "10.1",
+        "net_receive": null,
+        "expires_at": {}
+      },
+      "expected": {
+        "error": "ValidationError"
+      }
+    },
+    {
+      "operation": "model",
+      "name": "model/expires_at/''",
+      "input": {
+        "rfq_id": "rfq-1",
+        "quote_id": "quote-1",
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "direction": "BUY",
+        "position_id": "123",
+        "blended_price": "0.5",
+        "maker_amount": "10",
+        "taker_amount": "20",
+        "total_required": "10.1",
+        "net_receive": null,
+        "expires_at": ""
+      },
+      "expected": {
+        "error": "ValidationError"
+      }
+    },
+    {
+      "operation": "model",
+      "name": "model/missing/expires_at",
+      "input": {
+        "rfq_id": "rfq-1",
+        "quote_id": "quote-1",
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "direction": "BUY",
+        "position_id": "123",
+        "blended_price": "0.5",
+        "maker_amount": "10",
+        "taker_amount": "20",
+        "total_required": "10.1",
+        "net_receive": null
+      },
+      "expected": {
+        "error": "ValidationError"
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/decimal/0",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "0",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "value": {
+          "rfq_id": "rfq-1",
+          "quote": {
+            "rfq_id": "rfq-1",
+            "quote_id": "quote-1",
+            "builder_code": "0xabababababababababababababababababababababababababababababababab",
+            "direction": "BUY",
+            "position_id": "123",
+            "blended_price": "0.5",
+            "maker_amount": "0",
+            "taker_amount": "20",
+            "total_required": "10.1",
+            "net_receive": null,
+            "expires_at": 1720000000000
+          },
+          "reason": null
+        }
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/decimal/1000000",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "1000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "value": {
+          "rfq_id": "rfq-1",
+          "quote": {
+            "rfq_id": "rfq-1",
+            "quote_id": "quote-1",
+            "builder_code": "0xabababababababababababababababababababababababababababababababab",
+            "direction": "BUY",
+            "position_id": "123",
+            "blended_price": "0.5",
+            "maker_amount": "1",
+            "taker_amount": "20",
+            "total_required": "10.1",
+            "net_receive": null,
+            "expires_at": 1720000000000
+          },
+          "reason": null
+        }
+      }
+    },
+    {
+      "operation": "quote",
+      "name": "quote/decimal/1000000000000000000000000000000000000",
+      "input": {
+        "rfq_id": "rfq-1",
+        "status": "AWAITING_REQUESTER_ACCEPTANCE",
+        "expires_at": 1720000000000,
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "request": {
+          "signer_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "maker_address": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+          "signature_type": 0,
+          "leg_position_ids": [
+            "123",
+            "456"
+          ],
+          "direction": "BUY",
+          "side": "YES",
+          "requested_size": {
+            "unit": "notional",
+            "value_e6": "10000000"
+          },
+          "rfq_id": "rfq-1",
+          "condition_id": "0x03abababababababababababababababababababababababababababababab",
+          "yes_position_id": "123",
+          "no_position_id": "456"
+        },
+        "quote": {
+          "quote_id": "quote-1",
+          "blended_price_e6": "500000",
+          "maker_amount_e6": "1000000000000000000000000000000000000",
+          "taker_amount_e6": "20000000",
+          "total_required_e6": "10100000"
+        }
+      },
+      "expected": {
+        "value": {
+          "rfq_id": "rfq-1",
+          "quote": {
+            "rfq_id": "rfq-1",
+            "quote_id": "quote-1",
+            "builder_code": "0xabababababababababababababababababababababababababababababababab",
+            "direction": "BUY",
+            "position_id": "123",
+            "blended_price": "0.5",
+            "maker_amount": "1.000000000000000000000000000E+30",
+            "taker_amount": "20",
+            "total_required": "10.1",
+            "net_receive": null,
+            "expires_at": 1720000000000
+          },
+          "reason": null
+        }
+      }
+    },
+    {
+      "operation": "accept",
+      "name": "accept/EOA/BUY",
+      "input": {
+        "rfq_id": "rfq-1",
+        "quote_id": "quote-1",
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "direction": "BUY",
+        "position_id": "123",
+        "blended_price": "0.5",
+        "maker_amount": "10",
+        "taker_amount": "20",
+        "total_required": "10.1",
+        "net_receive": null,
+        "expires_at": 1720000000000
+      },
+      "expected": {
+        "value": {
+          "quote_id": "quote-1",
+          "signed_order": {
+            "salt": "12345",
+            "maker": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+            "signer": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+            "tokenId": "123",
+            "makerAmount": "10000000",
+            "takerAmount": "20000000",
+            "side": 0,
+            "signatureType": 0,
+            "timestamp": "1720000000",
+            "builder": "0xabababababababababababababababababababababababababababababababab",
+            "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "signature": "0x1203702fa338732327cb69d813beb6d7475f4b37d40dfced9ad2d4ccc09fe0715f999993183c1d6bcbb97187e5a9d1164e8b17669d127c4b978fc9ef8e12c0e11b"
+          }
+        }
+      },
+      "wallet": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+      "wallet_type": "EOA"
+    },
+    {
+      "operation": "accept",
+      "name": "accept/EOA/SELL",
+      "input": {
+        "rfq_id": "rfq-1",
+        "quote_id": "quote-1",
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "direction": "SELL",
+        "position_id": "123",
+        "blended_price": "0.5",
+        "maker_amount": "10",
+        "taker_amount": "20",
+        "total_required": "10.1",
+        "net_receive": "9",
+        "expires_at": 1720000000000
+      },
+      "expected": {
+        "value": {
+          "quote_id": "quote-1",
+          "signed_order": {
+            "salt": "12345",
+            "maker": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+            "signer": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+            "tokenId": "123",
+            "makerAmount": "10000000",
+            "takerAmount": "20000000",
+            "side": 1,
+            "signatureType": 0,
+            "timestamp": "1720000000",
+            "builder": "0xabababababababababababababababababababababababababababababababab",
+            "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "signature": "0xfd5c59a9c633c31d72a4845445103cfd5881e4670563228d1fbfee562393a8100f3395a6283d259e3d476f94a54b207544f54888e61f01dc37db5cbf91fac0cf1c"
+          }
+        }
+      },
+      "wallet": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+      "wallet_type": "EOA"
+    },
+    {
+      "operation": "accept",
+      "name": "accept/POLY_PROXY/BUY",
+      "input": {
+        "rfq_id": "rfq-1",
+        "quote_id": "quote-1",
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "direction": "BUY",
+        "position_id": "123",
+        "blended_price": "0.5",
+        "maker_amount": "10",
+        "taker_amount": "20",
+        "total_required": "10.1",
+        "net_receive": null,
+        "expires_at": 1720000000000
+      },
+      "expected": {
+        "value": {
+          "quote_id": "quote-1",
+          "signed_order": {
+            "salt": "12345",
+            "maker": "0x909dEdA326ED2aE677F5F8c2527E32977c9838c3",
+            "signer": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+            "tokenId": "123",
+            "makerAmount": "10000000",
+            "takerAmount": "20000000",
+            "side": 0,
+            "signatureType": 1,
+            "timestamp": "1720000000",
+            "builder": "0xabababababababababababababababababababababababababababababababab",
+            "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "signature": "0x54d20cf17353709b672e7e5e651fff9df0cfa7a1a20cbeb161d5531ae87f937b12eb6ef627835bee70dfe7fbbf09342d8abb012a457919ff80d44e070d0002a11b"
+          }
+        }
+      },
+      "wallet": "0x909dEdA326ED2aE677F5F8c2527E32977c9838c3",
+      "wallet_type": "POLY_PROXY"
+    },
+    {
+      "operation": "accept",
+      "name": "accept/POLY_PROXY/SELL",
+      "input": {
+        "rfq_id": "rfq-1",
+        "quote_id": "quote-1",
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "direction": "SELL",
+        "position_id": "123",
+        "blended_price": "0.5",
+        "maker_amount": "10",
+        "taker_amount": "20",
+        "total_required": "10.1",
+        "net_receive": "9",
+        "expires_at": 1720000000000
+      },
+      "expected": {
+        "value": {
+          "quote_id": "quote-1",
+          "signed_order": {
+            "salt": "12345",
+            "maker": "0x909dEdA326ED2aE677F5F8c2527E32977c9838c3",
+            "signer": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+            "tokenId": "123",
+            "makerAmount": "10000000",
+            "takerAmount": "20000000",
+            "side": 1,
+            "signatureType": 1,
+            "timestamp": "1720000000",
+            "builder": "0xabababababababababababababababababababababababababababababababab",
+            "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "signature": "0xfd83d08aca38bff9c6cc949978fc09c7008eed038238d664813eb2ce86dcb2d206c054450ac1e2c2ff646f0f1359d3e2e12411ad7bfd50d35679029d089cd7bb1b"
+          }
+        }
+      },
+      "wallet": "0x909dEdA326ED2aE677F5F8c2527E32977c9838c3",
+      "wallet_type": "POLY_PROXY"
+    },
+    {
+      "operation": "accept",
+      "name": "accept/GNOSIS_SAFE/BUY",
+      "input": {
+        "rfq_id": "rfq-1",
+        "quote_id": "quote-1",
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "direction": "BUY",
+        "position_id": "123",
+        "blended_price": "0.5",
+        "maker_amount": "10",
+        "taker_amount": "20",
+        "total_required": "10.1",
+        "net_receive": null,
+        "expires_at": 1720000000000
+      },
+      "expected": {
+        "value": {
+          "quote_id": "quote-1",
+          "signed_order": {
+            "salt": "12345",
+            "maker": "0x51b7C68A71dCcBc0b7FA4400934a293D8f4d3Ba8",
+            "signer": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+            "tokenId": "123",
+            "makerAmount": "10000000",
+            "takerAmount": "20000000",
+            "side": 0,
+            "signatureType": 2,
+            "timestamp": "1720000000",
+            "builder": "0xabababababababababababababababababababababababababababababababab",
+            "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "signature": "0xf537f4ca32599f9aebac8207eb2006be6f291d7a29748a376b5d546fd1c6df356219a305af02b11c8407fcbbc539d325aa8a31f3731d5dfd473f96990d2743271b"
+          }
+        }
+      },
+      "wallet": "0x51b7C68A71dCcBc0b7FA4400934a293D8f4d3Ba8",
+      "wallet_type": "GNOSIS_SAFE"
+    },
+    {
+      "operation": "accept",
+      "name": "accept/GNOSIS_SAFE/SELL",
+      "input": {
+        "rfq_id": "rfq-1",
+        "quote_id": "quote-1",
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "direction": "SELL",
+        "position_id": "123",
+        "blended_price": "0.5",
+        "maker_amount": "10",
+        "taker_amount": "20",
+        "total_required": "10.1",
+        "net_receive": "9",
+        "expires_at": 1720000000000
+      },
+      "expected": {
+        "value": {
+          "quote_id": "quote-1",
+          "signed_order": {
+            "salt": "12345",
+            "maker": "0x51b7C68A71dCcBc0b7FA4400934a293D8f4d3Ba8",
+            "signer": "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf",
+            "tokenId": "123",
+            "makerAmount": "10000000",
+            "takerAmount": "20000000",
+            "side": 1,
+            "signatureType": 2,
+            "timestamp": "1720000000",
+            "builder": "0xabababababababababababababababababababababababababababababababab",
+            "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "signature": "0x84fd3353ed3d5516dd75b3a3c5aeb55ce76e2610e0b3e19b037054aa620c2b80234026eed0b0b0f27e161ead9b8b4d5eb66edc8af8a78a21356b8cfdbfb89e591b"
+          }
+        }
+      },
+      "wallet": "0x51b7C68A71dCcBc0b7FA4400934a293D8f4d3Ba8",
+      "wallet_type": "GNOSIS_SAFE"
+    },
+    {
+      "operation": "accept",
+      "name": "accept/DEPOSIT_WALLET/BUY",
+      "input": {
+        "rfq_id": "rfq-1",
+        "quote_id": "quote-1",
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "direction": "BUY",
+        "position_id": "123",
+        "blended_price": "0.5",
+        "maker_amount": "10",
+        "taker_amount": "20",
+        "total_required": "10.1",
+        "net_receive": null,
+        "expires_at": 1720000000000
+      },
+      "expected": {
+        "value": {
+          "quote_id": "quote-1",
+          "signed_order": {
+            "salt": "12345",
+            "maker": "0x6F908B3B67b9F9C40413775fFf48b286aeF9a081",
+            "signer": "0x6F908B3B67b9F9C40413775fFf48b286aeF9a081",
+            "tokenId": "123",
+            "makerAmount": "10000000",
+            "takerAmount": "20000000",
+            "side": 0,
+            "signatureType": 3,
+            "timestamp": "1720000000",
+            "builder": "0xabababababababababababababababababababababababababababababababab",
+            "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "signature": "0x63e95f9bdbe0e24ecf62682fa79eb88e21f365114171f92b5d19b0445c58233303505c25fbbabaa5d6648cd1874ee04f88e75dc862583d54bec4203819c8a2651c466c63910185bbd55e8679264200c4e0abdcbb0c6264eb3d41d13326022e095baacccc64264017ec4437fc1f321fe03d18692cbb4626054d74533c74196c6f964f726465722875696e743235362073616c742c61646472657373206d616b65722c61646472657373207369676e65722c75696e7432353620746f6b656e49642c75696e74323536206d616b6572416d6f756e742c75696e743235362074616b6572416d6f756e742c75696e743820736964652c75696e7438207369676e6174757265547970652c75696e743235362074696d657374616d702c62797465733332206d657461646174612c62797465733332206275696c6465722900ba"
+          }
+        }
+      },
+      "wallet": "0x6F908B3B67b9F9C40413775fFf48b286aeF9a081",
+      "wallet_type": "DEPOSIT_WALLET"
+    },
+    {
+      "operation": "accept",
+      "name": "accept/DEPOSIT_WALLET/SELL",
+      "input": {
+        "rfq_id": "rfq-1",
+        "quote_id": "quote-1",
+        "builder_code": "0xabababababababababababababababababababababababababababababababab",
+        "direction": "SELL",
+        "position_id": "123",
+        "blended_price": "0.5",
+        "maker_amount": "10",
+        "taker_amount": "20",
+        "total_required": "10.1",
+        "net_receive": "9",
+        "expires_at": 1720000000000
+      },
+      "expected": {
+        "value": {
+          "quote_id": "quote-1",
+          "signed_order": {
+            "salt": "12345",
+            "maker": "0x6F908B3B67b9F9C40413775fFf48b286aeF9a081",
+            "signer": "0x6F908B3B67b9F9C40413775fFf48b286aeF9a081",
+            "tokenId": "123",
+            "makerAmount": "10000000",
+            "takerAmount": "20000000",
+            "side": 1,
+            "signatureType": 3,
+            "timestamp": "1720000000",
+            "builder": "0xabababababababababababababababababababababababababababababababab",
+            "metadata": "0x0000000000000000000000000000000000000000000000000000000000000000",
+            "signature": "0x85c3dada8816fb9df6e198f034ba0f9d7782a924c0eb29b81171602fb0a9c6f53f515c8bcf432f8a3ae09174f1aefee4e07dba34875562f31f76fe21e5d87d991b466c63910185bbd55e8679264200c4e0abdcbb0c6264eb3d41d13326022e095b9ccb351b45d941863270e7ab57a1dad1659a8a6be9e340f93bfeef088e463de24f726465722875696e743235362073616c742c61646472657373206d616b65722c61646472657373207369676e65722c75696e7432353620746f6b656e49642c75696e74323536206d616b6572416d6f756e742c75696e743235362074616b6572416d6f756e742c75696e743820736964652c75696e7438207369676e6174757265547970652c75696e743235362074696d657374616d702c62797465733332206d657461646174612c62797465733332206275696c6465722900ba"
+          }
+        }
+      },
+      "wallet": "0x6F908B3B67b9F9C40413775fFf48b286aeF9a081",
+      "wallet_type": "DEPOSIT_WALLET"
+    }
+  ]
+}

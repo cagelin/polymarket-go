@@ -3,6 +3,7 @@ package data
 import (
 	"fmt"
 	"math"
+	"slices"
 	"strconv"
 	"strings"
 	"unicode/utf8"
@@ -148,10 +149,8 @@ func normalizeQuery(operation string, q map[string]any) error {
 				return input("status must be nonempty")
 			}
 			if len(values) > 1 {
-				for _, value := range values {
-					if value == "REDEEMABLE" {
-						return input("REDEEMABLE must be the only status")
-					}
+				if slices.Contains(values, "REDEEMABLE") {
+					return input("REDEEMABLE must be the only status")
 				}
 			}
 			q["status"] = values

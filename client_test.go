@@ -64,7 +64,7 @@ func TestPythonHTTPParity(t *testing.T) {
 			if err != nil {
 				t.Fatal(err)
 			}
-			defer client.Close()
+			defer func() { _ = client.Close() }() // Close only releases local resources and always returns nil.
 			_, err = client.GetMidpoint(t.Context(), Asset("123"))
 			if got := errorClass(err); got != test.Expected.Error {
 				t.Fatalf("error = %s (%v), Python = %s", got, err, test.Expected.Error)
@@ -72,14 +72,12 @@ func TestPythonHTTPParity(t *testing.T) {
 			var after *float64
 			var code string
 			var restriction TradingRestriction
-			var rate *RateLimitError
-			var rejected *RequestRejectedError
-			if errors.As(err, &rate) {
+			if rate, ok := errors.AsType[*RateLimitError](err); ok {
 				after = rate.RetryAfter
 				if rate.RateLimit == nil && update != nil {
 					t.Error("rate error lost rate-limit state")
 				}
-			} else if errors.As(err, &rejected) {
+			} else if rejected, isRejected := errors.AsType[*RequestRejectedError](err); isRejected {
 				after, code, restriction = rejected.RetryAfter, rejected.Code, rejected.Restriction
 				if rejected.Status != test.Status {
 					t.Errorf("HTTP status = %d, want %d", rejected.Status, test.Status)
@@ -146,7 +144,7 @@ func TestMalformedJSON(t *testing.T) {
 	if createErr != nil {
 		t.Fatal(createErr)
 	}
-	defer client.Close()
+	defer func() { _ = client.Close() }() // Close only releases local resources and always returns nil.
 	if _, err := client.GetMidpoint(t.Context(), Asset("123")); errorClass(err) != "UnexpectedResponseError" {
 		t.Errorf("malformed JSON error = %v", err)
 	}

@@ -112,7 +112,7 @@ parts=[]
 for cls in classes:
  name=typename(cls.__name__)
  fields=[(k,v) for k,v in cls.model_fields.items() if not v.deprecated]
- parts += ['// '+name+' represents '+(cls.__doc__ or 'a Data API response').splitlines()[0].rstrip('.')+'.','type '+name+' struct {']
+ parts += ['// '+name+' represents '+(cls.__doc__ or 'a Data API response').splitlines()[0].replace('`', '').rstrip('.')+'.','type '+name+' struct {']
  for key,field in fields:parts.append(fieldname(key)+' '+gotype(field.annotation)+' `json:"'+key+'"`')
  parts+=['}','// UnmarshalJSON validates Data API field types and wire aliases.','func (m *'+name+') UnmarshalJSON(raw []byte) error {','type plain '+name,'var result plain','if err:=decodeData(raw,&result,[]dataField{']
  for key,field in fields:parts.append(rule(cls,key,field))

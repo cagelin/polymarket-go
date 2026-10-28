@@ -5,12 +5,12 @@ import subprocess
 
 ROOT=Path(__file__).resolve().parents[1]
 exports=[]
-for directory in ['models','errors','internal/clob','internal/gamma','internal/data','internal/rfq','streams']:
+for directory in ['models','errors','internal/clob','internal/gamma','internal/data','internal/rfq','internal/trading','streams']:
     for path in sorted((ROOT/directory).glob('*.go')):
         if path.name.endswith('_test.go'):continue
         source=path.read_text()
         for name in re.findall(r'^type ([A-Z]\w*)\b',source,re.M):
-            if name.endswith('Client') or (directory=='streams' and name=='Config'):continue
+            if name.endswith('Client') or (directory in ['streams','internal/trading'] and name=='Config'):continue
             exports.append(('type',name,directory))
         for block in re.findall(r'^const \((.*?)^\)',source,re.M|re.S):
             for name in re.findall(r'^\s*([A-Z]\w*)\s',block,re.M):exports.append(('const',name,directory))

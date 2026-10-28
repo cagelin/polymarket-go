@@ -90,15 +90,7 @@ func (c *Client) GetEvent(ctx context.Context, query EventQuery) (*models.Event,
 	paging.QueryOption(params, "include_chat", query.IncludeChat)
 	paging.QueryOption(params, "include_template", query.IncludeTemplate)
 	paging.QueryOption(params, "locale", query.Locale)
-	data, err := c.transport.Request(ctx, c.transport.GammaURL, http.MethodGet, path, paging.QueryValues(params), nil)
-	if err != nil {
-		return nil, err
-	}
-	event, err := codec.DecodeResponse[models.Event](data)
-	if err != nil {
-		return nil, err
-	}
-	return &event, nil
+	return getCatalog[models.Event](ctx, c, path, params)
 }
 
 // ListEvents lazily lists events with query-bound continuation cursors.

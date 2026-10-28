@@ -18,7 +18,7 @@ const (
 	FAK MarketOrderType = "FAK"
 )
 
-// EstimateMarketPriceParams specifies collateral Amount for BUY or Shares for SELL.
+// EstimateMarketPriceParams specifies collateral Amount when buying or Shares when selling.
 type EstimateMarketPriceParams struct {
 	AssetQuery
 	Side      models.OrderSide

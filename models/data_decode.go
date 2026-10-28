@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"math"
+	"slices"
 	"strconv"
 	"strings"
 	"time"
@@ -69,13 +70,7 @@ func decodeData(raw []byte, target any, rules []dataField) error {
 			if err = json.Unmarshal(normalized, &text); err != nil {
 				return err
 			}
-			valid := false
-			for _, allowed := range rule.allowed {
-				if text == allowed {
-					valid = true
-					break
-				}
-			}
+			valid := slices.Contains(rule.allowed, text)
 			if !valid {
 				return fmt.Errorf("invalid %s", rule.name)
 			}
@@ -111,6 +106,43 @@ func dataValue(value json.RawMessage, rule dataField) (json.RawMessage, error) {
 	}
 	fields := map[string]json.RawMessage{rule.name: value}
 	switch rule.kind {
+	case "nonempty_string":
+		text, parseErr := codec.Required[string](fields, rule.name)
+		if parseErr != nil || text == "" {
+			return nil, fmt.Errorf("expected a nonempty string")
+		}
+		return value, nil
+	case "notification_kind":
+		text := string(value)
+		if text == "true" {
+			text = "1"
+		}
+		if text == "false" {
+			text = "0"
+		}
+		number, parseErr := strconv.ParseFloat(text, 64)
+		if parseErr != nil || number != float64(rule.minimum) {
+			return nil, fmt.Errorf("invalid notification type")
+		}
+		return json.Marshal(rule.minimum)
+	case "notification_id":
+		text := string(value)
+		if value[0] == '"' {
+			if err = json.Unmarshal(value, &text); err != nil {
+				return nil, err
+			}
+		}
+		text = codec.ASCIIDigits(text)
+		digits := strings.TrimPrefix(text, "-")
+		if digits == "" || strings.Trim(digits, "0123456789") != "" {
+			return nil, fmt.Errorf("invalid notification ID")
+		}
+		integer, parseErr := strconv.ParseInt(text, 10, 64)
+		if parseErr != nil {
+			return nil, parseErr
+		}
+		return json.Marshal(integer)
+
 	case "string_decimal":
 		amount, parseErr := codec.DecimalField(fields, rule.name)
 		if parseErr != nil {
@@ -198,7 +230,7 @@ func dataValue(value json.RawMessage, rule dataField) (json.RawMessage, error) {
 				result[i].SetScale(min(max(amount.Scale(), -999999), 1000026))
 			}
 			// Preserve Python's preferred quotient exponent when precision allows.
-			scale := min(amount.Scale(), 1000026)
+			scale := min(amount.Scale(), 1000026, 28-result[i].Precision()+result[i].Scale())
 			if result[i].Scale() < scale && scale-result[i].Scale() <= 28-result[i].Precision() {
 				ctx.Quantize(result[i], scale)
 				if err = result[i].Context.Err(); err != nil {
@@ -216,6 +248,28 @@ func dataValue(value json.RawMessage, rule dataField) (json.RawMessage, error) {
 func dataStep(value json.RawMessage, step string) (json.RawMessage, error) {
 	raw := string(value)
 	switch step {
+	case "empty_none":
+		if raw == `""` {
+			return json.RawMessage("null"), nil
+		}
+		return value, nil
+	case "empty_zero":
+		if raw == `""` {
+			return json.RawMessage(`"0"`), nil
+		}
+		return value, nil
+	case "zero_time":
+		if raw == "0" || raw == `"0"` {
+			return json.RawMessage("null"), nil
+		}
+		return value, nil
+	case "trade_status":
+		var status string
+		if err := json.Unmarshal(value, &status); err != nil {
+			return nil, err
+		}
+		return json.Marshal(strings.TrimPrefix(status, "TRADE_STATUS_"))
+
 	case "condition_feed":
 		if err := json.Unmarshal(value, &raw); err != nil {
 			return nil, err
@@ -230,6 +284,10 @@ func dataStep(value json.RawMessage, step string) (json.RawMessage, error) {
 			return nil, err
 		}
 		return json.Marshal(strings.ToUpper(raw))
+	case "price_window":
+		if raw != "60" && raw != "60.0" {
+			return nil, fmt.Errorf("expected TWAP window 60")
+		}
 	case "twap_window":
 		if raw != "30" && raw != "60" && raw != "30.0" && raw != "60.0" {
 			return nil, fmt.Errorf("expected TWAP window 30 or 60")

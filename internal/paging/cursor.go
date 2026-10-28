@@ -43,9 +43,9 @@ func PythonString(value string) string {
 			if r < 32 || r >= 127 {
 				if r > 0xffff {
 					high, low := utf16.EncodeRune(r)
-					fmt.Fprintf(&out, `\u%04x\u%04x`, high, low)
+					_, _ = fmt.Fprintf(&out, `\u%04x\u%04x`, high, low) // Writing to strings.Builder cannot fail.
 				} else {
-					fmt.Fprintf(&out, `\u%04x`, r)
+					_, _ = fmt.Fprintf(&out, `\u%04x`, r) // Writing to strings.Builder cannot fail.
 				}
 			} else {
 				out.WriteRune(r)

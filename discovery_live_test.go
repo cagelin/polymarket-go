@@ -16,7 +16,7 @@ func TestLiveDiscovery(t *testing.T) {
 	if createErr != nil {
 		t.Fatal(createErr)
 	}
-	defer client.Close()
+	defer func() { _ = client.Close() }() // Close only releases local resources and always returns nil.
 	ctx, cancel := context.WithTimeout(t.Context(), 60*time.Second)
 	defer cancel()
 	closed, size, order := false, 2, "volume"

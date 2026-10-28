@@ -64,10 +64,8 @@ func (c *Client) ListRewardMarkets(p ListRewardMarketsParams) (*pagination.Pagin
 	}
 	if p.TagSlugs != nil {
 		values := append(make([]string, 0, len(p.TagSlugs)), p.TagSlugs...)
-		for _, value := range values {
-			if value == "" {
-				return nil, &sdkerrors.UserInputError{Message: "tag_slugs must be nonempty"}
-			}
+		if slices.Contains(values, "") {
+			return nil, &sdkerrors.UserInputError{Message: "tag_slugs must be nonempty"}
 		}
 		query["tag_slug"] = values
 	}

@@ -52,8 +52,10 @@ type EquityPricesSpec struct {
 
 type selection struct {
 	service, topic, symbol string
+	provider               string
 	assets, symbols, types []string
 	custom                 bool
+	all                    bool
 	parentID               *int64
 	parentType             *string
 	window                 int
@@ -67,10 +69,8 @@ func copyValues(values []string, required bool) ([]string, error) {
 	if len(values) == 0 {
 		return nil, invalid("subscription values must be nonempty")
 	}
-	for _, value := range values {
-		if value == "" {
-			return nil, invalid("subscription values must not contain empty strings")
-		}
+	if slices.Contains(values, "") {
+		return nil, invalid("subscription values must not contain empty strings")
 	}
 	return slices.Clone(values), nil
 }
@@ -145,6 +145,10 @@ func (s selection) matches(event models.StreamEvent) bool {
 	}
 	contains := func(asset models.ClobAssetID) bool { return slices.Contains(s.assets, string(asset)) }
 	switch value := event.(type) {
+	case *models.UserOrderEvent:
+		return s.userMatches(value.Payload.ConditionID)
+	case *models.UserTradeEvent:
+		return s.userMatches(value.Payload.ConditionID)
 	case *models.MarketBookEvent:
 		return contains(value.Payload.AssetID)
 	case *models.MarketPriceChangeEvent:
@@ -166,12 +170,7 @@ func (s selection) matches(event models.StreamEvent) bool {
 		if !s.custom {
 			return false
 		}
-		for _, asset := range value.Payload.AssetIDs {
-			if contains(asset) {
-				return true
-			}
-		}
-		return false
+		return slices.ContainsFunc(value.Payload.AssetIDs, contains)
 	case *models.SportsResultEvent:
 		return true
 	case *models.CommentCreatedEvent:
@@ -234,4 +233,26 @@ func normalizeSpecs(specs []Spec) ([]selection, error) {
 		result = append(result, value)
 	}
 	return result, nil
+}
+
+// UserSpec selects account orders and trades. Empty Markets receives all account markets.
+type UserSpec struct{ Markets []string }
+
+func (p UserSpec) normalize() (selection, error) {
+	values := append([]string(nil), p.Markets...)
+	if slices.Contains(values, "") {
+		return selection{}, invalid("market must be nonempty")
+	}
+	return selection{service: "user", topic: "user", assets: values, all: len(values) == 0}, nil
+}
+func (s selection) userMatches(condition models.ConditionID) bool {
+	if s.all {
+		return true
+	}
+	for _, market := range s.assets {
+		if strings.EqualFold(market, string(condition)) {
+			return true
+		}
+	}
+	return false
 }

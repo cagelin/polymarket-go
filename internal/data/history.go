@@ -130,23 +130,23 @@ func parseHistoryPageMetadata(data []byte) (map[string]json.RawMessage, *string,
 	if err != nil {
 		return nil, nil, err
 	}
-	pagination, err := codec.Required[map[string]json.RawMessage](fields, "pagination")
+	pageMetadata, err := codec.Required[map[string]json.RawMessage](fields, "pagination")
 	if err != nil {
 		return nil, nil, err
 	}
-	hasMore, err := codec.Required[bool](pagination, "has_more")
+	hasMore, err := codec.Required[bool](pageMetadata, "has_more")
 	if err != nil {
 		return nil, nil, err
 	}
-	if _, ok := pagination["next_cursor"]; !ok {
+	if _, ok := pageMetadata["next_cursor"]; !ok {
 		return nil, nil, fmt.Errorf("missing next_cursor")
 	}
-	next, err := paging.ServerNextCursor(pagination)
+	next, err := paging.ServerNextCursor(pageMetadata)
 	if err != nil {
 		return nil, nil, err
 	}
 	if hasMore != (next != nil) {
 		return nil, nil, fmt.Errorf("has_more and next_cursor disagree")
 	}
-	return pagination, next, nil
+	return pageMetadata, next, nil
 }

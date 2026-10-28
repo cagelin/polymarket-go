@@ -13,31 +13,31 @@ import (
 // Date is an ISO 8601 calendar date (YYYY-MM-DD).
 type Date string
 
-// ClobRewardID identifies a ClobReward resource.
+// ClobRewardID identifies the ClobReward resource.
 type ClobRewardID string
 
-// EVMAddress identifies a EVMAddress resource.
+// EVMAddress identifies the EVMAddress resource.
 type EVMAddress string
 
-// EventID identifies a Event resource.
+// EventID identifies the Event resource.
 type EventID string
 
-// MarketID identifies a Market resource.
+// MarketID identifies the Market resource.
 type MarketID string
 
-// PositionID identifies a Position resource.
+// PositionID identifies the Position resource.
 type PositionID string
 
-// QuestionID identifies a Question resource.
+// QuestionID identifies the Question resource.
 type QuestionID string
 
-// ResolutionRequestID identifies a ResolutionRequest resource.
+// ResolutionRequestID identifies the ResolutionRequest resource.
 type ResolutionRequestID string
 
-// TagID identifies a Tag resource.
+// TagID identifies the Tag resource.
 type TagID string
 
-// TokenID identifies a Token resource.
+// TokenID identifies the Token resource.
 type TokenID string
 
 // ProtocolVersion describes known market states.

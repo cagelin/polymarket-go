@@ -9,6 +9,7 @@ type serverSubscription struct {
 type serverState struct {
 	assets []string
 	custom bool
+	all    bool
 	topics []serverSubscription
 }
 
@@ -16,6 +17,7 @@ func deriveState(selections []selection) serverState {
 	var state serverState
 	state.assets = []string{}
 	for _, s := range selections {
+		state.all = state.all || s.all
 		for _, asset := range s.assets {
 			if !slices.Contains(state.assets, asset) {
 				state.assets = append(state.assets, asset)
@@ -43,6 +45,9 @@ func deriveState(selections []selection) serverState {
 			}
 		}
 	}
+	if state.all {
+		state.assets = []string{}
+	}
 	slices.Sort(state.assets)
 	return state
 }
@@ -57,10 +62,13 @@ func initialFrames(service string, state serverState) []any {
 	}
 }
 func diffFrames(service string, before, after serverState) []any {
+	if service == "user" {
+		return userDiff(before, after)
+	}
 	var frames []any
 	switch service {
 	case "market":
-		added, removed := []string{}, []string{}
+		var added, removed []string
 		for _, id := range after.assets {
 			if !slices.Contains(before.assets, id) {
 				added = append(added, id)
@@ -81,7 +89,7 @@ func diffFrames(service string, before, after serverState) []any {
 			frames = append(frames, map[string]any{"operation": "unsubscribe", "assets_ids": removed})
 		}
 	case "rtds":
-		added, removed := []serverSubscription{}, []serverSubscription{}
+		var added, removed []serverSubscription
 		for _, s := range after.topics {
 			if !slices.Contains(before.topics, s) {
 				added = append(added, s)
@@ -97,6 +105,41 @@ func diffFrames(service string, before, after serverState) []any {
 		}
 		if len(removed) > 0 {
 			frames = append(frames, map[string]any{"action": "unsubscribe", "subscriptions": removed})
+		}
+	}
+	return frames
+}
+
+func (c *Client) initialFrames(service string, state serverState) []any {
+	if service != "user" {
+		return initialFrames(service, state)
+	}
+	credentials := c.config.Credentials
+	frame := map[string]any{"type": "user", "auth": map[string]string{"apiKey": credentials.Key, "secret": credentials.Secret, "passphrase": credentials.Passphrase}}
+	if !state.all {
+		frame["markets"] = state.assets
+	}
+	return []any{frame}
+}
+func userDiff(before, after serverState) []any {
+	if after.all {
+		if !before.all && len(before.assets) > 0 {
+			return []any{map[string]any{"operation": "unsubscribe", "markets": before.assets}}
+		}
+		return nil
+	}
+	if before.all {
+		if len(after.assets) > 0 {
+			return []any{map[string]any{"operation": "subscribe", "markets": after.assets}}
+		}
+		return nil
+	}
+	frames := diffFrames("market", before, after)
+	for _, value := range frames {
+		if frame, ok := value.(map[string]any); ok {
+			frame["markets"] = frame["assets_ids"]
+			delete(frame, "assets_ids")
+			delete(frame, "custom_feature_enabled")
 		}
 	}
 	return frames
