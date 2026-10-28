@@ -1,0 +1,46 @@
+version: "2"
+linters:
+  default: none
+  enable:
+    - errcheck
+    - govet
+    - revive
+    - staticcheck
+    - bodyclose
+    - ineffassign
+    - errorlint
+    - contextcheck
+    - copyloopvar
+    - gocritic
+    - gosec
+    - misspell
+    - nilerr
+    - nilnesserr
+    - nolintlint
+    - predeclared
+    - unconvert
+    - wastedassign
+  settings:
+    govet:
+      enable:
+        - shadow
+      settings:
+        shadow:
+          strict: true
+    nolintlint:
+      require-explanation: true
+      require-specific: true
+    errcheck:
+      check-type-assertions: true
+      exclude-functions:
+        # SDK Close is idempotent and currently always returns nil.
+        - (*github.com/cagelam/polymarket-go.PublicClient).Close
+  exclusions:
+    generated: strict
+    presets: []
+issues:
+  max-issues-per-linter: 0
+  max-same-issues: 0
+formatters:
+  enable:
+    - goimports

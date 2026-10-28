@@ -1,0 +1,17 @@
+Polymarket Go SDK
+Copyright (c) 2026 cagelam
+
+Portions are derived from Polymarket's official Python SDK:
+  Repository: https://github.com/Polymarket/py-sdk
+  Package: polymarket-client 0.14.0
+  Commit: 7032ed06175b0bbea77b2d9e898bd9f252af2041
+  Copyright (c) 2026 Polymarket
+  License: MIT (preserved in LICENSES/Polymarket-MIT.txt)
+
+Go runtime dependency:
+  github.com/cockroachdb/apd/v3 v3.2.3
+  Copyright 2017 The apd Authors
+  License: Apache-2.0 (preserved in LICENSES/apd-Apache-2.0.txt)
+
+Python packages listed in tests/parity/requirements.txt are test tools only;
+they are not dependencies of the Go runtime. Their own licenses apply.

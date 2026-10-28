@@ -1,0 +1,276 @@
+[
+  {
+    "name": "rate_header",
+    "status": 429,
+    "headers": {
+      "Content-Type": "application/json",
+      "Retry-After": "1.25",
+      "Poly-RateLimit-Remaining": "-1.5",
+      "Poly-RateLimit-Reset": "42",
+      "Poly-RateLimit-Tier": " standard ",
+      "Poly-RateLimit-Warning": "TRUE"
+    },
+    "body": {},
+    "expected": {
+      "error": "RateLimitError",
+      "code": "",
+      "restriction": "",
+      "retry_after": 1.25,
+      "rate_limit": {
+        "remaining": -1.5,
+        "reset": 42.0,
+        "tier": "standard",
+        "warning": true
+      }
+    }
+  },
+  {
+    "name": "rate_body",
+    "status": 429,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "retry_after_seconds": 2.5
+    },
+    "expected": {
+      "error": "RateLimitError",
+      "code": "",
+      "restriction": "",
+      "retry_after": 2.5,
+      "rate_limit": null
+    }
+  },
+  {
+    "name": "rate_invalid_header_fallback",
+    "status": 429,
+    "headers": {
+      "Content-Type": "application/json",
+      "Retry-After": "NaN"
+    },
+    "body": {
+      "retry_after_seconds": 2
+    },
+    "expected": {
+      "error": "RateLimitError",
+      "code": "",
+      "restriction": "",
+      "retry_after": 2.0,
+      "rate_limit": null
+    }
+  },
+  {
+    "name": "rate_negative",
+    "status": 429,
+    "headers": {
+      "Content-Type": "application/json",
+      "Retry-After": "-1"
+    },
+    "body": {
+      "retry_after_seconds": -2
+    },
+    "expected": {
+      "error": "RateLimitError",
+      "code": "",
+      "restriction": "",
+      "retry_after": null,
+      "rate_limit": null
+    }
+  },
+  {
+    "name": "rate_boolean",
+    "status": 429,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "retry_after_seconds": true
+    },
+    "expected": {
+      "error": "RateLimitError",
+      "code": "",
+      "restriction": "",
+      "retry_after": null,
+      "rate_limit": null
+    }
+  },
+  {
+    "name": "rate_string",
+    "status": 429,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "retry_after_seconds": "2"
+    },
+    "expected": {
+      "error": "RateLimitError",
+      "code": "",
+      "restriction": "",
+      "retry_after": null,
+      "rate_limit": null
+    }
+  },
+  {
+    "name": "rate_past_date",
+    "status": 429,
+    "headers": {
+      "Content-Type": "application/json",
+      "Retry-After": "Sun, 06 Nov 1994 08:49:37 GMT"
+    },
+    "body": {},
+    "expected": {
+      "error": "RateLimitError",
+      "code": "",
+      "restriction": "",
+      "retry_after": 0.0,
+      "rate_limit": null
+    }
+  },
+  {
+    "name": "rate_bad_headers",
+    "status": 429,
+    "headers": {
+      "Content-Type": "application/json",
+      "Poly-RateLimit-Remaining": "NaN",
+      "Poly-RateLimit-Reset": "Infinity",
+      "Poly-RateLimit-Warning": "false"
+    },
+    "body": {},
+    "expected": {
+      "error": "RateLimitError",
+      "code": "",
+      "restriction": "",
+      "retry_after": null,
+      "rate_limit": null
+    }
+  },
+  {
+    "name": "restarting",
+    "status": 425,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "error": "restart",
+      "code": "restarting"
+    },
+    "expected": {
+      "error": "RequestRejectedError",
+      "code": "restarting",
+      "restriction": "restarting",
+      "retry_after": null,
+      "rate_limit": null
+    }
+  },
+  {
+    "name": "post_only",
+    "status": 503,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "error": "restricted",
+      "code": "post_only_mode",
+      "retry_after_seconds": 0
+    },
+    "expected": {
+      "error": "RequestRejectedError",
+      "code": "post_only_mode",
+      "restriction": "post_only",
+      "retry_after": 0.0,
+      "rate_limit": null
+    }
+  },
+  {
+    "name": "cancel_only",
+    "status": 503,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "error": "exchange is cancel-only"
+    },
+    "expected": {
+      "error": "RequestRejectedError",
+      "code": "",
+      "restriction": "cancel_only",
+      "retry_after": null,
+      "rate_limit": null
+    }
+  },
+  {
+    "name": "unavailable",
+    "status": 503,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "error": "offline"
+    },
+    "expected": {
+      "error": "RequestRejectedError",
+      "code": "",
+      "restriction": "",
+      "retry_after": null,
+      "rate_limit": null
+    }
+  },
+  {
+    "name": "not_found",
+    "status": 404,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "error": "asset not found",
+      "code": "missing"
+    },
+    "expected": {
+      "error": "RequestRejectedError",
+      "code": "missing",
+      "restriction": "",
+      "retry_after": null,
+      "rate_limit": null
+    }
+  },
+  {
+    "name": "redirect",
+    "status": 302,
+    "headers": {
+      "Content-Type": "application/json",
+      "Location": "https://example.invalid"
+    },
+    "body": {},
+    "expected": {
+      "error": "RequestRejectedError",
+      "code": "",
+      "restriction": "",
+      "retry_after": null,
+      "rate_limit": null
+    }
+  },
+  {
+    "name": "success_headers",
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json",
+      "Poly-RateLimit-Remaining": "99"
+    },
+    "body": {
+      "mid": "0.5"
+    },
+    "expected": {
+      "error": "",
+      "code": "",
+      "restriction": "",
+      "retry_after": null,
+      "rate_limit": {
+        "remaining": 99.0,
+        "reset": null,
+        "tier": "",
+        "warning": false
+      }
+    }
+  }
+]

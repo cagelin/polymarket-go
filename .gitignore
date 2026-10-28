@@ -1,0 +1,7 @@
+.venv-parity/
+.cache/
+*.test
+coverage.out
+/docs/
+.DS_Store
+.idea/

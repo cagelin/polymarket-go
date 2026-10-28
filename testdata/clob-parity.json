@@ -1,0 +1,6532 @@
+{
+  "upstream_version": "0.14.0",
+  "upstream_commit": "7032ed06175b0bbea77b2d9e898bd9f252af2041",
+  "cases": [
+    {
+      "name": "midpoint/valid",
+      "operation": "midpoint",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "mid": "0.5000"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/midpoint",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": "0.5000"
+      }
+    },
+    {
+      "name": "midpoint/null",
+      "operation": "midpoint",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": null,
+      "request": {
+        "method": "GET",
+        "path": "/midpoint",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "midpoint/wrong_shape",
+      "operation": "midpoint",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": [
+        false
+      ],
+      "request": {
+        "method": "GET",
+        "path": "/midpoint",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "midpoints/valid",
+      "operation": "midpoints",
+      "input": {
+        "asset_ids": [
+          "123",
+          "456"
+        ]
+      },
+      "response": {
+        "123": "0.5000"
+      },
+      "request": {
+        "method": "POST",
+        "path": "/midpoints",
+        "body": [
+          {
+            "token_id": "123"
+          },
+          {
+            "token_id": "456"
+          }
+        ]
+      },
+      "expected": {
+        "value": {
+          "123": "0.5000"
+        }
+      }
+    },
+    {
+      "name": "midpoints/null",
+      "operation": "midpoints",
+      "input": {
+        "asset_ids": [
+          "123",
+          "456"
+        ]
+      },
+      "response": null,
+      "request": {
+        "method": "POST",
+        "path": "/midpoints",
+        "body": [
+          {
+            "token_id": "123"
+          },
+          {
+            "token_id": "456"
+          }
+        ]
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "midpoints/wrong_shape",
+      "operation": "midpoints",
+      "input": {
+        "asset_ids": [
+          "123",
+          "456"
+        ]
+      },
+      "response": [
+        false
+      ],
+      "request": {
+        "method": "POST",
+        "path": "/midpoints",
+        "body": [
+          {
+            "token_id": "123"
+          },
+          {
+            "token_id": "456"
+          }
+        ]
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "price/valid",
+      "operation": "price",
+      "input": {
+        "asset_id": "123",
+        "side": "BUY"
+      },
+      "response": {
+        "price": "0.4"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/price",
+        "query": {
+          "token_id": "123",
+          "side": "BUY"
+        }
+      },
+      "expected": {
+        "value": "0.4"
+      }
+    },
+    {
+      "name": "price/null",
+      "operation": "price",
+      "input": {
+        "asset_id": "123",
+        "side": "BUY"
+      },
+      "response": null,
+      "request": {
+        "method": "GET",
+        "path": "/price",
+        "query": {
+          "token_id": "123",
+          "side": "BUY"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "price/wrong_shape",
+      "operation": "price",
+      "input": {
+        "asset_id": "123",
+        "side": "BUY"
+      },
+      "response": [
+        false
+      ],
+      "request": {
+        "method": "GET",
+        "path": "/price",
+        "query": {
+          "token_id": "123",
+          "side": "BUY"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "prices/valid",
+      "operation": "prices",
+      "input": {
+        "requests": [
+          {
+            "asset_id": "123",
+            "side": "BUY"
+          },
+          {
+            "asset_id": "456",
+            "side": "SELL"
+          }
+        ]
+      },
+      "response": {
+        "123": {
+          "BUY": "0.4",
+          "SELL": "0.6"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "path": "/prices",
+        "body": [
+          {
+            "token_id": "123",
+            "side": "BUY"
+          },
+          {
+            "token_id": "456",
+            "side": "SELL"
+          }
+        ]
+      },
+      "expected": {
+        "value": {
+          "123": {
+            "BUY": "0.4",
+            "SELL": "0.6"
+          }
+        }
+      }
+    },
+    {
+      "name": "prices/null",
+      "operation": "prices",
+      "input": {
+        "requests": [
+          {
+            "asset_id": "123",
+            "side": "BUY"
+          },
+          {
+            "asset_id": "456",
+            "side": "SELL"
+          }
+        ]
+      },
+      "response": null,
+      "request": {
+        "method": "POST",
+        "path": "/prices",
+        "body": [
+          {
+            "token_id": "123",
+            "side": "BUY"
+          },
+          {
+            "token_id": "456",
+            "side": "SELL"
+          }
+        ]
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "prices/wrong_shape",
+      "operation": "prices",
+      "input": {
+        "requests": [
+          {
+            "asset_id": "123",
+            "side": "BUY"
+          },
+          {
+            "asset_id": "456",
+            "side": "SELL"
+          }
+        ]
+      },
+      "response": [
+        false
+      ],
+      "request": {
+        "method": "POST",
+        "path": "/prices",
+        "body": [
+          {
+            "token_id": "123",
+            "side": "BUY"
+          },
+          {
+            "token_id": "456",
+            "side": "SELL"
+          }
+        ]
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "order_book/valid",
+      "operation": "order_book",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": {
+          "condition_id": "condition",
+          "asset_id": "123",
+          "timestamp": "2024-07-03T09:46:40.123Z",
+          "bids": [
+            {
+              "price": "0.3",
+              "size": "8"
+            },
+            {
+              "price": "0.4",
+              "size": "2"
+            }
+          ],
+          "asks": [
+            {
+              "price": "0.7",
+              "size": "8"
+            },
+            {
+              "price": "0.6",
+              "size": "2"
+            }
+          ],
+          "min_order_size": "5",
+          "tick_size": "0.01",
+          "neg_risk": false,
+          "last_trade_price": null,
+          "hash": "book-hash"
+        }
+      }
+    },
+    {
+      "name": "order_book/null",
+      "operation": "order_book",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": null,
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "order_book/wrong_shape",
+      "operation": "order_book",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": [
+        false
+      ],
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "order_books/valid",
+      "operation": "order_books",
+      "input": {
+        "asset_ids": [
+          "123",
+          "456"
+        ]
+      },
+      "response": [
+        {
+          "market": "condition",
+          "asset_id": "123",
+          "timestamp": "1720000000123",
+          "bids": [
+            {
+              "price": "0.3",
+              "size": "8"
+            },
+            {
+              "price": "0.4",
+              "size": "2"
+            }
+          ],
+          "asks": [
+            {
+              "price": "0.7",
+              "size": "8"
+            },
+            {
+              "price": "0.6",
+              "size": "2"
+            }
+          ],
+          "min_order_size": "5",
+          "tick_size": "0.01",
+          "neg_risk": false,
+          "last_trade_price": "",
+          "hash": "book-hash"
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "path": "/books",
+        "body": [
+          {
+            "token_id": "123"
+          },
+          {
+            "token_id": "456"
+          }
+        ]
+      },
+      "expected": {
+        "value": [
+          {
+            "condition_id": "condition",
+            "asset_id": "123",
+            "timestamp": "2024-07-03T09:46:40.123Z",
+            "bids": [
+              {
+                "price": "0.3",
+                "size": "8"
+              },
+              {
+                "price": "0.4",
+                "size": "2"
+              }
+            ],
+            "asks": [
+              {
+                "price": "0.7",
+                "size": "8"
+              },
+              {
+                "price": "0.6",
+                "size": "2"
+              }
+            ],
+            "min_order_size": "5",
+            "tick_size": "0.01",
+            "neg_risk": false,
+            "last_trade_price": null,
+            "hash": "book-hash"
+          }
+        ]
+      }
+    },
+    {
+      "name": "order_books/null",
+      "operation": "order_books",
+      "input": {
+        "asset_ids": [
+          "123",
+          "456"
+        ]
+      },
+      "response": null,
+      "request": {
+        "method": "POST",
+        "path": "/books",
+        "body": [
+          {
+            "token_id": "123"
+          },
+          {
+            "token_id": "456"
+          }
+        ]
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "order_books/wrong_shape",
+      "operation": "order_books",
+      "input": {
+        "asset_ids": [
+          "123",
+          "456"
+        ]
+      },
+      "response": {},
+      "request": {
+        "method": "POST",
+        "path": "/books",
+        "body": [
+          {
+            "token_id": "123"
+          },
+          {
+            "token_id": "456"
+          }
+        ]
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "spread/valid",
+      "operation": "spread",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "spread": "0.2"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/spread",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": "0.2"
+      }
+    },
+    {
+      "name": "spread/null",
+      "operation": "spread",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": null,
+      "request": {
+        "method": "GET",
+        "path": "/spread",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "spread/wrong_shape",
+      "operation": "spread",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": [
+        false
+      ],
+      "request": {
+        "method": "GET",
+        "path": "/spread",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "spreads/valid",
+      "operation": "spreads",
+      "input": {
+        "asset_ids": [
+          "123",
+          "456"
+        ]
+      },
+      "response": {
+        "123": "0.2"
+      },
+      "request": {
+        "method": "POST",
+        "path": "/spreads",
+        "body": [
+          {
+            "token_id": "123"
+          },
+          {
+            "token_id": "456"
+          }
+        ]
+      },
+      "expected": {
+        "value": {
+          "123": "0.2"
+        }
+      }
+    },
+    {
+      "name": "spreads/null",
+      "operation": "spreads",
+      "input": {
+        "asset_ids": [
+          "123",
+          "456"
+        ]
+      },
+      "response": null,
+      "request": {
+        "method": "POST",
+        "path": "/spreads",
+        "body": [
+          {
+            "token_id": "123"
+          },
+          {
+            "token_id": "456"
+          }
+        ]
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "spreads/wrong_shape",
+      "operation": "spreads",
+      "input": {
+        "asset_ids": [
+          "123",
+          "456"
+        ]
+      },
+      "response": [
+        false
+      ],
+      "request": {
+        "method": "POST",
+        "path": "/spreads",
+        "body": [
+          {
+            "token_id": "123"
+          },
+          {
+            "token_id": "456"
+          }
+        ]
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "last_trade_price/valid",
+      "operation": "last_trade_price",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "price": "0.4",
+        "side": "BUY"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/last-trade-price",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": {
+          "price": "0.4",
+          "side": "BUY"
+        }
+      }
+    },
+    {
+      "name": "last_trade_price/null",
+      "operation": "last_trade_price",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": null,
+      "request": {
+        "method": "GET",
+        "path": "/last-trade-price",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "last_trade_price/wrong_shape",
+      "operation": "last_trade_price",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": [
+        false
+      ],
+      "request": {
+        "method": "GET",
+        "path": "/last-trade-price",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "last_trade_prices/valid",
+      "operation": "last_trade_prices",
+      "input": {
+        "asset_ids": [
+          "123",
+          "456"
+        ]
+      },
+      "response": [
+        {
+          "token_id": "123",
+          "price": "0.4",
+          "side": "SELL"
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "path": "/last-trades-prices",
+        "body": [
+          {
+            "token_id": "123"
+          },
+          {
+            "token_id": "456"
+          }
+        ]
+      },
+      "expected": {
+        "value": [
+          {
+            "asset_id": "123",
+            "price": "0.4",
+            "side": "SELL"
+          }
+        ]
+      }
+    },
+    {
+      "name": "last_trade_prices/null",
+      "operation": "last_trade_prices",
+      "input": {
+        "asset_ids": [
+          "123",
+          "456"
+        ]
+      },
+      "response": null,
+      "request": {
+        "method": "POST",
+        "path": "/last-trades-prices",
+        "body": [
+          {
+            "token_id": "123"
+          },
+          {
+            "token_id": "456"
+          }
+        ]
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "last_trade_prices/wrong_shape",
+      "operation": "last_trade_prices",
+      "input": {
+        "asset_ids": [
+          "123",
+          "456"
+        ]
+      },
+      "response": {},
+      "request": {
+        "method": "POST",
+        "path": "/last-trades-prices",
+        "body": [
+          {
+            "token_id": "123"
+          },
+          {
+            "token_id": "456"
+          }
+        ]
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "decimal/None",
+      "operation": "midpoint",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "mid": null
+      },
+      "request": {
+        "method": "GET",
+        "path": "/midpoint",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "decimal/True",
+      "operation": "midpoint",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "mid": true
+      },
+      "request": {
+        "method": "GET",
+        "path": "/midpoint",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "decimal/0.5",
+      "operation": "midpoint",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "mid": 0.5
+      },
+      "request": {
+        "method": "GET",
+        "path": "/midpoint",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "decimal/1",
+      "operation": "midpoint",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "mid": 1
+      },
+      "request": {
+        "method": "GET",
+        "path": "/midpoint",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "decimal/''",
+      "operation": "midpoint",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "mid": ""
+      },
+      "request": {
+        "method": "GET",
+        "path": "/midpoint",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "decimal/'NaN'",
+      "operation": "midpoint",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "mid": "NaN"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/midpoint",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "decimal/'Infinity'",
+      "operation": "midpoint",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "mid": "Infinity"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/midpoint",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "decimal/'-Infinity'",
+      "operation": "midpoint",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "mid": "-Infinity"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/midpoint",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "decimal/'garbage'",
+      "operation": "midpoint",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "mid": "garbage"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/midpoint",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "decimal/' 0.1230 '",
+      "operation": "midpoint",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "mid": " 0.1230 "
+      },
+      "request": {
+        "method": "GET",
+        "path": "/midpoint",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": "0.1230"
+      }
+    },
+    {
+      "name": "decimal/'1_0'",
+      "operation": "midpoint",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "mid": "1_0"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/midpoint",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": "10"
+      }
+    },
+    {
+      "name": "decimal/'١.٢'",
+      "operation": "midpoint",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "mid": "١.٢"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/midpoint",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": "1.2"
+      }
+    },
+    {
+      "name": "decimal/'1e-20'",
+      "operation": "midpoint",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "mid": "1e-20"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/midpoint",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": "1E-20"
+      }
+    },
+    {
+      "name": "decimal/'1E+30'",
+      "operation": "midpoint",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "mid": "1E+30"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/midpoint",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": "1E+30"
+      }
+    },
+    {
+      "name": "decimal/'-0.00'",
+      "operation": "midpoint",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "mid": "-0.00"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/midpoint",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": "-0.00"
+      }
+    },
+    {
+      "name": "decimal/'0.123456789012345678901234567890123'",
+      "operation": "midpoint",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "mid": "0.123456789012345678901234567890123"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/midpoint",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": "0.123456789012345678901234567890123"
+      }
+    },
+    {
+      "name": "midpoint/fields/0",
+      "operation": "midpoint",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {},
+      "request": {
+        "method": "GET",
+        "path": "/midpoint",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "midpoint/fields/2",
+      "operation": "midpoint",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "mid": "0.5",
+        "future_field": true
+      },
+      "request": {
+        "method": "GET",
+        "path": "/midpoint",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": "0.5"
+      }
+    },
+    {
+      "name": "input/{}",
+      "operation": "midpoint",
+      "input": {},
+      "response": {
+        "mid": "0.5"
+      },
+      "expected": {
+        "error": "UserInputError"
+      }
+    },
+    {
+      "name": "input/{'asset_id': ''}",
+      "operation": "midpoint",
+      "input": {
+        "asset_id": ""
+      },
+      "response": {
+        "mid": "0.5"
+      },
+      "expected": {
+        "error": "UserInputError"
+      }
+    },
+    {
+      "name": "input/{'asset_id': ' '}",
+      "operation": "midpoint",
+      "input": {
+        "asset_id": " "
+      },
+      "response": {
+        "mid": "0.5"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/midpoint",
+        "query": {
+          "token_id": " "
+        }
+      },
+      "expected": {
+        "value": "0.5"
+      }
+    },
+    {
+      "name": "input/{'asset_id': 'x&side=SELL'}",
+      "operation": "midpoint",
+      "input": {
+        "asset_id": "x&side=SELL"
+      },
+      "response": {
+        "mid": "0.5"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/midpoint",
+        "query": {
+          "token_id": "x&side=SELL"
+        }
+      },
+      "expected": {
+        "value": "0.5"
+      }
+    },
+    {
+      "name": "batch_input/{}",
+      "operation": "midpoints",
+      "input": {},
+      "response": {},
+      "expected": {
+        "error": "UserInputError"
+      }
+    },
+    {
+      "name": "batch_input/{'asset_ids': []}",
+      "operation": "midpoints",
+      "input": {
+        "asset_ids": []
+      },
+      "response": {},
+      "expected": {
+        "error": "UserInputError"
+      }
+    },
+    {
+      "name": "batch_input/{'asset_ids': ['']}",
+      "operation": "midpoints",
+      "input": {
+        "asset_ids": [
+          ""
+        ]
+      },
+      "response": {},
+      "expected": {
+        "error": "UserInputError"
+      }
+    },
+    {
+      "name": "batch_input/{'asset_ids': ['123', '123']}",
+      "operation": "midpoints",
+      "input": {
+        "asset_ids": [
+          "123",
+          "123"
+        ]
+      },
+      "response": {},
+      "request": {
+        "method": "POST",
+        "path": "/midpoints",
+        "body": [
+          {
+            "token_id": "123"
+          },
+          {
+            "token_id": "123"
+          }
+        ]
+      },
+      "expected": {
+        "value": {}
+      }
+    },
+    {
+      "name": "price/side/",
+      "operation": "price",
+      "input": {
+        "asset_id": "123",
+        "side": ""
+      },
+      "response": {
+        "price": "0.5"
+      },
+      "expected": {
+        "error": "UserInputError"
+      }
+    },
+    {
+      "name": "price/side/buy",
+      "operation": "price",
+      "input": {
+        "asset_id": "123",
+        "side": "buy"
+      },
+      "response": {
+        "price": "0.5"
+      },
+      "expected": {
+        "error": "UserInputError"
+      }
+    },
+    {
+      "name": "price/side/SELL",
+      "operation": "price",
+      "input": {
+        "asset_id": "123",
+        "side": "SELL"
+      },
+      "response": {
+        "price": "0.5"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/price",
+        "query": {
+          "token_id": "123",
+          "side": "SELL"
+        }
+      },
+      "expected": {
+        "value": "0.5"
+      }
+    },
+    {
+      "name": "price/side/UNKNOWN",
+      "operation": "price",
+      "input": {
+        "asset_id": "123",
+        "side": "UNKNOWN"
+      },
+      "response": {
+        "price": "0.5"
+      },
+      "expected": {
+        "error": "UserInputError"
+      }
+    },
+    {
+      "name": "prices/input/[]",
+      "operation": "prices",
+      "input": {
+        "requests": []
+      },
+      "response": {},
+      "expected": {
+        "error": "UserInputError"
+      }
+    },
+    {
+      "name": "prices/input/[{'asset_id': '', 'side': 'BUY'}]",
+      "operation": "prices",
+      "input": {
+        "requests": [
+          {
+            "asset_id": "",
+            "side": "BUY"
+          }
+        ]
+      },
+      "response": {},
+      "expected": {
+        "error": "UserInputError"
+      }
+    },
+    {
+      "name": "prices/input/[{'asset_id': '123', 'side': 'bad'}]",
+      "operation": "prices",
+      "input": {
+        "requests": [
+          {
+            "asset_id": "123",
+            "side": "bad"
+          }
+        ]
+      },
+      "response": {},
+      "expected": {
+        "error": "UserInputError"
+      }
+    },
+    {
+      "name": "prices/bad_response_side",
+      "operation": "prices",
+      "input": {
+        "requests": [
+          {
+            "asset_id": "123",
+            "side": "BUY"
+          }
+        ]
+      },
+      "response": {
+        "123": {
+          "bad": "0.2"
+        }
+      },
+      "request": {
+        "method": "POST",
+        "path": "/prices",
+        "body": [
+          {
+            "token_id": "123",
+            "side": "BUY"
+          }
+        ]
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "book/missing/market",
+      "operation": "order_book",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "book/missing/asset_id",
+      "operation": "order_book",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "market": "condition",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "book/missing/timestamp",
+      "operation": "order_book",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": {
+          "condition_id": "condition",
+          "asset_id": "123",
+          "timestamp": null,
+          "bids": [
+            {
+              "price": "0.3",
+              "size": "8"
+            },
+            {
+              "price": "0.4",
+              "size": "2"
+            }
+          ],
+          "asks": [
+            {
+              "price": "0.7",
+              "size": "8"
+            },
+            {
+              "price": "0.6",
+              "size": "2"
+            }
+          ],
+          "min_order_size": "5",
+          "tick_size": "0.01",
+          "neg_risk": false,
+          "last_trade_price": null,
+          "hash": "book-hash"
+        }
+      }
+    },
+    {
+      "name": "book/missing/bids",
+      "operation": "order_book",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "book/missing/asks",
+      "operation": "order_book",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "book/missing/min_order_size",
+      "operation": "order_book",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "book/missing/tick_size",
+      "operation": "order_book",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "book/missing/neg_risk",
+      "operation": "order_book",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "book/missing/last_trade_price",
+      "operation": "order_book",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": {
+          "condition_id": "condition",
+          "asset_id": "123",
+          "timestamp": "2024-07-03T09:46:40.123Z",
+          "bids": [
+            {
+              "price": "0.3",
+              "size": "8"
+            },
+            {
+              "price": "0.4",
+              "size": "2"
+            }
+          ],
+          "asks": [
+            {
+              "price": "0.7",
+              "size": "8"
+            },
+            {
+              "price": "0.6",
+              "size": "2"
+            }
+          ],
+          "min_order_size": "5",
+          "tick_size": "0.01",
+          "neg_risk": false,
+          "last_trade_price": null,
+          "hash": "book-hash"
+        }
+      }
+    },
+    {
+      "name": "book/missing/hash",
+      "operation": "order_book",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": ""
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "book/timestamp/None",
+      "operation": "order_book",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": null,
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": {
+          "condition_id": "condition",
+          "asset_id": "123",
+          "timestamp": null,
+          "bids": [
+            {
+              "price": "0.3",
+              "size": "8"
+            },
+            {
+              "price": "0.4",
+              "size": "2"
+            }
+          ],
+          "asks": [
+            {
+              "price": "0.7",
+              "size": "8"
+            },
+            {
+              "price": "0.6",
+              "size": "2"
+            }
+          ],
+          "min_order_size": "5",
+          "tick_size": "0.01",
+          "neg_risk": false,
+          "last_trade_price": null,
+          "hash": "book-hash"
+        }
+      }
+    },
+    {
+      "name": "book/timestamp/''",
+      "operation": "order_book",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": {
+          "condition_id": "condition",
+          "asset_id": "123",
+          "timestamp": null,
+          "bids": [
+            {
+              "price": "0.3",
+              "size": "8"
+            },
+            {
+              "price": "0.4",
+              "size": "2"
+            }
+          ],
+          "asks": [
+            {
+              "price": "0.7",
+              "size": "8"
+            },
+            {
+              "price": "0.6",
+              "size": "2"
+            }
+          ],
+          "min_order_size": "5",
+          "tick_size": "0.01",
+          "neg_risk": false,
+          "last_trade_price": null,
+          "hash": "book-hash"
+        }
+      }
+    },
+    {
+      "name": "book/timestamp/'0'",
+      "operation": "order_book",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "0",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": {
+          "condition_id": "condition",
+          "asset_id": "123",
+          "timestamp": "1970-01-01T00:00:00Z",
+          "bids": [
+            {
+              "price": "0.3",
+              "size": "8"
+            },
+            {
+              "price": "0.4",
+              "size": "2"
+            }
+          ],
+          "asks": [
+            {
+              "price": "0.7",
+              "size": "8"
+            },
+            {
+              "price": "0.6",
+              "size": "2"
+            }
+          ],
+          "min_order_size": "5",
+          "tick_size": "0.01",
+          "neg_risk": false,
+          "last_trade_price": null,
+          "hash": "book-hash"
+        }
+      }
+    },
+    {
+      "name": "book/timestamp/'١٢٣'",
+      "operation": "order_book",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "١٢٣",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": {
+          "condition_id": "condition",
+          "asset_id": "123",
+          "timestamp": "1970-01-01T00:00:00.123Z",
+          "bids": [
+            {
+              "price": "0.3",
+              "size": "8"
+            },
+            {
+              "price": "0.4",
+              "size": "2"
+            }
+          ],
+          "asks": [
+            {
+              "price": "0.7",
+              "size": "8"
+            },
+            {
+              "price": "0.6",
+              "size": "2"
+            }
+          ],
+          "min_order_size": "5",
+          "tick_size": "0.01",
+          "neg_risk": false,
+          "last_trade_price": null,
+          "hash": "book-hash"
+        }
+      }
+    },
+    {
+      "name": "book/timestamp/'253402300799999'",
+      "operation": "order_book",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "253402300799999",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": {
+          "condition_id": "condition",
+          "asset_id": "123",
+          "timestamp": "9999-12-31T23:59:59.998993Z",
+          "bids": [
+            {
+              "price": "0.3",
+              "size": "8"
+            },
+            {
+              "price": "0.4",
+              "size": "2"
+            }
+          ],
+          "asks": [
+            {
+              "price": "0.7",
+              "size": "8"
+            },
+            {
+              "price": "0.6",
+              "size": "2"
+            }
+          ],
+          "min_order_size": "5",
+          "tick_size": "0.01",
+          "neg_risk": false,
+          "last_trade_price": null,
+          "hash": "book-hash"
+        }
+      }
+    },
+    {
+      "name": "book/timestamp/'-1'",
+      "operation": "order_book",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "-1",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "book/timestamp/'+1'",
+      "operation": "order_book",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "+1",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "book/timestamp/' 1 '",
+      "operation": "order_book",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": " 1 ",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "book/timestamp/1720000000123",
+      "operation": "order_book",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": 1720000000123,
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "book/timestamp/'invalid'",
+      "operation": "order_book",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "invalid",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "book/timestamp/'999999999999999999999'",
+      "operation": "order_book",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "999999999999999999999",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "book/neg_risk/'yes'",
+      "operation": "order_book",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": "yes",
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": {
+          "condition_id": "condition",
+          "asset_id": "123",
+          "timestamp": "2024-07-03T09:46:40.123Z",
+          "bids": [
+            {
+              "price": "0.3",
+              "size": "8"
+            },
+            {
+              "price": "0.4",
+              "size": "2"
+            }
+          ],
+          "asks": [
+            {
+              "price": "0.7",
+              "size": "8"
+            },
+            {
+              "price": "0.6",
+              "size": "2"
+            }
+          ],
+          "min_order_size": "5",
+          "tick_size": "0.01",
+          "neg_risk": true,
+          "last_trade_price": null,
+          "hash": "book-hash"
+        }
+      }
+    },
+    {
+      "name": "book/neg_risk/'0'",
+      "operation": "order_book",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": "0",
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": {
+          "condition_id": "condition",
+          "asset_id": "123",
+          "timestamp": "2024-07-03T09:46:40.123Z",
+          "bids": [
+            {
+              "price": "0.3",
+              "size": "8"
+            },
+            {
+              "price": "0.4",
+              "size": "2"
+            }
+          ],
+          "asks": [
+            {
+              "price": "0.7",
+              "size": "8"
+            },
+            {
+              "price": "0.6",
+              "size": "2"
+            }
+          ],
+          "min_order_size": "5",
+          "tick_size": "0.01",
+          "neg_risk": false,
+          "last_trade_price": null,
+          "hash": "book-hash"
+        }
+      }
+    },
+    {
+      "name": "book/neg_risk/'false'",
+      "operation": "order_book",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": "false",
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": {
+          "condition_id": "condition",
+          "asset_id": "123",
+          "timestamp": "2024-07-03T09:46:40.123Z",
+          "bids": [
+            {
+              "price": "0.3",
+              "size": "8"
+            },
+            {
+              "price": "0.4",
+              "size": "2"
+            }
+          ],
+          "asks": [
+            {
+              "price": "0.7",
+              "size": "8"
+            },
+            {
+              "price": "0.6",
+              "size": "2"
+            }
+          ],
+          "min_order_size": "5",
+          "tick_size": "0.01",
+          "neg_risk": false,
+          "last_trade_price": null,
+          "hash": "book-hash"
+        }
+      }
+    },
+    {
+      "name": "book/neg_risk/1",
+      "operation": "order_book",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": 1,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": {
+          "condition_id": "condition",
+          "asset_id": "123",
+          "timestamp": "2024-07-03T09:46:40.123Z",
+          "bids": [
+            {
+              "price": "0.3",
+              "size": "8"
+            },
+            {
+              "price": "0.4",
+              "size": "2"
+            }
+          ],
+          "asks": [
+            {
+              "price": "0.7",
+              "size": "8"
+            },
+            {
+              "price": "0.6",
+              "size": "2"
+            }
+          ],
+          "min_order_size": "5",
+          "tick_size": "0.01",
+          "neg_risk": true,
+          "last_trade_price": null,
+          "hash": "book-hash"
+        }
+      }
+    },
+    {
+      "name": "book/neg_risk/2",
+      "operation": "order_book",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": 2,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "book/neg_risk/None",
+      "operation": "order_book",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": null,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "book/bids/None",
+      "operation": "order_book",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": null,
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "book/bids/[]",
+      "operation": "order_book",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": {
+          "condition_id": "condition",
+          "asset_id": "123",
+          "timestamp": "2024-07-03T09:46:40.123Z",
+          "bids": [],
+          "asks": [
+            {
+              "price": "0.7",
+              "size": "8"
+            },
+            {
+              "price": "0.6",
+              "size": "2"
+            }
+          ],
+          "min_order_size": "5",
+          "tick_size": "0.01",
+          "neg_risk": false,
+          "last_trade_price": null,
+          "hash": "book-hash"
+        }
+      }
+    },
+    {
+      "name": "book/bids/[{}]",
+      "operation": "order_book",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {}
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "book/bids/[None]",
+      "operation": "order_book",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          null
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "book/asks/None",
+      "operation": "order_book",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": null,
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "book/last_trade_price/None",
+      "operation": "order_book",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": null,
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": {
+          "condition_id": "condition",
+          "asset_id": "123",
+          "timestamp": "2024-07-03T09:46:40.123Z",
+          "bids": [
+            {
+              "price": "0.3",
+              "size": "8"
+            },
+            {
+              "price": "0.4",
+              "size": "2"
+            }
+          ],
+          "asks": [
+            {
+              "price": "0.7",
+              "size": "8"
+            },
+            {
+              "price": "0.6",
+              "size": "2"
+            }
+          ],
+          "min_order_size": "5",
+          "tick_size": "0.01",
+          "neg_risk": false,
+          "last_trade_price": null,
+          "hash": "book-hash"
+        }
+      }
+    },
+    {
+      "name": "book/last_trade_price/'0'",
+      "operation": "order_book",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "0",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": {
+          "condition_id": "condition",
+          "asset_id": "123",
+          "timestamp": "2024-07-03T09:46:40.123Z",
+          "bids": [
+            {
+              "price": "0.3",
+              "size": "8"
+            },
+            {
+              "price": "0.4",
+              "size": "2"
+            }
+          ],
+          "asks": [
+            {
+              "price": "0.7",
+              "size": "8"
+            },
+            {
+              "price": "0.6",
+              "size": "2"
+            }
+          ],
+          "min_order_size": "5",
+          "tick_size": "0.01",
+          "neg_risk": false,
+          "last_trade_price": "0",
+          "hash": "book-hash"
+        }
+      }
+    },
+    {
+      "name": "book/last_trade_price/0.4",
+      "operation": "order_book",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": 0.4,
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "book/last_trade_price/'NaN'",
+      "operation": "order_book",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "NaN",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "book/tick_size/None",
+      "operation": "order_book",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": null,
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "book/tick_size/0.01",
+      "operation": "order_book",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": 0.01,
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "book/tick_size/'Infinity'",
+      "operation": "order_book",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "Infinity",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "book/token_alias",
+      "operation": "order_book",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "market": "condition",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash",
+        "token_id": "123"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": {
+          "condition_id": "condition",
+          "asset_id": "123",
+          "timestamp": "2024-07-03T09:46:40.123Z",
+          "bids": [
+            {
+              "price": "0.3",
+              "size": "8"
+            },
+            {
+              "price": "0.4",
+              "size": "2"
+            }
+          ],
+          "asks": [
+            {
+              "price": "0.7",
+              "size": "8"
+            },
+            {
+              "price": "0.6",
+              "size": "2"
+            }
+          ],
+          "min_order_size": "5",
+          "tick_size": "0.01",
+          "neg_risk": false,
+          "last_trade_price": null,
+          "hash": "book-hash"
+        }
+      }
+    },
+    {
+      "name": "book/canonical_precedes_alias",
+      "operation": "order_book",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash",
+        "token_id": "999",
+        "condition_id": "ignored"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": {
+          "condition_id": "condition",
+          "asset_id": "123",
+          "timestamp": "2024-07-03T09:46:40.123Z",
+          "bids": [
+            {
+              "price": "0.3",
+              "size": "8"
+            },
+            {
+              "price": "0.4",
+              "size": "2"
+            }
+          ],
+          "asks": [
+            {
+              "price": "0.7",
+              "size": "8"
+            },
+            {
+              "price": "0.6",
+              "size": "2"
+            }
+          ],
+          "min_order_size": "5",
+          "tick_size": "0.01",
+          "neg_risk": false,
+          "last_trade_price": null,
+          "hash": "book-hash"
+        }
+      }
+    },
+    {
+      "name": "last_trade/{'price': '0', 'side': ''}",
+      "operation": "last_trade_price",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "price": "0",
+        "side": ""
+      },
+      "request": {
+        "method": "GET",
+        "path": "/last-trade-price",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": null
+      }
+    },
+    {
+      "name": "last_trade/{'price': 'bad', 'side': ''}",
+      "operation": "last_trade_price",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "price": "bad",
+        "side": ""
+      },
+      "request": {
+        "method": "GET",
+        "path": "/last-trade-price",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "last_trade/{'price': '0.4', 'side': 'bad'}",
+      "operation": "last_trade_price",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "price": "0.4",
+        "side": "bad"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/last-trade-price",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "last_trade/{'price': '0.4'}",
+      "operation": "last_trade_price",
+      "input": {
+        "asset_id": "123"
+      },
+      "response": {
+        "price": "0.4"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/last-trade-price",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "last_trades/empty",
+      "operation": "last_trade_prices",
+      "input": {
+        "asset_ids": [
+          "123"
+        ]
+      },
+      "response": [],
+      "request": {
+        "method": "POST",
+        "path": "/last-trades-prices",
+        "body": [
+          {
+            "token_id": "123"
+          }
+        ]
+      },
+      "expected": {
+        "value": []
+      }
+    },
+    {
+      "name": "books/null_item",
+      "operation": "order_books",
+      "input": {
+        "asset_ids": [
+          "123"
+        ]
+      },
+      "response": [
+        null
+      ],
+      "request": {
+        "method": "POST",
+        "path": "/books",
+        "body": [
+          {
+            "token_id": "123"
+          }
+        ]
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "estimate/BUY/FOK/0.1",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "BUY",
+        "order_type": "FOK",
+        "amount": "0.1"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": "0.6"
+      }
+    },
+    {
+      "name": "estimate/BUY/FOK/1.2",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "BUY",
+        "order_type": "FOK",
+        "amount": "1.2"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": "0.6"
+      }
+    },
+    {
+      "name": "estimate/BUY/FOK/1.2000000000000000000000000001",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "BUY",
+        "order_type": "FOK",
+        "amount": "1.2000000000000000000000000001"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": "0.7"
+      }
+    },
+    {
+      "name": "estimate/BUY/FOK/2",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "BUY",
+        "order_type": "FOK",
+        "amount": "2"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": "0.7"
+      }
+    },
+    {
+      "name": "estimate/BUY/FOK/3",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "BUY",
+        "order_type": "FOK",
+        "amount": "3"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": "0.7"
+      }
+    },
+    {
+      "name": "estimate/BUY/FOK/100",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "BUY",
+        "order_type": "FOK",
+        "amount": "100"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "InsufficientLiquidityError"
+      }
+    },
+    {
+      "name": "estimate/BUY/FOK/0",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "BUY",
+        "order_type": "FOK",
+        "amount": "0"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "expected": {
+        "error": "UserInputError"
+      }
+    },
+    {
+      "name": "estimate/BUY/FOK/-1",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "BUY",
+        "order_type": "FOK",
+        "amount": "-1"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "expected": {
+        "error": "UserInputError"
+      }
+    },
+    {
+      "name": "estimate/BUY/FOK/NaN",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "BUY",
+        "order_type": "FOK",
+        "amount": "NaN"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "expected": {
+        "error": "UserInputError"
+      }
+    },
+    {
+      "name": "estimate/BUY/FOK/None",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "BUY",
+        "order_type": "FOK",
+        "amount": null
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "expected": {
+        "error": "UserInputError"
+      }
+    },
+    {
+      "name": "estimate/BUY/FAK/0.1",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "BUY",
+        "order_type": "FAK",
+        "amount": "0.1"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": "0.6"
+      }
+    },
+    {
+      "name": "estimate/BUY/FAK/1.2",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "BUY",
+        "order_type": "FAK",
+        "amount": "1.2"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": "0.6"
+      }
+    },
+    {
+      "name": "estimate/BUY/FAK/1.2000000000000000000000000001",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "BUY",
+        "order_type": "FAK",
+        "amount": "1.2000000000000000000000000001"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": "0.7"
+      }
+    },
+    {
+      "name": "estimate/BUY/FAK/2",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "BUY",
+        "order_type": "FAK",
+        "amount": "2"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": "0.7"
+      }
+    },
+    {
+      "name": "estimate/BUY/FAK/3",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "BUY",
+        "order_type": "FAK",
+        "amount": "3"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": "0.7"
+      }
+    },
+    {
+      "name": "estimate/BUY/FAK/100",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "BUY",
+        "order_type": "FAK",
+        "amount": "100"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": "0.7"
+      }
+    },
+    {
+      "name": "estimate/BUY/FAK/0",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "BUY",
+        "order_type": "FAK",
+        "amount": "0"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "expected": {
+        "error": "UserInputError"
+      }
+    },
+    {
+      "name": "estimate/BUY/FAK/-1",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "BUY",
+        "order_type": "FAK",
+        "amount": "-1"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "expected": {
+        "error": "UserInputError"
+      }
+    },
+    {
+      "name": "estimate/BUY/FAK/NaN",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "BUY",
+        "order_type": "FAK",
+        "amount": "NaN"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "expected": {
+        "error": "UserInputError"
+      }
+    },
+    {
+      "name": "estimate/BUY/FAK/None",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "BUY",
+        "order_type": "FAK",
+        "amount": null
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "expected": {
+        "error": "UserInputError"
+      }
+    },
+    {
+      "name": "estimate/SELL/FOK/0.1",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "SELL",
+        "order_type": "FOK",
+        "shares": "0.1"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": "0.4"
+      }
+    },
+    {
+      "name": "estimate/SELL/FOK/1.2",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "SELL",
+        "order_type": "FOK",
+        "shares": "1.2"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": "0.4"
+      }
+    },
+    {
+      "name": "estimate/SELL/FOK/1.2000000000000000000000000001",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "SELL",
+        "order_type": "FOK",
+        "shares": "1.2000000000000000000000000001"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": "0.4"
+      }
+    },
+    {
+      "name": "estimate/SELL/FOK/2",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "SELL",
+        "order_type": "FOK",
+        "shares": "2"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": "0.4"
+      }
+    },
+    {
+      "name": "estimate/SELL/FOK/3",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "SELL",
+        "order_type": "FOK",
+        "shares": "3"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": "0.3"
+      }
+    },
+    {
+      "name": "estimate/SELL/FOK/100",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "SELL",
+        "order_type": "FOK",
+        "shares": "100"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "InsufficientLiquidityError"
+      }
+    },
+    {
+      "name": "estimate/SELL/FOK/0",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "SELL",
+        "order_type": "FOK",
+        "shares": "0"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "expected": {
+        "error": "UserInputError"
+      }
+    },
+    {
+      "name": "estimate/SELL/FOK/-1",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "SELL",
+        "order_type": "FOK",
+        "shares": "-1"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "expected": {
+        "error": "UserInputError"
+      }
+    },
+    {
+      "name": "estimate/SELL/FOK/NaN",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "SELL",
+        "order_type": "FOK",
+        "shares": "NaN"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "expected": {
+        "error": "UserInputError"
+      }
+    },
+    {
+      "name": "estimate/SELL/FOK/None",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "SELL",
+        "order_type": "FOK",
+        "shares": null
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "expected": {
+        "error": "UserInputError"
+      }
+    },
+    {
+      "name": "estimate/SELL/FAK/0.1",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "SELL",
+        "order_type": "FAK",
+        "shares": "0.1"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": "0.4"
+      }
+    },
+    {
+      "name": "estimate/SELL/FAK/1.2",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "SELL",
+        "order_type": "FAK",
+        "shares": "1.2"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": "0.4"
+      }
+    },
+    {
+      "name": "estimate/SELL/FAK/1.2000000000000000000000000001",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "SELL",
+        "order_type": "FAK",
+        "shares": "1.2000000000000000000000000001"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": "0.4"
+      }
+    },
+    {
+      "name": "estimate/SELL/FAK/2",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "SELL",
+        "order_type": "FAK",
+        "shares": "2"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": "0.4"
+      }
+    },
+    {
+      "name": "estimate/SELL/FAK/3",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "SELL",
+        "order_type": "FAK",
+        "shares": "3"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": "0.3"
+      }
+    },
+    {
+      "name": "estimate/SELL/FAK/100",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "SELL",
+        "order_type": "FAK",
+        "shares": "100"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": "0.3"
+      }
+    },
+    {
+      "name": "estimate/SELL/FAK/0",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "SELL",
+        "order_type": "FAK",
+        "shares": "0"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "expected": {
+        "error": "UserInputError"
+      }
+    },
+    {
+      "name": "estimate/SELL/FAK/-1",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "SELL",
+        "order_type": "FAK",
+        "shares": "-1"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "expected": {
+        "error": "UserInputError"
+      }
+    },
+    {
+      "name": "estimate/SELL/FAK/NaN",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "SELL",
+        "order_type": "FAK",
+        "shares": "NaN"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "expected": {
+        "error": "UserInputError"
+      }
+    },
+    {
+      "name": "estimate/SELL/FAK/None",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "SELL",
+        "order_type": "FAK",
+        "shares": null
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "expected": {
+        "error": "UserInputError"
+      }
+    },
+    {
+      "name": "estimate/book/BUY{'asks': []}",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "BUY",
+        "amount": "1.2"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "InsufficientLiquidityError"
+      }
+    },
+    {
+      "name": "estimate/book/SELL{'asks': []}",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "SELL",
+        "shares": "1.2"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": "0.4"
+      }
+    },
+    {
+      "name": "estimate/book/BUY{'bids': []}",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "BUY",
+        "amount": "1.2"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": "0.6"
+      }
+    },
+    {
+      "name": "estimate/book/SELL{'bids': []}",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "SELL",
+        "shares": "1.2"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "InsufficientLiquidityError"
+      }
+    },
+    {
+      "name": "estimate/book/BUY{'asset_id': '999'}",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "BUY",
+        "amount": "1.2"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "999",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "estimate/book/SELL{'asset_id': '999'}",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "SELL",
+        "shares": "1.2"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "999",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "estimate/book/BUY{'tick_size': '0.45'}",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "BUY",
+        "amount": "1.2"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.45",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "estimate/book/SELL{'tick_size': '0.45'}",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "SELL",
+        "shares": "1.2"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.45",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "UnexpectedResponseError"
+      }
+    },
+    {
+      "name": "estimate/book/BUY{'asks': [{'price': '0.6', 'size': '2.0000000000000000000000000001'}]}",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "BUY",
+        "amount": "1.2"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.6",
+            "size": "2.0000000000000000000000000001"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": "0.6"
+      }
+    },
+    {
+      "name": "estimate/book/SELL{'asks': [{'price': '0.6', 'size': '2.0000000000000000000000000001'}]}",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "SELL",
+        "shares": "1.2"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.6",
+            "size": "2.0000000000000000000000000001"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "value": "0.4"
+      }
+    },
+    {
+      "name": "estimate/input/{'side': 'bad', 'amount': '1'}",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "bad",
+        "amount": "1"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "expected": {
+        "error": "UserInputError"
+      }
+    },
+    {
+      "name": "estimate/input/{'side': 'BUY', 'amount': '1', 'shares': '1'}",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "BUY",
+        "amount": "1",
+        "shares": "1"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "expected": {
+        "error": "UserInputError"
+      }
+    },
+    {
+      "name": "estimate/input/{'side': 'SELL', 'amount': '1', 'shares': '1'}",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "SELL",
+        "amount": "1",
+        "shares": "1"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "expected": {
+        "error": "UserInputError"
+      }
+    },
+    {
+      "name": "estimate/input/{'side': 'BUY', 'amount': '1', 'order_type': 'GTC'}",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "BUY",
+        "amount": "1",
+        "order_type": "GTC"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "expected": {
+        "error": "UserInputError"
+      }
+    },
+    {
+      "name": "estimate/precision28/BUY",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "BUY",
+        "amount": "1.20000000000000000000000000001"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.3",
+            "size": "8"
+          },
+          {
+            "price": "0.4",
+            "size": "2"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.6",
+            "size": "2.0000000000000000000000000001"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "InsufficientLiquidityError"
+      }
+    },
+    {
+      "name": "estimate/precision28/SELL",
+      "operation": "estimate_market_price",
+      "input": {
+        "asset_id": "123",
+        "side": "SELL",
+        "shares": "2.00000000000000000000000000001"
+      },
+      "response": {
+        "market": "condition",
+        "asset_id": "123",
+        "timestamp": "1720000000123",
+        "bids": [
+          {
+            "price": "0.6",
+            "size": "2.0000000000000000000000000001"
+          }
+        ],
+        "asks": [
+          {
+            "price": "0.7",
+            "size": "8"
+          },
+          {
+            "price": "0.6",
+            "size": "2"
+          }
+        ],
+        "min_order_size": "5",
+        "tick_size": "0.01",
+        "neg_risk": false,
+        "last_trade_price": "",
+        "hash": "book-hash"
+      },
+      "request": {
+        "method": "GET",
+        "path": "/book",
+        "query": {
+          "token_id": "123"
+        }
+      },
+      "expected": {
+        "error": "InsufficientLiquidityError"
+      }
+    }
+  ]
+}

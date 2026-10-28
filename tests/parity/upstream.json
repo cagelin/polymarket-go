@@ -1,0 +1,814 @@
+{
+  "version": "0.14.0",
+  "commit": "7032ed06175b0bbea77b2d9e898bd9f252af2041",
+  "source_hashes": [
+    {
+      "path": "src/polymarket/__init__.py",
+      "sha256": "5d6e0a47e089ee8b71eab58b574c6d24efd6f264fa79167548b6826fee789ef5"
+    },
+    {
+      "path": "src/polymarket/_frames_bridge.py",
+      "sha256": "c1aaceca42720fdac4f97183d56368812bb20eb207ead99d5925e02687df5a5b"
+    },
+    {
+      "path": "src/polymarket/_internal/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/_cursor.py",
+      "sha256": "20a88ee0db79d7376c9128f4eecdfe9153af972fb9d9feda4176c54e10a33253"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/account.py",
+      "sha256": "35b05b050c42f5ae7c57ed2ebf840e0e8795fe85332ce5523d3aa5c4d359c479"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/auth.py",
+      "sha256": "8584a7ed846449015e20a0b54062205dc2edebf89a1cdb652f0fc6f889cfa240"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/builders.py",
+      "sha256": "6b3e208325e5ad3c07f5ee60c9d5f9bb9e78ce2464a6ef77bd5ce089d0b2e9b3"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/clob.py",
+      "sha256": "b885e0e4999bc49a5fd165d2e227ed0ad5257fc7efd2adb91561cd12505dce5b"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/combo_rfq.py",
+      "sha256": "b1b14f88a054dc8d07cb823b9997fd31f68514a31c2909727fe6cfb89d7298f5"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/combos.py",
+      "sha256": "f0f40ecf8eabc465c421b474f76da1015e578c031f8e6e5f252a6b2a76836614"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/data.py",
+      "sha256": "7b64cc5711e9879246e428ea110a8c6471d4ce849f20f90a9e417f610e92868b"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/exchange_asset.py",
+      "sha256": "8f6f8234f084b4c961dd553fb28f29536e797b321a38bd38e484f92a1ad7ce0a"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/gamma.py",
+      "sha256": "928aab25e68b969b919a27167425960eedfac5b088e3a64558a96442acf0bab7"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/order_heartbeats.py",
+      "sha256": "e79cadb15f2dda01f78eab30042c14ccacf1b37b13f5fa1d4bec3dfe31c68c2a"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/orders/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/orders/_numeric.py",
+      "sha256": "5f5d4df07e8548144316a3c779a445b2e8559b63368f0bd27e2dd1984be0c3bd"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/orders/allowance.py",
+      "sha256": "633b8290f424293978bc6fc95462747f66c5892e81b66701c6c4687b0855d331"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/orders/cache.py",
+      "sha256": "ee8c2a423b483df6f993d228b22c5706ad468f587a1f610bc543ecde47bcb2bc"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/orders/cancel.py",
+      "sha256": "2b084f3ac3ecc88fbe7e17e23a62400d89d95849dfb6328299879dcc93bf9f48"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/orders/context.py",
+      "sha256": "fed516e6ac4552f6b14e093ddc8e8bda0e16812c1afb967a5317d9a63f5514da"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/orders/estimate.py",
+      "sha256": "b4d3ddd3571cc7884717cfa643b2bb8e90cee6bf3ddf191233563d94791c3e87"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/orders/limit.py",
+      "sha256": "4f75fc6c44a813ebfdc389b806baa8f6a4f68785ca7873bbbc5632ec36074cb0"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/orders/market.py",
+      "sha256": "1e373ee5207426201cff4687c7dbaf4b2094483c4fda094da4c20065b0cd9fe0"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/orders/market_data.py",
+      "sha256": "989224e9a8fbe2c38652276ca3bcc71c5e6e2cd08e8b41cb6bc0d5fd2ed4842d"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/orders/math.py",
+      "sha256": "ebd9982f09abce3d5ac99fc66a3b5f7108caa2a24e0dce6df17d0b7bd232aaa7"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/orders/orders.py",
+      "sha256": "bd3df6cb0395e7578555460d35ae64c67a113652fad66925eb7bd7a1aa21cd6b"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/orders/place.py",
+      "sha256": "9f30e1d4cac0c633976e4cf6f8df53bc7ced29cf94f18f1df2c7c1f5505a554f"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/orders/post.py",
+      "sha256": "f5b0e2ceab56746d048b2fda49db4a7f330e21c983da8b74b80c03ccee09c0a9"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/orders/settlement.py",
+      "sha256": "98a385c45caaa8bea79af270e9f17d0a5822151a244851093d77fe29536f1363"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/orders/typed_data.py",
+      "sha256": "bc54d550dacee91f7b86481305a7b4ce23998f8b2ca1f635a097c0b317f88ba2"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/orders/types.py",
+      "sha256": "7767855f7fab8df5e14efd5480a6ba7368ebcad809ec653c5e2d7b05b24758d0"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/perps/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/perps/account.py",
+      "sha256": "303a7e26fedf9c796aedd3f3c3b324a71cc2acd71e47f06d51f90a4aa5c4c9f8"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/perps/builders.py",
+      "sha256": "f69181639a9cfbf0dbb47be0b0e92a0a459b325929ae2108d7c2694a4dad59b8"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/perps/chases.py",
+      "sha256": "7115a5a8e5898bba21c06f47da713683080283ecd0ec8f7773c76f3468c018bc"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/perps/credentials.py",
+      "sha256": "38feae36b9cfb9d3ad993220b381cec0539a9478967472d2a26969b470b38115"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/perps/funds.py",
+      "sha256": "af7eb6753a9218240759b4a986c9ee8e4f55f377b6a890d37dad9923245b9cb8"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/perps/paging.py",
+      "sha256": "1e064623855878a0d1ed81fba537dd036fc1a5301852e5f22cc04ad131bd059e"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/perps/position_snapshots.py",
+      "sha256": "c62bbf13b4997691a0eff787ca31572083ece52249eb9927cce6bf6c90262add"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/perps/public.py",
+      "sha256": "ab47527fe16412debfb1d8729688fe75e9cf97aa020ff7b9c5aca5e977792553"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/perps/signing.py",
+      "sha256": "d778bac19e7dff46d4b81653337e059b9d26f4e3f652ee9f4fa807f698fbdd93"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/perps/trading.py",
+      "sha256": "478fc7326565dd5dbd7028f843a1e0dd58deb763ae54e3d722083746a7f9b605"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/perps/twaps.py",
+      "sha256": "1252dad7f99c8eaaffadc91ac49d6b5699d964f17bfedbb853fb361e98479c62"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/relayer/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/relayer/approvals.py",
+      "sha256": "aef8a8701def69639cc5871f4985348fbefc19b601231fa84281643d02ab821a"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/relayer/auth.py",
+      "sha256": "7d7e8f4f12de10e72e288e71f83648cc7ed6a80916d2e2ea7e78a7d3fa316a08"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/relayer/calls.py",
+      "sha256": "29a3247c1ce05bf00d435d4e49a6c79657c8ba3190ead602550084590fd62e40"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/relayer/deployed.py",
+      "sha256": "6da1faa40ab67a2b43e579689eba2b0b61212749a433b2c4d23a374f80e923dd"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/relayer/gasless.py",
+      "sha256": "cd910db2c66fbadc4bb33d8e4f8313f054e4e4e5c2a42ee9c53c00704ab433a4"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/relayer/nonce.py",
+      "sha256": "dd440c81948305bea15f2f8f99f12b86a42544156c6f7e76dcb65987c5bb68c0"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/relayer/poll.py",
+      "sha256": "3120795fcd87beca16b10f4960c4964d3fdae46b21ae97cdad076e2e27cd7763"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/relayer/positions.py",
+      "sha256": "69e9320f3601ae46493278476851ea12fbaef33c70ea107153e81c74272d1b2b"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/relayer/signing/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/relayer/signing/deposit_wallet.py",
+      "sha256": "fc1b4a7f167f247d880c9dc9a247493b558baef23df14c28e87d433a4eb8aa3a"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/relayer/signing/proxy.py",
+      "sha256": "d30dd5304840302d029251b7d05b5f4d948e1f8352fb900806c216d5a8ae7193"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/relayer/signing/safe.py",
+      "sha256": "36ad1a977a1d765397c1c7db9054ec04bd0557d5d3284c6bb73ba3fb5e060f03"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/relayer/submit.py",
+      "sha256": "1e618746124cee63ab5f3596d08f4d586e6a2562d08a5d3b642e96ad6070ac8a"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/rewards.py",
+      "sha256": "2bdcd7e191600d34f5be2096ed7073b2662e1c3b1d89cf4e54a911e7b918eba5"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/rfq.py",
+      "sha256": "414613cf338f7e8b826e7d460f8746c6f1a30d01ccdfc9aa004ef3e2a47911e1"
+    },
+    {
+      "path": "src/polymarket/_internal/actions/session_keys.py",
+      "sha256": "1ba2ba74670f2ceed8bebe3c8fd08ecca16cc56ab0b313f793507e8ae5bddc79"
+    },
+    {
+      "path": "src/polymarket/_internal/context.py",
+      "sha256": "a5f67d6ce09d4a53c96d7f61d5a34811db0e5b37c8dd5324df89e6d08db4890a"
+    },
+    {
+      "path": "src/polymarket/_internal/data_envelope.py",
+      "sha256": "f9c18f909f9ac8ee52e8b016e07ba5ca6b0501e9bae5a26f2e8996fb4e260267"
+    },
+    {
+      "path": "src/polymarket/_internal/data_params.py",
+      "sha256": "7444ea6330db0c56f758a96a01e0f5b01b2767c7e4c98840caf6ffed96115c54"
+    },
+    {
+      "path": "src/polymarket/_internal/dispatch.py",
+      "sha256": "35e81afd0531b3a39f904b2090cdf8557b21690005b949aea7075d1757d11058"
+    },
+    {
+      "path": "src/polymarket/_internal/environment.py",
+      "sha256": "c87f4bbdb6baeb1bc115afde87e8f8515e3ba4a4f77f5a502a1caa92d6c82429"
+    },
+    {
+      "path": "src/polymarket/_internal/eoa/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "src/polymarket/_internal/eoa/broadcast.py",
+      "sha256": "aae745ff859d785d23b2dd81c2ebfccec50d577c4ff5ebb5347e165bfe31a7d2"
+    },
+    {
+      "path": "src/polymarket/_internal/eoa/rpc.py",
+      "sha256": "d8b6fc1d4d1328946aea7abae55e30c823d60aad8ed1b92a2e8ecf9cc6ddd05d"
+    },
+    {
+      "path": "src/polymarket/_internal/gamma_paths.py",
+      "sha256": "3fb9cf533a7739288aac79a647f69aa1cfe0d4bd3d3a807a10168e7dd1765439"
+    },
+    {
+      "path": "src/polymarket/_internal/hmac.py",
+      "sha256": "e603d8b2484e3896a7d2f10a9499bef1fa7bcf024623d02e0f30e8475609e5a6"
+    },
+    {
+      "path": "src/polymarket/_internal/l1_auth.py",
+      "sha256": "df81232059ff0792a35d19b820b09d6fa2e941d259e84e6a0f10fa520e1004f9"
+    },
+    {
+      "path": "src/polymarket/_internal/pagination.py",
+      "sha256": "4fa4046b3edd231a50a9411e59805a04c4c51a053b573bf8a5d5b600831b89fe"
+    },
+    {
+      "path": "src/polymarket/_internal/perps_session.py",
+      "sha256": "9428bba0a6645771bd377902275df38d5d8609289eea1c0086f259819fb829bd"
+    },
+    {
+      "path": "src/polymarket/_internal/protocol.py",
+      "sha256": "dd1faefe180cd4499d0bfcbf61714d9335f8fc65636f6a0eae8f7c80bea42970"
+    },
+    {
+      "path": "src/polymarket/_internal/request.py",
+      "sha256": "567c41b044552a059458cab23f31f9593a027540fb74a7e4f55df78710a26c4b"
+    },
+    {
+      "path": "src/polymarket/_internal/retry.py",
+      "sha256": "7706bee31514da3bbd899e5d43ba0f0227f2bc6828017c79dfe51297517c6003"
+    },
+    {
+      "path": "src/polymarket/_internal/rfq.py",
+      "sha256": "a6f62880b1bbbc56d408f17b6124a174de3b040548531410cd376e89b7ac6705"
+    },
+    {
+      "path": "src/polymarket/_internal/streams/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "src/polymarket/_internal/streams/clob/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "src/polymarket/_internal/streams/clob/heartbeat.py",
+      "sha256": "16cc0ca32e6a251a356b0a32e20d4b4f2fa429ce835e02d36f5da288c762cc78"
+    },
+    {
+      "path": "src/polymarket/_internal/streams/clob/market.py",
+      "sha256": "3b2f83cba34d33f61e37bdc7d19e21a48fad65dac6d4b74107267f81f38db5b8"
+    },
+    {
+      "path": "src/polymarket/_internal/streams/clob/market_protocol.py",
+      "sha256": "df299fb9177a0a93970ae995afd58b5270b7db81ebcea2fb91d46004fc47c38f"
+    },
+    {
+      "path": "src/polymarket/_internal/streams/clob/user.py",
+      "sha256": "34cb9d2fd47e963a319df12a881c143ff333c05533ea1771342733c33b3c27cd"
+    },
+    {
+      "path": "src/polymarket/_internal/streams/clob/user_protocol.py",
+      "sha256": "e575cdec1ecc5e7eb6f6c065fafa6489d9a65fa7f4658c544861ada89027fe97"
+    },
+    {
+      "path": "src/polymarket/_internal/streams/handle.py",
+      "sha256": "39b289d42547c3bd53d70d5fb58ca7c835724c71bd4b70c980f969196d574406"
+    },
+    {
+      "path": "src/polymarket/_internal/streams/merged_handle.py",
+      "sha256": "85c76fe73a689d96a3457201c830e704d0e1af8a62976550a29c9719b1e4ceef"
+    },
+    {
+      "path": "src/polymarket/_internal/streams/perps/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "src/polymarket/_internal/streams/perps/heartbeat.py",
+      "sha256": "5c59be5b6c09dc79b5baa24a196e5c77dda2ccb3680e631e8087839806406de9"
+    },
+    {
+      "path": "src/polymarket/_internal/streams/perps/market.py",
+      "sha256": "6d1191402d98b810484c0b903387f60963149daba0dc7f77cf30f1825c52d1a2"
+    },
+    {
+      "path": "src/polymarket/_internal/streams/perps/market_protocol.py",
+      "sha256": "6907b1ff12539f1c08785e0e1a0f6d6f08e51e14432687fe2abb3afce683a54b"
+    },
+    {
+      "path": "src/polymarket/_internal/streams/realtime/__init__.py",
+      "sha256": "25aef0c93b7deb67bcd0cd040ae6e447ed7edfce5f2e0a4396c5f57ad7e47865"
+    },
+    {
+      "path": "src/polymarket/_internal/streams/realtime/heartbeat.py",
+      "sha256": "7f5fe373c44c8d55624374fe3715d5478f7eed3dee33e0fff71cb67c7d7ea6ad"
+    },
+    {
+      "path": "src/polymarket/_internal/streams/realtime/manager.py",
+      "sha256": "5d8538a13fa327712e99b200d45d9cac20aa356810c60264fd8ee1d6df88a64d"
+    },
+    {
+      "path": "src/polymarket/_internal/streams/realtime/protocol.py",
+      "sha256": "0d3be87fa20b13567742f4f01a72f0137dc1f5966b129b388db60ba66be632c8"
+    },
+    {
+      "path": "src/polymarket/_internal/streams/realtime/session.py",
+      "sha256": "1a1c96af331f94acd710dbd6429207ac75959ec59e8b11ac3ead9b8f5392cef7"
+    },
+    {
+      "path": "src/polymarket/_internal/streams/realtime/socket.py",
+      "sha256": "3479c15c1bbdf765940e5063683fff4ffb3aded74bd1ff33d359c67dc7a0f388"
+    },
+    {
+      "path": "src/polymarket/_internal/streams/reconnect.py",
+      "sha256": "9727cff8dcb067fb71e0347260a005c7545f902c2915d2e3cb6e52384f238434"
+    },
+    {
+      "path": "src/polymarket/_internal/streams/registry.py",
+      "sha256": "4fd6522e6d61aa9e79968ac826b3eb04deaa843e061122e8a2923c09057402e3"
+    },
+    {
+      "path": "src/polymarket/_internal/streams/rtds/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "src/polymarket/_internal/streams/rtds/heartbeat.py",
+      "sha256": "f516c064910ce3069734c1bc2475166ccfdd5166faa15f40499781848520f993"
+    },
+    {
+      "path": "src/polymarket/_internal/streams/rtds/manager.py",
+      "sha256": "4bce7b5ef8c956b2d82a26039f29e1113912d024ba87269c9adf89b7b499c843"
+    },
+    {
+      "path": "src/polymarket/_internal/streams/rtds/protocol.py",
+      "sha256": "44f67b9fd42a0c4fec488f31cc80c0ffd5bc569254717ed1040fa531c116210d"
+    },
+    {
+      "path": "src/polymarket/_internal/streams/sports/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "src/polymarket/_internal/streams/sports/heartbeat.py",
+      "sha256": "03fe6b073a8a656078d43069a5e1155998355746a1c6da322f1533af842fbd1e"
+    },
+    {
+      "path": "src/polymarket/_internal/streams/sports/manager.py",
+      "sha256": "d12f91a54bd8c9b7fbba077bac132659359f5b3d519b6e274c5aa8e08a21ec96"
+    },
+    {
+      "path": "src/polymarket/_internal/validation.py",
+      "sha256": "e9f0fdb282c45d34f0d16b193f7fc6e5d9e7085538b13c136741ae4f23014488"
+    },
+    {
+      "path": "src/polymarket/_internal/wallet.py",
+      "sha256": "a18ee84f3614970e654325b9f5394b21df1188ecb7849c00f00d946501436f26"
+    },
+    {
+      "path": "src/polymarket/_internal/ws/__init__.py",
+      "sha256": "ea885b1282c3633c46c27b1a17dc3264b2a77348df5600041679686bb4c14cae"
+    },
+    {
+      "path": "src/polymarket/_internal/ws/backoff.py",
+      "sha256": "f54a77bfecdf3a7e61ec072dea7a7626026b72099dede9dfb53957f7a6f6fd02"
+    },
+    {
+      "path": "src/polymarket/_internal/ws/connection.py",
+      "sha256": "25b359401220d9b94adfab2004ec0915ea38bc13a981a4b3a2108c9510ab2436"
+    },
+    {
+      "path": "src/polymarket/_internal/ws/heartbeat.py",
+      "sha256": "efbf9bc82864db6d190c2aa14d903e12302f72222f3d5c3981b2819e4401d2fe"
+    },
+    {
+      "path": "src/polymarket/_jupyter.py",
+      "sha256": "63b541459a808ae54d744b863afac12a37828d44007997aa481989a513244bdb"
+    },
+    {
+      "path": "src/polymarket/auth.py",
+      "sha256": "1c2bef80281d73b898ad6a6faadfcfbe73e75a1596416600357e735e9f250bd8"
+    },
+    {
+      "path": "src/polymarket/calls.py",
+      "sha256": "bdff5ddcb96cfe10f0808b61f79ac454aba0b3702f1359d6857aa071cc765890"
+    },
+    {
+      "path": "src/polymarket/clients/__init__.py",
+      "sha256": "7ab1ecbba2a0c9838b29238ddc668eaa3cd95ef6942bc8f83c8952658628054f"
+    },
+    {
+      "path": "src/polymarket/clients/_transport.py",
+      "sha256": "54bffe2af2260680333f0430c22be59350709b8258fd75055e7576e3660242da"
+    },
+    {
+      "path": "src/polymarket/clients/async_public.py",
+      "sha256": "c981a4435ff5fe917cb2b0834aae20021e5859d7cb282f13b4c7621b8575f24f"
+    },
+    {
+      "path": "src/polymarket/clients/async_secure.py",
+      "sha256": "f7875f741b4e729700a17ce7bcacbf2b841ac17967e2a13341b729f4b6b957c6"
+    },
+    {
+      "path": "src/polymarket/clients/public.py",
+      "sha256": "efcd8bd4a84b0e967d34c1ed9fd32885406a6a9c5df00eaf25052924a43b5333"
+    },
+    {
+      "path": "src/polymarket/clients/secure.py",
+      "sha256": "0ea1abfa8f434122e20e3d55a4d8d215e2ce90a836848d9898fc8216dd1d8074"
+    },
+    {
+      "path": "src/polymarket/environments.py",
+      "sha256": "9595d091811e7ebaf60e5dbf4be8cf24c8f80990065aa565788e8167b8eb1296"
+    },
+    {
+      "path": "src/polymarket/errors.py",
+      "sha256": "59bd66896fb1815ec5b5f34fb9940e2154b8f3efafe76c6c4e9bae564764de9a"
+    },
+    {
+      "path": "src/polymarket/frames/__init__.py",
+      "sha256": "b9bccf8230564aca8d43be929e64e53cfdd301f6eb35ba1ce92e1627ab88b32b"
+    },
+    {
+      "path": "src/polymarket/frames/_arrow.py",
+      "sha256": "dee51a94f3f334ee89954c8a4956953cdb9256d0a1edb4dccb49c086b8e1eb18"
+    },
+    {
+      "path": "src/polymarket/frames/_builtin_overrides.py",
+      "sha256": "9cbbffbaed89afa59b60694b5ba72c4eae7fd24e2871944c38d9cf77cc9ab988"
+    },
+    {
+      "path": "src/polymarket/frames/_errors.py",
+      "sha256": "cd31e79392d217570e689011bab381fb39ce7a1275778a6d512ede04092a05bc"
+    },
+    {
+      "path": "src/polymarket/frames/_overrides.py",
+      "sha256": "1b765ffafd0a8be0049cbf9edda3b1d3adbdd922f759727a0dba29437f9eee06"
+    },
+    {
+      "path": "src/polymarket/frames/_pandas.py",
+      "sha256": "33b4427720a16e02f4bd5d8aeffd2458c68fba047a48412b89ae2cb885aa71e3"
+    },
+    {
+      "path": "src/polymarket/frames/_polars.py",
+      "sha256": "45c5034e6a5eb3f58d8322f13bd2390eb1d6a2b2694b4217a93c24cf5da36a50"
+    },
+    {
+      "path": "src/polymarket/models/__init__.py",
+      "sha256": "92668f542a9ea723a69dbb1a721ef93293d91bf88c9fa649f89e8cad739ccdf1"
+    },
+    {
+      "path": "src/polymarket/models/_validators.py",
+      "sha256": "bd7fdf7efdef9680d159ae7959751addd7e6d379d3e418bf133dcef38bcfda2d"
+    },
+    {
+      "path": "src/polymarket/models/base.py",
+      "sha256": "ed795ee800e20c7f7fb70240cd3b49eddb5d7ef9aaa282702bc9a68e153ad620"
+    },
+    {
+      "path": "src/polymarket/models/clob/__init__.py",
+      "sha256": "e8bd8879d156afffec134aae08311008415a2a7ce01d5f245981fef31d23880e"
+    },
+    {
+      "path": "src/polymarket/models/clob/_validators.py",
+      "sha256": "9bd5b15bebab6864f7e1e2302050863f661dfeb949982b9b8293a66ffe245ea1"
+    },
+    {
+      "path": "src/polymarket/models/clob/account.py",
+      "sha256": "dbdd57d64c78dd4f9fddee18b7550c25fc878088e0bb3285a36ce2f36a9ef29d"
+    },
+    {
+      "path": "src/polymarket/models/clob/api_key.py",
+      "sha256": "4a23b05b3539b1eb7713b17d34d3b4cca8daa9e31bd95aca3bae0deef8ecb20d"
+    },
+    {
+      "path": "src/polymarket/models/clob/builder.py",
+      "sha256": "64e785c6ea3ef962956722dffa9ec85b516019d4097970d090b4b3e38604d127"
+    },
+    {
+      "path": "src/polymarket/models/clob/cancel.py",
+      "sha256": "9bd2214fc62952633493a56bb54928d44105ba1aca5e39330c9ad9cd321ade8a"
+    },
+    {
+      "path": "src/polymarket/models/clob/last_trade.py",
+      "sha256": "aaa60b55d9e6080c16c4c9d4d45d22a95931bf0e8b2880157f83f2df2ce38c1c"
+    },
+    {
+      "path": "src/polymarket/models/clob/market_events.py",
+      "sha256": "e9c1ed934887e5efc5be5bfb382bac18ee49d2091dda8337125e52ec890b30bc"
+    },
+    {
+      "path": "src/polymarket/models/clob/notifications.py",
+      "sha256": "777c021e550a1c9e066b577d126757328d5d2b826172bdc914f22101cd47bb2f"
+    },
+    {
+      "path": "src/polymarket/models/clob/order_book.py",
+      "sha256": "c2b592e11da5e2dbc99e21e5672d035734af4dd19f6fb4488aa84fc7bd849e4e"
+    },
+    {
+      "path": "src/polymarket/models/clob/order_heartbeats.py",
+      "sha256": "b531c0de17f36199a17475047290d806af339b3e09e46cfab08c1b318fdc6371"
+    },
+    {
+      "path": "src/polymarket/models/clob/order_response.py",
+      "sha256": "53f5412a471b07a67cd7dd041d9509c562f890d9b8d94bf6f09a4c48e72ce8b8"
+    },
+    {
+      "path": "src/polymarket/models/clob/orders.py",
+      "sha256": "253e5e8756bb1e76ebf5972fa4b58feb7b576473145a474e70e445672200f760"
+    },
+    {
+      "path": "src/polymarket/models/clob/relayer.py",
+      "sha256": "3aa4704543c20d486bfc5c365f27af93218f6b371ebc76ba295a34fcc1f30c88"
+    },
+    {
+      "path": "src/polymarket/models/clob/requests.py",
+      "sha256": "a6310f4950731e94a4f8bfbddf7cee928ee848252940b130a8aa29cc96113be4"
+    },
+    {
+      "path": "src/polymarket/models/clob/rewards.py",
+      "sha256": "4c5bfc7ff1aa18560b1ae714fb518a34ae848b4db7279784cc1ed03ceaee6939"
+    },
+    {
+      "path": "src/polymarket/models/clob/user_events.py",
+      "sha256": "7850e9ef5487693651fb4a4ba23c410cbd2288344663ce98bdd7128acecf6a90"
+    },
+    {
+      "path": "src/polymarket/models/collateral_return.py",
+      "sha256": "42d736cbf04f2a043a717715726da72111027e24a1b2b2aa34e6c68648d2b234"
+    },
+    {
+      "path": "src/polymarket/models/data/__init__.py",
+      "sha256": "062366b84107d70cbe1a293cca903218aa477b514687c299d172527c9576a10a"
+    },
+    {
+      "path": "src/polymarket/models/data/activity.py",
+      "sha256": "6d3ca38ce027196d1936bed0ec59e72bc4d12db34e091205ce15f950c0824487"
+    },
+    {
+      "path": "src/polymarket/models/data/analytics.py",
+      "sha256": "5c0461fb4e08319531755ee051382747c4f2373af863f380458bf44314ff6362"
+    },
+    {
+      "path": "src/polymarket/models/data/common.py",
+      "sha256": "d36adac4870630110d4da710898d7534458f755624966e8644e5a061e603104e"
+    },
+    {
+      "path": "src/polymarket/models/data/leaderboard.py",
+      "sha256": "25bb9b4356d9a6d6527cfae8776abcdf95e120502508d8a3033527dc449d21f1"
+    },
+    {
+      "path": "src/polymarket/models/data/portfolio.py",
+      "sha256": "a3fb823be3048d17a09beed8a1acb924122327b64cd9abf9aa0d54df0ef600d5"
+    },
+    {
+      "path": "src/polymarket/models/data/resolutions.py",
+      "sha256": "31ea9a9c08e3fc5c113c2f52801e633b60044526959fc518e3efcdeabeb6bacf"
+    },
+    {
+      "path": "src/polymarket/models/data/tokens.py",
+      "sha256": "247b2a142beaa70579283be50a54a779d626653de666b66811f0b08095a19f9b"
+    },
+    {
+      "path": "src/polymarket/models/gamma/__init__.py",
+      "sha256": "83356b2db955120631ce00ed7f98c380743a7445cc60eecff3474d062e701885"
+    },
+    {
+      "path": "src/polymarket/models/gamma/comment.py",
+      "sha256": "c2e5aa8fafdcdb1fc4c84ede594623803f3ff1ab3909f7cc579c7bfd59ce1498"
+    },
+    {
+      "path": "src/polymarket/models/gamma/common.py",
+      "sha256": "c3d8ca1bc8a0126c5d5000006a58a4cac3d44fa12923d42f1996a31b77cbe5fc"
+    },
+    {
+      "path": "src/polymarket/models/gamma/event.py",
+      "sha256": "ce9451b359913342aaf96c7264356681750c3e89a042cad3ec9ac4a9946445ab"
+    },
+    {
+      "path": "src/polymarket/models/gamma/market.py",
+      "sha256": "7e1fabe14b6d54ffe8609809ba89ce4bcf30a429ee9f44c45403dc895477458d"
+    },
+    {
+      "path": "src/polymarket/models/gamma/profile.py",
+      "sha256": "6eb7c9c6f1a4ed08cf42d50ecfd70304f5f4e93a0a1344134b20ace4d812ca0d"
+    },
+    {
+      "path": "src/polymarket/models/gamma/search.py",
+      "sha256": "995682088da4118f27fdec0df1e3b768cdef878954ca0c2e59130fcd3403fca1"
+    },
+    {
+      "path": "src/polymarket/models/gamma/series.py",
+      "sha256": "512580e888d21c9bdeb9c99caaaf88bdd4d86621c02ccc617d663d6aedfa57f1"
+    },
+    {
+      "path": "src/polymarket/models/gamma/tag.py",
+      "sha256": "5db3eda8f7a88a897d01e97db5af291c110923cf0eeddf9ff69b4a98fc6a5ce3"
+    },
+    {
+      "path": "src/polymarket/models/perps/__init__.py",
+      "sha256": "c49cbf9c5fa5939224f17b37cb47e1d26a7fb117a1b7b28c5c24b850052933bb"
+    },
+    {
+      "path": "src/polymarket/models/perps/_validators.py",
+      "sha256": "4a773b572fd526dff93c33b3aff3b1dd75df0edfeae01adba557e7ab51b2ed03"
+    },
+    {
+      "path": "src/polymarket/models/perps/account.py",
+      "sha256": "6807010dd272b102306baf49585a641908f5cefb91789eb1ca872012455192cd"
+    },
+    {
+      "path": "src/polymarket/models/perps/builder_events.py",
+      "sha256": "8062de7cfb8301d8b480c2e2b57097d0a5a86c4638b690432256f45ad7ff7454"
+    },
+    {
+      "path": "src/polymarket/models/perps/builders.py",
+      "sha256": "f22fe91ed43d477dd33e252de6df9cc6797adf78cc0c0bd3eb5e32e3a3bedb07"
+    },
+    {
+      "path": "src/polymarket/models/perps/chases.py",
+      "sha256": "741cee079af94a45cb67b6c6861c8dc2dac134fdbaf03c86a8f1fd113b931016"
+    },
+    {
+      "path": "src/polymarket/models/perps/credentials.py",
+      "sha256": "58817deef86ea40b844f02d4c602df4770bec5e2b4adc371b8c010a0561f460b"
+    },
+    {
+      "path": "src/polymarket/models/perps/events.py",
+      "sha256": "ec3bc8ff3c356d53f1c6d90430f206a4976b6ff576b49590fa3eb4bd232e2e56"
+    },
+    {
+      "path": "src/polymarket/models/perps/funds.py",
+      "sha256": "2036a44e168d539fbfbbce92e60ce95ad36f45f7893e8072ae1f8a5241d056a2"
+    },
+    {
+      "path": "src/polymarket/models/perps/market.py",
+      "sha256": "a87403461d59bf3dc6fc1391ea655566894d6f84adb23d8ef94ce0ad3465e32f"
+    },
+    {
+      "path": "src/polymarket/models/perps/notifications.py",
+      "sha256": "933600ea80e0ee41266a1bd9ddfe14ca28b6f47c341ea439fdb291e091193ec6"
+    },
+    {
+      "path": "src/polymarket/models/perps/orders.py",
+      "sha256": "41effdc517ccb7bfffa0ab470b57de89b886ce8b83c20afac0a494b4232799d3"
+    },
+    {
+      "path": "src/polymarket/models/perps/position_snapshots.py",
+      "sha256": "6b9f746d3cfc70ebed25825916a6243fd6ac16a7c53ab8c4650936ff4378166f"
+    },
+    {
+      "path": "src/polymarket/models/perps/requests.py",
+      "sha256": "86fb264eead4eab07611e877b919ecf47b80e1e23350662c002fae49ebe52c1f"
+    },
+    {
+      "path": "src/polymarket/models/perps/results.py",
+      "sha256": "f25fa9a0aad0a88f43764d1d8e0c453aa9ef505c2a08c368caf84413a3b435a3"
+    },
+    {
+      "path": "src/polymarket/models/perps/twaps.py",
+      "sha256": "c6e3740db75ff7a453ba6fc2d3cfd57a1d121dcd33169be7bac3b7cc7d245271"
+    },
+    {
+      "path": "src/polymarket/models/perps/types.py",
+      "sha256": "1a9016f990ad72cc2c4930e3f0b40e746c3781805c1f02ed83a229064fc773fb"
+    },
+    {
+      "path": "src/polymarket/models/price_events.py",
+      "sha256": "88646857383d315880ecac79c1a829689ac5fe38660712f9faddc9c61346b9be"
+    },
+    {
+      "path": "src/polymarket/models/rfq.py",
+      "sha256": "3855e9467971f0cffe19de3419abdc11af96dd423954b59d25b6c883972dd46e"
+    },
+    {
+      "path": "src/polymarket/models/rtds_events.py",
+      "sha256": "7a83b0219ac82b24a71ae930169562bb3abbc093e99e06362b40dfb6d0efba44"
+    },
+    {
+      "path": "src/polymarket/models/sports_events.py",
+      "sha256": "4f920436de1c68e95f0824d59f7bc5522e4dcce623b4aa21bd1195949ec83902"
+    },
+    {
+      "path": "src/polymarket/models/trading.py",
+      "sha256": "a5717c4dde91eae24396c8ff7342ccb928914c72e65381e00a131db93fd9d0fe"
+    },
+    {
+      "path": "src/polymarket/models/types.py",
+      "sha256": "661c836d4e94ec2089737e385c45d75b5c24b4dfd88df8a15cc250043404123f"
+    },
+    {
+      "path": "src/polymarket/pagination.py",
+      "sha256": "416ce2f947a02d4c70aad580c02869cb5e0e4288f916c70e90a96859f7c76de0"
+    },
+    {
+      "path": "src/polymarket/perps.py",
+      "sha256": "7ab8457276f26c841e8b58a3ec97d983dbef3fd0a00cfc8d1dff9da9a905d928"
+    },
+    {
+      "path": "src/polymarket/py.typed",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "src/polymarket/rate_limit.py",
+      "sha256": "883a1b8d1b2e3a04c11df4fbdb1ce7accf23c39cd8e9f420504cc95f2ec29bbc"
+    },
+    {
+      "path": "src/polymarket/rfq.py",
+      "sha256": "41426745c356e29b9b37fdd5aa4f8533ec58a33b729c09e6041e912958cd626f"
+    },
+    {
+      "path": "src/polymarket/session_keys.py",
+      "sha256": "3e656b44ec606794860d3caa1f205e623fd7d3a67fce6fe5c09ed4a5f3199a47"
+    },
+    {
+      "path": "src/polymarket/streams/__init__.py",
+      "sha256": "b52f52041ec03982ab55faf17bb779ac2900805136a08253bd61e8b19f97eb69"
+    },
+    {
+      "path": "src/polymarket/streams/_specs.py",
+      "sha256": "0155355528c680f4926dd3396229e5d329012282ceb8a9acbf30e8769c8027a2"
+    },
+    {
+      "path": "src/polymarket/transactions.py",
+      "sha256": "257e2d2acf6c426aa4d80ec8a015903dacb3ed51a42026820656c3d7b8810a87"
+    },
+    {
+      "path": "src/polymarket/types.py",
+      "sha256": "06a94f072f880f1f3fdaf9ebcedcd06ec7f6f941fbda9fc5cd76c619b2c1c7cf"
+    },
+    {
+      "path": "src/polymarket/version.py",
+      "sha256": "f2e8c1199f478136eb0c44b0b69bd3465c93a3d018fbdfa970a5c9798f3549df"
+    }
+  ]
+}
