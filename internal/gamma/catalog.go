@@ -5,11 +5,11 @@ import (
 	"errors"
 	"net/http"
 
-	sdkerrors "github.com/cagelam/polymarket-go/errors"
-	"github.com/cagelam/polymarket-go/internal/codec"
-	"github.com/cagelam/polymarket-go/internal/paging"
-	"github.com/cagelam/polymarket-go/models"
-	"github.com/cagelam/polymarket-go/pagination"
+	sdkerrors "github.com/cagelin/polymarket-go/errors"
+	"github.com/cagelin/polymarket-go/internal/codec"
+	"github.com/cagelin/polymarket-go/internal/paging"
+	"github.com/cagelin/polymarket-go/models"
+	"github.com/cagelin/polymarket-go/pagination"
 )
 
 // TagQuery selects exactly one ID or slug; nil means absent, empty is invalid.

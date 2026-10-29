@@ -10,11 +10,11 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/cagelam/polymarket-go/internal/codec"
-	"github.com/cagelam/polymarket-go/internal/paging"
-	"github.com/cagelam/polymarket-go/internal/signing"
-	"github.com/cagelam/polymarket-go/models"
-	"github.com/cagelam/polymarket-go/pagination"
+	"github.com/cagelin/polymarket-go/internal/codec"
+	"github.com/cagelin/polymarket-go/internal/paging"
+	"github.com/cagelin/polymarket-go/internal/signing"
+	"github.com/cagelin/polymarket-go/models"
+	"github.com/cagelin/polymarket-go/pagination"
 )
 
 func (c *Client) signatureQuery() url.Values {

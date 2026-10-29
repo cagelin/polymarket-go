@@ -11,7 +11,7 @@ import (
 	"time"
 	"unicode"
 
-	sdkerrors "github.com/cagelam/polymarket-go/errors"
+	sdkerrors "github.com/cagelin/polymarket-go/errors"
 	"github.com/ericlagergren/decimal"
 )
 

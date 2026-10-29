@@ -7,7 +7,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/cagelam/polymarket-go"
+	"github.com/cagelin/polymarket-go"
 )
 
 func main() {

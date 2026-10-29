@@ -9,7 +9,7 @@ import (
 	"sync/atomic"
 	"testing"
 
-	sdk "github.com/cagelam/polymarket-go"
+	sdk "github.com/cagelin/polymarket-go"
 )
 
 const testSigner = "0x7E5F4552091A69125d5DfCb7b8C2659029395Bdf"
@@ -94,6 +94,9 @@ func TestSecureCredentialLifecycle(t *testing.T) {
 			defer func() { _ = client.Close() }() // Close only releases local resources and always returns nil.
 			if client.Wallet() != testSigner || client.Signer() != testSigner || client.WalletType() != sdk.WalletEOA {
 				subtest.Fatal("wrong identity")
+			}
+			if credentials := client.Credentials(); credentials.Key != "synthetic-key" || credentials.Passphrase != "synthetic-pass" {
+				subtest.Fatal("Credentials() differs from the authenticated account")
 			}
 			if _, err = client.GetMidpoint(subtest.Context(), sdk.Asset("123")); err != nil {
 				subtest.Fatal(err)

@@ -6,6 +6,22 @@ from polymarket._internal.actions.relayer import calls,positions
 from polymarket._internal.actions import session_keys
 from polymarket._internal.environment import PRODUCTION_CONFIG as c
 items=[]
+token='0x1111111111111111111111111111111111111111'
+recipient='0x2222222222222222222222222222222222222222'
+for operation in ['approve_erc20','transfer_erc20','approve_erc1155_for_all']:
+ values=[False,True] if operation=='approve_erc1155_for_all' else [0,1,2**256-1,-1,2**256]
+ if operation=='approve_erc20':values.append(None)
+ for value in values:
+  row={'operation':operation,'token':token,'recipient':recipient}
+  if operation=='approve_erc1155_for_all':row['approved']=value
+  else:row['amount']=None if value is None else str(value)
+  try:
+   if operation=='approve_erc20':call=calls.erc20_approval_call(token_address=token,spender=recipient,amount=2**256-1 if value is None else value)
+   elif operation=='transfer_erc20':call=calls.erc20_transfer_call(token_address=token,recipient=recipient,amount=value)
+   else:call=calls.erc1155_set_approval_for_all_call(token_address=token,operator=recipient,approved=value)
+   row.update(to=call.to,data=call.data)
+  except Exception as err:row['error']=type(err).__name__
+  items.append(row)
 for v2 in [False,True]:
  for action in ['split','merge','redeem']:
   for amount in [0,1,2**255,-1,2**256]:

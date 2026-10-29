@@ -9,7 +9,7 @@ import (
 	"strings"
 	"time"
 
-	sdkerrors "github.com/cagelam/polymarket-go/errors"
+	sdkerrors "github.com/cagelin/polymarket-go/errors"
 )
 
 func numericHeader(value string) *float64 {

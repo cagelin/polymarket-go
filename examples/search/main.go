@@ -8,7 +8,7 @@ import (
 	"os"
 	"time"
 
-	"github.com/cagelam/polymarket-go"
+	"github.com/cagelin/polymarket-go"
 )
 
 func main() {

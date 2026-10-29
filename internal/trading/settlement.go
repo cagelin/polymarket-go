@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"time"
 
-	sdkerrors "github.com/cagelam/polymarket-go/errors"
-	"github.com/cagelam/polymarket-go/models"
+	sdkerrors "github.com/cagelin/polymarket-go/errors"
+	"github.com/cagelin/polymarket-go/models"
 )
 
 // WaitForOrderFillSettlement waits for placement fills; it does not wait for later resting-order fills.

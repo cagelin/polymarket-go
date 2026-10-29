@@ -8,7 +8,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/cagelam/polymarket-go/internal/codec"
+	"github.com/cagelin/polymarket-go/internal/codec"
 )
 
 // gammaField describes only wire coercions; public models remain typed structs.

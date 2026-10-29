@@ -14,10 +14,10 @@ import (
 	"testing"
 	"time"
 
-	sdkerrors "github.com/cagelam/polymarket-go/errors"
-	"github.com/cagelam/polymarket-go/internal/signing"
-	"github.com/cagelam/polymarket-go/internal/transport"
-	"github.com/cagelam/polymarket-go/models"
+	sdkerrors "github.com/cagelin/polymarket-go/errors"
+	"github.com/cagelin/polymarket-go/internal/signing"
+	"github.com/cagelin/polymarket-go/internal/transport"
+	"github.com/cagelin/polymarket-go/models"
 )
 
 func testClient(t *testing.T, kind models.WalletType, handler http.HandlerFunc) *Client {

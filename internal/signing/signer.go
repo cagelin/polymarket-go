@@ -13,7 +13,7 @@ import (
 	"strconv"
 	"strings"
 
-	sdkerrors "github.com/cagelam/polymarket-go/errors"
+	sdkerrors "github.com/cagelin/polymarket-go/errors"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/math"
 	"github.com/ethereum/go-ethereum/crypto"

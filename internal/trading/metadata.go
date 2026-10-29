@@ -9,10 +9,10 @@ import (
 	"sync"
 	"time"
 
-	sdkerrors "github.com/cagelam/polymarket-go/errors"
-	"github.com/cagelam/polymarket-go/internal/codec"
-	"github.com/cagelam/polymarket-go/internal/signing"
-	"github.com/cagelam/polymarket-go/models"
+	sdkerrors "github.com/cagelin/polymarket-go/errors"
+	"github.com/cagelin/polymarket-go/internal/codec"
+	"github.com/cagelin/polymarket-go/internal/signing"
+	"github.com/cagelin/polymarket-go/models"
 	"github.com/ericlagergren/decimal"
 )
 

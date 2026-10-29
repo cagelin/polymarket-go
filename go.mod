@@ -1,4 +1,4 @@
-module github.com/cagelam/polymarket-go
+module github.com/cagelin/polymarket-go
 
 go 1.27.0
 

@@ -1,13 +1,16 @@
 # Polymarket Go SDK
 
+2026-10-29 范围调整：SDK 面向全新账户，交易钱包仅支持 Deposit Wallet；旧 Safe／Proxy 钱包接入、迁移和实测均排除，不作为验收或发布门槛。现有旧钱包实现与历史测试记录保留，不代表支持承诺。EOA 签名及其他已约定功能的范围不变。
+
 [English](README.md)
 
 独立 Go SDK，对标官方 `polymarket-client 0.14.0`，源码提交
 `7032ed06175b0bbea77b2d9e898bd9f252af2041`。需要 Go 1.27+，默认无需 CGO。
 
-**第三阶段：离线验收通过，资金实测进行中。** EOA 资金流程、Deposit Wallet 部署、批量调用、
-转账和挂撤单已实测通过。会话密钥授权返回 403；Safe／Proxy、真实成交结算和 RFQ 执行仍待实测。
-尚未发布，尚未达到完整验收条件。
+**第四阶段：按约定范围完成发布验收。** 已实测 EOA 资金流程、Deposit Wallet 部署与转账、
+撤单及心跳自动撤单、普通 CTF 真实成交结算，以及 CTF／V2／负风险／组合资产操作。
+测试资金已回收，临时资产授权已清理。无法验证的场景本次不阻塞发布，仍明确标为未验证；
+详见[验收范围](tests/acceptance/README.md)。
 
 当前平台要求新订单使用 Deposit Wallet。中继服务对交易所只接受 ERC20 最大额度授权，
 会拒绝有限额度和撤销请求；EOA 直接发送链上交易与钱包中继调用的限制并不相同。
@@ -19,7 +22,7 @@
 - 公开成交、持仓、活动、盈亏、排行榜、授权状态和账务下载。
 - 市场、体育、评论、加密价格及均价、股票价格实时订阅；支持重连、心跳和取消。
 - 账户认证、密钥管理、余额／授权查询、通知、奖励、订单创建／提交／撤单及成交确认。
-- 四类钱包的订单签名、组合报价／接受／状态跟踪、用户订单和认证价格订阅。
+- Deposit Wallet 订单签名、组合报价／接受／状态跟踪、用户订单和认证价格订阅。
 - Deposit Wallet 自动部署、EOA 链上提交、合约钱包批量调用、授权和转账。
 - 头寸拆分／合并／赎回、会话密钥、资金回收计划，以及长期 RFQ 报价会话。
 
@@ -32,6 +35,7 @@ go run ./examples/orderbook <资产ID>
 go run ./examples/markets
 go run ./examples/search election
 go run ./examples/streams
+go run ./examples/wallet <钱包地址>
 ```
 
 认证入口为 `NewSecureClient(ctx, SecureClientConfig{...})`。完整环境变量示例见
@@ -92,9 +96,12 @@ nil 金额表示最大值。`SetupTradingApprovals` 会等待缺失的授权全�
 执行 `make check`，统一检查格式、变量遮蔽、18 项 lint、测试和 race。使用 `golangci-lint v2.15.0`
 （由 Go 1.27+ 构建）。[编码标准](AGENTS.md)禁止遮蔽外层名称和 Go 预声明标识符，
 包括回调参数及不同类型的同名变量；生成代码与测试同样检查。
-可用 `make shadow` 单独检查，`make lint` 也会执行。检查工具位于独立模块 `tools/shadow/`，不增加 SDK 依赖。
+`make lint` 使用 golangci-lint 的 `govet shadow`（`strict: true`）与 `predeclared`，不维护自写检查工具。
+自动检查不能覆盖所有同名声明，回调参数及不同类型变量等情况仍需按编码标准审查。
 
 [对照测试说明](tests/parity/README.md)包含重新生成和实网检查命令。
+[完整验收说明](tests/acceptance/README.md)提供重建检查、功能与测试对应清单、平台记录和性能基线。
+[版本说明](CHANGELOG.md)列出 v0.1.0 的拟交付范围和剩余验收项。
 六个平台组合已通过无 CGO 构建；实际运行验证目前在 macOS arm64。
 
 SDK 使用 MIT；以太坊签名依赖 go-ethereum 使用 LGPL-3.0-or-later，保留各依赖原许可。版权与依赖许可见 [NOTICE](NOTICE)。

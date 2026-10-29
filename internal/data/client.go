@@ -1,7 +1,7 @@
 package data
 
 import (
-	"github.com/cagelam/polymarket-go/internal/transport"
+	"github.com/cagelin/polymarket-go/internal/transport"
 )
 
 // Client implements public data queries.

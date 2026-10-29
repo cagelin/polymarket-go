@@ -7,7 +7,7 @@ text='''package models
 import (
  "encoding/json"
  "fmt"
- "github.com/cagelam/polymarket-go/internal/codec"
+ "github.com/cagelin/polymarket-go/internal/codec"
 )
 '''
 for union,mapping,extra in [('Activity',_KNOWN_ACTIVITY_TYPES,['ComboTradeActivity','UnknownActivity']),('ComboActivity',_COMBO_ACTIVITY_TYPES,[]),('BiggestWinner',{'market':type('MarketBiggestWinner',(),{}),'combo':type('ComboBiggestWinner',(),{})},[])]:

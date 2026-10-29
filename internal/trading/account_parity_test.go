@@ -12,9 +12,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cagelam/polymarket-go/internal/signing"
-	"github.com/cagelam/polymarket-go/internal/transport"
-	"github.com/cagelam/polymarket-go/models"
+	"github.com/cagelin/polymarket-go/internal/signing"
+	"github.com/cagelin/polymarket-go/internal/transport"
+	"github.com/cagelin/polymarket-go/models"
 )
 
 type accountInput struct {

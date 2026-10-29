@@ -9,10 +9,10 @@ import (
 	"strconv"
 	"strings"
 
-	sdkerrors "github.com/cagelam/polymarket-go/errors"
-	"github.com/cagelam/polymarket-go/internal/codec"
-	"github.com/cagelam/polymarket-go/internal/transport"
-	"github.com/cagelam/polymarket-go/pagination"
+	sdkerrors "github.com/cagelin/polymarket-go/errors"
+	"github.com/cagelin/polymarket-go/internal/codec"
+	"github.com/cagelin/polymarket-go/internal/transport"
+	"github.com/cagelin/polymarket-go/pagination"
 )
 
 // OffsetOptions defines server limits and the number of rows that fill a page.

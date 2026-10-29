@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/cagelam/polymarket-go/internal/codec"
+	"github.com/cagelin/polymarket-go/internal/codec"
 )
 
 // Activity is one of the concrete public response variants. Use a type switch to inspect it.

@@ -6,7 +6,7 @@ import json,subprocess
 first,second=_required_trading_approvals(PRODUCTION._config)
 s='''package data
 
-import "github.com/cagelam/polymarket-go/models"
+import "github.com/cagelin/polymarket-go/models"
 
 // RequiredApprovals returns fresh values so callers cannot mutate the pinned catalog.
 //nolint:gosec // This catalog contains public contract addresses, not credentials.

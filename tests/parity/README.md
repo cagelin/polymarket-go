@@ -3,14 +3,14 @@
 对标 `polymarket-client==0.14.0`，提交 `7032ed06175b0bbea77b2d9e898bd9f252af2041`。
 生成前验证压缩包版本和 202 个源码文件哈希。普通 Go 测试不需要 Python，也不依赖 `docs/`。
 
-目前有 **13,322 条固定对照用例**，覆盖公开查询、账户请求、模型、分页、金额、
+目前有 **13,335 条固定对照用例**，覆盖公开查询、账户请求、模型、分页、金额、
 订单签名／提交／成交等待、组合报价及实时事件。公开客户端核对 62 个成员；
 认证客户端核对 120 个成员：117 个方法、构造入口，以及明确排除的 2 个废弃空操作。
 接口存在检查与行为对照分别执行，不以存在检查代替行为验收。
 
 本地 HTTP／WebSocket 测试覆盖认证回退、重定向隔离、并发缓存、撤单、订阅确认／拒绝、
 断线恢复、共享过滤、64 个过滤条件上限、取消和关闭。所有账户与交易测试均用合成密钥
-及本地服务；专用 EOA 已通过认证和只读实测，资金操作尚未验收。严格 lint 同样检查生成代码。
+及本地服务；实网验收范围和未验证项见 `../acceptance/README.md`。严格 lint 同样检查生成代码。
 
 生成模型和全部固定数据：
 
@@ -55,13 +55,13 @@ Go 不保留重复废弃字段；固定用例仍比较当前字段和服务端�
 
 ---
 
-Fixtures execute the pinned Python SDK and default decimal context. All 13,322
+Fixtures execute the pinned Python SDK and default decimal context. All 13,335
 cases are offline. Source hashes are checked before generation; ordinary Go tests
 need neither Python nor docs. Surface checks are separate from behavioral tests.
 
 `make generate` regenerates models and fixtures. `make check` runs strict lint,
 CGO-free tests and race detection. Live public checks remain opt-in. Authenticated
-live authentication passed for a dedicated EOA; funded flows remain unverified. Stage 3 adds
+live authentication passed for a dedicated EOA; selected funded flows have passed while full live acceptance remains pending. Stage 3 adds
 ABI/signature parity, wallet flows, session keys, collateral plans, and persistent RFQ sessions.
 
 `UP-001` corrects negative fractional timestamps using Python's standard library.

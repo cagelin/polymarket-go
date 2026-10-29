@@ -12,9 +12,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cagelam/polymarket-go/internal/testutil"
+	"github.com/cagelin/polymarket-go/internal/testutil"
 
-	"github.com/cagelam/polymarket-go/models"
+	"github.com/cagelin/polymarket-go/models"
 	"github.com/coder/websocket"
 )
 

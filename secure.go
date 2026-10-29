@@ -5,14 +5,14 @@ import (
 	"errors"
 	"time"
 
-	"github.com/cagelam/polymarket-go/internal/wallet"
+	"github.com/cagelin/polymarket-go/internal/wallet"
 
-	sdkerrors "github.com/cagelam/polymarket-go/errors"
-	"github.com/cagelam/polymarket-go/models"
-	"github.com/cagelam/polymarket-go/rfq"
-	"github.com/cagelam/polymarket-go/streams"
+	sdkerrors "github.com/cagelin/polymarket-go/errors"
+	"github.com/cagelin/polymarket-go/models"
+	"github.com/cagelin/polymarket-go/rfq"
+	"github.com/cagelin/polymarket-go/streams"
 
-	"github.com/cagelam/polymarket-go/internal/trading"
+	"github.com/cagelin/polymarket-go/internal/trading"
 )
 
 type tradingClient = trading.Client

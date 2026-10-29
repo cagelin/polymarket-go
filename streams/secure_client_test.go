@@ -9,8 +9,8 @@ import (
 	"testing"
 	"time"
 
-	sdkerrors "github.com/cagelam/polymarket-go/errors"
-	"github.com/cagelam/polymarket-go/models"
+	sdkerrors "github.com/cagelin/polymarket-go/errors"
+	"github.com/cagelin/polymarket-go/models"
 )
 
 func secureStreamConfig(address string) Config {

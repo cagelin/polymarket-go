@@ -9,9 +9,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/cagelam/polymarket-go/internal/codec"
-	"github.com/cagelam/polymarket-go/models"
-	"github.com/cagelam/polymarket-go/pagination"
+	"github.com/cagelin/polymarket-go/internal/codec"
+	"github.com/cagelin/polymarket-go/models"
+	"github.com/cagelin/polymarket-go/pagination"
 )
 
 // GetOrderScoring reports whether an order currently earns liquidity rewards.

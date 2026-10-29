@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/cagelam/polymarket-go/internal/codec"
+	"github.com/cagelin/polymarket-go/internal/codec"
 )
 
 func clobTime(raw json.RawMessage, kind string) (json.RawMessage, error) {

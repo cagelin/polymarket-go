@@ -4,17 +4,17 @@
 package polymarket
 
 import (
-	"github.com/cagelam/polymarket-go/errors"
-	"github.com/cagelam/polymarket-go/internal/clob"
-	"github.com/cagelam/polymarket-go/internal/data"
-	"github.com/cagelam/polymarket-go/internal/gamma"
-	"github.com/cagelam/polymarket-go/internal/rfq"
-	"github.com/cagelam/polymarket-go/internal/trading"
-	"github.com/cagelam/polymarket-go/models"
-	"github.com/cagelam/polymarket-go/pagination"
-	rfqsession "github.com/cagelam/polymarket-go/rfq"
-	"github.com/cagelam/polymarket-go/streams"
-	"github.com/cagelam/polymarket-go/transactions"
+	"github.com/cagelin/polymarket-go/errors"
+	"github.com/cagelin/polymarket-go/internal/clob"
+	"github.com/cagelin/polymarket-go/internal/data"
+	"github.com/cagelin/polymarket-go/internal/gamma"
+	"github.com/cagelin/polymarket-go/internal/rfq"
+	"github.com/cagelin/polymarket-go/internal/trading"
+	"github.com/cagelin/polymarket-go/models"
+	"github.com/cagelin/polymarket-go/pagination"
+	rfqsession "github.com/cagelin/polymarket-go/rfq"
+	"github.com/cagelin/polymarket-go/streams"
+	"github.com/cagelin/polymarket-go/transactions"
 )
 
 // APIKey is the canonical SDK type.

@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/url"
 
-	"github.com/cagelam/polymarket-go/internal/transport"
+	"github.com/cagelin/polymarket-go/internal/transport"
 )
 
 // Client implements public clob queries.

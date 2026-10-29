@@ -9,11 +9,11 @@ import (
 	"strconv"
 	"strings"
 
-	sdkerrors "github.com/cagelam/polymarket-go/errors"
-	"github.com/cagelam/polymarket-go/internal/evm"
-	"github.com/cagelam/polymarket-go/internal/gamma"
-	"github.com/cagelam/polymarket-go/models"
-	"github.com/cagelam/polymarket-go/transactions"
+	sdkerrors "github.com/cagelin/polymarket-go/errors"
+	"github.com/cagelin/polymarket-go/internal/evm"
+	"github.com/cagelin/polymarket-go/internal/gamma"
+	"github.com/cagelin/polymarket-go/models"
+	"github.com/cagelin/polymarket-go/transactions"
 	"github.com/ethereum/go-ethereum/accounts/abi"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/crypto"
@@ -137,7 +137,8 @@ func (c *Client) marketContext(ctx context.Context, condition, market string, cl
 		return positionContext{}, input("provide exactly one condition ID or market ID")
 	}
 	size := 1
-	p := gamma.ListMarketsParams{PageSize: &size, Closed: closed}
+	// Gamma defaults to V1 when no version filter is supplied.
+	p := gamma.ListMarketsParams{PageSize: &size, Closed: closed, Versions: []models.ProtocolVersion{models.ProtocolV1, models.ProtocolV2}}
 	if condition != "" {
 		p.ConditionIDs = []string{condition}
 	} else {

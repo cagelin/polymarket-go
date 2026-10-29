@@ -10,13 +10,13 @@ import (
 	"strconv"
 	"time"
 
-	sdkerrors "github.com/cagelam/polymarket-go/errors"
-	"github.com/cagelam/polymarket-go/internal/codec"
-	"github.com/cagelam/polymarket-go/internal/evm"
-	"github.com/cagelam/polymarket-go/internal/signing"
-	"github.com/cagelam/polymarket-go/internal/transport"
-	"github.com/cagelam/polymarket-go/models"
-	"github.com/cagelam/polymarket-go/transactions"
+	sdkerrors "github.com/cagelin/polymarket-go/errors"
+	"github.com/cagelin/polymarket-go/internal/codec"
+	"github.com/cagelin/polymarket-go/internal/evm"
+	"github.com/cagelin/polymarket-go/internal/signing"
+	"github.com/cagelin/polymarket-go/internal/transport"
+	"github.com/cagelin/polymarket-go/models"
+	"github.com/cagelin/polymarket-go/transactions"
 )
 
 const depositFactory = "0x00000000000Fb5C9ADea0298D729A0CB3823Cc07"

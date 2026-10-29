@@ -11,8 +11,8 @@ import (
 	"sync/atomic"
 	"testing"
 
-	"github.com/cagelam/polymarket-go/internal/evm"
-	"github.com/cagelam/polymarket-go/models"
+	"github.com/cagelin/polymarket-go/internal/evm"
+	"github.com/cagelin/polymarket-go/models"
 )
 
 func TestApprovalsSkipExistingAndConfirmOnlyMissing(t *testing.T) {

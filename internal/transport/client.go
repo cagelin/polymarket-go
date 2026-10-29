@@ -15,7 +15,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	sdkerrors "github.com/cagelam/polymarket-go/errors"
+	sdkerrors "github.com/cagelin/polymarket-go/errors"
 )
 
 // Config configures public requests. Its zero value uses production URLs.

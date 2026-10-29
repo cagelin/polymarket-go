@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/cagelam/polymarket-go/internal/codec"
+	"github.com/cagelin/polymarket-go/internal/codec"
 )
 
 // NotificationType identifies the notification payload.

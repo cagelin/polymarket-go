@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/cagelam/polymarket-go/internal/codec"
+	"github.com/cagelin/polymarket-go/internal/codec"
 	"github.com/ericlagergren/decimal"
 )
 

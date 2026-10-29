@@ -7,11 +7,11 @@ import (
 	"fmt"
 	"math/big"
 
-	sdkerrors "github.com/cagelam/polymarket-go/errors"
+	sdkerrors "github.com/cagelin/polymarket-go/errors"
 
-	"github.com/cagelam/polymarket-go/internal/clob"
-	"github.com/cagelam/polymarket-go/internal/signing"
-	"github.com/cagelam/polymarket-go/models"
+	"github.com/cagelin/polymarket-go/internal/clob"
+	"github.com/cagelin/polymarket-go/internal/signing"
+	"github.com/cagelin/polymarket-go/models"
 	"github.com/ericlagergren/decimal"
 )
 

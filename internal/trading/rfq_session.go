@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/http"
 
-	"github.com/cagelam/polymarket-go/rfq"
+	"github.com/cagelin/polymarket-go/rfq"
 )
 
 // OpenRFQSession reuses one live authenticated quote session per client.

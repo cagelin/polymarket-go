@@ -5,10 +5,10 @@ import (
 	"errors"
 	"strings"
 
-	sdkerrors "github.com/cagelam/polymarket-go/errors"
-	"github.com/cagelam/polymarket-go/internal/signing"
-	"github.com/cagelam/polymarket-go/models"
-	"github.com/cagelam/polymarket-go/transactions"
+	sdkerrors "github.com/cagelin/polymarket-go/errors"
+	"github.com/cagelin/polymarket-go/internal/signing"
+	"github.com/cagelin/polymarket-go/models"
+	"github.com/cagelin/polymarket-go/transactions"
 )
 
 func (c *Client) postWithAllowanceRecovery(ctx context.Context, order models.SignedOrder) (models.OrderResponse, error) {

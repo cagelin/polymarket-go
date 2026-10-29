@@ -6,7 +6,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/cagelam/polymarket-go/models"
+	"github.com/cagelin/polymarket-go/models"
 )
 
 func TestPythonSigning(t *testing.T) {

@@ -8,9 +8,9 @@ import (
 	"strings"
 	"sync/atomic"
 
-	sdkerrors "github.com/cagelam/polymarket-go/errors"
-	"github.com/cagelam/polymarket-go/internal/transport"
-	"github.com/cagelam/polymarket-go/models"
+	sdkerrors "github.com/cagelin/polymarket-go/errors"
+	"github.com/cagelin/polymarket-go/internal/transport"
+	"github.com/cagelin/polymarket-go/models"
 )
 
 // RPC shares the SDK HTTP transport and assigns unique request IDs.

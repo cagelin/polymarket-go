@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"time"
 
-	"github.com/cagelam/polymarket-go/models"
+	"github.com/cagelin/polymarket-go/models"
 )
 
 type priceEnvelope struct {

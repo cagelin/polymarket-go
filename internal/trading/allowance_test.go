@@ -12,9 +12,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cagelam/polymarket-go/internal/signing"
-	"github.com/cagelam/polymarket-go/internal/wallet"
-	"github.com/cagelam/polymarket-go/models"
+	"github.com/cagelin/polymarket-go/internal/signing"
+	"github.com/cagelin/polymarket-go/internal/wallet"
+	"github.com/cagelin/polymarket-go/models"
 )
 
 func TestAllowanceRecoveryRetriesOnlyAfterConfirmedApproval(t *testing.T) {

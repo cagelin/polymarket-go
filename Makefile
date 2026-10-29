@@ -1,35 +1,28 @@
 GOLANGCI_LINT ?= golangci-lint
 PYTHON ?= python3
-SHADOW_TOOL := $(CURDIR)/.local/tools/check-shadow.exe
 
-.PHONY: check lint shadow test race fmt generate
+.PHONY: check lint test race fmt generate validate-release
 
 check: lint test race
 
-lint: shadow
+lint:
 	$(GOLANGCI_LINT) config verify
 	$(GOLANGCI_LINT) fmt --diff
 	$(GOLANGCI_LINT) run ./...
-	cd tools/shadow && $(GOLANGCI_LINT) fmt --diff --config ../../.golangci.yml
-	cd tools/shadow && $(GOLANGCI_LINT) run --config ../../.golangci.yml ./...
-
-shadow:
-	go -C tools/shadow build -o "$(SHADOW_TOOL)" .
-	go vet -vettool="$(SHADOW_TOOL)" ./...
-	go -C tools/shadow vet -vettool="$(SHADOW_TOOL)" ./...
 
 test:
 	CGO_ENABLED=0 go test ./...
-	CGO_ENABLED=0 go -C tools/shadow test ./...
+	$(PYTHON) -m unittest discover -s tests/acceptance -p 'test_*.py'
 
 race:
 	go test -race ./...
-	go -C tools/shadow test -race ./...
 
 fmt:
 	$(GOLANGCI_LINT) fmt
-	cd tools/shadow && $(GOLANGCI_LINT) fmt --config ../../.golangci.yml
 
 generate:
 	GOLANGCI_LINT=$(GOLANGCI_LINT) $(PYTHON) scripts/regenerate.py
-	$(MAKE) shadow
+	$(MAKE) lint
+
+validate-release: check
+	GOLANGCI_LINT=$(GOLANGCI_LINT) $(PYTHON) scripts/validate_release.py all

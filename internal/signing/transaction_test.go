@@ -7,9 +7,9 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/cagelam/polymarket-go/internal/evm"
-	"github.com/cagelam/polymarket-go/internal/signing"
-	"github.com/cagelam/polymarket-go/models"
+	"github.com/cagelin/polymarket-go/internal/evm"
+	"github.com/cagelin/polymarket-go/internal/signing"
+	"github.com/cagelin/polymarket-go/models"
 )
 
 func TestPythonTransactions(t *testing.T) {

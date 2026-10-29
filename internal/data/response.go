@@ -6,10 +6,10 @@ import (
 	"fmt"
 	"net/url"
 
-	sdkerrors "github.com/cagelam/polymarket-go/errors"
-	"github.com/cagelam/polymarket-go/internal/codec"
-	"github.com/cagelam/polymarket-go/internal/paging"
-	"github.com/cagelam/polymarket-go/pagination"
+	sdkerrors "github.com/cagelin/polymarket-go/errors"
+	"github.com/cagelin/polymarket-go/internal/codec"
+	"github.com/cagelin/polymarket-go/internal/paging"
+	"github.com/cagelin/polymarket-go/pagination"
 )
 
 func queryValues(query map[string]any) url.Values { return paging.QueryValues(query) }

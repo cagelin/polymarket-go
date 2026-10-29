@@ -13,8 +13,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cagelam/polymarket-go/internal/clob"
-	"github.com/cagelam/polymarket-go/internal/codec"
+	"github.com/cagelin/polymarket-go/internal/clob"
+	"github.com/cagelin/polymarket-go/internal/codec"
 )
 
 func TestPythonHTTPParity(t *testing.T) {
@@ -151,8 +151,16 @@ func TestMalformedJSON(t *testing.T) {
 }
 
 func TestClientConfig(t *testing.T) {
+	client, err := NewPublicClient(ClientConfig{})
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Cleanup(func() { _ = client.Close() }) // Close only releases local resources.
+	if got := client.Environment().Name; got != "production" {
+		t.Errorf("Environment().Name = %q, want production", got)
+	}
 	for _, endpoint := range []string{"relative", "ftp://example.com", "https://user:secret@example.com", "https://example.com?x=1", "https://example.com/#fragment"} {
-		if _, err := NewPublicClient(ClientConfig{CLOBURL: endpoint}); errorClass(err) != "UserInputError" {
+		if _, err = NewPublicClient(ClientConfig{CLOBURL: endpoint}); errorClass(err) != "UserInputError" {
 			t.Errorf("NewPublicClient(%q) error = %v", endpoint, err)
 		}
 	}

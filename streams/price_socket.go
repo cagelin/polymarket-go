@@ -13,8 +13,8 @@ import (
 	"sync/atomic"
 	"time"
 
-	sdkerrors "github.com/cagelam/polymarket-go/errors"
-	"github.com/cagelam/polymarket-go/models"
+	sdkerrors "github.com/cagelin/polymarket-go/errors"
+	"github.com/cagelin/polymarket-go/models"
 	"github.com/coder/websocket"
 )
 

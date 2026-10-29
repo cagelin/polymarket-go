@@ -1,0 +1,33 @@
+{
+  "source": "Read-only Gamma responses captured 2026-10-29; only fields used by wallet resolution retained.",
+  "markets": [
+    {
+      "id": "6182072",
+      "version": "v2",
+      "conditionId": "0x0118f8cb04259464c0e1f464f5d0d83078000000000000000000000000000000",
+      "outcomes": "[\"Bandirma Bordo\", \"Bahcesehir Koleji\"]",
+      "positionIds": [
+        "496434284537833646782127667851621953528514251545071522230068564777834119168",
+        "496434284537833646782127667851621953528514251545071522230068564777834119169"
+      ],
+      "closed": false,
+      "negRisk": false
+    },
+    {
+      "id": "6205285",
+      "version": "v2",
+      "conditionId": "0x01cbb0cda6b7ddc2e761c1b295e1675b56000000000000000000000000000000",
+      "outcomes": "[\"Yes\", \"No\"]",
+      "positionIds": [
+        "812203054436858919603402790893478245641812236403253922283426934652007350272",
+        "812203054436858919603402790893478245641812236403253922283426934652007350273"
+      ],
+      "closed": true,
+      "negRisk": false
+    }
+  ],
+  "empty_page": {
+    "markets": [],
+    "next_cursor": null
+  }
+}

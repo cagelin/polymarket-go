@@ -3,7 +3,7 @@ package trading
 import (
 	"context"
 
-	"github.com/cagelam/polymarket-go/models"
+	"github.com/cagelin/polymarket-go/models"
 )
 
 // CancelOrder cancels one account order.

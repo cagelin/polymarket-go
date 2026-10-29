@@ -12,7 +12,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/cagelam/polymarket-go/models"
+	"github.com/cagelin/polymarket-go/models"
 	"github.com/coder/websocket"
 )
 

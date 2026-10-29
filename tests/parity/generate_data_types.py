@@ -127,7 +127,7 @@ import (
  "encoding/json"
  "time"
  "github.com/ericlagergren/decimal"
- "github.com/cagelam/polymarket-go/internal/codec"
+ "github.com/cagelin/polymarket-go/internal/codec"
 )
 '''
 for name,base in sorted(ids):

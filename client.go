@@ -3,13 +3,13 @@ package polymarket
 import (
 	"errors"
 
-	"github.com/cagelam/polymarket-go/internal/clob"
-	"github.com/cagelam/polymarket-go/internal/data"
-	"github.com/cagelam/polymarket-go/internal/gamma"
-	"github.com/cagelam/polymarket-go/internal/rfq"
-	"github.com/cagelam/polymarket-go/internal/transport"
-	"github.com/cagelam/polymarket-go/models"
-	"github.com/cagelam/polymarket-go/streams"
+	"github.com/cagelin/polymarket-go/internal/clob"
+	"github.com/cagelin/polymarket-go/internal/data"
+	"github.com/cagelin/polymarket-go/internal/gamma"
+	"github.com/cagelin/polymarket-go/internal/rfq"
+	"github.com/cagelin/polymarket-go/internal/transport"
+	"github.com/cagelin/polymarket-go/models"
+	"github.com/cagelin/polymarket-go/streams"
 )
 
 // ClientConfig configures all public service requests.

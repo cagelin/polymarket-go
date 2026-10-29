@@ -8,8 +8,8 @@ import (
 	"strings"
 	"unicode/utf8"
 
-	sdkerrors "github.com/cagelam/polymarket-go/errors"
-	"github.com/cagelam/polymarket-go/internal/codec"
+	sdkerrors "github.com/cagelin/polymarket-go/errors"
+	"github.com/cagelin/polymarket-go/internal/codec"
 )
 
 func put[T any](query map[string]any, key string, value *T) {

@@ -1,0 +1,319 @@
+{
+  "fixture_tests": {
+    "testdata/account-queries-parity.json": [
+      "internal/trading/account_parity_test.go#TestPythonAccountQueries"
+    ],
+    "testdata/approvals-parity.json": [
+      "discovery_parity_test.go#TestPythonApprovals"
+    ],
+    "testdata/catalog-queries-parity.json": [
+      "discovery_parity_test.go#TestPythonCatalogQueries"
+    ],
+    "testdata/clob-parity.json": [
+      "clob_parity_test.go#TestPythonCLOBParity"
+    ],
+    "testdata/combo-parity.json": [
+      "internal/trading/combo_parity_test.go#TestPythonComboParity"
+    ],
+    "testdata/data-models-parity.json": [
+      "models/data_parity_test.go#TestPythonDataModels"
+    ],
+    "testdata/data-queries-parity.json": [
+      "discovery_parity_test.go#TestPythonDataQueries"
+    ],
+    "testdata/decimal-parity.json": [
+      "internal/codec/decimal_test.go#TestPythonDecimalArithmetic"
+    ],
+    "testdata/discovery-parity.json": [
+      "discovery_parity_test.go#TestPythonDiscoveryParity"
+    ],
+    "testdata/events-parity.json": [
+      "discovery_parity_test.go#TestPythonEventsParity"
+    ],
+    "testdata/http-parity.json": [
+      "client_test.go#TestPythonHTTPParity"
+    ],
+    "testdata/order-math-parity.json": [
+      "internal/trading/order_math_test.go#TestPythonOrderMath"
+    ],
+    "testdata/order-post-parity.json": [
+      "internal/trading/flows_test.go#TestPythonOrderPost"
+    ],
+    "testdata/pagination-parity.json": [
+      "pagination_test.go#TestPythonPaginationParity"
+    ],
+    "testdata/public-clob-queries-parity.json": [
+      "discovery_parity_test.go#TestPythonPublicClobQueries"
+    ],
+    "testdata/rfq-session-parity.json": [
+      "rfq/parity_test.go#TestPythonMakerQuotes"
+    ],
+    "testdata/secure-stream-events-parity.json": [
+      "models/stream_parity_test.go#TestPythonSecureStreamEvents"
+    ],
+    "testdata/signing-parity.json": [
+      "internal/signing/parity_test.go#TestPythonSigning"
+    ],
+    "testdata/streams-events-parity.json": [
+      "models/stream_parity_test.go#TestPythonStreamEvents"
+    ],
+    "testdata/streams-protocol-parity.json": [
+      "streams/parity_test.go#TestPythonStreamProtocol"
+    ],
+    "testdata/wallet-parity.json": [
+      "internal/wallet/parity_test.go#TestPythonWalletCalls"
+    ],
+    "testdata/unions-parity.json": [
+      "models/union_parity_test.go#TestPythonResponseVariants"
+    ],
+    "testdata/transactions-parity.json": [
+      "internal/signing/transaction_test.go#TestPythonTransactions"
+    ]
+  },
+  "groups": [
+    {
+      "members": [
+        "close"
+      ],
+      "fixtures": [],
+      "tests": [
+        "client_test.go#TestSharedClientOwnershipAndConcurrentUse"
+      ]
+    },
+    {
+      "members": [
+        "environment"
+      ],
+      "fixtures": [],
+      "tests": [
+        "client_test.go#TestClientConfig"
+      ]
+    },
+    {
+      "members": [
+        "get_last_trade_price",
+        "get_last_trade_prices",
+        "get_midpoint",
+        "get_midpoints",
+        "get_order_book",
+        "get_order_books",
+        "get_price",
+        "get_prices",
+        "get_spread",
+        "get_spreads"
+      ],
+      "fixtures": [
+        "testdata/clob-parity.json"
+      ],
+      "tests": []
+    },
+    {
+      "members": [
+        "list_price_history"
+      ],
+      "fixtures": [],
+      "tests": [
+        "pagination_test.go#TestPythonPaginationParity",
+        "pagination_test.go#TestHistoryRateLimitRetry"
+      ]
+    },
+    {
+      "members": [
+        "subscribe"
+      ],
+      "fixtures": [
+        "testdata/streams-protocol-parity.json",
+        "testdata/streams-events-parity.json",
+        "testdata/secure-stream-events-parity.json"
+      ],
+      "tests": [
+        "streams/client_test.go#TestMarketMultiplexReconnectAndCancel",
+        "streams/secure_client_test.go#TestUserAuthenticationAndAllMarketTransitions",
+        "streams/secure_client_test.go#TestPriceAcceptanceSharingAndReconnect"
+      ]
+    },
+    {
+      "members": [
+        "create",
+        "credentials",
+        "signer",
+        "wallet",
+        "wallet_type",
+        "end_authentication"
+      ],
+      "fixtures": [
+        "testdata/signing-parity.json"
+      ],
+      "tests": [
+        "secure_test.go#TestSecureCredentialLifecycle",
+        "secure_test.go#TestSecureDefaultWalletAndUser"
+      ]
+    },
+    {
+      "members": [
+        "create_limit_order",
+        "place_limit_order"
+      ],
+      "fixtures": [
+        "testdata/order-math-parity.json",
+        "testdata/signing-parity.json"
+      ],
+      "tests": [
+        "internal/trading/flows_test.go#TestCreateOrderRefreshAndConcurrentCache",
+        "internal/trading/allowance_test.go#TestAllowanceRecoveryRetriesOnlyAfterConfirmedApproval"
+      ]
+    },
+    {
+      "members": [
+        "create_market_order",
+        "place_market_order",
+        "get_builder_fee_rates"
+      ],
+      "fixtures": [
+        "testdata/order-math-parity.json",
+        "testdata/signing-parity.json"
+      ],
+      "tests": [
+        "internal/trading/flows_test.go#TestProtectedMarketOrderIncludesFeesAndUsesNegativeRiskExchange",
+        "internal/trading/allowance_test.go#TestAllowanceRecoveryRetriesOnlyAfterConfirmedApproval",
+        "internal/trading/submission_test.go#TestPlaceMarketOrderSubmitsOnce"
+      ]
+    },
+    {
+      "members": [
+        "post_order",
+        "post_orders"
+      ],
+      "fixtures": [
+        "testdata/order-post-parity.json"
+      ],
+      "tests": [
+        "internal/trading/flows_test.go#TestPostBatchBoundsAndFailureDoesNotRetry",
+        "internal/trading/submission_test.go#TestPythonBatchOrderSubmission"
+      ]
+    },
+    {
+      "members": [
+        "wait_for_order_fill_settlement"
+      ],
+      "fixtures": [
+        "testdata/order-post-parity.json"
+      ],
+      "tests": [
+        "internal/trading/flows_test.go#TestPythonSettlement",
+        "internal/trading/flows_test.go#TestSettlementLifecycle"
+      ]
+    },
+    {
+      "members": [
+        "request_combo_quote",
+        "accept_combo_quote",
+        "fetch_rfq_status",
+        "wait_for_combo_fill"
+      ],
+      "fixtures": [
+        "testdata/combo-parity.json"
+      ],
+      "tests": [
+        "internal/trading/flows_test.go#TestComboRetryKeepsIdenticalSignedOrder",
+        "internal/trading/flows_test.go#TestComboStatusNoBuilderHeadersAndTerminalFailure"
+      ]
+    },
+    {
+      "members": [
+        "revoke_builder_api_key"
+      ],
+      "fixtures": [],
+      "tests": [
+        "internal/trading/flows_test.go#TestBuilderRevocationUsesOnlyBuilderCredentials"
+      ]
+    },
+    {
+      "members": [
+        "execute_transaction"
+      ],
+      "fixtures": [
+        "testdata/transactions-parity.json"
+      ],
+      "tests": [
+        "internal/wallet/flows_test.go#TestEOASequentialConfirmationAndNoBlindRetry",
+        "internal/wallet/flows_test.go#TestDepositNonceRepairAndConfirmation"
+      ]
+    },
+    {
+      "members": [
+        "approve_erc20",
+        "approve_erc1155_for_all",
+        "transfer_erc20"
+      ],
+      "fixtures": [
+        "testdata/wallet-parity.json"
+      ],
+      "tests": [
+        "internal/wallet/token_parity_test.go#TestPythonTokenOperations"
+      ]
+    },
+    {
+      "members": [
+        "setup_trading_approvals"
+      ],
+      "fixtures": [],
+      "tests": [
+        "internal/wallet/operations_test.go#TestApprovalsSkipExistingAndConfirmOnlyMissing"
+      ]
+    },
+    {
+      "members": [
+        "split_position",
+        "merge_positions",
+        "merge_multiple_positions",
+        "redeem_positions"
+      ],
+      "fixtures": [
+        "testdata/wallet-parity.json"
+      ],
+      "tests": [
+        "internal/wallet/position_parity_test.go#TestPythonPositionSubmissions",
+        "internal/wallet/operations_test.go#TestPositionMergeReadsBalanceAndPreventsOverspend"
+      ]
+    },
+    {
+      "members": [
+        "plan_collateral_return",
+        "execute_collateral_return_plan"
+      ],
+      "fixtures": [
+        "testdata/data-models-parity.json"
+      ],
+      "tests": [
+        "internal/wallet/operations_test.go#TestCollateralPlanIdentityAndStalePlan"
+      ]
+    },
+    {
+      "members": [
+        "authorize_session_key",
+        "fetch_session_keys",
+        "revoke_session_key"
+      ],
+      "fixtures": [
+        "testdata/wallet-parity.json"
+      ],
+      "tests": [
+        "internal/wallet/session_flows_test.go#TestSessionAuthorizationIdempotencyAndRegistry",
+        "internal/wallet/session_flows_test.go#TestSessionRevocationWaitsThroughTransientRegistryFailure"
+      ]
+    },
+    {
+      "members": [
+        "open_rfq_session"
+      ],
+      "fixtures": [
+        "testdata/rfq-session-parity.json"
+      ],
+      "tests": [
+        "rfq/session_test.go#TestSessionAuthenticationQuoteAndDisconnect",
+        "rfq/session_test.go#TestLateAcknowledgementCannotConfirmNewQuote"
+      ]
+    }
+  ]
+}

@@ -1,14 +1,18 @@
 # Polymarket Go SDK
 
+Scope update (2026-10-29): this SDK targets new accounts using Deposit Wallets. Legacy Safe/Proxy onboarding, migration, and live validation are excluded from support and release acceptance. Existing legacy implementation and historical tests remain, without a support commitment. EOA signing and other agreed capabilities remain in scope.
+
 [中文](README.zh-CN.md)
 
 Independent Go SDK targeting official `polymarket-client 0.14.0`, source commit
 `7032ed06175b0bbea77b2d9e898bd9f252af2041`. Requires Go 1.27+; CGO is unnecessary.
 
-**Stage 3, wallet and on-chain operations, has passed offline acceptance.** The dedicated
-EOA funded checks and Deposit Wallet deployment, batching, transfers, and post-only order cancellation
-have passed live validation. Session-key authorization returned HTTP 403; Safe/Proxy wallets, filled-order
-settlement, and RFQ execution remain unverified. The module is unpublished; full acceptance is pending.
+**Stage 4: release validation for the agreed scope.** Live checks covered EOA funding,
+Deposit Wallet deployment, transfers, order cancellation and heartbeat cancellation,
+ordinary CTF filled-order settlement, and CTF/V2/negative-risk/combo asset operations.
+Test funds have been returned and temporary asset permissions cleared.
+Unverified scenarios are non-blocking for this release and remain explicitly unverified;
+see [acceptance scope](tests/acceptance/README.md).
 
 The live service requires Deposit Wallets for new orders. Its relayer requires maximum ERC20 allowance
 to the exchange and rejects both bounded allowances and zero-value revocations. An RPC transaction
@@ -21,7 +25,7 @@ Available capabilities:
 - Public trades, positions, activity, PnL, leaderboards, indexed approvals, and accounting downloads.
 - Market, sports, comments, crypto prices/TWAP, and equity streams, with reconnects and heartbeats.
 - Authentication, API keys, balances/allowances, notifications, rewards, orders, cancellation, and settlement polling.
-- Four wallet signature modes, combo quotes/acceptance/status, user events, and authenticated price streams.
+- Deposit Wallet order signing, combo quotes/acceptance/status, user events, and authenticated price streams.
 - Deposit Wallet deployment, EOA broadcasting, relayed batches, approvals, and transfers.
 - Position split/merge/redemption, session keys, collateral return plans, and persistent RFQ quote sessions.
 
@@ -34,6 +38,7 @@ go run ./examples/orderbook <asset-id>
 go run ./examples/markets
 go run ./examples/search election
 go run ./examples/streams
+go run ./examples/wallet <wallet-address>
 ```
 
 Use `NewSecureClient(ctx, SecureClientConfig{...})` for authentication. The
@@ -103,10 +108,15 @@ enclosing names or Go predeclared identifiers, including callback parameters and
 variables of different types. Rename by purpose; do not suppress diagnostics or
 make callbacks mutate outer variables to avoid a warning. The rule applies to
 handwritten/generated code and tests; fix generators along with their output.
-Run `make shadow` separately or as part of `make lint`. Its tool lives in the
-independent `tools/shadow/` module and adds no SDK dependencies.
+`make lint` uses golangci-lint's `govet shadow` with `strict: true` and
+`predeclared`; no custom checker is maintained. These checks do not cover every
+shadowing declaration, so review callback parameters and different-type variables
+against the coding standard as well.
 See [parity testing](tests/parity/README.md)
-for regeneration and opt-in live reads. CGO-free builds cover Linux/macOS/Windows
+for regeneration and opt-in live reads. The [release validation guide](tests/acceptance/README.md)
+provides reproducibility checks, member-to-test links, platform reports, and benchmarks.
+See [release notes](CHANGELOG.md) for the proposed v0.1.0 scope and remaining acceptance work.
+CGO-free builds cover Linux/macOS/Windows
 on amd64/arm64; runtime verification currently covers macOS arm64.
 
 The SDK is MIT licensed. The go-ethereum signing dependency retains LGPL-3.0-or-later. See [NOTICE](NOTICE) for upstream and dependency attribution.

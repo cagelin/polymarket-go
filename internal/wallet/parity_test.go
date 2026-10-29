@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/cagelam/polymarket-go/models"
+	"github.com/cagelin/polymarket-go/models"
 )
 
 func TestPythonWalletCalls(t *testing.T) {
@@ -62,6 +62,10 @@ func TestPythonWalletCalls(t *testing.T) {
 				if callErr == nil && !reflect.DeepEqual(actual, row.Expected) {
 					subtest.Fatal("scope normalization differs")
 				}
+			case "approve_erc20", "transfer_erc20", "approve_erc1155_for_all":
+				// Submitted token calls are checked by TestPythonTokenOperations.
+			default:
+				subtest.Fatalf("unhandled wallet fixture operation %q", row.Operation)
 			}
 		})
 	}

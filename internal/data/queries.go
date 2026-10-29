@@ -3,8 +3,8 @@ package data
 import (
 	"context"
 
-	"github.com/cagelam/polymarket-go/models"
-	"github.com/cagelam/polymarket-go/pagination"
+	"github.com/cagelin/polymarket-go/models"
+	"github.com/cagelin/polymarket-go/pagination"
 )
 
 // ListTradesParams selects filters for ListTrades. Nil optional fields are omitted.

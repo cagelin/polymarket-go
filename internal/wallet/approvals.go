@@ -7,10 +7,10 @@ import (
 
 	"github.com/ethereum/go-ethereum/common"
 
-	"github.com/cagelam/polymarket-go/internal/data"
-	"github.com/cagelam/polymarket-go/internal/evm"
-	"github.com/cagelam/polymarket-go/models"
-	"github.com/cagelam/polymarket-go/transactions"
+	"github.com/cagelin/polymarket-go/internal/data"
+	"github.com/cagelin/polymarket-go/internal/evm"
+	"github.com/cagelin/polymarket-go/models"
+	"github.com/cagelin/polymarket-go/transactions"
 )
 
 // ApproveERC20 sets a token allowance in base units. Nil amount selects maximum allowance.

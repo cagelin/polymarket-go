@@ -12,8 +12,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cagelam/polymarket-go/internal/signing"
-	"github.com/cagelam/polymarket-go/models"
+	"github.com/cagelin/polymarket-go/internal/signing"
+	"github.com/cagelin/polymarket-go/models"
 	"github.com/coder/websocket"
 	"github.com/ericlagergren/decimal"
 )

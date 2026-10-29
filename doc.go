@@ -1,6 +1,7 @@
 // Package polymarket provides access to Polymarket APIs.
 //
-// This implementation covers public queries, pagination, and real-time streams.
+// This implementation covers public queries, authentication, trading, wallets,
+// pagination, and real-time streams. Wallet submissions return confirmation handles.
 // Decimal fields use decimal.Big and retain their decimal-string precision.
 // Network operations accept a context, and clients support concurrent use.
 package polymarket

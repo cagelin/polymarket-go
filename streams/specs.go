@@ -8,8 +8,8 @@ import (
 	"strconv"
 	"strings"
 
-	sdkerrors "github.com/cagelam/polymarket-go/errors"
-	"github.com/cagelam/polymarket-go/models"
+	sdkerrors "github.com/cagelin/polymarket-go/errors"
+	"github.com/cagelin/polymarket-go/models"
 )
 
 // Spec selects a supported public stream. Values are copied when subscribed.

@@ -7,7 +7,7 @@ import (
 	"iter"
 	"sync"
 
-	"github.com/cagelam/polymarket-go/models"
+	"github.com/cagelin/polymarket-go/models"
 )
 
 // Handle receives typed events. Its bounded queue drops the oldest event when full.

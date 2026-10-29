@@ -108,7 +108,7 @@ print('Generated',len(cases),'Data model cases')
 text='''package models
 
 import (
- "github.com/cagelam/polymarket-go/internal/testutil"
+ "github.com/cagelin/polymarket-go/internal/testutil"
  "encoding/json"
  "os"
  "testing"

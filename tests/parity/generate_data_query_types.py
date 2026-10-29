@@ -14,8 +14,8 @@ text='''package data
 
 import (
  "context"
- "github.com/cagelam/polymarket-go/models"
- "github.com/cagelam/polymarket-go/pagination"
+ "github.com/cagelin/polymarket-go/models"
+ "github.com/cagelin/polymarket-go/pagination"
 )
 '''
 meta=[]

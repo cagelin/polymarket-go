@@ -13,7 +13,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/cagelam/polymarket-go/pagination"
+	"github.com/cagelin/polymarket-go/pagination"
 )
 
 func TestPythonPaginationParity(t *testing.T) {

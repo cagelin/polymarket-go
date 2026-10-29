@@ -17,8 +17,8 @@ for directory in ['models','errors','internal/clob','internal/gamma','internal/d
 exports.sort(key=lambda item:item[1])
 assert len({"RFQ"+name if directory=="rfq" else name for _,name,directory in exports})==len(exports),'duplicate public name'
 text='// Canonical public names; implementations live in domain packages.\n// Regenerate with scripts/generate_exports.py. This file is linted.\n\npackage polymarket\n\nimport (\n'
-for directory in sorted({directory for _,_,directory in exports}):text+=('rfqsession ' if directory=='rfq' else '')+'"github.com/cagelam/polymarket-go/'+directory+'"\n'
-text+='"github.com/cagelam/polymarket-go/transactions"\n"github.com/cagelam/polymarket-go/pagination"\n)\n'
+for directory in sorted({directory for _,_,directory in exports}):text+=('rfqsession ' if directory=='rfq' else '')+'"github.com/cagelin/polymarket-go/'+directory+'"\n'
+text+='"github.com/cagelin/polymarket-go/transactions"\n"github.com/cagelin/polymarket-go/pagination"\n)\n'
 for kind,name,directory in exports:
     public_name="RFQ"+name if directory=="rfq" else name
     text+=f'\n// {public_name} is the canonical SDK {"type" if kind=="type" else "value"}.\n{kind} {public_name} = {'rfqsession' if directory=='rfq' else Path(directory).name}.{name}\n'

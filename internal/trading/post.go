@@ -4,7 +4,7 @@ import (
 	"context"
 	"strconv"
 
-	"github.com/cagelam/polymarket-go/models"
+	"github.com/cagelin/polymarket-go/models"
 )
 
 func orderPayload(order models.SignedOrder, owner string) (map[string]any, error) {

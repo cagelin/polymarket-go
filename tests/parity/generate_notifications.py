@@ -2,7 +2,7 @@ from generate_trading_types import classes,ROOT
 from polymarket.models.clob.notifications import NotificationType
 from generate_data_types import fieldname
 s='''package models
-import ("encoding/json";"fmt";"github.com/cagelam/polymarket-go/internal/codec")
+import ("encoding/json";"fmt";"github.com/cagelin/polymarket-go/internal/codec")
 // NotificationType identifies the notification payload.
 type NotificationType int
 // Known account notification types.

@@ -8,8 +8,8 @@ import (
 	"strconv"
 	"testing"
 
-	"github.com/cagelam/polymarket-go/internal/signing"
-	"github.com/cagelam/polymarket-go/models"
+	"github.com/cagelin/polymarket-go/internal/signing"
+	"github.com/cagelin/polymarket-go/models"
 	"github.com/ericlagergren/decimal"
 )
 

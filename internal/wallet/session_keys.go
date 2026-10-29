@@ -13,11 +13,11 @@ import (
 	"strings"
 	"time"
 
-	sdkerrors "github.com/cagelam/polymarket-go/errors"
-	"github.com/cagelam/polymarket-go/internal/codec"
-	"github.com/cagelam/polymarket-go/internal/evm"
-	"github.com/cagelam/polymarket-go/models"
-	"github.com/cagelam/polymarket-go/transactions"
+	sdkerrors "github.com/cagelin/polymarket-go/errors"
+	"github.com/cagelin/polymarket-go/internal/codec"
+	"github.com/cagelin/polymarket-go/internal/evm"
+	"github.com/cagelin/polymarket-go/models"
+	"github.com/cagelin/polymarket-go/transactions"
 	"github.com/ethereum/go-ethereum/common"
 )
 

@@ -5,7 +5,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/cagelam/polymarket-go/internal/testutil"
+	"github.com/cagelin/polymarket-go/internal/testutil"
 )
 
 func TestPythonStreamEvents(t *testing.T) {

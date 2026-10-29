@@ -6,7 +6,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/cagelam/polymarket-go/models"
+	"github.com/cagelin/polymarket-go/models"
 	"github.com/ericlagergren/decimal"
 )
 

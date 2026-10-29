@@ -69,4 +69,4 @@ for kind,before,after in [('market',[{'asset_ids':['a','b']}],[{'asset_ids':['b'
  if service=='market':b=[mp.MarketSubscription(tuple(s.asset_ids),s.custom_feature_enabled) for s in b];a=[mp.MarketSubscription(tuple(s.asset_ids),s.custom_feature_enabled) for s in a];diff=mp.diff_state_frames(mp.derive_state(b),mp.derive_state(a))
  else:diff=rp.diff_state_frames(rp.derive_state(b),rp.derive_state(a))
  transitions.append({'service':service,'before':[{'kind':kind,'input':p} for p in before],'after':[{'kind':kind,'input':p} for p in after],'expected':diff})
-(ROOT/'testdata/streams-protocol-parity.json').write_text(json.dumps({'cases':protocol,'transitions':transitions},indent=2)+'\n')
+(ROOT/'testdata/streams-protocol-parity.json').write_text(json.dumps({'upstream_version':manifest['version'],'upstream_commit':manifest['commit'],'cases':protocol,'transitions':transitions},indent=2)+'\n')

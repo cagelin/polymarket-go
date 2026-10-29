@@ -12,14 +12,14 @@ import (
 	"sync"
 	"time"
 
-	"github.com/cagelam/polymarket-go/rfq"
+	"github.com/cagelin/polymarket-go/rfq"
 
-	sdkerrors "github.com/cagelam/polymarket-go/errors"
-	"github.com/cagelam/polymarket-go/internal/codec"
-	"github.com/cagelam/polymarket-go/internal/signing"
-	"github.com/cagelam/polymarket-go/internal/transport"
-	walletops "github.com/cagelam/polymarket-go/internal/wallet"
-	"github.com/cagelam/polymarket-go/models"
+	sdkerrors "github.com/cagelin/polymarket-go/errors"
+	"github.com/cagelin/polymarket-go/internal/codec"
+	"github.com/cagelin/polymarket-go/internal/signing"
+	"github.com/cagelin/polymarket-go/internal/transport"
+	walletops "github.com/cagelin/polymarket-go/internal/wallet"
+	"github.com/cagelin/polymarket-go/models"
 )
 
 // Config supplies credentials and the wallet to authenticate.
