@@ -2,8 +2,11 @@ package signing
 
 import (
 	"encoding/hex"
+	"fmt"
 	"math/big"
 	"strings"
+
+	"github.com/cagelin/polymarket-go/internal/chain"
 
 	"github.com/cagelin/polymarket-go/models"
 	"github.com/ethereum/go-ethereum/common"
@@ -11,21 +14,28 @@ import (
 )
 
 const (
-	proxyFactory          = "0xaB45c5A4B0c941a2F231C04C3f49182e1A254052"
+	proxyFactory          = chain.ProxyFactory
 	proxyImplementation   = "44e999d5c2F66Ef0861317f9A4805AC2e90aEB4f"
-	safeFactory           = "0xaacFeEa03eb1561C4e67d661e40682Bd20E3541b"
+	safeFactory           = chain.SafeFactory
 	safeCodeHash          = "2bce2127ff07fb632d16c8347c4ebf501f4841168bed00d9e6ef715ddb6fcecf"
-	depositFactory        = "0x00000000000Fb5C9ADea0298D729A0CB3823Cc07"
+	depositFactory        = chain.DepositFactory
 	depositImplementation = "58CA52ebe0DadfdF531Cde7062e76746de4Db1eB"
 	depositBeacon         = "7A18EDfe055488A3128f01F563e5B479D92ffc3a"
 )
 
 func fixedHex(value string) []byte {
-	raw, _ := hex.DecodeString(strings.TrimPrefix(value, "0x"))
+	raw, err := hex.DecodeString(strings.TrimPrefix(value, "0x"))
+	if err != nil {
+		panic(fmt.Sprintf("invalid embedded wallet bytecode: %v", err))
+	}
 	return raw
 }
 func create2(factory string, salt, codeHash []byte) string {
-	raw := append([]byte{0xff}, common.HexToAddress(factory).Bytes()...)
+	factoryBytes := fixedHex(factory)
+	if len(factoryBytes) != 20 || len(salt) != 32 || len(codeHash) != 32 {
+		panic("invalid embedded CREATE2 input length")
+	}
+	raw := append([]byte{0xff}, factoryBytes...)
 	raw = append(raw, salt...)
 	raw = append(raw, codeHash...)
 	return common.BytesToAddress(crypto.Keccak256(raw)[12:]).Hex()

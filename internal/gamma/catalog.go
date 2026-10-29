@@ -136,7 +136,11 @@ func tagPath(id *models.TagID, slug *string) (string, error) {
 	return "/tags/slug/" + escapeSegment(*slug), nil
 }
 func getCatalog[T any](ctx context.Context, c *Client, path string, params map[string]any) (*T, error) {
-	raw, err := c.transport.Request(ctx, c.transport.GammaURL, http.MethodGet, path, paging.QueryValues(params), nil)
+	query, err := paging.QueryValues(params)
+	if err != nil {
+		return nil, err
+	}
+	raw, err := c.transport.Request(ctx, c.transport.GammaURL, http.MethodGet, path, query, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -147,7 +151,11 @@ func getCatalog[T any](ctx context.Context, c *Client, path string, params map[s
 	return &result, nil
 }
 func listCatalog[T any](ctx context.Context, c *Client, path string, params map[string]any) ([]T, error) {
-	raw, err := c.transport.Request(ctx, c.transport.GammaURL, http.MethodGet, path, paging.QueryValues(params), nil)
+	query, err := paging.QueryValues(params)
+	if err != nil {
+		return nil, err
+	}
+	raw, err := c.transport.Request(ctx, c.transport.GammaURL, http.MethodGet, path, query, nil)
 	if err != nil {
 		return nil, err
 	}

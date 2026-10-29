@@ -48,6 +48,19 @@ func retryAfter(headers http.Header, body map[string]any) *float64 {
 	return nil
 }
 
+// RetryDelay applies a finite, representable Retry-After value to a minimum delay.
+// A missing value preserves the minimum; invalid values return false.
+func RetryDelay(minimum time.Duration, retryAfterSeconds *float64) (time.Duration, bool) {
+	if retryAfterSeconds == nil {
+		return minimum, true
+	}
+	seconds := *retryAfterSeconds
+	if math.IsNaN(seconds) || math.IsInf(seconds, 0) || seconds >= float64(math.MaxInt64)/float64(time.Second) {
+		return 0, false
+	}
+	return max(minimum, time.Duration(max(0, seconds)*float64(time.Second))), true
+}
+
 func responseError(res *http.Response, data []byte) error {
 	contentType := strings.ToLower(res.Header.Get("Content-Type"))
 	var body map[string]any

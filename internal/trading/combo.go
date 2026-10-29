@@ -12,6 +12,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/cagelin/polymarket-go/internal/chain"
+
 	sdkerrors "github.com/cagelin/polymarket-go/errors"
 	"github.com/cagelin/polymarket-go/internal/codec"
 	"github.com/cagelin/polymarket-go/internal/signing"
@@ -217,7 +219,7 @@ func (c *Client) comboAcceptanceBody(quote models.ComboQuote) (map[string]any, e
 		signer = c.wallet
 	}
 	order := models.SignedOrder{Builder: quote.BuilderCode, Maker: c.wallet, Signer: signer, MakerAmount: maker, TakerAmount: taker, Salt: salt, Side: quote.Direction, SignatureType: kind, Timestamp: c.now().Unix(), AssetID: models.ClobAssetID(position), Metadata: signing.ZeroBytes32}
-	signature, err := c.signer.Order(order, "0xe3333700cA9d93003F00f0F71f8515005F6c00Aa", models.SignerOwner)
+	signature, err := c.signer.Order(order, chain.ExchangeV3, models.SignerOwner)
 	if err != nil {
 		return nil, err
 	}

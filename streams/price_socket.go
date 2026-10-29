@@ -37,8 +37,21 @@ type priceRejections map[priceKey]error
 func (r priceRejections) Error() string { return "price filters rejected" }
 func (r priceRejections) Unwrap() []error {
 	result := make([]error, 0, len(r))
-	for _, err := range r {
-		result = append(result, err)
+	keys := make([]priceKey, 0, len(r))
+	for key := range r {
+		keys = append(keys, key)
+	}
+	slices.SortFunc(keys, func(first, second priceKey) int {
+		if order := strings.Compare(first.topic, second.topic); order != 0 {
+			return order
+		}
+		if order := strings.Compare(first.symbol, second.symbol); order != 0 {
+			return order
+		}
+		return strings.Compare(first.provider, second.provider)
+	})
+	for _, key := range keys {
+		result = append(result, r[key])
 	}
 	return result
 }
@@ -83,7 +96,7 @@ func (key priceKey) wire() map[string]any {
 	if strings.HasSuffix(key.topic, ".twap") {
 		filter["window_seconds"] = 60
 	}
-	return map[string]any{"channel": strings.Replace(key.topic, "prices.", "price.", 1), "filter": filter}
+	return map[string]any{"channel": wireChannel(key.topic), "filter": filter}
 }
 func (s *priceSession) open(ctx context.Context) error {
 	conn, err := s.client.dial(ctx, s.client.config.PriceURL)
@@ -122,7 +135,7 @@ func (s *priceSession) request(ctx context.Context, operation string, keys []pri
 	expected := map[string]string{"auth": "authed", "subscribe": "subscribed", "unsubscribe": "unsubscribed"}[operation]
 	pending := &pricePending{rid: rid, operation: expected, done: make(chan priceReply, 1), keys: keys, rejected: priceRejections{}}
 	for _, key := range keys {
-		pending.channels = append(pending.channels, strings.Replace(key.topic, "prices.", "price.", 1))
+		pending.channels = append(pending.channels, wireChannel(key.topic))
 	}
 	s.pending = pending
 	delay := time.Until(s.lastSent.Add(110 * time.Millisecond))
@@ -303,6 +316,10 @@ func (s *priceSession) message(raw []byte) {
 	}
 	event, err := models.ParseStreamEvent("price", raw)
 	if err != nil {
+		if errors.Is(err, models.ErrUnsupportedStreamEvent) {
+			s.client.unsupported.Add(1)
+			return
+		}
 		s.client.malformed.Add(1)
 		return
 	}
@@ -470,3 +487,5 @@ func (s *priceSession) openInitial(ctx context.Context) error {
 		}
 	}
 }
+
+func wireChannel(topic string) string { return "price." + strings.TrimPrefix(topic, "prices.") }

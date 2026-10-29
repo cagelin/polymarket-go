@@ -34,7 +34,7 @@ type Config struct {
 	TransactionMaxPolls     int
 }
 
-func (c Config) String() string { return "SecureClientConfig(<redacted>)" }
+func (c Config) String() string { return "trading.Config(<redacted>)" }
 
 // GoString redacts sensitive fields during Go-syntax formatting.
 func (c Config) GoString() string { return c.String() }

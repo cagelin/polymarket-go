@@ -6,6 +6,8 @@ import (
 	"math/big"
 	"time"
 
+	"github.com/cagelin/polymarket-go/internal/chain"
+
 	sdkerrors "github.com/cagelin/polymarket-go/errors"
 	"github.com/cagelin/polymarket-go/internal/codec"
 	"github.com/cagelin/polymarket-go/internal/signing"
@@ -81,7 +83,7 @@ func (s *Session) signedQuote(request Event, p QuoteParams, salt *big.Int, times
 		maker.Quo(new(big.Int).Add(product, big.NewInt(999999)), million)
 	}
 	order := models.SignedOrder{Builder: signing.ZeroBytes32, Metadata: signing.ZeroBytes32, Maker: s.config.Wallet, Signer: s.orderSigner(), AssetID: models.ClobAssetID(asset), MakerAmount: maker, TakerAmount: taker, Side: side, Salt: salt, Timestamp: timestamp, SignatureType: signing.SignatureType(s.config.WalletType), OrderType: models.GTC}
-	signature, err := s.config.Signer.Order(order, "0xe3333700cA9d93003F00f0F71f8515005F6c00Aa", models.SignerOwner)
+	signature, err := s.config.Signer.Order(order, chain.ExchangeV3, models.SignerOwner)
 	if err != nil {
 		return nil, err
 	}

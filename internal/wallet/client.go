@@ -7,8 +7,9 @@ import (
 	"math/big"
 	"net/http"
 	"net/url"
-	"strconv"
 	"time"
+
+	"github.com/cagelin/polymarket-go/internal/chain"
 
 	sdkerrors "github.com/cagelin/polymarket-go/errors"
 	"github.com/cagelin/polymarket-go/internal/codec"
@@ -19,10 +20,10 @@ import (
 	"github.com/cagelin/polymarket-go/transactions"
 )
 
-const depositFactory = "0x00000000000Fb5C9ADea0298D729A0CB3823Cc07"
-const safeMultisend = "0xA238CBeb142c10Ef7Ad8442C6D1f9E89e07e7761"
-const proxyFactory = "0xaB45c5A4B0c941a2F231C04C3f49182e1A254052"
-const relayHub = "0xD216153c06E857cD7f72665E0aF1d7D82172F494"
+const depositFactory = chain.DepositFactory
+const safeMultisend = chain.SafeMultisend
+const proxyFactory = chain.ProxyFactory
+const relayHub = chain.RelayHub
 
 // Config controls signing authority and relayer credentials.
 type Config struct {
@@ -81,12 +82,7 @@ func (c *Client) headers(method, path string, body []byte) (http.Header, error) 
 	if key == nil {
 		return nil, &sdkerrors.UserInputError{Message: "BuilderKey or RelayerKey is required for sponsored transactions"}
 	}
-	timestamp := c.now().Unix()
-	signature, err := signing.HMAC(key.Secret, timestamp, method, path, body)
-	if err != nil {
-		return nil, err
-	}
-	return http.Header{"POLY_BUILDER_API_KEY": {key.Key}, "POLY_BUILDER_PASSPHRASE": {key.Passphrase}, "POLY_BUILDER_TIMESTAMP": {strconv.FormatInt(timestamp, 10)}, "POLY_BUILDER_SIGNATURE": {signature}}, nil
+	return signing.BuilderHeaders(*key, c.now().Unix(), method, path, body)
 }
 
 // EnsureReady deploys only the current owner-derived Deposit Wallet when absent.

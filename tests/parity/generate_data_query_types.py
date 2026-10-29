@@ -48,7 +48,7 @@ for op,out,path in zip(names,outputs,paths):
   if op=='list_market_holders':text+='maximum:=1000\nif p.IncludePnL!=nil && *p.IncludePnL { maximum=100 }\n';cap='maximum'
   parser={'Activity':'models.ParseActivities','ComboActivity':'models.ParseComboActivities','BiggestWinner':'models.ParseBiggestWinners'}.get(out,'parseList[models.'+out+']')
   text+=f'return listData(c,"/v2/{path}",query,p.PageSize,{cap},{parser})\n'
- elif out=='bytes':text+='return c.transport.Request(ctx,c.transport.DataURL,"GET","/v1/accounting/snapshot",queryValues(query),nil)\n'
+ elif out=='bytes':text+='values,err:=queryValues(query);if err!=nil{return nil,err}\nreturn c.transport.Request(ctx,c.transport.DataURL,"GET","/v1/accounting/snapshot",values,nil)\n'
  elif out.startswith('[]'):text+=f'return getData(ctx,c,"/v2/{path}",query,parseList[models.{out[2:]}])\n'
  else:text+=f'return getData(ctx,c,"/v2/{path}",query,parseObject[models.{out}]({str(op in ["get_user_stats","get_trader_leaderboard_standing"]).lower()}))\n'
  text+='}\n'

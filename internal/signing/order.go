@@ -6,6 +6,8 @@ import (
 	"math/big"
 	"strings"
 
+	"github.com/cagelin/polymarket-go/internal/chain"
+
 	sdkerrors "github.com/cagelin/polymarket-go/errors"
 	"github.com/cagelin/polymarket-go/models"
 	"github.com/ethereum/go-ethereum/common/math"
@@ -18,26 +20,8 @@ const orderTypeString = "Order(uint256 salt,address maker,address signer,uint256
 
 // V2Position reports whether an asset occupies the protocol-v2 namespace.
 func V2Position(asset string) bool {
-	raw := strings.TrimSpace(asset)
-	base := 10
-	if len(raw) > 2 {
-		switch strings.ToLower(raw[:2]) {
-		case "0x":
-			base = 16
-			raw = raw[2:]
-		case "0b":
-			base = 2
-			raw = raw[2:]
-		case "0o":
-			base = 8
-			raw = raw[2:]
-		}
-	}
-	if raw == "" || strings.ContainsAny(raw, "_+- ") {
-		return false
-	}
-	number, ok := new(big.Int).SetString(raw, base)
-	if !ok || number.Sign() < 0 || number.BitLen() > 256 {
+	number, err := chain.ParsePositionID(asset)
+	if err != nil {
 		return false
 	}
 	mask := new(big.Int).Sub(new(big.Int).Lsh(big.NewInt(1), 64), big.NewInt(1))
@@ -48,12 +32,12 @@ func V2Position(asset string) bool {
 // Exchange chooses the contract whose domain signs this order.
 func Exchange(asset string, negativeRisk bool) string {
 	if V2Position(asset) {
-		return "0xe3333700cA9d93003F00f0F71f8515005F6c00Aa"
+		return chain.ExchangeV3
 	}
 	if negativeRisk {
-		return "0xe2222d279d744050d28e00520010520000310F59"
+		return chain.NegRiskExchangeV2
 	}
-	return "0xE111180000d2663C0091e4f400237545B87B996B"
+	return chain.ExchangeV2
 }
 
 // Order signs either the standard order or the deposit-wallet EIP-1271 wrapper.
@@ -92,7 +76,7 @@ func orderData(order models.SignedOrder, exchange string) (apitypes.TypedData, e
 		return apitypes.TypedData{}, &sdkerrors.SigningError{Cause: fmt.Errorf("invalid order asset")}
 	}
 	version := "2"
-	if strings.EqualFold(exchange, "0xe3333700cA9d93003F00f0F71f8515005F6c00Aa") {
+	if strings.EqualFold(exchange, chain.ExchangeV3) {
 		version = "3"
 	}
 	side := int64(0)

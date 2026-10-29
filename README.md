@@ -23,7 +23,7 @@ trading, and wallet operations. The implementation is compared against
 Requires **Go 1.27 or later**. The SDK builds without CGO.
 
 ```sh
-go get github.com/cagelin/polymarket-go@v0.1.0
+go get github.com/cagelin/polymarket-go@v0.1.1
 ```
 
 ## Quick start
@@ -78,7 +78,14 @@ server rejection, then submit the same order once more. `PostOrder` does not per
 
 `OpenRFQSession(ctx)` exposes `Next`, `Quote`, `CancelQuote`, and `RespondToConfirmation`.
 Disconnection fails pending operations without replay; reopen a session explicitly.
+RFQ sessions probe the peer with WebSocket Ping/Pong (10-second interval, 30-second pong budget).
+`StreamStats().UnsupportedMessages` distinguishes new event variants from malformed payloads.
 `PlanCollateralReturn` only plans; `ExecuteCollateralReturnPlan` submits the exact router call.
+
+HTTP response bodies are limited to 32 MiB, including accounting snapshots. Set
+`ClientConfig.MaxResponseBodyBytes` to a positive byte limit for larger downloads. Held and
+long requests share a connection pool; an injected HTTP client retains its own transport
+header deadlines. Service endpoints must not contain credentials, query strings, or fragments.
 
 ### Precision and pagination
 
@@ -96,7 +103,9 @@ Call `Subscribe(ctx, specs...)`, then consume `Next` or `Events`. Connections ar
 shared by service. Each returned handle has a 1024-event queue by default, drops
 the oldest event when full, and exposes `Dropped()`. Merged specs share that queue;
 Python allocates queues per child subscription. Cross-source ordering is unspecified.
-Close handles and the client when finished.
+For market/user/sports/RTDS subscriptions, an event matching several selections in one
+handle is delivered once per matching selection. A single selection matching several
+assets receives one copy. Close handles and the client when finished.
 
 ### Transport and concurrency
 
@@ -131,6 +140,8 @@ Use Go 1.27+ and `golangci-lint v2.15.0` built with Go 1.27+.
 
 ```sh
 make check
+# Check canonical facade exports without modifying files.
+make verify-generated
 ```
 
 This runs formatting checks, static analysis, Go and Python acceptance tests, and
@@ -143,14 +154,14 @@ has no Python dependency. See [AGENTS.md](AGENTS.md) for coding and repository r
 
 ### Repository layout
 
-| Path | Purpose |
-| --- | --- |
-| Root | Public clients, exports, and integration tests |
-| `models/` | Data types and decoding |
+| Path                                                          | Purpose                                                                      |
+| ------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| Root                                                          | Public clients, exports, and integration tests                               |
+| `models/`                                                     | Data types and decoding                                                      |
 | `pagination/`, `streams/`, `rfq/`, `transactions/`, `errors/` | Iteration, subscriptions, RFQ sessions, transaction confirmation, and errors |
-| `internal/` | API clients, trading, wallet operations, signing, and transport |
-| `examples/` | Runnable examples |
-| `tests/`, `testdata/`, `scripts/` | Acceptance tests, parity fixtures, and generation tools |
+| `internal/`                                                   | API clients, trading, wallet operations, signing, and transport              |
+| `examples/`                                                   | Runnable examples                                                            |
+| `tests/`, `testdata/`, `scripts/`                             | Acceptance tests, parity fixtures, and generation tools                      |
 
 ## License
 

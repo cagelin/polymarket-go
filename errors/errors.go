@@ -55,7 +55,7 @@ type RateLimitUpdate struct {
 	Warning   bool
 }
 
-// RateLimitError reports HTTP 429. The SDK does not retry automatically.
+// RateLimitError reports HTTP 429. Retry behavior depends on the operation.
 type RateLimitError struct {
 	RetryAfter *float64
 	RateLimit  *RateLimitUpdate

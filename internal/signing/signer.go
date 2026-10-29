@@ -13,6 +13,8 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/cagelin/polymarket-go/models"
+
 	sdkerrors "github.com/cagelin/polymarket-go/errors"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/common/math"
@@ -135,4 +137,13 @@ func decodeSecret(secret string) ([]byte, error) {
 		return nil, fmt.Errorf("invalid API secret encoding")
 	}
 	return raw, nil
+}
+
+// BuilderHeaders authenticates the exact request bytes using a builder credential.
+func BuilderHeaders(key models.BuilderAPIKey, timestamp int64, method, path string, body []byte) (http.Header, error) {
+	signature, err := HMAC(key.Secret, timestamp, method, path, body)
+	if err != nil {
+		return nil, err
+	}
+	return http.Header{"POLY_BUILDER_API_KEY": {key.Key}, "POLY_BUILDER_PASSPHRASE": {key.Passphrase}, "POLY_BUILDER_TIMESTAMP": {strconv.FormatInt(timestamp, 10)}, "POLY_BUILDER_SIGNATURE": {signature}}, nil
 }

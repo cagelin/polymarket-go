@@ -275,6 +275,9 @@ func GammaStrings(raw json.RawMessage) ([]string, error) {
 
 // GammaEpochTime follows Pydantic datetime coercion for image metadata fields.
 func GammaEpochTime(value json.RawMessage) (json.RawMessage, error) {
+	if len(value) == 0 {
+		return nil, fmt.Errorf("empty JSON value")
+	}
 	text := string(value)
 	if value[0] == '"' {
 		if err := json.Unmarshal(value, &text); err != nil {

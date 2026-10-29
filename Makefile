@@ -1,9 +1,12 @@
 GOLANGCI_LINT ?= golangci-lint
 PYTHON ?= python3
 
-.PHONY: check lint test race fmt generate validate-release
+.PHONY: verify-generated check lint test race fmt generate validate-release
 
-check: lint test race
+check: verify-generated lint test race
+
+verify-generated:
+	$(PYTHON) scripts/generate_exports.py --check
 
 lint:
 	$(GOLANGCI_LINT) config verify

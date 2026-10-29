@@ -17,6 +17,8 @@ func NormalizeOrderResponse(raw RawOrderResponse) OrderResponse {
 		}
 		return &AcceptedOrder{Ok: true, OrderID: OrderID(raw.OrderID), Status: raw.Status, MakingAmount: raw.MakingAmount, TakingAmount: raw.TakingAmount, TradeIDs: raw.TradeIDs, TransactionsHashes: hashes}
 	}
+	// Wire messages follow pinned upstream 7032ed06175b0bbea77b2d9e898bd9f252af2041.
+	// Unknown messages are retained verbatim and classified as unknown.
 	code := map[string]string{
 		"the market is not yet ready to process new orders": "market_not_ready",
 		"invalid nonce": "invalid_nonce", "invalid expiration": "invalid_expiration",

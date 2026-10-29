@@ -57,37 +57,37 @@ func PythonString(value string) string {
 }
 
 // CanonicalQueryValue encodes a query value for a stable fingerprint.
-func CanonicalQueryValue(value any) string {
+func CanonicalQueryValue(value any) (string, error) {
 	switch v := value.(type) {
 	case string:
-		return PythonString(v)
+		return PythonString(v), nil
 	case bool:
-		return strconv.FormatBool(v)
+		return strconv.FormatBool(v), nil
 	case int:
-		return strconv.Itoa(v)
+		return strconv.Itoa(v), nil
 	case int64:
-		return strconv.FormatInt(v, 10)
+		return strconv.FormatInt(v, 10), nil
 	case float64:
-		return codec.PythonFloat(v)
+		return codec.PythonFloat(v), nil
 	case []string:
 		items := make([]string, len(v))
 		for i, item := range v {
 			items[i] = PythonString(item)
 		}
-		return "[" + strings.Join(items, ",") + "]"
+		return "[" + strings.Join(items, ",") + "]", nil
 	case []int64:
 		items := make([]string, len(v))
 		for i, item := range v {
 			items[i] = strconv.FormatInt(item, 10)
 		}
-		return "[" + strings.Join(items, ",") + "]"
+		return "[" + strings.Join(items, ",") + "]", nil
 	default:
-		panic("unsupported internal query parameter type")
+		return "", &sdkerrors.UserInputError{Message: fmt.Sprintf("unsupported query parameter type %T", value)}
 	}
 }
 
 // QueryFingerprint binds a cursor to its original filters.
-func QueryFingerprint(params map[string]any) string {
+func QueryFingerprint(params map[string]any) (string, error) {
 	keys := make([]string, 0, len(params))
 	for key := range params {
 		keys = append(keys, key)
@@ -95,14 +95,18 @@ func QueryFingerprint(params map[string]any) string {
 	sort.Strings(keys)
 	parts := make([]string, 0, len(keys))
 	for _, key := range keys {
-		parts = append(parts, PythonString(key)+":"+CanonicalQueryValue(params[key]))
+		encoded, err := CanonicalQueryValue(params[key])
+		if err != nil {
+			return "", err
+		}
+		parts = append(parts, PythonString(key)+":"+encoded)
 	}
 	hash := sha256.Sum256([]byte("{" + strings.Join(parts, ",") + "}"))
-	return hex.EncodeToString(hash[:])[:12]
+	return hex.EncodeToString(hash[:])[:12], nil
 }
 
 // QueryValues copies typed filters into HTTP query values.
-func QueryValues(params map[string]any) url.Values {
+func QueryValues(params map[string]any) (url.Values, error) {
 	values := make(url.Values, len(params))
 	for key, value := range params {
 		switch v := value.(type) {
@@ -115,10 +119,14 @@ func QueryValues(params map[string]any) url.Values {
 				values.Add(key, strconv.FormatInt(item, 10))
 			}
 		default:
-			values.Set(key, CanonicalQueryValue(v))
+			encoded, err := CanonicalQueryValue(v)
+			if err != nil {
+				return nil, err
+			}
+			values.Set(key, encoded)
 		}
 	}
-	return values
+	return values, nil
 }
 
 // EncodeKeysetCursor wraps a server cursor with query identity.
@@ -163,9 +171,15 @@ func DecodeKeysetCursor(cursor, service, path, fingerprint string) (string, erro
 
 // KeysetPaginator lazily retrieves server-cursor pages.
 func KeysetPaginator[T any](c *transport.Client, service, baseURL, path, cursorParam string, params map[string]any, pageSize int, parse func([]byte) ([]T, *string, error)) *pagination.Paginator[T] {
-	fingerprint := QueryFingerprint(params)
-	baseQuery := QueryValues(params)
+	fingerprint, fingerprintErr := QueryFingerprint(params)
+	baseQuery, queryErr := QueryValues(params)
 	return pagination.New(func(ctx context.Context, cursor *string) (pagination.Page[T], error) {
+		if fingerprintErr != nil {
+			return pagination.Page[T]{}, fingerprintErr
+		}
+		if queryErr != nil {
+			return pagination.Page[T]{}, queryErr
+		}
 		query := make(url.Values, len(baseQuery)+2)
 		for key, values := range baseQuery {
 			query[key] = append([]string(nil), values...)

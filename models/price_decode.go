@@ -69,7 +69,7 @@ func parsePriceEvent(raw []byte) (StreamEvent, error) {
 	}
 	topic := map[string]string{"price.crypto": "prices.crypto", "price.crypto.twap": "prices.crypto.twap", "price.equity": "prices.equity", "price.equity.twap": "prices.equity.twap"}[channel]
 	if topic == "" {
-		return nil, fmt.Errorf("unknown price channel")
+		return nil, fmt.Errorf("%w: price channel %q", ErrUnsupportedStreamEvent, channel)
 	}
 	for _, key := range []string{"seq", "dropped"} {
 		if key == "dropped" && fields[key] == nil {

@@ -131,7 +131,7 @@ func (c *Client) GetCurrentRebates(ctx context.Context, p GetCurrentRebatesParam
 	if len(address) != 42 || !codec.ValidHex(address) || strings.Trim(address[2:], "0") == "" {
 		return nil, &sdkerrors.UserInputError{Message: "maker_address must be a nonzero EVM address"}
 	}
-	raw, err := c.transport.Request(ctx, c.transport.CLOBURL, "GET", "/rebates/current", paging.QueryValues(map[string]any{"date": p.Date, "maker_address": address}), nil)
+	raw, err := c.transport.Request(ctx, c.transport.CLOBURL, "GET", "/rebates/current", url.Values{"date": {p.Date}, "maker_address": {address}}, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -146,8 +146,11 @@ func (c *Client) GetCurrentRebates(ctx context.Context, p GetCurrentRebatesParam
 }
 
 func rawPaginator[T any](c *Client, path string, params map[string]any, requireCursor bool) *pagination.Paginator[T] {
-	base := paging.QueryValues(params)
+	base, queryErr := paging.QueryValues(params)
 	return pagination.New(func(ctx context.Context, cursor *string) (pagination.Page[T], error) {
+		if queryErr != nil {
+			return pagination.Page[T]{}, queryErr
+		}
 		query := make(url.Values, len(base)+1)
 		for key, values := range base {
 			query[key] = append([]string(nil), values...)

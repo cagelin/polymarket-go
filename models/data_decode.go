@@ -94,6 +94,9 @@ func decodeData(raw []byte, target any, rules []dataField) error {
 }
 
 func dataValue(value json.RawMessage, rule dataField) (json.RawMessage, error) {
+	if len(value) == 0 {
+		return nil, fmt.Errorf("empty JSON value")
+	}
 	var err error
 	for _, step := range rule.steps {
 		value, err = dataStep(value, step)

@@ -459,5 +459,9 @@ func (c *Client) DownloadAccountingSnapshot(ctx context.Context, p DownloadAccou
 	if err := normalizeQuery("download_accounting_snapshot", query); err != nil {
 		return nil, err
 	}
-	return c.transport.Request(ctx, c.transport.DataURL, "GET", "/v1/accounting/snapshot", queryValues(query), nil)
+	values, err := queryValues(query)
+	if err != nil {
+		return nil, err
+	}
+	return c.transport.Request(ctx, c.transport.DataURL, "GET", "/v1/accounting/snapshot", values, nil)
 }

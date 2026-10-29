@@ -4,13 +4,15 @@ import (
 	"context"
 	"crypto/rand"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"math/big"
 	"net/http"
-	"net/url"
 	"sync"
 	"sync/atomic"
 	"time"
+
+	"github.com/cagelin/polymarket-go/internal/endpoint"
 
 	"github.com/cagelin/polymarket-go/models"
 	"github.com/coder/websocket"
@@ -30,19 +32,21 @@ type Config struct {
 
 // Client multiplexes subscriptions onto one socket per public service.
 type Client struct {
-	prices     priceManager
-	merged     map[*Handle]struct{}
-	mu         sync.Mutex
-	config     Config
-	ctx        context.Context
-	cancel     context.CancelFunc
-	groups     map[string]*group
-	handles    map[*Handle][]selection
-	order      []*Handle
-	closed     bool
-	workers    sync.WaitGroup
-	malformed  atomic.Uint64
-	reconnects atomic.Uint64
+	dispatch    atomic.Pointer[dispatchIndex]
+	unsupported atomic.Uint64
+	prices      priceManager
+	merged      map[*Handle]struct{}
+	mu          sync.Mutex
+	config      Config
+	ctx         context.Context
+	cancel      context.CancelFunc
+	groups      map[string]*group
+	handles     map[*Handle][]selection
+	order       []*Handle
+	closed      bool
+	workers     sync.WaitGroup
+	malformed   atomic.Uint64
+	reconnects  atomic.Uint64
 }
 type group struct {
 	service, url                  string
@@ -53,8 +57,9 @@ type group struct {
 
 // Stats reports aggregate stream diagnostics.
 type Stats struct {
-	MalformedMessages uint64
-	Reconnects        uint64
+	MalformedMessages   uint64
+	UnsupportedMessages uint64
+	Reconnects          uint64
 }
 
 // New creates a public stream client without opening sockets.
@@ -62,9 +67,8 @@ func New(config Config) (*Client, error) {
 	if config.PriceURL == "" {
 		config.PriceURL = "wss://ws-live-v2.polymarket.com/ws"
 	}
-	parsedPrice, parseErr := url.Parse(config.PriceURL)
-	if parseErr != nil || (parsedPrice.Scheme != "ws" && parsedPrice.Scheme != "wss") || parsedPrice.Host == "" || parsedPrice.User != nil || parsedPrice.Fragment != "" {
-		return nil, invalid("invalid price stream URL")
+	if _, parseErr := endpoint.Parse(config.PriceURL, "ws", "wss"); parseErr != nil {
+		return nil, parseErr
 	}
 	if config.Credentials != nil {
 		credentials := *config.Credentials
@@ -83,9 +87,8 @@ func New(config Config) (*Client, error) {
 		if address == "" {
 			address = defaults[service]
 		}
-		parsed, err := url.Parse(address)
-		if err != nil || (parsed.Scheme != "ws" && parsed.Scheme != "wss") || parsed.Host == "" || parsed.User != nil || parsed.Fragment != "" {
-			return nil, invalid("stream URL must be absolute WS(S) without credentials or fragment")
+		if _, err := endpoint.Parse(address, "ws", "wss"); err != nil {
+			return nil, err
 		}
 		interval, stale := 10*time.Second, 30*time.Second
 		if service == "rtds" {
@@ -135,6 +138,7 @@ func (c *Client) Subscribe(ctx context.Context, specs ...Spec) (*Handle, error) 
 	h.onClose = func() { c.remove(h) }
 	c.handles[h] = selections
 	c.order = append(c.order, h)
+	c.rebuildDispatch()
 	for service, state := range before {
 		g := c.groups[service]
 		after := deriveState(c.selections(service))
@@ -164,9 +168,9 @@ func (c *Client) Subscribe(ctx context.Context, specs ...Spec) (*Handle, error) 
 	return h, nil
 }
 
-// StreamStats returns counts of malformed messages and successful reconnections.
+// StreamStats reports malformed and unsupported messages and successful reconnections.
 func (c *Client) StreamStats() Stats {
-	return Stats{MalformedMessages: c.malformed.Load(), Reconnects: c.reconnects.Load()}
+	return Stats{MalformedMessages: c.malformed.Load(), UnsupportedMessages: c.unsupported.Load(), Reconnects: c.reconnects.Load()}
 }
 
 // Close closes sockets, releases workers, and ends every handle.
@@ -190,6 +194,7 @@ func (c *Client) Close() error {
 	clear(c.merged)
 	clear(c.handles)
 	c.order = nil
+	c.rebuildDispatch()
 	c.mu.Unlock()
 	c.workers.Wait()
 	return nil
@@ -222,6 +227,7 @@ func (c *Client) removeLocked(h *Handle) {
 			break
 		}
 	}
+	c.rebuildDispatch()
 	for service, state := range before {
 		g := c.groups[service]
 		if g.conn == nil {
@@ -415,17 +421,13 @@ func (c *Client) deliver(service string, raw []byte) {
 	for _, item := range items {
 		event, err := models.ParseStreamEvent(service, item)
 		if err != nil {
+			if errors.Is(err, models.ErrUnsupportedStreamEvent) {
+				c.unsupported.Add(1)
+				continue
+			}
 			c.malformed.Add(1)
 			continue
 		}
-		c.mu.Lock()
-		for _, h := range c.order {
-			for _, s := range c.handles[h] {
-				if s.service == service && s.matches(event) {
-					h.push(event)
-				}
-			}
-		}
-		c.mu.Unlock()
+		c.dispatchEvent(service, event)
 	}
 }

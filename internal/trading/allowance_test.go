@@ -3,6 +3,7 @@ package trading
 import (
 	"bytes"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"math/big"
@@ -12,6 +13,7 @@ import (
 	"testing"
 	"time"
 
+	sdkerrors "github.com/cagelin/polymarket-go/errors"
 	"github.com/cagelin/polymarket-go/internal/signing"
 	"github.com/cagelin/polymarket-go/internal/wallet"
 	"github.com/cagelin/polymarket-go/models"
@@ -106,6 +108,35 @@ func TestAllowanceRecoveryRetriesOnlyAfterConfirmedApproval(t *testing.T) {
 				if err != nil || orders.Load() != 2 || broadcasts.Load() != 1 {
 					subtest.Fatalf("recovery %v, orders %d, broadcasts %d", err, orders.Load(), broadcasts.Load())
 				}
+			}
+		})
+	}
+}
+
+func TestAllowanceRecoveryDoesNotRetryUnknownRejection(t *testing.T) {
+	for _, message := range []string{"not enough balance", "future allowance rejection"} {
+		t.Run(message, func(subtest *testing.T) {
+			var orders, otherRequests atomic.Int32
+			client := fixtureClient(subtest, func(w http.ResponseWriter, request *http.Request) {
+				if request.Method != http.MethodPost || request.URL.Path != "/order" {
+					otherRequests.Add(1)
+					subtest.Errorf("unexpected recovery request %s %s", request.Method, request.URL.Path)
+					w.WriteHeader(http.StatusInternalServerError)
+					return
+				}
+				orders.Add(1)
+				w.Header().Set("Content-Type", "application/json")
+				w.WriteHeader(http.StatusBadRequest)
+				writeResponse(subtest, w, map[string]string{"code": "future_code", "error": message})
+			})
+			order := models.SignedOrder{Salt: big.NewInt(1), MakerAmount: big.NewInt(1000000), TakerAmount: big.NewInt(2000000), Maker: client.wallet, Signer: client.wallet, AssetID: "123", Side: models.Buy, OrderType: models.GTC}
+			result, err := client.postWithAllowanceRecovery(subtest.Context(), order)
+			var rejection *sdkerrors.RequestRejectedError
+			if !errors.As(err, &rejection) || rejection.Status != http.StatusBadRequest || rejection.Code != "future_code" || rejection.Message != message {
+				subtest.Errorf("postWithAllowanceRecovery(%q) = %v, %v; want unchanged request rejection", message, result, err)
+			}
+			if result != nil || orders.Load() != 1 || otherRequests.Load() != 0 {
+				subtest.Errorf("postWithAllowanceRecovery(%q) result=%v, posts=%d, recovery requests=%d; want nil, 1, 0", message, result, orders.Load(), otherRequests.Load())
 			}
 		})
 	}

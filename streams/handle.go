@@ -11,6 +11,8 @@ import (
 )
 
 // Handle receives typed events. Its bounded queue drops the oldest event when full.
+// For market/user/sports/RTDS, overlapping selections deliver one copy per matching
+// selection into the shared queue.
 // Close discards pending events and is safe to call repeatedly or concurrently.
 type Handle struct {
 	mu          sync.Mutex

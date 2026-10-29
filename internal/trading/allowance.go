@@ -5,12 +5,16 @@ import (
 	"errors"
 	"strings"
 
+	"github.com/cagelin/polymarket-go/internal/chain"
+
 	sdkerrors "github.com/cagelin/polymarket-go/errors"
 	"github.com/cagelin/polymarket-go/internal/signing"
 	"github.com/cagelin/polymarket-go/models"
 	"github.com/cagelin/polymarket-go/transactions"
 )
 
+// The pinned upstream (7032ed06175b0bbea77b2d9e898bd9f252af2041) exposes this rejection as text.
+// Do not infer allowance recovery from unknown codes or generic balance errors.
 func (c *Client) postWithAllowanceRecovery(ctx context.Context, order models.SignedOrder) (models.OrderResponse, error) {
 	result, err := c.PostOrder(ctx, order)
 	var rejected *sdkerrors.RequestRejectedError
@@ -43,12 +47,11 @@ func (c *Client) postWithAllowanceRecovery(ctx context.Context, order models.Sig
 	}
 	var handle *transactions.Handle
 	if order.Side == models.Buy {
-		handle, err = c.onchain.ApproveERC20(ctx, "0xC011a7E12a19f7B1f670d46F03B03f3342E82DFB", spender, nil)
+		handle, err = c.onchain.ApproveERC20(ctx, chain.Collateral, spender, nil)
 	} else {
-		token := models.EVMAddress("0x4D97DCd97eC945f40cF65F87097ACe5EA0476045")
+		token := models.EVMAddress(chain.ConditionalTokens)
 		if signing.V2Position(string(order.AssetID)) {
-			//nolint:gosec // Public Polygon position-manager contract.
-			token = "0x006F54F7f9A22e0000CC2AB60031000000ae9fEF"
+			token = chain.PositionManager
 		}
 		handle, err = c.onchain.ApproveERC1155ForAll(ctx, token, spender, true)
 	}

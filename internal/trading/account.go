@@ -101,12 +101,7 @@ func (c *Client) RevokeBuilderAPIKey(ctx context.Context) error {
 		return input("a builder API key is required")
 	}
 	resolver := func(method, path string, body []byte) (http.Header, error) {
-		timestamp := c.now().Unix()
-		signature, err := signing.HMAC(c.builderKey.Secret, timestamp, method, path, body)
-		if err != nil {
-			return nil, err
-		}
-		return http.Header{"POLY_BUILDER_API_KEY": {c.builderKey.Key}, "POLY_BUILDER_PASSPHRASE": {c.builderKey.Passphrase}, "POLY_BUILDER_TIMESTAMP": {strconv.FormatInt(timestamp, 10)}, "POLY_BUILDER_SIGNATURE": {signature}}, nil
+		return signing.BuilderHeaders(*c.builderKey, c.now().Unix(), method, path, body)
 	}
 	return expectOK(c.transport.AuthenticatedRequest(ctx, c.transport.CLOBURL, "DELETE", "/auth/builder-api-key", nil, nil, resolver))
 }

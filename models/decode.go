@@ -60,6 +60,9 @@ func decodeGamma(data []byte, target any, rules []gammaField) error {
 }
 
 func normalizeGammaField(value json.RawMessage, rule gammaField) (json.RawMessage, error) {
+	if len(value) == 0 {
+		return nil, fmt.Errorf("empty JSON value")
+	}
 	fields := map[string]json.RawMessage{rule.name: value}
 	switch rule.kind {
 	case "sequence", "default_sequence":
@@ -207,7 +210,9 @@ func normalizeGammaField(value json.RawMessage, rule gammaField) (json.RawMessag
 			}
 		}
 		return value, nil
-	default:
+	case "":
 		return value, nil
+	default:
+		return nil, fmt.Errorf("unknown field kind %q", rule.kind)
 	}
 }

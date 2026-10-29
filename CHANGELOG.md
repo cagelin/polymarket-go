@@ -2,6 +2,21 @@
 
 Scope update (2026-10-29): this SDK targets new accounts using Deposit Wallets. Legacy Safe/Proxy onboarding, migration, and live validation are excluded from support and release acceptance. Existing legacy implementation and historical tests remain, without a support commitment. EOA signing and other agreed capabilities remain in scope.
 
+## v0.1.1 — 2026-10-29
+
+- Made RFQ signers and transaction-handle dependencies implementable through public interfaces; restored missing notification constants.
+- Bounded HTTP response sizes, validated endpoint URLs, reused long-request connections, and added RFQ Ping/Pong liveness checks.
+- Honored Retry-After with finite-duration checks, bounded settlement requests by their timeout, and added polling backoff.
+- Coordinated metadata loads by key and indexed stream dispatch while preserving overlapping-selection delivery semantics. Dispatch benchmarks record both improvements and regressions; no universal speedup is claimed.
+- Consolidated pinned contract addresses and position parsing; rejected malformed decoder/query inputs and distinguished unsupported stream events from malformed messages.
+- Added generated-export verification, regression tests, and GitHub Actions checks with an 80% coverage floor and six CGO-free build targets.
+
+The [audit resolution](tests/acceptance/code-audit-2026-10-29.md) records the two-round review consensus and remaining non-blocking improvements. This patch preserves the pinned Python 0.14.0 contract and the v0.1.0 support scope. Validation is offline; no additional real-account or funded acceptance is claimed.
+
+中文：本次修复公开接口可实现性和缺失的通知常量，增加 HTTP 响应上限、端点校验、长请求连接复用及 RFQ Ping/Pong；重试尊重 Retry-After 并防止延迟溢出，结算请求受总超时约束且采用退避。元数据按 key 协调加载，流分发使用索引并保留重叠 selection 语义，基准同时记录收益和退化，不宣称普遍加速。统一固定合约地址及 position 解析，明确非法查询／解码和未知流事件的错误处理，补充生成物门禁、回归测试及六目标无 CGO 构建、80% 覆盖率下限的 CI。
+
+两轮复核结论及非阻断改进见[审查处理清单](tests/acceptance/code-audit-2026-10-29.zh-CN.md)。保持固定 Python 0.14.0 契约和 v0.1.0 支持范围；本次为离线验证，不新增真实账户或资金验收结论。
+
 ## v0.1.0 — 2026-10-29
 
 Reference: `polymarket-client 0.14.0`, commit

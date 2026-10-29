@@ -93,7 +93,10 @@ func (c *Client) Search(p SearchParams) (*pagination.Paginator[models.SearchResu
 	if size < 1 {
 		return nil, &sdkerrors.UserInputError{Message: "page_size must be positive"}
 	}
-	fingerprint := paging.QueryFingerprint(params)
+	fingerprint, fingerprintErr := paging.QueryFingerprint(params)
+	if fingerprintErr != nil {
+		return nil, fingerprintErr
+	}
 	return pagination.New(func(ctx context.Context, cursor *string) (pagination.Page[models.SearchResults], error) {
 		pageNumber, effectiveSize := 1, size
 		if cursor != nil {
@@ -103,7 +106,10 @@ func (c *Client) Search(p SearchParams) (*pagination.Paginator[models.SearchResu
 				return pagination.Page[models.SearchResults]{}, cursorErr
 			}
 		}
-		query := paging.QueryValues(params)
+		query, queryErr := paging.QueryValues(params)
+		if queryErr != nil {
+			return pagination.Page[models.SearchResults]{}, queryErr
+		}
 		query.Set("page", strconv.Itoa(pageNumber))
 		query.Set("limit_per_type", strconv.Itoa(effectiveSize))
 		data, err := c.transport.Request(ctx, c.transport.GammaURL, http.MethodGet, "/public-search", query, nil)

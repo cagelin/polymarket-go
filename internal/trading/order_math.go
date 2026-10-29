@@ -11,12 +11,20 @@ import (
 
 type rounding struct{ amount, price int }
 
+var tickRoundings = [...]struct {
+	tick   *decimal.Big
+	config rounding
+}{
+	{decimal.New(1, 1), rounding{3, 1}}, {decimal.New(1, 2), rounding{4, 2}},
+	{decimal.New(5, 3), rounding{5, 3}}, {decimal.New(25, 4), rounding{6, 4}},
+	{decimal.New(1, 3), rounding{5, 3}}, {decimal.New(1, 4), rounding{6, 4}},
+}
+
 func tickRounding(tick *decimal.Big) (rounding, error) {
 	if tick != nil && tick.IsFinite() {
-		for text, config := range map[string]rounding{"0.1": {3, 1}, "0.01": {4, 2}, "0.005": {5, 3}, "0.0025": {6, 4}, "0.001": {5, 3}, "0.0001": {6, 4}} {
-			value, _ := new(decimal.Big).SetString(text)
-			if tick.Cmp(value) == 0 {
-				return config, nil
+		for _, entry := range tickRoundings {
+			if tick.Cmp(entry.tick) == 0 {
+				return entry.config, nil
 			}
 		}
 	}

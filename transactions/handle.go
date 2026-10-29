@@ -4,41 +4,62 @@ package transactions
 import (
 	"context"
 	"encoding/json"
+	"net/http"
 	"net/url"
+	"reflect"
 	"time"
 
 	sdkerrors "github.com/cagelin/polymarket-go/errors"
 	"github.com/cagelin/polymarket-go/internal/codec"
-	"github.com/cagelin/polymarket-go/internal/evm"
-	"github.com/cagelin/polymarket-go/internal/transport"
 	"github.com/cagelin/polymarket-go/models"
 )
+
+// RPC retrieves JSON-RPC results for transaction receipt polling.
+type RPC interface {
+	Request(context.Context, string, []any) (json.RawMessage, error)
+}
+
+// Relayer retrieves authenticated relayer transaction status.
+type Relayer interface {
+	RelayerEndpoint() string
+	AuthenticatedRequest(context.Context, string, string, string, url.Values, any, func(string, string, []byte) (http.Header, error)) ([]byte, error)
+}
 
 // Handle retains submitted identifiers even if waiting is canceled or times out.
 // A new Wait may be used to reconcile a previously unknown outcome.
 type Handle struct {
 	TransactionID   *string
 	TransactionHash *string
-	rpc             *evm.RPC
-	transport       *transport.Client
-	headers         transport.HeaderResolver
+	rpc             RPC
+	transport       Relayer
+	relayerURL      string
+	headers         func(string, string, []byte) (http.Header, error)
 	maxPolls        int
 	pollDelay       time.Duration
 }
 
 // NewEOA constructs a handle for a transaction already broadcast by the SDK.
-func NewEOA(rpc *evm.RPC, hash string, maxPolls int, delay time.Duration) *Handle {
+func NewEOA(rpc RPC, hash string, maxPolls int, delay time.Duration) *Handle {
+	if nilDependency(rpc) {
+		rpc = nil
+	}
 	return &Handle{TransactionHash: &hash, rpc: rpc, maxPolls: maxPolls, pollDelay: delay}
 }
 
 // NewRelayed constructs a handle for an already accepted relayer transaction.
-func NewRelayed(t *transport.Client, headers transport.HeaderResolver, id string, hash *string, maxPolls int, delay time.Duration) *Handle {
+func NewRelayed(t Relayer, headers func(string, string, []byte) (http.Header, error), id string, hash *string, maxPolls int, delay time.Duration) *Handle {
 	var copiedHash *string
 	if hash != nil {
 		value := *hash
 		copiedHash = &value
 	}
-	return &Handle{TransactionID: &id, TransactionHash: copiedHash, transport: t, headers: headers, maxPolls: maxPolls, pollDelay: delay}
+	endpoint := ""
+	if nilDependency(t) {
+		t = nil
+	} else {
+		endpoint = t.RelayerEndpoint()
+	}
+	return &Handle{TransactionID: &id, TransactionHash: copiedHash, transport: t, relayerURL: endpoint, headers: headers, maxPolls: maxPolls, pollDelay: delay}
 }
 
 // Wait waits for relayer confirmation or a successful on-chain receipt.
@@ -108,7 +129,7 @@ func (h *Handle) relayed(ctx context.Context) (*models.TransactionOutcome, error
 	if h.TransactionID == nil || h.transport == nil {
 		return nil, &sdkerrors.UserInputError{Message: "missing relayer transaction"}
 	}
-	raw, err := h.transport.AuthenticatedRequest(ctx, h.transport.RelayerURL, "GET", "/v1/account/transactions/"+url.PathEscape(*h.TransactionID), nil, nil, h.headers)
+	raw, err := h.transport.AuthenticatedRequest(ctx, h.relayerURL, "GET", "/v1/account/transactions/"+url.PathEscape(*h.TransactionID), nil, nil, h.headers)
 	if err != nil {
 		return nil, err
 	}
@@ -157,5 +178,18 @@ func (h *Handle) relayed(ctx context.Context) (*models.TransactionOutcome, error
 		return nil, nil
 	default:
 		return nil, &sdkerrors.UnexpectedResponseError{Message: "unknown relayer transaction state"}
+	}
+}
+
+func nilDependency(value any) bool {
+	if value == nil {
+		return true
+	}
+	reflected := reflect.ValueOf(value)
+	switch reflected.Kind() {
+	case reflect.Chan, reflect.Func, reflect.Interface, reflect.Map, reflect.Pointer, reflect.Slice:
+		return reflected.IsNil()
+	default:
+		return false
 	}
 }

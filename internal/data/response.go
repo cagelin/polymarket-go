@@ -12,8 +12,8 @@ import (
 	"github.com/cagelin/polymarket-go/pagination"
 )
 
-func queryValues(query map[string]any) url.Values { return paging.QueryValues(query) }
-func parseList[T any](raw []byte) ([]T, error)    { return codec.ParseList[T](raw) }
+func queryValues(query map[string]any) (url.Values, error) { return paging.QueryValues(query) }
+func parseList[T any](raw []byte) ([]T, error)             { return codec.ParseList[T](raw) }
 func parseObject[T any](optional bool) func([]byte) (*T, error) {
 	return func(raw []byte) (*T, error) {
 		if string(raw) == "null" {
@@ -31,7 +31,11 @@ func parseObject[T any](optional bool) func([]byte) (*T, error) {
 }
 func getData[T any](ctx context.Context, c *Client, path string, query map[string]any, parse func([]byte) (T, error)) (T, error) {
 	var zero T
-	raw, err := c.transport.DataRead(ctx, path, queryValues(query))
+	values, err := queryValues(query)
+	if err != nil {
+		return zero, err
+	}
+	raw, err := c.transport.DataRead(ctx, path, values)
 	if err != nil {
 		return zero, err
 	}

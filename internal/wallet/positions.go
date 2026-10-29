@@ -9,6 +9,8 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/cagelin/polymarket-go/internal/chain"
+
 	sdkerrors "github.com/cagelin/polymarket-go/errors"
 	"github.com/cagelin/polymarket-go/internal/evm"
 	"github.com/cagelin/polymarket-go/internal/gamma"
@@ -19,17 +21,15 @@ import (
 	"github.com/ethereum/go-ethereum/crypto"
 )
 
-//nolint:gosec // Public Polygon collateral contract address.
-const collateralToken = "0xC011a7E12a19f7B1f670d46F03B03f3342E82DFB"
-const collateralAdapter = "0xAdA100Db00Ca00073811820692005400218FcE1f"
-const negRiskCollateralAdapter = "0xadA2005600Dec949baf300f4C6120000bDB6eAab"
+const collateralToken = chain.Collateral
+const collateralAdapter = chain.CollateralAdapter
+const negRiskCollateralAdapter = chain.NegRiskCollateralAdapter
 
-//nolint:gosec // Public Polygon conditional token contract address.
-const conditionalTokens = "0x4D97DCd97eC945f40cF65F87097ACe5EA0476045"
-const negRiskAdapter = "0xd91E80cF2E7be2e162c6513ceD06f1dD0dA35296"
-const positionManager = "0x006F54F7f9A22e0000CC2AB60031000000ae9fEF"
-const router = "0x12121212006e4CD160D18e3f00711DA5c3372600"
-const combinatorialModule = "0x30000034706c7d8e12009dab006be20000c031a8"
+const conditionalTokens = chain.ConditionalTokens
+const negRiskAdapter = chain.NegRiskAdapter
+const positionManager = chain.PositionManager
+const router = chain.Router
+const combinatorialModule = chain.CombinatorialModule
 
 type positionContext struct {
 	condition, token, adapter string
@@ -48,26 +48,7 @@ func positionInteger(id string) (*big.Int, error) {
 	return evm.Uint256(value)
 }
 func v2Position(id string) (positionContext, int, error) {
-	rawID := strings.TrimSpace(id)
-	radix := 10
-	if len(rawID) > 2 {
-		switch strings.ToLower(rawID[:2]) {
-		case "0x":
-			radix = 16
-			rawID = rawID[2:]
-		case "0b":
-			radix = 2
-			rawID = rawID[2:]
-		case "0o":
-			radix = 8
-			rawID = rawID[2:]
-		}
-	}
-	parsed, valid := new(big.Int).SetString(rawID, radix)
-	if !valid || strings.HasPrefix(rawID, "+") || strings.HasPrefix(rawID, "-") {
-		return positionContext{}, 0, input("position ID must be a uint256")
-	}
-	value, err := evm.Uint256(parsed)
+	value, err := chain.ParsePositionID(id)
 	if err != nil {
 		return positionContext{}, 0, err
 	}
@@ -100,23 +81,11 @@ func comboContext(legs []string) (positionContext, error) {
 			return positionContext{}, input("combo legs must have distinct conditions")
 		}
 	}
-	arrayType, err := abi.NewType("uint256[]", "", nil)
+	encoded, err := (abi.Arguments{{Type: positionArrayType}}).Pack(ids)
 	if err != nil {
 		return positionContext{}, err
 	}
-	encoded, err := (abi.Arguments{{Type: arrayType}}).Pack(ids)
-	if err != nil {
-		return positionContext{}, err
-	}
-	uintType, err := abi.NewType("uint256", "", nil)
-	if err != nil {
-		return positionContext{}, err
-	}
-	bytesType, err := abi.NewType("bytes", "", nil)
-	if err != nil {
-		return positionContext{}, err
-	}
-	raw, err := (abi.Arguments{{Type: uintType}, {Type: bytesType}}).Pack(big.NewInt(3), encoded)
+	raw, err := (abi.Arguments{{Type: positionUintType}, {Type: positionBytesType}}).Pack(big.NewInt(3), encoded)
 	if err != nil {
 		return positionContext{}, err
 	}
@@ -489,4 +458,18 @@ func (c *Client) RedeemPositions(ctx context.Context, p models.RedeemPositionsPa
 		metadata = &label
 	}
 	return c.ExecuteTransaction(ctx, calls, metadata)
+}
+
+var (
+	positionArrayType = positionABIType("uint256[]")
+	positionUintType  = positionABIType("uint256")
+	positionBytesType = positionABIType("bytes")
+)
+
+func positionABIType(name string) abi.Type {
+	parsed, err := abi.NewType(name, "", nil)
+	if err != nil {
+		panic(fmt.Sprintf("invalid embedded position ABI type: %v", err))
+	}
+	return parsed
 }

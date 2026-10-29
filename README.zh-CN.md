@@ -22,7 +22,7 @@
 需要 **Go 1.27 或更高版本**，SDK 构建无需 CGO。
 
 ```sh
-go get github.com/cagelin/polymarket-go@v0.1.0
+go get github.com/cagelin/polymarket-go@v0.1.1
 ```
 
 ## 快速开始
@@ -70,7 +70,14 @@ nil 金额表示最大值。`SetupTradingApprovals` 会等待缺失的授权全�
 
 `OpenRFQSession(ctx)` 返回长期会话，使用 `Next`、`Quote`、`CancelQuote`、
 `RespondToConfirmation`；`Close` 关闭会话。断线后不自动重放报价，可重新打开会话。
+RFQ 会话每 10 秒发送 WebSocket Ping，等待 Pong 的预算为 30 秒。
+`StreamStats().UnsupportedMessages` 区分未知事件变体与畸形数据。
 `PlanCollateralReturn` 只生成计划，`ExecuteCollateralReturnPlan` 才提交计划中的调用。
+
+HTTP 响应体默认限制为 32 MiB，包含会计快照。较大下载可将
+`ClientConfig.MaxResponseBodyBytes` 设置为更大的正数字节上限。长请求复用连接池；
+注入 HTTP 客户端时，其 transport 的响应头超时仍由调用方控制。
+服务地址不得包含凭据、查询参数或 fragment。
 
 ### 精度与分页
 
@@ -87,7 +94,9 @@ nil 金额表示最大值。`SetupTradingApprovals` 会等待缺失的授权全�
 实时订阅通过 `Subscribe(ctx, specs...)` 创建，使用 `Next` 或 `Events` 接收。
 同类订阅共用连接；每个返回的 handle 默认缓存 1024 条，满时丢弃最旧消息，
 `Dropped()` 返回丢弃数量。多个 spec 合并后共用这一缓存；Python 按子订阅分配缓存。
-因此不承诺跨数据源消息顺序。`Close` 结束订阅并释放资源。
+因此不承诺跨数据源消息顺序。market／user／sports／RTDS 订阅中，同一事件命中
+同一 handle 的多个 selection 时，每个匹配 selection 各交付一次；单个 selection
+命中多个 asset 只交付一次。`Close` 结束订阅并释放资源。
 
 ### 网络与并发
 
@@ -117,6 +126,8 @@ EOA 直接交易与钱包中继调用可能受不同的服务限制。
 
 ```sh
 make check
+# 只检查统一导出文件是否同步，不修改文件。
+make verify-generated
 ```
 
 该命令执行格式检查、静态分析、Go 与 Python 验收测试及 race 检查。
@@ -129,14 +140,14 @@ make check
 
 ### 仓库结构
 
-| 路径 | 职责 |
-| --- | --- |
-| 根目录 | 公开客户端、导出类型及集成测试 |
-| `models/` | 数据类型与解析 |
-| `pagination/`、`streams/`、`rfq/`、`transactions/`、`errors/` | 分页、订阅、RFQ 会话、交易确认及错误 |
-| `internal/` | API 客户端、交易、钱包操作、签名及网络实现 |
-| `examples/` | 可运行示例 |
-| `tests/`、`testdata/`、`scripts/` | 验收测试、对照数据及生成工具 |
+| 路径                                                          | 职责                                       |
+|---------------------------------------------------------------|--------------------------------------------|
+| 根目录                                                        | 公开客户端、导出类型及集成测试             |
+| `models/`                                                     | 数据类型与解析                             |
+| `pagination/`、`streams/`、`rfq/`、`transactions/`、`errors/` | 分页、订阅、RFQ 会话、交易确认及错误       |
+| `internal/`                                                   | API 客户端、交易、钱包操作、签名及网络实现 |
+| `examples/`                                                   | 可运行示例                                 |
+| `tests/`、`testdata/`、`scripts/`                             | 验收测试、对照数据及生成工具               |
 
 ## 许可
 

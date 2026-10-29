@@ -11,9 +11,10 @@ import (
 	"net"
 	"net/http"
 	"net/url"
-	"strings"
 	"sync/atomic"
 	"time"
+
+	"github.com/cagelin/polymarket-go/internal/endpoint"
 
 	sdkerrors "github.com/cagelin/polymarket-go/errors"
 )
@@ -35,6 +36,9 @@ type Config struct {
 	GammaURL            string
 	DataURL             string
 	RFQURL              string
+	// MaxResponseBodyBytes bounds each decoded HTTP response, including snapshots.
+	// Zero selects 32 MiB; callers downloading larger snapshots may raise it.
+	MaxResponseBodyBytes int64
 	// HTTPClient is borrowed and is never closed or modified by the SDK.
 	HTTPClient *http.Client
 	// OnRateLimitUpdate may run concurrently. Returned errors are ignored.
@@ -43,23 +47,31 @@ type Config struct {
 
 // Client performs unauthenticated queries and supports concurrent use.
 type Client struct {
-	RPCURL              string
-	CollateralReturnURL string
-	RelayerURL          string
-	BuilderGatewayURL   string
-	CLOBURL             string
-	GammaURL            string
-	DataURL             string
-	RFQURL              string
-	http                *http.Client
-	owned               *http.Transport
-	held                *http.Transport
-	closed              atomic.Bool
-	onRateLimitUpdate   func(sdkerrors.RateLimitUpdate) error
+	RPCURL               string
+	CollateralReturnURL  string
+	RelayerURL           string
+	BuilderGatewayURL    string
+	CLOBURL              string
+	GammaURL             string
+	DataURL              string
+	RFQURL               string
+	customRPC            bool
+	maxResponseBodyBytes int64
+	http                 *http.Client
+	owned                *http.Transport
+	held                 *http.Transport
+	closed               atomic.Bool
+	onRateLimitUpdate    func(sdkerrors.RateLimitUpdate) error
 }
 
 // New constructs a client without making any network requests.
 func New(config Config) (*Client, error) {
+	if config.MaxResponseBodyBytes < 0 || config.MaxResponseBodyBytes == math.MaxInt64 {
+		return nil, &sdkerrors.UserInputError{Message: "invalid response body limit"}
+	}
+	if config.MaxResponseBodyBytes == 0 {
+		config.MaxResponseBodyBytes = 32 << 20
+	}
 	clobURL, err := serviceURL(config.CLOBURL, "https://clob.polymarket.com")
 	if err != nil {
 		return nil, err
@@ -92,7 +104,7 @@ func New(config Config) (*Client, error) {
 	if err != nil {
 		return nil, err
 	}
-	c := &Client{CollateralReturnURL: collateralURL,
+	c := &Client{customRPC: config.RPCURL != "", maxResponseBodyBytes: config.MaxResponseBodyBytes, CollateralReturnURL: collateralURL,
 		RPCURL:     rpcURL,
 		RelayerURL: relayerURL, BuilderGatewayURL: builderURL,
 		RFQURL:            rfqURL,
@@ -123,7 +135,8 @@ func New(config Config) (*Client, error) {
 	}
 	if c.owned != nil {
 		c.held = c.owned.Clone()
-		c.held.ResponseHeaderTimeout = 30 * time.Second
+		// The request budget bounds header and body waits on this shared pool.
+		c.held.ResponseHeaderTimeout = 0
 	}
 	return c, nil
 }
@@ -132,11 +145,7 @@ func serviceURL(value, fallback string) (string, error) {
 	if value == "" {
 		value = fallback
 	}
-	u, err := url.Parse(value)
-	if err != nil || (u.Scheme != "http" && u.Scheme != "https") || u.Host == "" || u.User != nil || u.RawQuery != "" || u.Fragment != "" {
-		return "", &sdkerrors.UserInputError{Message: "service URL must be an absolute HTTP(S) URL without credentials, query or fragment"}
-	}
-	return strings.TrimRight(value, "/"), nil
+	return endpoint.Parse(value, "http", "https")
 }
 
 // Close releases owned idle connections and prevents new SDK requests.
@@ -155,7 +164,7 @@ func (c *Client) Request(ctx context.Context, baseURL, method, path string, quer
 }
 
 // HeaderResolver signs the exact bytes written to the network; it is invoked per attempt.
-type HeaderResolver func(method, path string, body []byte) (http.Header, error)
+type HeaderResolver = func(method, path string, body []byte) (http.Header, error)
 
 // AuthenticatedRequest applies optional authentication only to this request.
 func (c *Client) AuthenticatedRequest(ctx context.Context, baseURL, method, path string, query url.Values, body any, headers HeaderResolver) ([]byte, error) {
@@ -185,11 +194,11 @@ func (c *Client) request(ctx context.Context, baseURL, method, path string, quer
 		payload = encoded
 		reader = bytes.NewReader(encoded)
 	}
-	endpoint := baseURL + path
+	requestURL := baseURL + path
 	if len(query) > 0 {
-		endpoint += "?" + query.Encode()
+		requestURL += "?" + query.Encode()
 	}
-	req, err := http.NewRequestWithContext(ctx, method, endpoint, reader)
+	req, err := http.NewRequestWithContext(ctx, method, requestURL, reader)
 	if err != nil {
 		return nil, &sdkerrors.TransportError{Cause: err}
 	}
@@ -210,10 +219,7 @@ func (c *Client) request(ctx context.Context, baseURL, method, path string, quer
 		requestClient := *client
 		requestClient.Timeout = timeout
 		if c.held != nil {
-			heldTransport := c.held.Clone()
-			heldTransport.ResponseHeaderTimeout = timeout
-			defer heldTransport.CloseIdleConnections()
-			requestClient.Transport = heldTransport
+			requestClient.Transport = c.held
 		}
 		client = &requestClient
 	}
@@ -227,9 +233,12 @@ func (c *Client) request(ctx context.Context, baseURL, method, path string, quer
 		return nil, &sdkerrors.TransportError{Cause: err}
 	}
 	defer func() { _ = res.Body.Close() }() // Reading below reports errors; closing cannot recover a failed response.
-	data, err := io.ReadAll(res.Body)
+	data, err := io.ReadAll(io.LimitReader(res.Body, c.maxResponseBodyBytes+1))
 	if err != nil {
 		return nil, &sdkerrors.TransportError{Cause: err}
+	}
+	if int64(len(data)) > c.maxResponseBodyBytes {
+		return nil, &sdkerrors.UnexpectedResponseError{Message: "HTTP response exceeds configured body limit"}
 	}
 	if c.onRateLimitUpdate != nil {
 		if update := parseRateLimit(res.Header); update != nil {
@@ -266,3 +275,9 @@ func (c *Client) DataRead(ctx context.Context, path string, query url.Values) ([
 		}
 	}
 }
+
+// RelayerEndpoint returns the configured relayer base URL.
+func (c *Client) RelayerEndpoint() string { return c.RelayerURL }
+
+// CustomRPC reports whether an RPC endpoint was explicitly configured.
+func (c *Client) CustomRPC() bool { return c.customRPC }

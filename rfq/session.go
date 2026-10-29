@@ -6,9 +6,11 @@ import (
 	"errors"
 	"io"
 	"net/http"
-	"net/url"
+	"reflect"
 	"sync"
 	"time"
+
+	"github.com/cagelin/polymarket-go/internal/endpoint"
 
 	sdkerrors "github.com/cagelin/polymarket-go/errors"
 	"github.com/cagelin/polymarket-go/internal/signing"
@@ -16,15 +18,24 @@ import (
 	"github.com/coder/websocket"
 )
 
+// OrderSigner signs RFQ orders using the caller's signing implementation.
+type OrderSigner interface {
+	Address() string
+	Order(models.SignedOrder, string, models.SignerType) (string, error)
+}
+
 // Config binds one authenticated wallet to the quoter gateway.
 type Config struct {
 	URL         string
 	HTTPClient  *http.Client
-	Signer      *signing.Signer
+	Signer      OrderSigner
 	Credentials models.APIKeyCreds
 	Wallet      models.EVMAddress
 	WalletType  models.WalletType
 	QueueSize   int
+	// HeartbeatInterval defaults to ten seconds; PongTimeout defaults to thirty seconds.
+	HeartbeatInterval time.Duration
+	PongTimeout       time.Duration
 }
 
 func (c Config) String() string { return "RFQConfig(<redacted>)" }
@@ -55,15 +66,24 @@ type Session struct {
 
 // Open connects and waits for authentication before exposing the session.
 func Open(ctx context.Context, config Config) (*Session, error) {
-	if config.Signer == nil {
+	signerValue := reflect.ValueOf(config.Signer)
+	if !signerValue.IsValid() || signerValue.Kind() == reflect.Pointer && signerValue.IsNil() {
 		return nil, &sdkerrors.UserInputError{Message: "RFQ signer is required"}
 	}
 	if config.URL == "" {
 		config.URL = "wss://combos-rfq-gateway-quoter.polymarket.com/ws/rfq"
 	}
-	parsed, err := url.Parse(config.URL)
-	if err != nil || parsed.Host == "" || parsed.User != nil || parsed.Fragment != "" || (parsed.Scheme != "ws" && parsed.Scheme != "wss") {
-		return nil, &sdkerrors.UserInputError{Message: "invalid RFQ websocket URL"}
+	if _, err := endpoint.Parse(config.URL, "ws", "wss"); err != nil {
+		return nil, err
+	}
+	if config.HeartbeatInterval < 0 || config.PongTimeout < 0 {
+		return nil, &sdkerrors.UserInputError{Message: "invalid RFQ heartbeat configuration"}
+	}
+	if config.HeartbeatInterval == 0 {
+		config.HeartbeatInterval = 10 * time.Second
+	}
+	if config.PongTimeout == 0 {
+		config.PongTimeout = 30 * time.Second
 	}
 	if config.QueueSize == 0 {
 		config.QueueSize = 1024
@@ -88,6 +108,8 @@ func Open(ctx context.Context, config Config) (*Session, error) {
 		_ = s.Close()
 		return nil, err
 	}
+	//nolint:contextcheck // The authenticated session outlives the Open operation context.
+	go s.heartbeat()
 	return s, nil
 }
 func (s *Session) orderSigner() models.EVMAddress {
@@ -315,4 +337,25 @@ func (s *Session) RespondToConfirmation(ctx context.Context, quote QuoteReferenc
 		return QuoteReference{}, &sdkerrors.UserInputError{Message: "decision must be CONFIRM or DECLINE"}
 	}
 	return s.request(ctx, ackKey{kind: "ACK_RFQ_CONFIRMATION_RESPONSE", rfq: quote.RFQID, quote: quote.QuoteID}, map[string]string{"type": "RFQ_CONFIRMATION_RESPONSE", "rfq_id": quote.RFQID, "quote_id": quote.QuoteID, "decision": decision})
+}
+
+// heartbeat uses standard WebSocket control frames, independent of RFQ JSON messages.
+func (s *Session) heartbeat() {
+	ticker := time.NewTicker(s.config.HeartbeatInterval)
+	defer ticker.Stop()
+	for {
+		select {
+		case <-s.ctx.Done():
+			return
+		case <-ticker.C:
+			bounded, cancel := context.WithTimeout(s.ctx, s.config.PongTimeout)
+			err := s.conn.Ping(bounded)
+			cancel()
+			if err != nil {
+				s.finish(&sdkerrors.TransportError{Cause: err})
+				_ = s.conn.CloseNow()
+				return
+			}
+		}
+	}
 }

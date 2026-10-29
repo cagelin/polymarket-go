@@ -219,7 +219,11 @@ func TestSettlementLifecycle(t *testing.T) {
 				}
 				writeResponse(subtest, w, map[string]any{"data": []any{trade}, "next_cursor": "LTE="})
 			})
-			hashes, err := client.WaitForOrderFillSettlement(subtest.Context(), models.AcceptedOrder{TradeIDs: []string{"trade", "trade"}}, time.Millisecond)
+			timeout := 5 * time.Second
+			if outcome == "MINED" {
+				timeout = 10 * time.Millisecond
+			}
+			hashes, err := client.WaitForOrderFillSettlement(subtest.Context(), models.AcceptedOrder{TradeIDs: []string{"trade", "trade"}}, timeout)
 			switch outcome {
 			case "CONFIRMED":
 				if err != nil || len(hashes) != 1 || hashes[0] != "hash" {
@@ -320,7 +324,11 @@ func TestPythonSettlement(t *testing.T) {
 				}
 				writeResponse(subtest, w, map[string]any{"data": items, "next_cursor": "LTE="})
 			})
-			value, callErr := client.WaitForOrderFillSettlement(subtest.Context(), models.AcceptedOrder{TradeIDs: tc.TradeIDs, TransactionsHashes: tc.Existing}, time.Millisecond)
+			timeout := 5 * time.Second
+			if tc.Expected.Error == "TimeoutError" {
+				timeout = 10 * time.Millisecond
+			}
+			value, callErr := client.WaitForOrderFillSettlement(subtest.Context(), models.AcceptedOrder{TradeIDs: tc.TradeIDs, TransactionsHashes: tc.Existing}, timeout)
 			if tc.Expected.Error == "" {
 				if callErr != nil {
 					subtest.Fatal(callErr)

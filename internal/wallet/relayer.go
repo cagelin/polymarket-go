@@ -11,13 +11,18 @@ import (
 	"time"
 	"unicode/utf8"
 
+	"github.com/cagelin/polymarket-go/internal/chain"
+
 	sdkerrors "github.com/cagelin/polymarket-go/errors"
 	"github.com/cagelin/polymarket-go/internal/codec"
 	"github.com/cagelin/polymarket-go/internal/evm"
+	"github.com/cagelin/polymarket-go/internal/transport"
 	"github.com/cagelin/polymarket-go/models"
 	"github.com/cagelin/polymarket-go/transactions"
 )
 
+// Text patterns follow pinned upstream 7032ed06175b0bbea77b2d9e898bd9f252af2041.
+// Unknown rejection codes/messages must remain non-retryable.
 var nonceMismatch = regexp.MustCompile(`(?i)batch nonce\s+(\d+)\s+does not match on-chain nonce\s+(\d+)`)
 
 func wait(ctx context.Context, delay time.Duration) error {
@@ -78,7 +83,15 @@ func (c *Client) executeRelayed(ctx context.Context, calls []models.TransactionC
 		if err == nil || attempt == 10 || !retryable(err) {
 			return handle, err
 		}
-		if err = wait(ctx, c.config.PollInterval); err != nil {
+		delay := c.config.PollInterval
+		if rateLimit, limited := errors.AsType[*sdkerrors.RateLimitError](err); limited {
+			nextDelay, validDelay := transport.RetryDelay(delay, rateLimit.RetryAfter)
+			if !validDelay {
+				return nil, err
+			}
+			delay = nextDelay
+		}
+		if err = wait(ctx, delay); err != nil {
 			return nil, err
 		}
 	}
@@ -131,7 +144,7 @@ func (c *Client) relayerPayload(ctx context.Context, calls []models.TransactionC
 	switch c.config.Kind {
 	case models.WalletDeposit:
 		timestamp := c.now().Unix()
-		if c.transport.RPCURL != "https://polygon.drpc.org" {
+		if c.transport.CustomRPC() {
 			raw, requestErr := c.rpc.Request(ctx, "eth_getBlockByNumber", []any{"latest", false})
 			if requestErr != nil {
 				return nil, requestErr
@@ -194,7 +207,7 @@ func (c *Client) relayerPayload(ctx context.Context, calls []models.TransactionC
 			return nil, signErr
 		}
 		body["to"], body["proxyWallet"], body["data"], body["signature"] = to, c.config.Wallet, data, signature
-		zero := "0x0000000000000000000000000000000000000000"
+		zero := chain.ZeroAddress
 		body["signatureParams"] = map[string]string{"baseGas": "0", "gasPrice": "0", "gasToken": zero, "operation": strconv.Itoa(operation), "refundReceiver": zero, "safeTxnGas": "0"}
 		if value.Sign() > 0 {
 			body["value"] = value.String()

@@ -28,8 +28,14 @@ func OffsetPaginator[T any](client *transport.Client, service, baseURL, path str
 	if err := checkWindow(0, options.PageSize, options.MaxPageSize, options.MaxOffset); err != nil {
 		return nil, err
 	}
-	fingerprint := QueryFingerprint(params)
-	baseQuery := QueryValues(params)
+	fingerprint, fingerprintErr := QueryFingerprint(params)
+	if fingerprintErr != nil {
+		return nil, fingerprintErr
+	}
+	baseQuery, queryErr := QueryValues(params)
+	if queryErr != nil {
+		return nil, queryErr
+	}
 	return pagination.New(func(ctx context.Context, cursor *string) (pagination.Page[T], error) {
 		offset, size := 0, options.PageSize
 		if cursor != nil {
