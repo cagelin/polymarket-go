@@ -20,6 +20,22 @@ import (
 
 // Config controls public stream endpoints. Zero values use production defaults.
 type Config struct {
+	// RawHandler receives every complete market data message, including binary,
+	// unknown and malformed payloads, before typed decoding. Text PONG is excluded.
+	// Data must remain immutable. The callback runs synchronously in the reader:
+	// return promptly and do not call Close or other blocking client methods.
+	RawHandler func(RawFrame)
+	// LifecycleHandler observes market, user, sports and RTDS connections, not
+	// price sessions. It may run concurrently with itself and RawHandler; it must
+	// be concurrency-safe, return promptly and not call blocking client methods.
+	LifecycleHandler func(Lifecycle)
+	// RawOnly suppresses market typed decoding only; it requires RawHandler.
+	// Subscription handles still control the connection lifetime.
+	RawOnly bool
+	// ReadLimit bounds a complete message on every stream socket, including price
+	// sessions. Zero retains the 10 MiB default; negative values are invalid.
+	ReadLimit int64
+
 	MarketURL   string
 	UserURL     string
 	PriceURL    string
@@ -32,6 +48,9 @@ type Config struct {
 
 // Client multiplexes subscriptions onto one socket per public service.
 type Client struct {
+	receiveSequence    atomic.Uint64
+	connectionSequence atomic.Uint64
+
 	dispatch    atomic.Pointer[dispatchIndex]
 	unsupported atomic.Uint64
 	prices      priceManager
@@ -64,6 +83,15 @@ type Stats struct {
 
 // New creates a public stream client without opening sockets.
 func New(config Config) (*Client, error) {
+	if config.RawOnly && config.RawHandler == nil {
+		return nil, invalid("raw-only requires a raw handler")
+	}
+	if config.ReadLimit < 0 {
+		return nil, invalid("read limit must be positive")
+	}
+	if config.ReadLimit == 0 {
+		config.ReadLimit = 10 << 20
+	}
 	if config.PriceURL == "" {
 		config.PriceURL = "wss://ws-live-v2.polymarket.com/ws"
 	}
@@ -174,6 +202,7 @@ func (c *Client) StreamStats() Stats {
 }
 
 // Close closes sockets, releases workers, and ends every handle.
+// It waits for raw and lifecycle callbacks and must not be called from them.
 func (c *Client) Close() error {
 	c.cancel()
 	c.closePrices()
@@ -259,7 +288,7 @@ func (c *Client) dial(ctx context.Context, address string) (*websocket.Conn, err
 	if err != nil {
 		return nil, err
 	}
-	conn.SetReadLimit(10 << 20)
+	conn.SetReadLimit(c.config.ReadLimit)
 	return conn, nil
 }
 func sendFrames(ctx context.Context, conn *websocket.Conn, frames []any) error {
@@ -312,8 +341,9 @@ func (c *Client) run(g *group) {
 			c.reconnects.Add(1)
 		}
 		c.mu.Unlock()
-		attempt = 0
+		connectedAt := time.Now()
 		c.readConnection(g, conn)
+		attempt = resetReconnectAttempt(attempt, time.Since(connectedAt))
 		_ = conn.CloseNow()
 		c.mu.Lock()
 		if g.conn == conn {
@@ -327,6 +357,15 @@ func (c *Client) run(g *group) {
 		attempt++
 	}
 }
+
+// A successful handshake alone does not prove a recovered connection.
+func resetReconnectAttempt(attempt int, connectedFor time.Duration) int {
+	if connectedFor >= 30*time.Second {
+		return 0
+	}
+	return attempt
+}
+
 func (c *Client) finishGroup(g *group)     { c.mu.Lock(); g.running = false; c.mu.Unlock() }
 func (c *Client) backoff(attempt int) bool { return backoffContext(c.ctx, attempt) }
 func backoffContext(ctx context.Context, attempt int) bool {
@@ -337,10 +376,11 @@ func backoffContext(ctx context.Context, attempt int) bool {
 	if capDelay > 30*time.Second {
 		capDelay = 30 * time.Second
 	}
-	draw, err := rand.Int(rand.Reader, big.NewInt(int64(capDelay)))
+	// Equal jitter retains a minimum wait even under repeated immediate disconnects.
+	draw, err := rand.Int(rand.Reader, big.NewInt(int64(capDelay/2)))
 	delay := capDelay
 	if err == nil {
-		delay = time.Duration(draw.Int64())
+		delay = capDelay/2 + time.Duration(draw.Int64())
 	}
 	timer := time.NewTimer(delay)
 	defer timer.Stop()
@@ -352,17 +392,30 @@ func backoffContext(ctx context.Context, attempt int) bool {
 	}
 }
 func (c *Client) readConnection(g *group, conn *websocket.Conn) {
+	generation := c.connectionSequence.Add(1)
+	c.observe(g.service, generation, "connected")
+	defer c.observe(g.service, generation, "disconnected")
 	ctx, cancel := context.WithCancel(c.ctx)
 	defer cancel()
 	var alive atomic.Int64
 	alive.Store(time.Now().UnixNano())
 	heartbeatDone := make(chan struct{})
-	go func() { defer close(heartbeatDone); c.heartbeat(ctx, g, conn, &alive) }()
+	go func() { defer close(heartbeatDone); c.heartbeat(ctx, g, conn, &alive, generation) }()
 	defer func() { cancel(); <-heartbeatDone }()
 	for {
 		kind, raw, err := conn.Read(ctx)
 		if err != nil {
+			if errors.Is(err, websocket.ErrMessageTooBig) {
+				c.observe(g.service, generation, "read_limit")
+			}
 			return
+		}
+		isPong := kind == websocket.MessageText && string(raw) == "PONG"
+		if g.service == "market" && !isPong && c.config.RawHandler != nil {
+			c.config.RawHandler(RawFrame{Service: g.service, Generation: generation, Sequence: c.receiveSequence.Add(1), ReceivedAt: time.Now().UTC(), Data: raw})
+			if c.config.RawOnly {
+				continue
+			}
 		}
 		if kind != websocket.MessageText {
 			continue
@@ -371,6 +424,7 @@ func (c *Client) readConnection(g *group, conn *websocket.Conn) {
 		switch g.service {
 		case "market", "user":
 			if text == "PONG" {
+				c.observe(g.service, generation, "pong")
 				alive.Store(time.Now().UnixNano())
 				continue
 			}
@@ -388,7 +442,7 @@ func (c *Client) readConnection(g *group, conn *websocket.Conn) {
 		c.deliver(g.service, raw)
 	}
 }
-func (c *Client) heartbeat(ctx context.Context, g *group, conn *websocket.Conn, alive *atomic.Int64) {
+func (c *Client) heartbeat(ctx context.Context, g *group, conn *websocket.Conn, alive *atomic.Int64, generation uint64) {
 	interval, stale, service := g.heartbeatInterval, g.staleAfter, g.service
 	ticker := time.NewTicker(interval)
 	defer ticker.Stop()
@@ -402,6 +456,7 @@ func (c *Client) heartbeat(ctx context.Context, g *group, conn *websocket.Conn, 
 				return
 			}
 			if service != "sports" {
+				c.observe(service, generation, "ping")
 				if err := sendText(ctx, conn, []byte("PING")); err != nil {
 					_ = conn.CloseNow()
 					return
@@ -411,12 +466,14 @@ func (c *Client) heartbeat(ctx context.Context, g *group, conn *websocket.Conn, 
 	}
 }
 func (c *Client) deliver(service string, raw []byte) {
-	items := []json.RawMessage{raw}
+	var items []json.RawMessage
 	if (service == "market" || service == "user") && len(raw) > 0 && raw[0] == '[' {
 		if err := json.Unmarshal(raw, &items); err != nil {
 			c.malformed.Add(1)
 			return
 		}
+	} else {
+		items = []json.RawMessage{raw}
 	}
 	for _, item := range items {
 		event, err := models.ParseStreamEvent(service, item)

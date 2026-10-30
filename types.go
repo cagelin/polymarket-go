@@ -645,6 +645,9 @@ type LastTradePrice = models.LastTradePrice
 // LastTradePriceForAsset aliases models.LastTradePriceForAsset.
 type LastTradePriceForAsset = models.LastTradePriceForAsset
 
+// Lifecycle aliases streams.Lifecycle.
+type Lifecycle = streams.Lifecycle
+
 // ListAccountTradesParams aliases trading.ListAccountTradesParams.
 type ListAccountTradesParams = trading.ListAccountTradesParams
 
@@ -1061,6 +1064,9 @@ type RateLimitError = errors.RateLimitError
 
 // RateLimitUpdate aliases errors.RateLimitUpdate.
 type RateLimitUpdate = errors.RateLimitUpdate
+
+// RawFrame aliases streams.RawFrame.
+type RawFrame = streams.RawFrame
 
 // RawOrderResponse aliases models.RawOrderResponse.
 type RawOrderResponse = models.RawOrderResponse

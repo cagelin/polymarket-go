@@ -2,6 +2,17 @@
 
 Scope update (2026-10-29): this SDK targets new accounts using Deposit Wallets. Legacy Safe/Proxy onboarding, migration, and live validation are excluded from support and release acceptance. Existing legacy implementation and historical tests remain, without a support commitment. EOA signing and other agreed capabilities remain in scope.
 
+## v0.2.0 — 2026-10-31
+
+- Added opt-in raw market messages and raw-only consumption, retaining complete unknown, malformed and binary messages without changing default typed delivery.
+- Added connection and application-heartbeat observations and configurable message read limits; oversized messages report loss without delivering partial bytes.
+- Preserved immutable retained bytes during typed array decoding and retained exponential backoff across repeated short connections.
+- Documented callback concurrency, shutdown and byte ownership, client-local identifiers, and the observation scope; added regression coverage and canonical facade exports.
+
+Validation is offline using synthetic local servers, fixed fixtures, race checks and CGO-free builds. This release adds no real-account or live-market acceptance claim.
+
+中文：新增可选的市场原始消息回调和仅接收原始消息模式，保留未知、畸形及二进制消息；增加连接／心跳观测和读取上限，超限不交付截断字节。修复数组类型解析改写保留字节，以及连续短连接失败重连过快的问题。补齐回调并发、关闭、字节归属和客户端内标识约定及回归测试，默认类型接口保持兼容。本次验证使用合成服务、固定样本、race 与无 CGO 构建，不新增真实账户或实网行情验收结论。
+
 ## v0.1.1 — 2026-10-29
 
 - Made RFQ signers and transaction-handle dependencies implementable through public interfaces; restored missing notification constants.

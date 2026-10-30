@@ -23,7 +23,7 @@ trading, and wallet operations. The implementation is compared against
 Requires **Go 1.27 or later**. The SDK builds without CGO.
 
 ```sh
-go get github.com/cagelin/polymarket-go@v0.1.1
+go get github.com/cagelin/polymarket-go@v0.2.0
 ```
 
 ## Quick start
@@ -106,6 +106,29 @@ Python allocates queues per child subscription. Cross-source ordering is unspeci
 For market/user/sports/RTDS subscriptions, an event matching several selections in one
 handle is delivered once per matching selection. A single selection matching several
 assets receives one copy. Close handles and the client when finished.
+
+### Raw market messages and connection observations
+
+For byte-preserving collectors, construct `streams.New(streams.Config{...})` from
+`github.com/cagelin/polymarket-go/streams`. Set `RawHandler` to receive every complete
+market message before decoding, including unknown, malformed and binary messages;
+text `PONG` is excluded. The SDK does not reuse the returned buffer. Retained `Data`
+must remain immutable because the default typed decoder may still read it.
+`RawOnly: true` skips market typed decoding and requires `RawHandler`; subscription
+handles still own subscription lifetimes. Other services keep their typed behavior.
+
+`LifecycleHandler` observes market/user/sports/RTDS connections and application
+heartbeats, including `read_limit` when an oversized message closes a connection.
+It does not observe price sessions or deliver partial oversized data. `ReadLimit`
+applies to all stream sockets, including price sessions; zero keeps the 10 MiB default.
+Callbacks must return promptly, avoid blocking client methods, and provide their own
+bounded handoff. Lifecycle callbacks may run concurrently; `Close` waits for callbacks
+and must be called outside them. Observation IDs are local to each client, and shutdown
+also emits `disconnected`; observations do not prove complete data coverage.
+
+Repeated short connections retain exponential retry backoff (250 ms cap initially,
+30 s maximum, each wait between half its cap and the cap). A connection must last
+30 s before resetting that backoff. Default typed APIs remain available.
 
 ### Transport and concurrency
 

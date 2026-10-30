@@ -22,7 +22,7 @@
 需要 **Go 1.27 或更高版本**，SDK 构建无需 CGO。
 
 ```sh
-go get github.com/cagelin/polymarket-go@v0.1.1
+go get github.com/cagelin/polymarket-go@v0.2.0
 ```
 
 ## 快速开始
@@ -97,6 +97,25 @@ HTTP 响应体默认限制为 32 MiB，包含会计快照。较大下载可将
 因此不承诺跨数据源消息顺序。market／user／sports／RTDS 订阅中，同一事件命中
 同一 handle 的多个 selection 时，每个匹配 selection 各交付一次；单个 selection
 命中多个 asset 只交付一次。`Close` 结束订阅并释放资源。
+
+### 原始行情消息与连接观测
+
+需要保留原始字节时，从 `github.com/cagelin/polymarket-go/streams` 使用
+`streams.New(streams.Config{...})`。设置 `RawHandler` 后，会在解析前收到每条完整
+市场消息，包括未知类型、坏消息和二进制消息，不含文本 `PONG`。SDK 不复用这块
+缓冲区，可以保留引用，但不得修改 `Data`，因为默认的类型解析随后仍可能读取它。
+`RawOnly: true` 跳过市场消息的类型解析，必须同时设置 `RawHandler`；订阅句柄仍控制
+连接生命周期。其他数据源继续使用原有类型解析。
+
+`LifecycleHandler` 观察市场、用户、体育及 RTDS 的连接与应用层心跳，不覆盖价格会话。
+消息超过读取上限时，连接关闭并报告 `read_limit`，不交付截断数据。`ReadLimit` 对所有
+流连接生效，包括价格会话；零值保持 10 MiB 默认上限。回调必须快速返回，不调用会阻塞的
+客户端方法；如需异步处理，由调用方设置有界通路。连接回调可能并发执行，须自行保证
+并发安全。`Close` 等待回调结束，必须在回调外调用。消息序号和连接代只在单个客户端内
+唯一；主动关闭也会报告 `disconnected`，这些观测不证明数据完整。
+
+连续短连接失败会累积重连退避：首次等待上限 250 ms，逐次翻倍至 30 秒，每次实际等待
+在当次上限的一半至上限之间；连接持续至少 30 秒后才重置。默认类型接口继续保留。
 
 ### 网络与并发
 
