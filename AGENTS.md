@@ -16,6 +16,8 @@ These guidelines apply to source code, tests, examples, and generated files.
 
 - Run `make check` before committing. It checks formatting, static analysis, automated tests, and race detection.
   提交前运行 `make check`，检查格式、静态分析、自动测试和 race。
+- Resolve problems reported by GoLand inspections before committing, including errors and warnings. Passing `make check` does not replace this requirement. Do not bypass problems by disabling inspections or adding suppression rules.
+  提交前必须解决 GoLand 检查识别出的问题，包括错误和警告。`make check` 通过不能替代此项要求，不得通过关闭检查或添加忽略规则规避问题。
 - `make lint` uses golangci-lint's `govet shadow` with `strict: true` and `predeclared`. Do not maintain a separate shadowing checker.
   `make lint` 使用 golangci-lint 的 `govet shadow`（`strict: true`）与 `predeclared`，不维护自写遮蔽检查工具。
 - Automated checks do not detect every name conflict. Review callback parameters and variables of different types against the same declaration rules.
