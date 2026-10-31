@@ -8,18 +8,24 @@ import (
 	"time"
 )
 
-func TestRawOwnershipWithTypedArray(t *testing.T) {
-	address, peers := startServer(t)
-	received := make(chan RawFrame, 8)
-	client, err := New(Config{MarketURL: address, RawHandler: func(frame RawFrame) { received <- frame }})
+func newRawTestClient(t *testing.T, config Config) *Client {
+	t.Helper()
+	client, err := New(config)
 	if err != nil {
-		t.Fatal(err)
+		t.Fatalf("New(raw stream test config) = %v, want an initialized client", err)
 	}
 	t.Cleanup(func() {
 		if closeErr := client.Close(); closeErr != nil {
-			t.Error(closeErr)
+			t.Errorf("Close(raw stream test client) = %v, want nil", closeErr)
 		}
 	})
+	return client
+}
+
+func TestRawOwnershipWithTypedArray(t *testing.T) {
+	address, peers := startServer(t)
+	received := make(chan RawFrame, 8)
+	client := newRawTestClient(t, Config{MarketURL: address, RawHandler: func(frame RawFrame) { received <- frame }})
 	handle, err := client.Subscribe(t.Context(), MarketSpec{AssetIDs: []string{"a"}})
 	if err != nil {
 		t.Fatal(err)
@@ -42,15 +48,7 @@ func TestRawOnlyReconnectUnknownMalformedAndClose(t *testing.T) {
 	address, peers := startServer(t)
 	received := make(chan RawFrame, 8)
 	states := make(chan Lifecycle, 16)
-	client, err := New(Config{MarketURL: address, RawOnly: true, RawHandler: func(frame RawFrame) { received <- frame }, LifecycleHandler: func(event Lifecycle) { states <- event }})
-	if err != nil {
-		t.Fatal(err)
-	}
-	t.Cleanup(func() {
-		if closeErr := client.Close(); closeErr != nil {
-			t.Error(closeErr)
-		}
-	})
+	client := newRawTestClient(t, Config{MarketURL: address, RawOnly: true, RawHandler: func(frame RawFrame) { received <- frame }, LifecycleHandler: func(event Lifecycle) { states <- event }})
 	handle, err := client.Subscribe(t.Context(), MarketSpec{AssetIDs: []string{"a"}})
 	if err != nil {
 		t.Fatal(err)
@@ -88,15 +86,7 @@ func TestRawOnlyReconnectUnknownMalformedAndClose(t *testing.T) {
 }
 
 func TestNonMarketArrayStillReportsMalformed(t *testing.T) {
-	client, err := New(Config{})
-	if err != nil {
-		t.Fatal(err)
-	}
-	t.Cleanup(func() {
-		if closeErr := client.Close(); closeErr != nil {
-			t.Error(closeErr)
-		}
-	})
+	client := newRawTestClient(t, Config{})
 	client.deliver("sports", []byte(`[{}]`))
 	if client.StreamStats().MalformedMessages != 1 {
 		t.Errorf("non-market invalid array stats=%+v, want one malformed", client.StreamStats())

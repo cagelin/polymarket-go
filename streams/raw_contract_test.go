@@ -27,8 +27,7 @@ func TestRawConfigValidation(t *testing.T) {
 		t.Run(testCase.name, func(subtest *testing.T) {
 			client, err := New(testCase.config)
 			if testCase.wantInvalid {
-				var validationError *sdkerrors.UserInputError
-				if !errors.As(err, &validationError) {
+				if _, invalidConfig := errors.AsType[*sdkerrors.UserInputError](err); !invalidConfig {
 					subtest.Errorf("New(%+v) error=%v, want UserInputError", testCase.config, err)
 				}
 				return
