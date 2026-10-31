@@ -36,10 +36,15 @@ From a checkout of this repository:
 ```sh
 go run ./examples/orderbook <asset-id>
 go run ./examples/markets
+go run ./examples/events
 go run ./examples/search election
 go run ./examples/streams
 go run ./examples/wallet <wallet-address>
 ```
+
+See the [examples guide](examples/README.md) for discovery, quotes/history, public
+trades and portfolio data, cursor resumption, typed/raw streams, account queries,
+and an offline order lifecycle demonstration.
 
 ## Usage notes
 
@@ -47,7 +52,8 @@ go run ./examples/wallet <wallet-address>
 
 Use `NewSecureClient(ctx, SecureClientConfig{...})` for authentication. The
 [account example](examples/account/main.go) reads configuration from environment
-variables and queries trading restrictions. Construction validates credentials and
+variables and queries trading restrictions, balances, open orders, fills and notifications;
+it also supports authenticated user/price subscriptions. Construction validates credentials and
 may create/derive a key when missing or invalid. `Close` releases resources;
 `EndAuthentication` also revokes the account API key.
 

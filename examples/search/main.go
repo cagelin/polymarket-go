@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 	"time"
 
 	"github.com/cagelin/polymarket-go"
@@ -20,23 +21,23 @@ func main() {
 func run() error {
 	query := "election"
 	if len(os.Args) > 1 {
-		query = os.Args[1]
+		query = strings.Join(os.Args[1:], " ")
 	}
 	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 	client, err := polymarket.NewPublicClient(polymarket.ClientConfig{})
 	if err != nil {
-		return err
+		return fmt.Errorf("create public client: %w", err)
 	}
 	defer func() { _ = client.Close() }() // Close only releases local resources and always returns nil.
 	size := 5
 	pager, err := client.Search(polymarket.SearchParams{Query: query, PageSize: &size})
 	if err != nil {
-		return err
+		return fmt.Errorf("select search query: %w", err)
 	}
 	page, err := pager.FirstPage(ctx)
 	if err != nil {
-		return err
+		return fmt.Errorf("read search page: %w", err)
 	}
 	for _, group := range page.Items {
 		for _, event := range group.Events {
@@ -48,5 +49,6 @@ func run() error {
 		}
 		fmt.Printf("Tags: %d, profiles: %d, more pages: %t\n", len(group.Tags), len(group.Profiles), page.HasMore)
 	}
+	fmt.Printf("result groups=%d has_more=%t limit_reached=%t\n", len(page.Items), page.HasMore, page.LimitReached)
 	return nil
 }

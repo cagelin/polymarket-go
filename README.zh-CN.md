@@ -33,17 +33,22 @@ go get github.com/cagelin/polymarket-go@v0.2.0
 ```sh
 go run ./examples/orderbook <资产ID>
 go run ./examples/markets
+go run ./examples/events
 go run ./examples/search election
 go run ./examples/streams
 go run ./examples/wallet <钱包地址>
 ```
+
+市场发现、报价／历史行情、公开成交与组合数据、游标续页、类型／原始订阅、账户查询及离线订单流程，见
+[示例运行说明](examples/README.zh-CN.md)。
 
 ## 使用说明
 
 ### 账户认证
 
 认证入口为 `NewSecureClient(ctx, SecureClientConfig{...})`。完整环境变量示例见
-[examples/account](examples/account/main.go)，只展示账户限制查询。构造客户端会校验密钥；
+[examples/account](examples/account/main.go)，展示账户限制、余额、挂单、成交、通知及认证用户／价格订阅。
+构造客户端会校验密钥；
 密钥缺失或失效时可能创建／派生新密钥。`Close` 释放资源，`EndAuthentication` 还会撤销账户 API 密钥。
 
 ### 订单与成交确认
