@@ -102,7 +102,7 @@ func (c *Client) ListEvents(p ListEventsParams) (*pagination.Paginator[models.Ev
 	return paging.KeysetPaginator(c.transport, "gamma", c.transport.GammaURL, "/events/keyset", "after_cursor", params, size, parseEventsPage), nil
 }
 
-// CountEvents reads totalResults from /events/pagination with limit=1, offset=0.
+// CountEvents reads pagination.totalResults from /events/pagination with limit=1, offset=0.
 // It shares ListEvents filters and its closed=false default. PageSize is ignored.
 // The total is a point-in-time server count, not proof of historical coverage.
 // The upstream offset endpoint is limited to 2000; use ListEvents to enumerate.
@@ -123,6 +123,9 @@ func (c *Client) CountEvents(ctx context.Context, p ListEventsParams) (int64, er
 		return 0, err
 	}
 	fields, err := codec.Object(body)
+	if err == nil {
+		fields, err = codec.Required[map[string]json.RawMessage](fields, "pagination")
+	}
 	if err == nil {
 		var total int64
 		total, err = codec.Required[int64](fields, "totalResults")

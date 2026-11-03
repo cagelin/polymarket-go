@@ -114,7 +114,7 @@ func TestCountEventsAndExactFilters(t *testing.T) {
 			if r.URL.Query().Get("closed") != "true" || r.URL.Query().Get("tag_id") != "7" || r.URL.Query().Get("title_search") != "temperature" || r.URL.Query().Get("limit") != "1" || r.URL.Query().Get("offset") != "0" {
 				t.Errorf("CountEvents query = %s", r.URL)
 			}
-			writeResearchResponse(t, w, `{"totalResults":9007199254740993}`)
+			writeResearchResponse(t, w, `{"data":[],"pagination":{"hasMore":true,"totalResults":9007199254740993}}`)
 		} else {
 			if r.URL.Query().Get("filter_amount") != "0.12345678901234567890123456789" {
 				t.Errorf("filter amount lost precision: %s", r.URL)
@@ -229,7 +229,9 @@ func TestRawResponseRetryAndHandlerFailure(t *testing.T) {
 func TestRawResponseConcurrentCalls(t *testing.T) {
 	var mutex sync.Mutex
 	records := 0
-	client := researchClient(t, func(w http.ResponseWriter, _ *http.Request) { writeResearchResponse(t, w, `{"totalResults":1}`) }, func(config *ClientConfig) {
+	client := researchClient(t, func(w http.ResponseWriter, _ *http.Request) {
+		writeResearchResponse(t, w, `{"data":[],"pagination":{"hasMore":false,"totalResults":1}}`)
+	}, func(config *ClientConfig) {
 		config.RawHTTPHandler = func(_ context.Context, response RawHTTPResponse) error {
 			mutex.Lock()
 			defer mutex.Unlock()
@@ -251,5 +253,51 @@ func TestRawResponseConcurrentCalls(t *testing.T) {
 	group.Wait()
 	if records != 8 {
 		t.Errorf("concurrent records = %d, want 8", records)
+	}
+}
+
+// TestCountEventsPaginationEnvelope uses the nesting returned by Gamma's offset endpoint.
+func TestCountEventsPaginationEnvelope(t *testing.T) {
+	for _, scenario := range []struct {
+		name, body string
+		want       int64
+		invalid    bool
+	}{
+		{"empty", `{"data":[],"pagination":{"hasMore":false,"totalResults":0}}`, 0, false},
+		{"count-not-page-size", `{"data":[{"id":"sample"}],"pagination":{"hasMore":true,"totalResults":42}}`, 42, false},
+		{"nested-count-wins", `{"totalResults":99,"pagination":{"totalResults":7}}`, 7, false},
+		{"maximum-int64", `{"pagination":{"totalResults":9223372036854775807}}`, 9223372036854775807, false},
+		{"top-level-only", `{"totalResults":1}`, 0, true},
+		{"missing-pagination", `{}`, 0, true},
+		{"null-pagination", `{"pagination":null}`, 0, true},
+		{"array-pagination", `{"pagination":[]}`, 0, true},
+		{"missing-count", `{"pagination":{}}`, 0, true},
+		{"null-count", `{"pagination":{"totalResults":null}}`, 0, true},
+		{"negative-count", `{"pagination":{"totalResults":-1}}`, 0, true},
+		{"fractional-count", `{"pagination":{"totalResults":1.5}}`, 0, true},
+		{"string-count", `{"pagination":{"totalResults":"1"}}`, 0, true},
+		{"overflow", `{"pagination":{"totalResults":9223372036854775808}}`, 0, true},
+		{"malformed", `{"pagination":`, 0, true},
+	} {
+		t.Run(scenario.name, func(subtest *testing.T) {
+			client := researchClient(subtest, func(writer http.ResponseWriter, request *http.Request) {
+				query := request.URL.Query()
+				if query.Get("closed") != "false" || query.Get("limit") != "1" || query.Get("offset") != "0" {
+					subtest.Errorf("unexpected count query: %s", request.URL)
+				}
+				writeResearchResponse(subtest, writer, scenario.body)
+			}, nil)
+			pageSize := 99
+			total, err := client.CountEvents(subtest.Context(), ListEventsParams{PageSize: &pageSize})
+			if scenario.invalid {
+				if _, unexpected := errors.AsType[*UnexpectedResponseError](err); !unexpected {
+					subtest.Fatalf("CountEvents error = %v, want UnexpectedResponseError", err)
+				}
+				return
+			}
+			if err != nil || total != scenario.want {
+				subtest.Fatalf("CountEvents = %d, %v; want %d", total, err, scenario.want)
+			}
+		})
 	}
 }

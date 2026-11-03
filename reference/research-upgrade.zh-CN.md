@@ -49,7 +49,7 @@ v0.3.0 补齐研究所需的 Gamma 字段、公共 HTTP 原文、CLOB 价格历�
 
 返回的 `CLOBPriceHistoryPoint.Timestamp`、`Price` 是 `json.Number`，保留数值文本，不经过浮点数。该方法没有分页，不承诺上游返回完整历史。它与 `ListPriceHistory` 的 Data 分桶序列分别保留，不能当作盘口或逐笔成交。
 
-`CountEvents(ctx, ListEventsParams)` 请求 `/events/pagination?limit=1&offset=0` 的 `totalResults`，复用 `ListEvents` 筛选条件，默认 `closed=false`，忽略 `PageSize`。总数仅代表响应时点；枚举仍使用 `ListEvents`。该偏移接口的 2000 上限不影响只读总数。
+`CountEvents(ctx, ListEventsParams)` 请求 `/events/pagination?limit=1&offset=0` 的 `pagination.totalResults`，复用 `ListEvents` 筛选条件，默认 `closed=false`，忽略 `PageSize`。总数仅代表响应时点；枚举仍使用 `ListEvents`。该偏移接口的 2000 上限不影响只读总数。
 
 CLOB 参数依据 [官方价格历史文档](https://docs.polymarket.com/api-reference/markets/get-prices-history)。15 天限制及 Gamma 总数入口依据 项目 R6 的接口实测记录。接口没有返回数据时不能据此认定历史不存在或采集完整。
 

@@ -49,7 +49,7 @@ New timestamps use `*TimestampValue`: `Raw` retains the string, `Time` is UTC on
 
 `CLOBPriceHistoryPoint.Timestamp` and `Price` use `json.Number` to retain integer and decimal text. This method has no pagination and makes no coverage guarantee. Keep these samples separate from the Data buckets returned by `ListPriceHistory`. Neither source represents order books or individual trades.
 
-`CountEvents(ctx, ListEventsParams)` reads `totalResults` from `/events/pagination` with `limit=1` and `offset=0`. It shares `ListEvents` filters and its `closed=false` default, and ignores `PageSize`. Counts describe one server response; use `ListEvents` for enumeration. The offset endpoint's 2000 limit does not affect this count-only request.
+`CountEvents(ctx, ListEventsParams)` reads `pagination.totalResults` from `/events/pagination` with `limit=1` and `offset=0`. It shares `ListEvents` filters and its `closed=false` default, and ignores `PageSize`. Counts describe one server response; use `ListEvents` for enumeration. The offset endpoint's 2000 limit does not affect this count-only request.
 
 CLOB parameters follow the [official history reference](https://docs.polymarket.com/api-reference/markets/get-prices-history). The 15-day constraint and Gamma count route come from the R6 research observations. Empty responses do not establish complete or unavailable history.
 
