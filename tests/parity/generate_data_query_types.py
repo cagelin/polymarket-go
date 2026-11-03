@@ -14,6 +14,7 @@ text='''package data
 
 import (
  "context"
+ "encoding/json"
  "github.com/cagelin/polymarket-go/models"
  "github.com/cagelin/polymarket-go/pagination"
 )
@@ -29,7 +30,7 @@ for op,out,path in zip(names,outputs,paths):
    typ='[]int64' if key.startswith('event_') else '[]string'
   elif key in ('page_size','bucket_limit'):typ='*int'
   elif key in ('start','end','updated_after','updated_before'):typ='*int64'
-  elif key in ('filter_amount','min_balance'):typ='*float64'
+  elif key in ('filter_amount','min_balance'):typ='*json.Number'
   elif key in ('taker_only','include_archived','include_pnl'):typ='*bool'
   elif key=='full_history':typ='bool'
   elif p.default is None:typ='*string'
@@ -41,7 +42,8 @@ for op,out,path in zip(names,outputs,paths):
  text+='}\n'
  result=('*pagination.Paginator[models.'+out+']') if isp else ('[]byte' if out=='bytes' else '[]models.'+out[2:] if out.startswith('[]') else '*models.'+out)
  args='p '+param if isp else 'ctx context.Context,p '+param
- text+=f'// {method} reads public Data API information.\nfunc (c *Client) {method}({args}) ({result},error) {{\n query:=map[string]any{{}}\n'+ '\n'.join(qs)+'\n'
+ note = '\n// The upstream minimum filter_amount is 0.01, including when zero is supplied.\n// Smaller trades are not returned. FilterAmount is exact decimal text.' if op=='list_trades' else ''
+ text+=f'// {method} reads public Data API information.{note}\nfunc (c *Client) {method}({args}) ({result},error) {{\n query:=map[string]any{{}}\n'+ '\n'.join(qs)+'\n'
  text+=f'if err:=normalizeQuery("{op}",query);err!=nil {{ return nil,err }}\n'
  if isp:
   cap='1000'

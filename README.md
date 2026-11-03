@@ -23,7 +23,7 @@ trading, and wallet operations. The implementation is compared against
 Requires **Go 1.27 or later**. The SDK builds without CGO.
 
 ```sh
-go get github.com/cagelin/polymarket-go@v0.2.0
+go get github.com/cagelin/polymarket-go@v0.3.0
 ```
 
 ## Quick start
@@ -47,6 +47,8 @@ trades and portfolio data, cursor resumption, typed/raw streams, account queries
 and an offline order lifecycle demonstration.
 
 ## Usage notes
+
+Migration notes for v0.3.0, including exact amount filters and raw HTTP responses, are in the [research data upgrade guide](reference/research-upgrade.md).
 
 ### Authentication
 

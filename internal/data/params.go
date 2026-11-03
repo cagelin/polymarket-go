@@ -1,8 +1,8 @@
 package data
 
 import (
+	"encoding/json"
 	"fmt"
-	"math"
 	"slices"
 	"strconv"
 	"strings"
@@ -112,8 +112,16 @@ func normalizeQuery(operation string, q map[string]any) error {
 		}
 	}
 	for _, key := range []string{"filter_amount", "min_balance"} {
-		if value, ok := q[key].(float64); ok && (math.IsNaN(value) || math.IsInf(value, 0) || value < 0) {
-			return input(key + " must be finite and nonnegative")
+		if value, ok := q[key].(json.Number); ok {
+			var numeric json.Number
+			rawValue := json.RawMessage(value.String())
+			if decodeErr := json.Unmarshal(rawValue, &numeric); decodeErr != nil || numeric.String() != value.String() || numeric == "" {
+				return input(key + " must be decimal text")
+			}
+			amount, amountErr := codec.NumericDecimal(map[string]json.RawMessage{key: rawValue}, key, false)
+			if amountErr != nil || amount == nil || amount.Sign() < 0 {
+				return input(key + " must be finite and nonnegative")
+			}
 		}
 	}
 	choices := map[string]string{"side": "BUY SELL", "filter_type": "CASH TOKENS", "sort_direction": "ASC DESC", "window": "day week month all"}

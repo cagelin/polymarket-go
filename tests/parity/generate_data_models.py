@@ -66,6 +66,13 @@ def add(name,cls,raw):
  case=dict(name=name,model=typename(cls.__name__).replace("ApiKey","APIKey"),response=copy.deepcopy(raw))
  try:case['expected']={'value':normalize(cls.parse_response(copy.deepcopy(raw)))}
  except Exception as err:case['expected']={'error':type(err).__name__}
+ if cls.__name__ == 'Resolution' and any(raw.get(key) == '' for key in ('proposed_price', 'reproposed_price', 'price')):
+  case['compatibility_difference'] = 'SDK-001: preserve empty resolution price and interpret it as absent'
+  case['python_error'] = case['expected']['error']
+  normalized_raw = copy.deepcopy(raw)
+  for key in ('proposed_price', 'reproposed_price', 'price'):
+   if normalized_raw.get(key) == '': normalized_raw[key] = None
+  case['expected'] = {'value': normalize(cls.parse_response(normalized_raw))}
  cases.append(case)
 for cls in classes:
  for full in [False,True]:
@@ -125,7 +132,7 @@ func TestPythonDataModels(t *testing.T) {
   decodeErr:=json.Unmarshal(test.Response,target)
   if (decodeErr!=nil)!=(test.Expected.Error!="") { subtest.Fatalf("%s decode error = %v, Python = %s",test.Model,decodeErr,test.Expected.Error) }
   if decodeErr!=nil { return }
-  testutil.EqualJSON(subtest,target,test.Expected.Value)
+  testutil.EqualJSON(subtest,target,test.Expected.Value,"raw_prices")
  }) }
 }
 

@@ -1842,6 +1842,7 @@ type Resolution struct {
 	WasArbitrated          *bool                          `json:"was_arbitrated"`
 	ResolvedBlock          *int64                         `json:"resolved_block"`
 	ResolvedAt             *time.Time                     `json:"resolved_at"`
+	RawPrices              map[string]json.RawMessage     `json:"raw_prices"`
 }
 
 // UnmarshalJSON validates Data API field types and wire aliases.
@@ -1871,6 +1872,14 @@ func (m *Resolution) UnmarshalJSON(raw []byte) error {
 		{name: "resolved_block", kind: "int", nullable: true},
 		{name: "resolved_at", kind: "epoch_datetime", nullable: true},
 	}); err != nil {
+		return err
+	}
+	fields, err := codec.Object(raw)
+	if err != nil {
+		return err
+	}
+	result.RawPrices, err = resolutionRawPrices(fields)
+	if err != nil {
 		return err
 	}
 	*m = Resolution(result)

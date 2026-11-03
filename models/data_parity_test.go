@@ -39,7 +39,7 @@ func TestPythonDataModels(t *testing.T) {
 			if decodeErr != nil {
 				return
 			}
-			testutil.EqualJSON(subtest, target, test.Expected.Value)
+			testutil.EqualJSON(subtest, target, test.Expected.Value, "raw_prices")
 		})
 	}
 }

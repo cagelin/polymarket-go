@@ -243,36 +243,37 @@ func (m *TagReference) UnmarshalJSON(data []byte) error {
 
 // Event represents a Polymarket event.
 type Event struct {
-	ID            EventID                    `json:"id"`
-	Version       *ProtocolVersion           `json:"version"`
-	ParentEventID *EventID                   `json:"parent_event_id"`
-	Ticker        *string                    `json:"ticker"`
-	Slug          *string                    `json:"slug"`
-	Title         *string                    `json:"title"`
-	Subtitle      *string                    `json:"subtitle"`
-	Description   *string                    `json:"description"`
-	Category      *string                    `json:"category"`
-	Subcategory   *string                    `json:"subcategory"`
-	Image         *string                    `json:"image"`
-	Icon          *string                    `json:"icon"`
-	FeaturedImage *string                    `json:"featured_image"`
-	CreatedAt     *time.Time                 `json:"created_at"`
-	UpdatedAt     *time.Time                 `json:"updated_at"`
-	PublishedAt   *time.Time                 `json:"published_at"`
-	State         EventState                 `json:"state"`
-	Schedule      EventSchedule              `json:"schedule"`
-	Metrics       EventMetrics               `json:"metrics"`
-	Display       EventDisplay               `json:"display"`
-	Trading       EventTrading               `json:"trading"`
-	Resolution    EventResolution            `json:"resolution"`
-	Estimation    EventEstimation            `json:"estimation"`
-	Sports        EventSportsMetadata        `json:"sports"`
-	Partners      []EventPartner             `json:"partners"`
-	Metadata      map[string]json.RawMessage `json:"metadata"`
-	Markets       []Market                   `json:"markets"`
-	Series        []EventSeries              `json:"series"`
-	Tags          []EventTag                 `json:"tags"`
-	Creators      []EventCreator             `json:"creators"`
+	ID             EventID                    `json:"id"`
+	Version        *ProtocolVersion           `json:"version"`
+	ParentEventID  *EventID                   `json:"parent_event_id"`
+	Ticker         *string                    `json:"ticker"`
+	Slug           *string                    `json:"slug"`
+	Title          *string                    `json:"title"`
+	Subtitle       *string                    `json:"subtitle"`
+	Description    *string                    `json:"description"`
+	Category       *string                    `json:"category"`
+	Subcategory    *string                    `json:"subcategory"`
+	Image          *string                    `json:"image"`
+	Icon           *string                    `json:"icon"`
+	FeaturedImage  *string                    `json:"featured_image"`
+	CreatedAt      *time.Time                 `json:"created_at"`
+	UpdatedAt      *time.Time                 `json:"updated_at"`
+	PublishedAt    *time.Time                 `json:"published_at"`
+	State          EventState                 `json:"state"`
+	Schedule       EventSchedule              `json:"schedule"`
+	Metrics        EventMetrics               `json:"metrics"`
+	Display        EventDisplay               `json:"display"`
+	Trading        EventTrading               `json:"trading"`
+	Resolution     EventResolution            `json:"resolution"`
+	Estimation     EventEstimation            `json:"estimation"`
+	Sports         EventSportsMetadata        `json:"sports"`
+	Partners       []EventPartner             `json:"partners"`
+	Metadata       map[string]json.RawMessage `json:"metadata"`
+	Markets        []Market                   `json:"markets"`
+	Series         []EventSeries              `json:"series"`
+	Tags           []EventTag                 `json:"tags"`
+	Creators       []EventCreator             `json:"creators"`
+	SkippedMarkets []SkippedMarket            `json:"skipped_markets,omitempty"`
 }
 
 // UnmarshalJSON validates response fields and normalizes wire names.
@@ -315,6 +316,7 @@ func (m *Event) UnmarshalJSON(data []byte) error {
 		{name: "series", kind: "sequence", required: true},
 		{name: "tags", kind: "sequence", required: true},
 		{name: "creators", kind: "sequence", required: true},
+		{name: "skipped_markets", aliases: []string{"skipped_markets"}},
 	}); err != nil {
 		return err
 	}
@@ -500,14 +502,15 @@ func (m *EventResolution) UnmarshalJSON(data []byte) error {
 
 // EventSchedule represents a EventSchedule response.
 type EventSchedule struct {
-	StartDate    *time.Time `json:"start_date"`
-	CreationDate *time.Time `json:"creation_date"`
-	EndDate      *time.Time `json:"end_date"`
-	ClosedTime   *time.Time `json:"closed_time"`
-	StartTime    *time.Time `json:"start_time"`
-	EventDate    *Date      `json:"event_date"`
-	EventWeek    *int64     `json:"event_week"`
-	FinishedAt   *time.Time `json:"finished_at"`
+	StartDate          *time.Time      `json:"start_date"`
+	CreationDate       *time.Time      `json:"creation_date"`
+	EndDate            *time.Time      `json:"end_date"`
+	ClosedTime         *time.Time      `json:"closed_time"`
+	StartTime          *time.Time      `json:"start_time"`
+	EventDate          *Date           `json:"event_date"`
+	EventWeek          *int64          `json:"event_week"`
+	FinishedAt         *time.Time      `json:"finished_at"`
+	DeployingTimestamp *TimestampValue `json:"deploying_timestamp,omitempty"`
 }
 
 // UnmarshalJSON validates response fields and normalizes wire names.
@@ -523,6 +526,7 @@ func (m *EventSchedule) UnmarshalJSON(data []byte) error {
 		{name: "event_date", aliases: []string{"eventDate"}, kind: "optional_date"},
 		{name: "event_week", aliases: []string{"eventWeek"}, kind: "int"},
 		{name: "finished_at", aliases: []string{"finishedAt"}, kind: "datetime"},
+		{name: "deploying_timestamp", aliases: []string{"deployingTimestamp"}},
 	}); err != nil {
 		return err
 	}
@@ -545,6 +549,8 @@ type EventSeries struct {
 	Volume      *decimal.Big `json:"volume"`
 	Liquidity   *decimal.Big `json:"liquidity"`
 	StartDate   *time.Time   `json:"start_date"`
+	Recurrence  *string      `json:"recurrence,omitempty"`
+	SeriesType  *string      `json:"series_type,omitempty"`
 }
 
 // UnmarshalJSON validates response fields and normalizes wire names.
@@ -565,6 +571,8 @@ func (m *EventSeries) UnmarshalJSON(data []byte) error {
 		{name: "volume", kind: "decimal"},
 		{name: "liquidity", kind: "decimal"},
 		{name: "start_date", aliases: []string{"startDate"}, kind: "datetime"},
+		{name: "recurrence", aliases: []string{"recurrence"}},
+		{name: "series_type", aliases: []string{"seriesType"}},
 	}); err != nil {
 		return err
 	}
@@ -666,9 +674,11 @@ func (m *EventState) UnmarshalJSON(data []byte) error {
 
 // EventTag represents a EventTag response.
 type EventTag struct {
-	ID    TagID   `json:"id"`
-	Slug  *string `json:"slug"`
-	Label *string `json:"label"`
+	ID        TagID   `json:"id"`
+	Slug      *string `json:"slug"`
+	Label     *string `json:"label"`
+	ForceShow *bool   `json:"force_show,omitempty"`
+	ForceHide *bool   `json:"force_hide,omitempty"`
 }
 
 // UnmarshalJSON validates response fields and normalizes wire names.
@@ -679,6 +689,8 @@ func (m *EventTag) UnmarshalJSON(data []byte) error {
 		{name: "id", required: true},
 		{name: "slug"},
 		{name: "label"},
+		{name: "force_show", aliases: []string{"forceShow"}},
+		{name: "force_hide", aliases: []string{"forceHide"}},
 	}); err != nil {
 		return err
 	}

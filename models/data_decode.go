@@ -334,6 +334,9 @@ func dataStep(value json.RawMessage, step string) (json.RawMessage, error) {
 			return json.RawMessage("null"), nil
 		}
 	case "unset_price":
+		if string(value) == `""` {
+			return json.RawMessage("null"), nil
+		}
 		if raw == "69" || raw == "69.0" || raw == `"69"` {
 			return json.RawMessage("null"), nil
 		}

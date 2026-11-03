@@ -72,6 +72,8 @@ def kind(cls,name,field):
     if set(get_args(a))=={int,float}: return 'number'
     if a is market.ProtocolVersion: return 'version'
     return ''
+SDK_FIELDS = {'Market': [('CreatedAt', 'created_at', '*TimestampValue', 'createdAt'), ('UpdatedAt', 'updated_at', '*TimestampValue', 'updatedAt'), ('GroupItemIndex', 'group_item_index', '*string', 'groupItemThreshold')], 'MarketState': [('AcceptingOrdersTimestamp', 'accepting_orders_timestamp', '*TimestampValue', 'acceptingOrdersTimestamp'), ('EventStartTime', 'event_start_time', '*TimestampValue', 'eventStartTime')], 'MarketResolution': [('UMAEndDate', 'uma_end_date', '*TimestampValue', 'umaEndDate'), ('UMAResolutionStatuses', 'uma_resolution_statuses', '[]string', 'umaResolutionStatuses'), ('AutomaticallyResolved', 'automatically_resolved', '*bool', 'automaticallyResolved')], 'EventSchedule': [('DeployingTimestamp', 'deploying_timestamp', '*TimestampValue', 'deployingTimestamp')], 'Event': [('SkippedMarkets', 'skipped_markets', '[]SkippedMarket', 'skipped_markets')], 'EventSeries': [('Recurrence', 'recurrence', '*string', 'recurrence'), ('SeriesType', 'series_type', '*string', 'seriesType')], 'EventTag': [('ForceShow', 'force_show', '*bool', 'forceShow'), ('ForceHide', 'force_hide', '*bool', 'forceHide')]}
+
 def emit_classes(classes):
     parts=[]
     for cls in classes:
@@ -80,6 +82,8 @@ def emit_classes(classes):
         description=(cls.__doc__ or ('a '+name+' response')).splitlines()[0].rstrip('.')
         parts.append('// '+name+' represents '+description[:1].lower()+description[1:]+'.\ntype '+name+' struct {')
         for key,field in fields: parts.append(f'\t{go_name(key)} {go_type(field.annotation)} `json:"{key}"`')
+        for field_name, key, field_type, alias in SDK_FIELDS.get(name, []):
+            parts.append(f'\t{field_name} {field_type} `json:"{key},omitempty"`')
         parts.append('}\n')
         parts.append('// UnmarshalJSON validates response fields and normalizes wire names.\nfunc (m *'+name+') UnmarshalJSON(data []byte) error {')
         if name in {'Market','Event','Profile','PublicProfile','CommentProfile','Comment','SearchResults'}: parts.append('\tvar err error\n\tdata, err = normalize'+name+'(data)\n\tif err != nil { return err }')
@@ -94,6 +98,9 @@ def emit_classes(classes):
             if k: values.append('kind: "'+k+'"')
             if field.is_required(): values.append('required: true')
             parts.append('\t\t{'+', '.join(values)+'},')
+        for field_name, key, field_type, alias in SDK_FIELDS.get(name, []):
+            coercion = ', kind: "json_sequence"' if field_type == '[]string' else ''
+            parts.append('\t\t{name: "'+key+'", aliases: []string{"'+alias+'"}'+coercion+'},')
         parts.append('\t}); err != nil { return err }\n\t*m = '+name+'(result)\n\treturn nil\n}\n')
     return '\n'.join(parts)
 

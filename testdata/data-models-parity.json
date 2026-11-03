@@ -97358,8 +97358,35 @@
         "resolved_at": 1720000000
       },
       "expected": {
-        "error": "UnexpectedResponseError"
-      }
+        "value": {
+          "question_id": "123",
+          "condition_id": "0xabababababababababababababababababababababababababababababababab",
+          "status": "initialized",
+          "extended_review": true,
+          "expected_settlement_time": "2024-07-03T09:46:40Z",
+          "settlement_time_basis": "managed_proposal_expiration",
+          "was_disputed": true,
+          "question_rules_updated": true,
+          "proposed_price": null,
+          "reproposed_price": "1.234567890123456789",
+          "price": "1.234567890123456789",
+          "transaction_hash": "123",
+          "log_index": 7,
+          "last_updated_at": "2024-07-03T09:46:40Z",
+          "market_type": "BINARY",
+          "payouts": [
+            "0.000001234567890123456789",
+            "0.000001234567890123456789"
+          ],
+          "resolution_source": "reported",
+          "reporter": "UMA_OO",
+          "was_arbitrated": true,
+          "resolved_block": 7,
+          "resolved_at": "2024-07-03T09:46:40Z"
+        }
+      },
+      "compatibility_difference": "SDK-001: preserve empty resolution price and interpret it as absent",
+      "python_error": "UnexpectedResponseError"
     },
     {
       "name": "Resolution/null/reproposed_price",
@@ -97539,8 +97566,35 @@
         "resolved_at": 1720000000
       },
       "expected": {
-        "error": "UnexpectedResponseError"
-      }
+        "value": {
+          "question_id": "123",
+          "condition_id": "0xabababababababababababababababababababababababababababababababab",
+          "status": "initialized",
+          "extended_review": true,
+          "expected_settlement_time": "2024-07-03T09:46:40Z",
+          "settlement_time_basis": "managed_proposal_expiration",
+          "was_disputed": true,
+          "question_rules_updated": true,
+          "proposed_price": "1.234567890123456789",
+          "reproposed_price": null,
+          "price": "1.234567890123456789",
+          "transaction_hash": "123",
+          "log_index": 7,
+          "last_updated_at": "2024-07-03T09:46:40Z",
+          "market_type": "BINARY",
+          "payouts": [
+            "0.000001234567890123456789",
+            "0.000001234567890123456789"
+          ],
+          "resolution_source": "reported",
+          "reporter": "UMA_OO",
+          "was_arbitrated": true,
+          "resolved_block": 7,
+          "resolved_at": "2024-07-03T09:46:40Z"
+        }
+      },
+      "compatibility_difference": "SDK-001: preserve empty resolution price and interpret it as absent",
+      "python_error": "UnexpectedResponseError"
     },
     {
       "name": "Resolution/null/price",
@@ -97720,8 +97774,35 @@
         "resolved_at": 1720000000
       },
       "expected": {
-        "error": "UnexpectedResponseError"
-      }
+        "value": {
+          "question_id": "123",
+          "condition_id": "0xabababababababababababababababababababababababababababababababab",
+          "status": "initialized",
+          "extended_review": true,
+          "expected_settlement_time": "2024-07-03T09:46:40Z",
+          "settlement_time_basis": "managed_proposal_expiration",
+          "was_disputed": true,
+          "question_rules_updated": true,
+          "proposed_price": "1.234567890123456789",
+          "reproposed_price": "1.234567890123456789",
+          "price": null,
+          "transaction_hash": "123",
+          "log_index": 7,
+          "last_updated_at": "2024-07-03T09:46:40Z",
+          "market_type": "BINARY",
+          "payouts": [
+            "0.000001234567890123456789",
+            "0.000001234567890123456789"
+          ],
+          "resolution_source": "reported",
+          "reporter": "UMA_OO",
+          "was_arbitrated": true,
+          "resolved_block": 7,
+          "resolved_at": "2024-07-03T09:46:40Z"
+        }
+      },
+      "compatibility_difference": "SDK-001: preserve empty resolution price and interpret it as absent",
+      "python_error": "UnexpectedResponseError"
     },
     {
       "name": "Resolution/null/transaction_hash",

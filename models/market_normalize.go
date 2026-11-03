@@ -55,10 +55,13 @@ func normalizeMarket(data []byte) ([]byte, error) {
 		outcomes[side] = outcome
 	}
 	result := make(map[string]any)
-	for _, key := range []string{"id", "version", "slug", "question", "description", "category", "image", "icon"} {
+	for _, key := range []string{"id", "version", "slug", "question", "description", "category", "image", "icon", "createdAt", "updatedAt"} {
 		if value, exists := fields[key]; exists {
 			result[key] = value
 		}
+	}
+	if value, exists := fields["groupItemThreshold"]; exists {
+		result["group_item_index"] = value
 	}
 	if value, exists := fields["groupItemTitle"]; exists {
 		result["group_item_title"] = value
@@ -68,11 +71,11 @@ func normalizeMarket(data []byte) ([]byte, error) {
 	}
 	result["outcomes"] = outcomes
 	groups := map[string]map[string]string{
-		"state":      {"active": "active", "closed": "closed", "archived": "archived", "combo_status": "comboStatus", "accepting_orders": "acceptingOrders", "enable_order_book": "enableOrderBook", "neg_risk": "negRisk", "start_date": "startDate", "end_date": "endDate", "closed_time": "closedTime"},
+		"state":      {"active": "active", "closed": "closed", "archived": "archived", "combo_status": "comboStatus", "accepting_orders": "acceptingOrders", "enable_order_book": "enableOrderBook", "neg_risk": "negRisk", "start_date": "startDate", "end_date": "endDate", "closed_time": "closedTime", "accepting_orders_timestamp": "acceptingOrdersTimestamp", "event_start_time": "eventStartTime"},
 		"metrics":    {"volume": "volume", "volume_num": "volumeNum", "volume_24hr": "volume24hr", "volume_1wk": "volume1wk", "volume_1mo": "volume1mo", "volume_1yr": "volume1yr", "volume_amm": "volumeAmm", "volume_clob": "volumeClob", "liquidity": "liquidity", "liquidity_num": "liquidityNum", "liquidity_clob": "liquidityClob"},
 		"prices":     {"best_bid": "bestBid", "best_ask": "bestAsk", "last_trade_price": "lastTradePrice", "spread": "spread", "one_hour_price_change": "oneHourPriceChange", "one_day_price_change": "oneDayPriceChange", "one_week_price_change": "oneWeekPriceChange", "one_month_price_change": "oneMonthPriceChange", "one_year_price_change": "oneYearPriceChange"},
 		"trading":    {"minimum_order_size": "orderMinSize", "minimum_tick_size": "orderPriceMinTickSize", "seconds_delay": "secondsDelay", "fees_enabled": "feesEnabled", "fee_type": "feeType", "fee_schedule": "feeSchedule"},
-		"resolution": {"onchain_event_id": "onchainEventId", "request_id": "requestId", "resolution_status": "resolutionStatus", "question_id": "questionID", "neg_risk_request_id": "negRiskRequestID", "uma_resolution_status": "umaResolutionStatus", "source": "resolutionSource", "resolved_by": "resolvedBy"},
+		"resolution": {"onchain_event_id": "onchainEventId", "request_id": "requestId", "resolution_status": "resolutionStatus", "question_id": "questionID", "neg_risk_request_id": "negRiskRequestID", "uma_resolution_status": "umaResolutionStatus", "source": "resolutionSource", "resolved_by": "resolvedBy", "uma_end_date": "umaEndDate", "uma_resolution_statuses": "umaResolutionStatuses", "automatically_resolved": "automaticallyResolved"},
 		"rewards":    {"clob_rewards": "clobRewards", "rewards_min_size": "rewardsMinSize", "rewards_max_spread": "rewardsMaxSpread", "holding_rewards_enabled": "holdingRewardsEnabled"},
 		"sports":     {"sports_market_type": "sportsMarketType", "line": "line", "game_id": "gameId", "game_start_time": "gameStartTime"},
 	}

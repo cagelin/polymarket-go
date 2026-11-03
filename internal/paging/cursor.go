@@ -67,6 +67,12 @@ func CanonicalQueryValue(value any) (string, error) {
 		return strconv.Itoa(v), nil
 	case int64:
 		return strconv.FormatInt(v, 10), nil
+	case json.Number:
+		var validated json.Number
+		if err := json.Unmarshal([]byte(v.String()), &validated); err != nil || validated == "" || validated.String() != v.String() {
+			return "", &sdkerrors.UserInputError{Message: "invalid decimal query value"}
+		}
+		return v.String(), nil
 	case float64:
 		return codec.PythonFloat(v), nil
 	case []string:

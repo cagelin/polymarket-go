@@ -114,10 +114,12 @@ for cls in classes:
  fields=[(k,v) for k,v in cls.model_fields.items() if not v.deprecated]
  parts += ['// '+name+' represents '+(cls.__doc__ or 'a Data API response').splitlines()[0].replace('`', '').rstrip('.')+'.','type '+name+' struct {']
  for key,field in fields:parts.append(fieldname(key)+' '+gotype(field.annotation)+' `json:"'+key+'"`')
+ if name=='Resolution':parts.append('RawPrices map[string]json.RawMessage `json:"raw_prices"`')
  parts+=['}','// UnmarshalJSON validates Data API field types and wire aliases.','func (m *'+name+') UnmarshalJSON(raw []byte) error {','type plain '+name,'var result plain','if err:=decodeData(raw,&result,[]dataField{']
  for key,field in fields:parts.append(rule(cls,key,field))
  parts+=['});err!=nil { return err }']
  if name=='RedeemActivity':parts+=['if result.IsCombo { if _,err:=codec.Condition(string(result.ConditionID),"combo");err!=nil { return err } }']
+ if name=='Resolution':parts+=['fields, err := codec.Object(raw)', 'if err != nil { return err }', 'result.RawPrices, err = resolutionRawPrices(fields)', 'if err != nil { return err }']
  parts+=['*m='+name+'(result)','return nil','}']
 header='''// Data models ported from polymarket-client 0.14.0. This file is linted.
 

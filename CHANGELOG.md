@@ -2,6 +2,15 @@
 
 Scope update (2026-10-29): this SDK targets new accounts using Deposit Wallets. Legacy Safe/Proxy onboarding, migration, and live validation are excluded from support and release acceptance. Existing legacy implementation and historical tests remain, without a support commitment. EOA signing and other agreed capabilities remain in scope.
 
+## v0.3.0 — 2026-11-03
+
+- Added Gamma lifecycle timestamps with original text and parse errors, market group indexes, resolution metadata, series/tag fields, and records of skipped nonbinary child markets.
+- Added public HTTP response callbacks before decoding, including per-attempt errors, partial reads, bounded bodies, and independent retained bytes.
+- Added `GetCLOBPriceHistory` and `CountEvents`; preserved resolution price JSON and removed floating-point conversion from Data history timestamps.
+- Changed amount filters from `*float64` to `*json.Number`. This requires caller source changes. See the [migration and API reference](reference/research-upgrade.md).
+
+中文：补齐 Gamma 时间与关系字段，保留异常时间、结算原值和被跳过的非二元市场；新增公共 HTTP 原文回调、CLOB 价格历史与事件总数方法。金额筛选改为 `*json.Number`，调用方须修改旧类型参数。详见[升级说明](reference/research-upgrade.zh-CN.md)。
+
 ## v0.2.0 — 2026-10-31
 
 - Added opt-in raw market messages and raw-only consumption, retaining complete unknown, malformed and binary messages without changing default typed delivery.

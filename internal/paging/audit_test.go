@@ -6,7 +6,7 @@ import (
 )
 
 func TestUnsupportedQueryTypesFailBeforeIO(t *testing.T) {
-	for _, value := range []any{nil, int32(3), json.Number("7"), struct{}{}} {
+	for _, value := range []any{nil, int32(3), json.Number("bad"), struct{}{}} {
 		if _, err := CanonicalQueryValue(value); err == nil {
 			t.Errorf("CanonicalQueryValue(%T) succeeded, want error", value)
 		}
@@ -20,5 +20,17 @@ func TestUnsupportedQueryTypesFailBeforeIO(t *testing.T) {
 		if _, err := pages.FirstPage(t.Context()); err == nil {
 			t.Errorf("FirstPage(%T) succeeded, want error before network IO", value)
 		}
+	}
+}
+
+func TestExactDecimalQuery(t *testing.T) {
+	value := json.Number("0.12345678901234567890123456789")
+	canonical, err := CanonicalQueryValue(value)
+	if err != nil || canonical != value.String() {
+		t.Fatalf("CanonicalQueryValue(%s) = %s, %v", value, canonical, err)
+	}
+	values, err := QueryValues(map[string]any{"amount": value})
+	if err != nil || values.Get("amount") != value.String() {
+		t.Fatalf("QueryValues = %v, %v", values, err)
 	}
 }

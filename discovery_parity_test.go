@@ -8,6 +8,8 @@ import (
 	"reflect"
 	"sync/atomic"
 	"testing"
+
+	"github.com/cagelin/polymarket-go/internal/testutil"
 )
 
 func TestPythonDiscoveryParity(t *testing.T) {
@@ -229,7 +231,7 @@ func testPythonDiscoveryParity(t *testing.T, data []byte) {
 				if encodeErr != nil {
 					subtest.Fatal(encodeErr)
 				}
-				compareJSON(subtest, encoded, test.Expected.Value)
+				testutil.EqualJSON(subtest, json.RawMessage(encoded), test.Expected.Value, "raw_prices", "skipped_markets", "deploying_timestamp", "group_item_index", "accepting_orders_timestamp", "event_start_time", "uma_end_date", "uma_resolution_statuses", "automatically_resolved", "recurrence", "series_type", "force_show", "force_hide")
 			}
 		})
 	}

@@ -147,6 +147,9 @@ type Market struct {
 	Sports         MarketSportsMetadata `json:"sports"`
 	Events         []MarketEvent        `json:"events"`
 	Tags           []MarketTag          `json:"tags"`
+	CreatedAt      *TimestampValue      `json:"created_at,omitempty"`
+	UpdatedAt      *TimestampValue      `json:"updated_at,omitempty"`
+	GroupItemIndex *string              `json:"group_item_index,omitempty"`
 }
 
 // UnmarshalJSON validates response fields and normalizes wire names.
@@ -179,6 +182,9 @@ func (m *Market) UnmarshalJSON(data []byte) error {
 		{name: "sports", required: true},
 		{name: "events", kind: "sequence", required: true},
 		{name: "tags", kind: "sequence", required: true},
+		{name: "created_at", aliases: []string{"createdAt"}},
+		{name: "updated_at", aliases: []string{"updatedAt"}},
+		{name: "group_item_index", aliases: []string{"groupItemThreshold"}},
 	}); err != nil {
 		return err
 	}
@@ -326,14 +332,17 @@ func (m *MarketPrices) UnmarshalJSON(data []byte) error {
 
 // MarketResolution represents resolution metadata for a market.
 type MarketResolution struct {
-	OnchainEventID      *string                 `json:"onchain_event_id"`
-	RequestID           *ResolutionRequestID    `json:"request_id"`
-	ResolutionStatus    *MarketResolutionStatus `json:"resolution_status"`
-	QuestionID          *QuestionID             `json:"question_id"`
-	NegRiskRequestID    *ResolutionRequestID    `json:"neg_risk_request_id"`
-	UMAResolutionStatus *UMAResolutionStatus    `json:"uma_resolution_status"`
-	Source              *string                 `json:"source"`
-	ResolvedBy          *EVMAddress             `json:"resolved_by"`
+	OnchainEventID        *string                 `json:"onchain_event_id"`
+	RequestID             *ResolutionRequestID    `json:"request_id"`
+	ResolutionStatus      *MarketResolutionStatus `json:"resolution_status"`
+	QuestionID            *QuestionID             `json:"question_id"`
+	NegRiskRequestID      *ResolutionRequestID    `json:"neg_risk_request_id"`
+	UMAResolutionStatus   *UMAResolutionStatus    `json:"uma_resolution_status"`
+	Source                *string                 `json:"source"`
+	ResolvedBy            *EVMAddress             `json:"resolved_by"`
+	UMAEndDate            *TimestampValue         `json:"uma_end_date,omitempty"`
+	UMAResolutionStatuses []string                `json:"uma_resolution_statuses,omitempty"`
+	AutomaticallyResolved *bool                   `json:"automatically_resolved,omitempty"`
 }
 
 // UnmarshalJSON validates response fields and normalizes wire names.
@@ -349,6 +358,9 @@ func (m *MarketResolution) UnmarshalJSON(data []byte) error {
 		{name: "uma_resolution_status", aliases: []string{"umaResolutionStatus"}, kind: "uma"},
 		{name: "source"},
 		{name: "resolved_by", aliases: []string{"resolvedBy"}, kind: "empty_text"},
+		{name: "uma_end_date", aliases: []string{"umaEndDate"}},
+		{name: "uma_resolution_statuses", aliases: []string{"umaResolutionStatuses"}, kind: "json_sequence"},
+		{name: "automatically_resolved", aliases: []string{"automaticallyResolved"}},
 	}); err != nil {
 		return err
 	}
@@ -406,16 +418,18 @@ func (m *MarketSportsMetadata) UnmarshalJSON(data []byte) error {
 
 // MarketState represents operational state and timing for a market.
 type MarketState struct {
-	Active          *bool      `json:"active"`
-	Closed          *bool      `json:"closed"`
-	Archived        *bool      `json:"archived"`
-	ComboStatus     *string    `json:"combo_status"`
-	AcceptingOrders *bool      `json:"accepting_orders"`
-	EnableOrderBook *bool      `json:"enable_order_book"`
-	NegRisk         *bool      `json:"neg_risk"`
-	StartDate       *time.Time `json:"start_date"`
-	EndDate         *time.Time `json:"end_date"`
-	ClosedTime      *time.Time `json:"closed_time"`
+	Active                   *bool           `json:"active"`
+	Closed                   *bool           `json:"closed"`
+	Archived                 *bool           `json:"archived"`
+	ComboStatus              *string         `json:"combo_status"`
+	AcceptingOrders          *bool           `json:"accepting_orders"`
+	EnableOrderBook          *bool           `json:"enable_order_book"`
+	NegRisk                  *bool           `json:"neg_risk"`
+	StartDate                *time.Time      `json:"start_date"`
+	EndDate                  *time.Time      `json:"end_date"`
+	ClosedTime               *time.Time      `json:"closed_time"`
+	AcceptingOrdersTimestamp *TimestampValue `json:"accepting_orders_timestamp,omitempty"`
+	EventStartTime           *TimestampValue `json:"event_start_time,omitempty"`
 }
 
 // UnmarshalJSON validates response fields and normalizes wire names.
@@ -433,6 +447,8 @@ func (m *MarketState) UnmarshalJSON(data []byte) error {
 		{name: "start_date", aliases: []string{"startDate"}, kind: "datetime"},
 		{name: "end_date", aliases: []string{"endDate"}, kind: "datetime"},
 		{name: "closed_time", aliases: []string{"closedTime"}, kind: "datetime"},
+		{name: "accepting_orders_timestamp", aliases: []string{"acceptingOrdersTimestamp"}},
+		{name: "event_start_time", aliases: []string{"eventStartTime"}},
 	}); err != nil {
 		return err
 	}

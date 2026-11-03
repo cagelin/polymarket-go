@@ -153,6 +153,9 @@ type BuilderVolumePoint = models.BuilderVolumePoint
 // Buy aliases models.Buy.
 const Buy = models.Buy
 
+// CLOBPriceHistoryPoint aliases models.CLOBPriceHistoryPoint.
+type CLOBPriceHistoryPoint = models.CLOBPriceHistoryPoint
+
 // CancelMarketOrdersParams aliases trading.CancelMarketOrdersParams.
 type CancelMarketOrdersParams = trading.CancelMarketOrdersParams
 
@@ -1011,6 +1014,9 @@ type PriceHistoryParams = data.PriceHistoryParams
 // PriceHistoryPoint aliases models.PriceHistoryPoint.
 type PriceHistoryPoint = models.PriceHistoryPoint
 
+// PriceHistoryQuery aliases clob.PriceHistoryQuery.
+type PriceHistoryQuery = clob.PriceHistoryQuery
+
 // PriceRequest aliases clob.PriceRequest.
 type PriceRequest = clob.PriceRequest
 
@@ -1067,6 +1073,9 @@ type RateLimitUpdate = errors.RateLimitUpdate
 
 // RawFrame aliases streams.RawFrame.
 type RawFrame = streams.RawFrame
+
+// RawHTTPResponse aliases models.RawHTTPResponse.
+type RawHTTPResponse = models.RawHTTPResponse
 
 // RawOrderResponse aliases models.RawOrderResponse.
 type RawOrderResponse = models.RawOrderResponse
@@ -1344,6 +1353,9 @@ type SignerType = models.SignerType
 // SigningError aliases errors.SigningError.
 type SigningError = errors.SigningError
 
+// SkippedMarket aliases models.SkippedMarket.
+type SkippedMarket = models.SkippedMarket
+
 // Spec aliases streams.Spec.
 type Spec = streams.Spec
 
@@ -1427,6 +1439,9 @@ type TemplateID = models.TemplateID
 
 // TemplateReference aliases models.TemplateReference.
 type TemplateReference = models.TemplateReference
+
+// TimestampValue aliases models.TimestampValue.
+type TimestampValue = models.TimestampValue
 
 // TipActivity aliases models.TipActivity.
 type TipActivity = models.TipActivity

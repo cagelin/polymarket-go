@@ -2,6 +2,7 @@ package data
 
 import (
 	"context"
+	"encoding/json"
 
 	"github.com/cagelin/polymarket-go/models"
 	"github.com/cagelin/polymarket-go/pagination"
@@ -9,20 +10,22 @@ import (
 
 // ListTradesParams selects filters for ListTrades. Nil optional fields are omitted.
 type ListTradesParams struct {
-	User         *string  `json:"user"`
-	ConditionID  []string `json:"condition_id"`
-	EventID      []int64  `json:"event_id"`
-	Side         *string  `json:"side"`
-	TakerOnly    *bool    `json:"taker_only"`
-	FilterType   *string  `json:"filter_type"`
-	FilterAmount *float64 `json:"filter_amount"`
-	Start        *int64   `json:"start"`
-	End          *int64   `json:"end"`
-	FullHistory  bool     `json:"full_history"`
-	PageSize     *int     `json:"page_size"`
+	User         *string      `json:"user"`
+	ConditionID  []string     `json:"condition_id"`
+	EventID      []int64      `json:"event_id"`
+	Side         *string      `json:"side"`
+	TakerOnly    *bool        `json:"taker_only"`
+	FilterType   *string      `json:"filter_type"`
+	FilterAmount *json.Number `json:"filter_amount"`
+	Start        *int64       `json:"start"`
+	End          *int64       `json:"end"`
+	FullHistory  bool         `json:"full_history"`
+	PageSize     *int         `json:"page_size"`
 }
 
 // ListTrades reads public Data API information.
+// The upstream minimum filter_amount is 0.01, including when zero is supplied.
+// Smaller trades are not returned. FilterAmount is exact decimal text.
 func (c *Client) ListTrades(p ListTradesParams) (*pagination.Paginator[models.Trade], error) {
 	query := map[string]any{}
 	put(query, "user", p.User)
@@ -105,20 +108,20 @@ func (c *Client) ListComboActivity(p ListComboActivityParams) (*pagination.Pagin
 
 // ListPositionsParams selects filters for ListPositions. Nil optional fields are omitted.
 type ListPositionsParams struct {
-	User            *string  `json:"user"`
-	ConditionID     []string `json:"condition_id"`
-	Status          *string  `json:"status"`
-	EventID         []int64  `json:"event_id"`
-	Title           *string  `json:"title"`
-	FilterType      *string  `json:"filter_type"`
-	FilterAmount    *float64 `json:"filter_amount"`
-	IncludeArchived *bool    `json:"include_archived"`
-	SortBy          *string  `json:"sort_by"`
-	SortDirection   *string  `json:"sort_direction"`
-	Start           *int64   `json:"start"`
-	End             *int64   `json:"end"`
-	FullHistory     bool     `json:"full_history"`
-	PageSize        *int     `json:"page_size"`
+	User            *string      `json:"user"`
+	ConditionID     []string     `json:"condition_id"`
+	Status          *string      `json:"status"`
+	EventID         []int64      `json:"event_id"`
+	Title           *string      `json:"title"`
+	FilterType      *string      `json:"filter_type"`
+	FilterAmount    *json.Number `json:"filter_amount"`
+	IncludeArchived *bool        `json:"include_archived"`
+	SortBy          *string      `json:"sort_by"`
+	SortDirection   *string      `json:"sort_direction"`
+	Start           *int64       `json:"start"`
+	End             *int64       `json:"end"`
+	FullHistory     bool         `json:"full_history"`
+	PageSize        *int         `json:"page_size"`
 }
 
 // ListPositions reads public Data API information.
@@ -255,10 +258,10 @@ func (c *Client) GetUserVolume(ctx context.Context, p GetUserVolumeParams) (*mod
 
 // ListMarketHoldersParams selects filters for ListMarketHolders. Nil optional fields are omitted.
 type ListMarketHoldersParams struct {
-	ConditionIDs []string `json:"condition_ids"`
-	MinBalance   *float64 `json:"min_balance"`
-	IncludePnL   *bool    `json:"include_pnl"`
-	PageSize     *int     `json:"page_size"`
+	ConditionIDs []string     `json:"condition_ids"`
+	MinBalance   *json.Number `json:"min_balance"`
+	IncludePnL   *bool        `json:"include_pnl"`
+	PageSize     *int         `json:"page_size"`
 }
 
 // ListMarketHolders reads public Data API information.

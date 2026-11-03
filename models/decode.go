@@ -65,6 +65,12 @@ func normalizeGammaField(value json.RawMessage, rule gammaField) (json.RawMessag
 	}
 	fields := map[string]json.RawMessage{rule.name: value}
 	switch rule.kind {
+	case "json_sequence":
+		items, err := codec.GammaSequence(value)
+		if err != nil {
+			return nil, err
+		}
+		return json.Marshal(items)
 	case "sequence", "default_sequence":
 		return codec.DecodeGammaSequence(value)
 	case "team_ordering":

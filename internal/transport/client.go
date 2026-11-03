@@ -17,10 +17,15 @@ import (
 	"github.com/cagelin/polymarket-go/internal/endpoint"
 
 	sdkerrors "github.com/cagelin/polymarket-go/errors"
+	"github.com/cagelin/polymarket-go/models"
 )
 
 // Config configures public requests. Its zero value uses production URLs.
 type Config struct {
+	// RawHTTPHandler observes public Gamma/Data/CLOB responses before decoding.
+	// It runs synchronously, may run concurrently, and must honor ctx cancellation.
+	// An error stops this call without retrying or decoding. Authenticated calls are excluded.
+	RawHTTPHandler      func(context.Context, models.RawHTTPResponse) error
 	RFQWSURL            string
 	UserWSURL           string
 	PriceWSURL          string
@@ -61,6 +66,7 @@ type Client struct {
 	owned                *http.Transport
 	held                 *http.Transport
 	closed               atomic.Bool
+	rawHTTPHandler       func(context.Context, models.RawHTTPResponse) error
 	onRateLimitUpdate    func(sdkerrors.RateLimitUpdate) error
 }
 
@@ -112,6 +118,7 @@ func New(config Config) (*Client, error) {
 		GammaURL:          gammaURL,
 		DataURL:           dataURL,
 		http:              config.HTTPClient,
+		rawHTTPHandler:    config.RawHTTPHandler,
 		onRateLimitUpdate: config.OnRateLimitUpdate,
 	}
 	if c.http == nil {
@@ -234,6 +241,29 @@ func (c *Client) request(ctx context.Context, baseURL, method, path string, quer
 	}
 	defer func() { _ = res.Body.Close() }() // Reading below reports errors; closing cannot recover a failed response.
 	data, err := io.ReadAll(io.LimitReader(res.Body, c.maxResponseBodyBytes+1))
+	if c.rawHTTPHandler != nil && headers == nil && observablePublicRequest(baseURL, method, path, c) {
+		service := "clob"
+		switch baseURL {
+		case c.GammaURL:
+			service = "gamma"
+		case c.DataURL:
+			service = "data"
+		}
+		record := models.RawHTTPResponse{Service: service, Method: method, URL: req.URL.String(), RequestBody: bytes.Clone(payload), StatusCode: res.StatusCode, Header: res.Header.Clone(), ReceivedAt: time.Now().UTC(), Complete: err == nil && int64(len(data)) <= c.maxResponseBodyBytes}
+		if err != nil {
+			record.ReadError = err.Error()
+		}
+		if int64(len(data)) > c.maxResponseBodyBytes {
+			record.Body = bytes.Clone(data[:c.maxResponseBodyBytes])
+			record.ReadError = "HTTP response exceeds configured body limit"
+		} else {
+			record.Body = bytes.Clone(data)
+		}
+		if handlerErr := c.rawHTTPHandler(ctx, record); handlerErr != nil {
+			return nil, &responseHandlerError{cause: handlerErr}
+		}
+	}
+
 	if err != nil {
 		return nil, &sdkerrors.TransportError{Cause: err}
 	}
@@ -255,6 +285,9 @@ func (c *Client) request(ctx context.Context, baseURL, method, path string, quer
 func (c *Client) DataRead(ctx context.Context, path string, query url.Values) ([]byte, error) {
 	for attempt := 0; ; attempt++ {
 		data, err := c.Request(ctx, c.DataURL, http.MethodGet, path, query, nil)
+		if _, handlerFailed := errors.AsType[*responseHandlerError](err); handlerFailed {
+			return nil, err
+		}
 		var rate *sdkerrors.RateLimitError
 		if !errors.As(err, &rate) || attempt >= 2 {
 			return data, err
@@ -281,3 +314,29 @@ func (c *Client) RelayerEndpoint() string { return c.RelayerURL }
 
 // CustomRPC reports whether an RPC endpoint was explicitly configured.
 func (c *Client) CustomRPC() bool { return c.customRPC }
+
+// Only unsigned reads are observable; wallet writes and authentication are excluded.
+func observablePublicRequest(baseURL, method, path string, c *Client) bool {
+	if baseURL != c.GammaURL && baseURL != c.DataURL && baseURL != c.CLOBURL {
+		return false
+	}
+	if method == http.MethodGet {
+		return true
+	}
+	if baseURL != c.CLOBURL || method != http.MethodPost {
+		return false
+	}
+	switch path {
+	case "/books", "/prices", "/midpoints", "/spreads", "/last-trades-prices":
+		return true
+	default:
+		return false
+	}
+}
+
+type responseHandlerError struct{ cause error }
+
+func (e *responseHandlerError) Error() string {
+	return "public HTTP response handler: " + e.cause.Error()
+}
+func (e *responseHandlerError) Unwrap() error { return e.cause }

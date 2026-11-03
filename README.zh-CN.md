@@ -22,7 +22,7 @@
 需要 **Go 1.27 或更高版本**，SDK 构建无需 CGO。
 
 ```sh
-go get github.com/cagelin/polymarket-go@v0.2.0
+go get github.com/cagelin/polymarket-go@v0.3.0
 ```
 
 ## 快速开始
@@ -43,6 +43,8 @@ go run ./examples/wallet <钱包地址>
 [示例运行说明](examples/README.zh-CN.md)。
 
 ## 使用说明
+
+v0.3.0 的金额参数变更、HTTP 原文回调和研究接口见[升级说明](reference/research-upgrade.zh-CN.md)。
 
 ### 账户认证
 

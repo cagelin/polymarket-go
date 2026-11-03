@@ -20,7 +20,7 @@ func normalizeEvent(data []byte) ([]byte, error) {
 	})
 	groups := map[string]map[string]string{
 		"state":      {"active": "active", "closed": "closed", "archived": "archived", "new": "new", "featured": "featured", "restricted": "restricted", "cyom": "cyom", "live": "live", "ended": "ended", "automatically_active": "automaticallyActive", "comments_enabled": "commentsEnabled", "requires_translation": "requiresTranslation"},
-		"schedule":   {"start_date": "startDate", "creation_date": "creationDate", "end_date": "endDate", "closed_time": "closedTime", "start_time": "startTime", "event_date": "eventDate", "event_week": "eventWeek", "finished_at": "finishedTimestamp"},
+		"schedule":   {"start_date": "startDate", "creation_date": "creationDate", "end_date": "endDate", "closed_time": "closedTime", "start_time": "startTime", "event_date": "eventDate", "event_week": "eventWeek", "finished_at": "finishedTimestamp", "deploying_timestamp": "deployingTimestamp"},
 		"metrics":    {"liquidity": "liquidity", "liquidity_amm": "liquidityAmm", "liquidity_clob": "liquidityClob", "volume": "volume", "volume_24hr": "volume24hr", "volume_1wk": "volume1wk", "volume_1mo": "volume1mo", "volume_1yr": "volume1yr", "open_interest": "openInterest", "competitive": "competitive", "comment_count": "commentCount", "tweet_count": "tweetCount"},
 		"display":    {"sort_by": "sortBy", "show_all_outcomes": "showAllOutcomes", "show_market_images": "showMarketImages", "gmp_chart_mode": "gmpChartMode", "color": "color", "featured_order": "featuredOrder", "country_name": "countryName", "election_type": "electionType", "image_optimized": "imageOptimized", "icon_optimized": "iconOptimized", "featured_image_optimized": "featuredImageOptimized"},
 		"trading":    {"enable_order_book": "enableOrderBook", "neg_risk": "negRisk", "neg_risk_market_id": "negRiskMarketID", "neg_risk_fee_bips": "negRiskFeeBips", "enable_neg_risk": "enableNegRisk", "neg_risk_augmented": "negRiskAugmented", "cumulative_markets": "cumulativeMarkets"},
@@ -43,6 +43,7 @@ func normalizeEvent(data []byte) ([]byte, error) {
 		}
 		result[group] = encoded
 	}
+	var skipped []SkippedMarket
 	for key, wireKey := range map[string]string{"partners": "externalPartners", "markets": "markets", "series": "series", "tags": "tags", "creators": "eventCreators"} {
 		items, sequenceErr := codec.GammaSequence(fields[wireKey])
 		if sequenceErr != nil {
@@ -61,6 +62,7 @@ func normalizeEvent(data []byte) ([]byte, error) {
 					return nil, outcomesErr
 				}
 				if len(outcomes) != 2 {
+					skipped = append(skipped, SkippedMarket{Raw: append(json.RawMessage(nil), item...), Reason: "expected two outcomes"})
 					continue
 				}
 			} else {
@@ -77,6 +79,13 @@ func normalizeEvent(data []byte) ([]byte, error) {
 			return nil, encodeErr
 		}
 		result[key] = encoded
+	}
+	if len(skipped) > 0 {
+		encoded, encodeErr := json.Marshal(skipped)
+		if encodeErr != nil {
+			return nil, encodeErr
+		}
+		result["skipped_markets"] = encoded
 	}
 	return json.Marshal(result)
 }
@@ -101,9 +110,9 @@ func normalizeEventRelation(kind string, fields map[string]json.RawMessage) map[
 		}
 		return result
 	case "series":
-		return selectGammaFields(fields, map[string]string{"id": "id", "slug": "slug", "title": "title", "subtitle": "subtitle", "description": "description", "image": "image", "icon": "icon", "active": "active", "closed": "closed", "archived": "archived", "volume": "volume", "liquidity": "liquidity", "start_date": "startDate"})
+		return selectGammaFields(fields, map[string]string{"id": "id", "slug": "slug", "title": "title", "subtitle": "subtitle", "description": "description", "image": "image", "icon": "icon", "active": "active", "closed": "closed", "archived": "archived", "volume": "volume", "liquidity": "liquidity", "start_date": "startDate", "recurrence": "recurrence", "series_type": "seriesType"})
 	case "tags":
-		return selectGammaFields(fields, map[string]string{"id": "id", "slug": "slug", "label": "label"})
+		return selectGammaFields(fields, map[string]string{"id": "id", "slug": "slug", "label": "label", "force_show": "forceShow", "force_hide": "forceHide"})
 	case "creators":
 		result := selectGammaFields(fields, map[string]string{"id": "id", "name": "creatorName", "handle": "creatorHandle", "url": "creatorUrl", "image": "creatorImage", "created_at": "createdAt", "updated_at": "updatedAt"})
 		if !gammaTruthy(result["url"]) {

@@ -95,15 +95,54 @@ func (c *Client) GetEvent(ctx context.Context, query EventQuery) (*models.Event,
 
 // ListEvents lazily lists events with query-bound continuation cursors.
 func (c *Client) ListEvents(p ListEventsParams) (*pagination.Paginator[models.Event], error) {
-	if err := validateRecurrence(p.Recurrence); err != nil {
+	params, size, err := eventQuery(p)
+	if err != nil {
 		return nil, err
 	}
+	return paging.KeysetPaginator(c.transport, "gamma", c.transport.GammaURL, "/events/keyset", "after_cursor", params, size, parseEventsPage), nil
+}
+
+// CountEvents reads totalResults from /events/pagination with limit=1, offset=0.
+// It shares ListEvents filters and its closed=false default. PageSize is ignored.
+// The total is a point-in-time server count, not proof of historical coverage.
+// The upstream offset endpoint is limited to 2000; use ListEvents to enumerate.
+func (c *Client) CountEvents(ctx context.Context, p ListEventsParams) (int64, error) {
+	p.PageSize = nil
+	params, _, err := eventQuery(p)
+	if err != nil {
+		return 0, err
+	}
+	params["limit"] = 1
+	params["offset"] = 0
+	query, err := paging.QueryValues(params)
+	if err != nil {
+		return 0, err
+	}
+	body, err := c.transport.Request(ctx, c.transport.GammaURL, http.MethodGet, "/events/pagination", query, nil)
+	if err != nil {
+		return 0, err
+	}
+	fields, err := codec.Object(body)
+	if err == nil {
+		var total int64
+		total, err = codec.Required[int64](fields, "totalResults")
+		if err == nil && total >= 0 {
+			return total, nil
+		}
+	}
+	return 0, &sdkerrors.UnexpectedResponseError{Message: "invalid event totalResults", Cause: err}
+}
+
+func eventQuery(p ListEventsParams) (map[string]any, int, error) {
+	if err := validateRecurrence(p.Recurrence); err != nil {
+		return nil, 0, err
+	}
 	if p.TagMatch != nil && *p.TagMatch != TagMatchAny && *p.TagMatch != TagMatchAll {
-		return nil, &sdkerrors.UserInputError{Message: "tag_match must be any or all"}
+		return nil, 0, &sdkerrors.UserInputError{Message: "tag_match must be any or all"}
 	}
 	params := map[string]any{"closed": p.Closed}
 	if err := queryVersions(params, p.Versions); err != nil {
-		return nil, err
+		return nil, 0, err
 	}
 	paging.QueryOption(params, "ascending", p.Ascending)
 	paging.QueryOption(params, "cyom", p.CYOM)
@@ -163,9 +202,9 @@ func (c *Client) ListEvents(p ListEventsParams) (*pagination.Paginator[models.Ev
 		size = *p.PageSize
 	}
 	if size < 1 {
-		return nil, &sdkerrors.UserInputError{Message: "page_size must be positive"}
+		return nil, 0, &sdkerrors.UserInputError{Message: "page_size must be positive"}
 	}
-	return paging.KeysetPaginator(c.transport, "gamma", c.transport.GammaURL, "/events/keyset", "after_cursor", params, size, parseEventsPage), nil
+	return params, size, nil
 }
 
 func validateRecurrence(value *Recurrence) error {
