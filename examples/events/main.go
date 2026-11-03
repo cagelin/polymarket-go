@@ -3,9 +3,12 @@ package main
 
 import (
 	"context"
+	"errors"
 	"flag"
 	"fmt"
+	"io"
 	"log"
+	"os"
 	"time"
 
 	"github.com/cagelin/polymarket-go"
@@ -18,24 +21,35 @@ func main() {
 }
 
 func run() error {
-	eventID := flag.String("id", "", "fetch one event by ID")
-	eventSlug := flag.String("slug", "", "fetch one event by slug")
-	eventURL := flag.String("url", "", "fetch one event by its Polymarket event URL")
-	pageSize := flag.Int("limit", 5, "number of events in the first list page (list mode only)")
-	closed := flag.Bool("closed", false, "list closed events instead of open events (list mode only)")
-	tagSlug := flag.String("tag", "", "filter event lists by tag slug (list mode only)")
-	seriesID := flag.Int64("series", 0, "filter event lists by series ID (list mode only)")
-	flag.Parse()
+	return runWith(polymarket.ClientConfig{}, os.Args[1:], os.Stdout)
+}
+
+func runWith(config polymarket.ClientConfig, args []string, output io.Writer) error {
+	flags := flag.NewFlagSet("events", flag.ContinueOnError)
+	flags.SetOutput(output)
+	eventID := flags.String("id", "", "fetch one event by ID")
+	eventSlug := flags.String("slug", "", "fetch one event by slug")
+	eventURL := flags.String("url", "", "fetch one event by its Polymarket event URL")
+	pageSize := flags.Int("limit", 5, "number of events in the first list page (list mode only)")
+	closed := flags.Bool("closed", false, "list closed events instead of open events (list mode only)")
+	tagSlug := flags.String("tag", "", "filter event lists by tag slug (list mode only)")
+	seriesID := flags.Int64("series", 0, "filter event lists by series ID (list mode only)")
+	if parseErr := flags.Parse(args); parseErr != nil {
+		if errors.Is(parseErr, flag.ErrHelp) {
+			return nil
+		}
+		return parseErr
+	}
 	selectorCount := 0
 	for _, selector := range []string{*eventID, *eventSlug, *eventURL} {
 		if selector != "" {
 			selectorCount++
 		}
 	}
-	if flag.NArg() != 0 || selectorCount > 1 || *pageSize < 1 || *seriesID < 0 {
+	if flags.NArg() != 0 || selectorCount > 1 || *pageSize < 1 || *seriesID < 0 {
 		return fmt.Errorf("usage: go run ./examples/events [-limit positive-number] [-closed] [-tag slug] [-series id] [-id event-id | -slug event-slug | -url event-url]")
 	}
-	client, err := polymarket.NewPublicClient(polymarket.ClientConfig{})
+	client, err := polymarket.NewPublicClient(config)
 	if err != nil {
 		return fmt.Errorf("create public client: %w", err)
 	}
@@ -51,18 +65,24 @@ func run() error {
 		if lookupErr != nil {
 			return fmt.Errorf("read event: %w", lookupErr)
 		}
-		printEvent(event)
+		if outputErr := printEvent(output, event); outputErr != nil {
+			return fmt.Errorf("write event: %w", outputErr)
+		}
 		tags, tagsErr := client.GetEventTags(ctx, event.ID)
 		if tagsErr != nil {
 			return fmt.Errorf("read event tags: %w", tagsErr)
 		}
-		fmt.Printf("event tags=%d\n", len(tags))
+		if _, outputErr := fmt.Fprintf(output, "event tags=%d\n", len(tags)); outputErr != nil {
+			return fmt.Errorf("write events: %w", outputErr)
+		}
 		for _, tag := range tags {
 			label := ""
 			if tag.Label != nil {
 				label = *tag.Label
 			}
-			fmt.Printf("  tag=%s label=%s\n", tag.ID, label)
+			if _, outputErr := fmt.Fprintf(output, "  tag=%s label=%s\n", tag.ID, label); outputErr != nil {
+				return fmt.Errorf("write events: %w", outputErr)
+			}
 		}
 		return nil
 	}
@@ -88,16 +108,20 @@ func run() error {
 		return fmt.Errorf("read event page: %w", err)
 	}
 	for _, listedEvent := range page.Items {
-		printEvent(&listedEvent)
+		if outputErr := printEvent(output, &listedEvent); outputErr != nil {
+			return fmt.Errorf("write event: %w", outputErr)
+		}
 	}
-	fmt.Printf("events on this page=%d has_more=%t limit_reached=%t\n", len(page.Items), page.HasMore, page.LimitReached)
+	if _, outputErr := fmt.Fprintf(output, "events on this page=%d has_more=%t limit_reached=%t\n", len(page.Items), page.HasMore, page.LimitReached); outputErr != nil {
+		return fmt.Errorf("write events: %w", outputErr)
+	}
 	if page.LimitReached {
 		return fmt.Errorf("service pagination limit reached; completeness is unknown")
 	}
 	return nil
 }
 
-func printEvent(event *polymarket.Event) {
+func printEvent(output io.Writer, event *polymarket.Event) error {
 	title, slug := "", ""
 	if event.Title != nil {
 		title = *event.Title
@@ -105,18 +129,20 @@ func printEvent(event *polymarket.Event) {
 	if event.Slug != nil {
 		slug = *event.Slug
 	}
-	fmt.Printf("event=%s slug=%s title=%s markets=%d\n", event.ID, slug, title, len(event.Markets))
+	result := fmt.Appendf(nil, "event=%s slug=%s title=%s markets=%d\n", event.ID, slug, title, len(event.Markets))
 	for _, market := range event.Markets {
 		question := ""
 		if market.Question != nil {
 			question = *market.Question
 		}
-		fmt.Printf("  market=%s question=%s\n", market.ID, question)
+		result = fmt.Appendf(result, "  market=%s question=%s\n", market.ID, question)
 		if market.Outcomes.Yes.TokenID != nil {
-			fmt.Printf("    YES asset-id=%s\n", *market.Outcomes.Yes.TokenID)
+			result = fmt.Appendf(result, "    YES asset-id=%s\n", *market.Outcomes.Yes.TokenID)
 		}
 		if market.Outcomes.No.TokenID != nil {
-			fmt.Printf("    NO  asset-id=%s\n", *market.Outcomes.No.TokenID)
+			result = fmt.Appendf(result, "    NO  asset-id=%s\n", *market.Outcomes.No.TokenID)
 		}
 	}
+	_, err := output.Write(result)
+	return err
 }

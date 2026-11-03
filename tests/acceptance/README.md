@@ -5,7 +5,8 @@
 Scope update (2026-10-29): this SDK targets new accounts using Deposit Wallets. Legacy Safe/Proxy onboarding, migration, and live validation are excluded from support and release acceptance. Existing legacy implementation and historical tests remain, without a support commitment. EOA signing and other agreed capabilities remain in scope.
 
 `make validate-release PYTHON=.venv-parity/bin/python` 执行本地检查、固定 Python 数据重建、
-六平台编译、本机离线运行和性能基线。需要 Go 1.27+、Make、固定 Python 环境，以及
+六平台编译、本机离线运行和性能基线。`make check` 包含全仓 80% 覆盖率门槛，
+也可单独执行 `make coverage`；CI 使用同一入口。需要 Go 1.27+、Make、固定 Python 环境，以及
 由 Go 1.27+ 构建的 golangci-lint v2.15.0。结果保存在忽略的 `.local/validation/`。
 
 也可分开执行：
@@ -29,7 +30,8 @@ python scripts/validate_release.py benchmarks
 ---
 
 `make validate-release PYTHON=.venv-parity/bin/python` checks code quality, regenerates
-pinned Python fixtures, cross-compiles six targets, runs host tests, and records benchmarks.
+pinned Python fixtures, cross-compiles six targets, runs host tests, and records benchmarks. `make check` includes the 80% whole-repository coverage
+floor. Run `make coverage` to check it separately; CI uses the same entry point.
 Requires Go 1.27+, Make, the pinned Python environment, and golangci-lint v2.15.0 built
 with Go 1.27+. Reports and logs are written under ignored `.local/validation/`.
 

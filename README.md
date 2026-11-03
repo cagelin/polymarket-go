@@ -23,7 +23,7 @@ trading, and wallet operations. The implementation is compared against
 Requires **Go 1.27 or later**. The SDK builds without CGO.
 
 ```sh
-go get github.com/cagelin/polymarket-go@v0.3.0
+go get github.com/cagelin/polymarket-go@v0.3.1
 ```
 
 ## Quick start

@@ -2,6 +2,14 @@
 
 Scope update (2026-10-29): this SDK targets new accounts using Deposit Wallets. Legacy Safe/Proxy onboarding, migration, and live validation are excluded from support and release acceptance. Existing legacy implementation and historical tests remain, without a support commitment. EOA signing and other agreed capabilities remain in scope.
 
+## v0.3.1 — 2026-11-03
+
+- Added offline tests for account-query user selection, credential isolation, RFQ message validation, event discovery, price history and bounded pagination.
+- Made the event, history and pagination examples testable with local HTTP endpoints and explicit output writers. They now report output failures and stop further reads.
+- Added the existing 80% whole-repository coverage gate to `make check`, shared by local validation and CI. The threshold and measured package scope are unchanged.
+
+中文：补齐账户查询、凭据隔离、RFQ 消息校验和公开研究示例的离线测试。示例在输出失败时返回错误并停止后续读取。原有全仓 80% 覆盖率门槛纳入 `make check`，本地与 CI 使用同一入口；门槛和统计范围不变。
+
 ## v0.3.0 — 2026-11-03
 
 - Added Gamma lifecycle timestamps with original text and parse errors, market group indexes, resolution metadata, series/tag fields, and records of skipped nonbinary child markets.

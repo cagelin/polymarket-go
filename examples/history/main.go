@@ -4,8 +4,10 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"flag"
 	"fmt"
+	"io"
 	"log"
 	"os"
 	"time"
@@ -20,15 +22,26 @@ func main() {
 }
 
 func run() error {
-	interval := flag.String("interval", "", "history interval: 1h, 6h, 1d, 1w, 1m, all or max (default 1d)")
-	startText := flag.String("start", "", "window start in RFC3339; mutually exclusive with -interval and -as-of")
-	endText := flag.String("end", "", "window end in RFC3339; requires -start, at most 15 days later")
-	asOfText := flag.String("as-of", "", "historical price observation at RFC3339 time")
-	flag.Parse()
-	if flag.NArg() != 1 || (*endText != "" && *startText == "") {
+	return runWith(polymarket.ClientConfig{}, os.Args[1:], os.Stdout)
+}
+
+func runWith(config polymarket.ClientConfig, args []string, output io.Writer) error {
+	flags := flag.NewFlagSet("history", flag.ContinueOnError)
+	flags.SetOutput(output)
+	interval := flags.String("interval", "", "history interval: 1h, 6h, 1d, 1w, 1m, all or max (default 1d)")
+	startText := flags.String("start", "", "window start in RFC3339; mutually exclusive with -interval and -as-of")
+	endText := flags.String("end", "", "window end in RFC3339; requires -start, at most 15 days later")
+	asOfText := flags.String("as-of", "", "historical price observation at RFC3339 time")
+	if parseErr := flags.Parse(args); parseErr != nil {
+		if errors.Is(parseErr, flag.ErrHelp) {
+			return nil
+		}
+		return parseErr
+	}
+	if flags.NArg() != 1 || (*endText != "" && *startText == "") {
 		return fmt.Errorf("usage: go run ./examples/history [-interval 1d | -start time [-end time] | -as-of time] <asset-id>")
 	}
-	params := polymarket.PriceHistoryParams{AssetID: polymarket.ClobAssetID(flag.Arg(0))}
+	params := polymarket.PriceHistoryParams{AssetID: polymarket.ClobAssetID(flags.Arg(0))}
 	if *interval != "" {
 		historyInterval := polymarket.PriceHistoryInterval(*interval)
 		params.Interval = &historyInterval
@@ -61,7 +74,7 @@ func run() error {
 		pageSize := 20
 		params.PageSize = &pageSize
 	}
-	client, err := polymarket.NewPublicClient(polymarket.ClientConfig{})
+	client, err := polymarket.NewPublicClient(config)
 	if err != nil {
 		return fmt.Errorf("create public client: %w", err)
 	}
@@ -76,7 +89,7 @@ func run() error {
 	if err != nil {
 		return fmt.Errorf("read price history: %w", err)
 	}
-	if err = json.NewEncoder(os.Stdout).Encode(page); err != nil {
+	if err = json.NewEncoder(output).Encode(page); err != nil {
 		return fmt.Errorf("write price history: %w", err)
 	}
 	if page.LimitReached {

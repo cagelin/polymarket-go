@@ -22,7 +22,7 @@
 需要 **Go 1.27 或更高版本**，SDK 构建无需 CGO。
 
 ```sh
-go get github.com/cagelin/polymarket-go@v0.3.0
+go get github.com/cagelin/polymarket-go@v0.3.1
 ```
 
 ## 快速开始
