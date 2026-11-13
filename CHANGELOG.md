@@ -2,6 +2,13 @@
 
 Scope update (2026-10-29): this SDK targets new accounts using Deposit Wallets. Legacy Safe/Proxy onboarding, migration, and live validation are excluded from support and release acceptance. Existing legacy implementation and historical tests remain, without a support commitment. EOA signing and other agreed capabilities remain in scope.
 
+## v0.3.3 — 2026-11-13
+
+- Decode JSON decimal numbers directly from their original text. Prices and quantities retain all digits instead of passing through binary floating point.
+- Added regression tests for long fractions, large integers, signed values and exponents outside the float64 range. String decimal inputs keep their existing behavior.
+
+中文：JSON 数字直接按原始文本解析为十进制值，价格和数量保留全部有效数字。新增长小数、大整数、负数及超出 float64 范围的指数回归测试；字符串数值沿用原有行为。
+
 ## v0.3.1 — 2026-11-03
 
 - Added offline tests for account-query user selection, credential isolation, RFQ message validation, event discovery, price history and bounded pagination.

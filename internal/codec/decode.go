@@ -151,7 +151,7 @@ func ValidHex(value string) bool {
 	return err == nil
 }
 
-// NumericDecimal decodes a string or numeric decimal field.
+// NumericDecimal decodes decimal text directly, preserving JSON number precision.
 func NumericDecimal(fields map[string]json.RawMessage, key string, optional bool) (*decimal.Big, error) {
 	raw, ok := fields[key]
 	if optional && (!ok || string(raw) == "null" || string(raw) == `""`) {
@@ -171,13 +171,6 @@ func NumericDecimal(fields map[string]json.RawMessage, key string, optional bool
 			return nil, err
 		}
 		text = number.String()
-		if strings.ContainsAny(text, ".eE") {
-			value, err := strconv.ParseFloat(text, 64)
-			if err != nil {
-				return nil, err
-			}
-			text = PythonFloat(value)
-		}
 	}
 	encoded, err := json.Marshal(text)
 	if err != nil {
