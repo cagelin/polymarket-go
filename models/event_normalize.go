@@ -20,7 +20,7 @@ func normalizeEvent(data []byte) ([]byte, error) {
 	})
 	groups := map[string]map[string]string{
 		"state":      {"active": "active", "closed": "closed", "archived": "archived", "new": "new", "featured": "featured", "restricted": "restricted", "cyom": "cyom", "live": "live", "ended": "ended", "automatically_active": "automaticallyActive", "comments_enabled": "commentsEnabled", "requires_translation": "requiresTranslation"},
-		"schedule":   {"start_date": "startDate", "creation_date": "creationDate", "end_date": "endDate", "closed_time": "closedTime", "start_time": "startTime", "event_date": "eventDate", "event_week": "eventWeek", "finished_at": "finishedTimestamp", "deploying_timestamp": "deployingTimestamp"},
+		"schedule":   {"start_date": "startDate", "creation_date": "creationDate", "end_date": "endDate", "closed_time": "closedTime", "closed_time_raw": "closedTime", "start_time": "startTime", "event_date": "eventDate", "event_week": "eventWeek", "finished_at": "finishedTimestamp", "deploying_timestamp": "deployingTimestamp"},
 		"metrics":    {"liquidity": "liquidity", "liquidity_amm": "liquidityAmm", "liquidity_clob": "liquidityClob", "volume": "volume", "volume_24hr": "volume24hr", "volume_1wk": "volume1wk", "volume_1mo": "volume1mo", "volume_1yr": "volume1yr", "open_interest": "openInterest", "competitive": "competitive", "comment_count": "commentCount", "tweet_count": "tweetCount"},
 		"display":    {"sort_by": "sortBy", "show_all_outcomes": "showAllOutcomes", "show_market_images": "showMarketImages", "gmp_chart_mode": "gmpChartMode", "color": "color", "featured_order": "featuredOrder", "country_name": "countryName", "election_type": "electionType", "image_optimized": "imageOptimized", "icon_optimized": "iconOptimized", "featured_image_optimized": "featuredImageOptimized"},
 		"trading":    {"enable_order_book": "enableOrderBook", "neg_risk": "negRisk", "neg_risk_market_id": "negRiskMarketID", "neg_risk_fee_bips": "negRiskFeeBips", "enable_neg_risk": "enableNegRisk", "neg_risk_augmented": "negRiskAugmented", "cumulative_markets": "cumulativeMarkets"},
@@ -64,6 +64,11 @@ func normalizeEvent(data []byte) ([]byte, error) {
 				if len(outcomes) != 2 {
 					skipped = append(skipped, SkippedMarket{Raw: append(json.RawMessage(nil), item...), Reason: "expected two outcomes"})
 					continue
+				}
+				// Preserve raw array text before the enclosing event is marshaled.
+				item, entryErr = normalizeMarket(item)
+				if entryErr != nil {
+					return nil, entryErr
 				}
 			} else {
 				entry = normalizeEventRelation(key, entry)

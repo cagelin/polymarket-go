@@ -127,29 +127,30 @@ func (m *FeeSchedule) UnmarshalJSON(data []byte) error {
 
 // Market represents a Polymarket market.
 type Market struct {
-	ID             MarketID             `json:"id"`
-	Version        *ProtocolVersion     `json:"version"`
-	Slug           *string              `json:"slug"`
-	ConditionID    *ConditionID         `json:"condition_id"`
-	Question       *string              `json:"question"`
-	GroupItemTitle *string              `json:"group_item_title"`
-	Description    *string              `json:"description"`
-	Category       *string              `json:"category"`
-	Image          *string              `json:"image"`
-	Icon           *string              `json:"icon"`
-	State          MarketState          `json:"state"`
-	Outcomes       MarketOutcomes       `json:"outcomes"`
-	Metrics        MarketMetrics        `json:"metrics"`
-	Prices         MarketPrices         `json:"prices"`
-	Trading        MarketTrading        `json:"trading"`
-	Resolution     MarketResolution     `json:"resolution"`
-	Rewards        MarketRewards        `json:"rewards"`
-	Sports         MarketSportsMetadata `json:"sports"`
-	Events         []MarketEvent        `json:"events"`
-	Tags           []MarketTag          `json:"tags"`
-	CreatedAt      *TimestampValue      `json:"created_at,omitempty"`
-	UpdatedAt      *TimestampValue      `json:"updated_at,omitempty"`
-	GroupItemIndex *string              `json:"group_item_index,omitempty"`
+	ID               MarketID             `json:"id"`
+	Version          *ProtocolVersion     `json:"version"`
+	Slug             *string              `json:"slug"`
+	ConditionID      *ConditionID         `json:"condition_id"`
+	Question         *string              `json:"question"`
+	GroupItemTitle   *string              `json:"group_item_title"`
+	Description      *string              `json:"description"`
+	Category         *string              `json:"category"`
+	Image            *string              `json:"image"`
+	Icon             *string              `json:"icon"`
+	State            MarketState          `json:"state"`
+	Outcomes         MarketOutcomes       `json:"outcomes"`
+	Metrics          MarketMetrics        `json:"metrics"`
+	Prices           MarketPrices         `json:"prices"`
+	Trading          MarketTrading        `json:"trading"`
+	Resolution       MarketResolution     `json:"resolution"`
+	Rewards          MarketRewards        `json:"rewards"`
+	Sports           MarketSportsMetadata `json:"sports"`
+	Events           []MarketEvent        `json:"events"`
+	Tags             []MarketTag          `json:"tags"`
+	CreatedAt        *TimestampValue      `json:"created_at,omitempty"`
+	UpdatedAt        *TimestampValue      `json:"updated_at,omitempty"`
+	GroupItemIndex   *string              `json:"group_item_index,omitempty"`
+	OutcomePricesRaw *string              `json:"outcome_prices_raw,omitempty"`
 }
 
 // UnmarshalJSON validates response fields and normalizes wire names.
@@ -185,6 +186,7 @@ func (m *Market) UnmarshalJSON(data []byte) error {
 		{name: "created_at", aliases: []string{"createdAt"}},
 		{name: "updated_at", aliases: []string{"updatedAt"}},
 		{name: "group_item_index", aliases: []string{"groupItemThreshold"}},
+		{name: "outcome_prices_raw", aliases: []string{"outcome_prices_raw"}},
 	}); err != nil {
 		return err
 	}
@@ -430,6 +432,7 @@ type MarketState struct {
 	ClosedTime               *time.Time      `json:"closed_time"`
 	AcceptingOrdersTimestamp *TimestampValue `json:"accepting_orders_timestamp,omitempty"`
 	EventStartTime           *TimestampValue `json:"event_start_time,omitempty"`
+	ClosedTimeRaw            *string         `json:"closed_time_raw,omitempty"`
 }
 
 // UnmarshalJSON validates response fields and normalizes wire names.
@@ -449,6 +452,7 @@ func (m *MarketState) UnmarshalJSON(data []byte) error {
 		{name: "closed_time", aliases: []string{"closedTime"}, kind: "datetime"},
 		{name: "accepting_orders_timestamp", aliases: []string{"acceptingOrdersTimestamp"}},
 		{name: "event_start_time", aliases: []string{"eventStartTime"}},
+		{name: "closed_time_raw", aliases: []string{"closedTimeRaw"}},
 	}); err != nil {
 		return err
 	}

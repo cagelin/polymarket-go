@@ -2,6 +2,13 @@
 
 Scope update (2026-10-29): this SDK targets new accounts using Deposit Wallets. Legacy Safe/Proxy onboarding, migration, and live validation are excluded from support and release acceptance. Existing legacy implementation and historical tests remain, without a support commitment. EOA signing and other agreed capabilities remain in scope.
 
+## v0.3.4 — 2026-11-14
+
+- Preserve Gamma `outcomePrices` text in `Market.OutcomePricesRaw`, and event/market `closedTime` text in `ClosedTimeRaw`. Parsed prices and times keep their existing types and behavior.
+- Cover original whitespace, decimal notation, timezone offsets, missing/null fields and SDK JSON round trips. Model generators include the new fields.
+
+中文：通过 `Market.OutcomePricesRaw` 保留 Gamma 价格数组原文，通过 event/market 的 `ClosedTimeRaw` 保留关闭时间原文。价格和时间的解析类型与行为保持兼容。回归测试覆盖空白、数值写法、时区偏移、空值和 SDK JSON 往返，生成器同步增加字段。
+
 ## v0.3.3 — 2026-11-13
 
 - Decode JSON decimal numbers directly from their original text. Prices and quantities retain all digits instead of passing through binary floating point.

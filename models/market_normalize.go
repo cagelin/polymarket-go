@@ -70,8 +70,13 @@ func normalizeMarket(data []byte) ([]byte, error) {
 		result["condition_id"] = value
 	}
 	result["outcomes"] = outcomes
+	pricesText, err := gammaRawText(fields["outcomePrices"])
+	if err != nil {
+		return nil, err
+	}
+	result["outcome_prices_raw"] = pricesText
 	groups := map[string]map[string]string{
-		"state":      {"active": "active", "closed": "closed", "archived": "archived", "combo_status": "comboStatus", "accepting_orders": "acceptingOrders", "enable_order_book": "enableOrderBook", "neg_risk": "negRisk", "start_date": "startDate", "end_date": "endDate", "closed_time": "closedTime", "accepting_orders_timestamp": "acceptingOrdersTimestamp", "event_start_time": "eventStartTime"},
+		"state":      {"active": "active", "closed": "closed", "archived": "archived", "combo_status": "comboStatus", "accepting_orders": "acceptingOrders", "enable_order_book": "enableOrderBook", "neg_risk": "negRisk", "start_date": "startDate", "end_date": "endDate", "closed_time": "closedTime", "closed_time_raw": "closedTime", "accepting_orders_timestamp": "acceptingOrdersTimestamp", "event_start_time": "eventStartTime"},
 		"metrics":    {"volume": "volume", "volume_num": "volumeNum", "volume_24hr": "volume24hr", "volume_1wk": "volume1wk", "volume_1mo": "volume1mo", "volume_1yr": "volume1yr", "volume_amm": "volumeAmm", "volume_clob": "volumeClob", "liquidity": "liquidity", "liquidity_num": "liquidityNum", "liquidity_clob": "liquidityClob"},
 		"prices":     {"best_bid": "bestBid", "best_ask": "bestAsk", "last_trade_price": "lastTradePrice", "spread": "spread", "one_hour_price_change": "oneHourPriceChange", "one_day_price_change": "oneDayPriceChange", "one_week_price_change": "oneWeekPriceChange", "one_month_price_change": "oneMonthPriceChange", "one_year_price_change": "oneYearPriceChange"},
 		"trading":    {"minimum_order_size": "orderMinSize", "minimum_tick_size": "orderPriceMinTickSize", "seconds_delay": "secondsDelay", "fees_enabled": "feesEnabled", "fee_type": "feeType", "fee_schedule": "feeSchedule"},

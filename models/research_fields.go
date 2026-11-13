@@ -65,3 +65,17 @@ func resolutionRawPrices(fields map[string]json.RawMessage) (map[string]json.Raw
 	}
 	return values, nil
 }
+
+// gammaRawText preserves string content or an unquoted JSON value without numeric conversion.
+func gammaRawText(raw json.RawMessage) (*string, error) {
+	if len(raw) == 0 || string(raw) == "null" {
+		return nil, nil
+	}
+	text := string(raw)
+	if raw[0] == '"' {
+		if err := json.Unmarshal(raw, &text); err != nil {
+			return nil, err
+		}
+	}
+	return &text, nil
+}

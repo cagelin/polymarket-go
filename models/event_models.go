@@ -511,6 +511,7 @@ type EventSchedule struct {
 	EventWeek          *int64          `json:"event_week"`
 	FinishedAt         *time.Time      `json:"finished_at"`
 	DeployingTimestamp *TimestampValue `json:"deploying_timestamp,omitempty"`
+	ClosedTimeRaw      *string         `json:"closed_time_raw,omitempty"`
 }
 
 // UnmarshalJSON validates response fields and normalizes wire names.
@@ -527,6 +528,7 @@ func (m *EventSchedule) UnmarshalJSON(data []byte) error {
 		{name: "event_week", aliases: []string{"eventWeek"}, kind: "int"},
 		{name: "finished_at", aliases: []string{"finishedAt"}, kind: "datetime"},
 		{name: "deploying_timestamp", aliases: []string{"deployingTimestamp"}},
+		{name: "closed_time_raw", aliases: []string{"closedTimeRaw"}},
 	}); err != nil {
 		return err
 	}

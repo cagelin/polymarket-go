@@ -231,7 +231,7 @@ func testPythonDiscoveryParity(t *testing.T, data []byte) {
 				if encodeErr != nil {
 					subtest.Fatal(encodeErr)
 				}
-				testutil.EqualJSON(subtest, json.RawMessage(encoded), test.Expected.Value, "raw_prices", "skipped_markets", "deploying_timestamp", "group_item_index", "accepting_orders_timestamp", "event_start_time", "uma_end_date", "uma_resolution_statuses", "automatically_resolved", "recurrence", "series_type", "force_show", "force_hide")
+				testutil.EqualJSON(subtest, json.RawMessage(encoded), test.Expected.Value, "raw_prices", "outcome_prices_raw", "closed_time_raw", "skipped_markets", "deploying_timestamp", "group_item_index", "accepting_orders_timestamp", "event_start_time", "uma_end_date", "uma_resolution_statuses", "automatically_resolved", "recurrence", "series_type", "force_show", "force_hide")
 			}
 		})
 	}
