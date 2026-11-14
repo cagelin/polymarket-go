@@ -23,38 +23,65 @@ func ParseStreamEvent(service string,raw []byte)(StreamEvent,error){
  if service=="price"{return parsePriceEvent(raw)}
  fields,err:=codec.Object(raw);if err!=nil{return nil,err}
  switch service {
- case "market","user":
+ case "market",userStreamService:
   _,topic:=fields["topic"];_,kind:=fields["type"];_,payload:=fields["payload"]
   if !topic||!kind||!payload {
    eventType:=fields["event_type"]
-   if service!="user"&&(len(eventType)==0||string(eventType)=="null"||string(eventType)==`""`) {eventType=fields["type"]}
-   delete(fields,"event_type");if service!="user"{delete(fields,"type")};delete(fields,"topic")
+   if service!=userStreamService&&(len(eventType)==0||string(eventType)=="null"||string(eventType)==`""`) {eventType=fields["type"]}
+   delete(fields,"event_type");if service!=userStreamService{delete(fields,"type")};delete(fields,"topic")
    body,encodeErr:=json.Marshal(fields);if encodeErr!=nil{return nil,encodeErr}
    fields=map[string]json.RawMessage{"topic":json.RawMessage(`"`+service+`"`),"type":eventType,"payload":body}
   }
  case "price_canonical":
  case "sports":fields=map[string]json.RawMessage{"topic":json.RawMessage(`"sports"`),"type":json.RawMessage(`"sport_result"`),"payload":raw}
  case "rtds":
-  wire,parseErr:=codec.Required[string](fields,"topic");if parseErr!=nil{return nil,parseErr}
-  api:=map[string]string{"comments":"comments","crypto_prices":"prices.crypto.binance","crypto_prices_chainlink":"prices.crypto.chainlink","crypto_prices_twap_thirty":"prices.crypto.chainlink.twap","crypto_prices_twap_sixty":"prices.crypto.chainlink.twap","equity_prices":"prices.equity.pyth"}[wire]
-  if api==""{return nil,fmt.Errorf("%w: RTDS topic %q",ErrUnsupportedStreamEvent,wire)}
-  if wire=="crypto_prices_twap_thirty"||wire=="crypto_prices_twap_sixty" {
-   payload,payloadErr:=codec.Required[map[string]json.RawMessage](fields,"payload");if payloadErr!=nil{return nil,payloadErr}
-   expected:="30";if wire=="crypto_prices_twap_sixty"{expected="60"}
-   if string(payload["window_s"])!=expected{return nil,fmt.Errorf("TWAP window does not match topic")}
-  }
-  fields["topic"],err=json.Marshal(api);if err!=nil{return nil,err}
+  if err=normalizeRTDSTopic(fields);err!=nil{return nil,err}
  default:return nil,fmt.Errorf("unknown stream service %q",service)
  }
  topic,err:=codec.Required[string](fields,"topic");if err!=nil{return nil,err}
  kind,err:=codec.Required[string](fields,"type");if err!=nil{return nil,err}
  if topic==""||kind==""{return nil,fmt.Errorf("stream topic and type must be nonempty")}
- var event StreamEvent
+ event,err:=newStreamEvent(topic,kind);if err!=nil{return nil,err}
+ raw,err=json.Marshal(fields);if err!=nil{return nil,err};if err=json.Unmarshal(raw,event);err!=nil{return nil,err};return event,nil
+}
+
+func newStreamEvent(topic,kind string)(StreamEvent,error){
  switch topic+":"+kind {
 '''
 for cls in items:
  topic=get_args(cls.model_fields['topic'].annotation)[0];kind=get_args(cls.model_fields['type'].annotation)[0]
- s+=f'case {json.dumps(topic+":"+kind)}:event=&{cls.__name__}{{}}\n'
-s+='default:return nil,fmt.Errorf("%w: %s:%s",ErrUnsupportedStreamEvent,topic,kind)\n}\nraw,err=json.Marshal(fields);if err!=nil{return nil,err};if err=json.Unmarshal(raw,event);err!=nil{return nil,err};return event,nil\n}\n'
+ s+=f'case {json.dumps(topic+":"+kind)}:return &{cls.__name__}{{}},nil\n'
+s+='default:return nil,fmt.Errorf("%w: %s:%s",ErrUnsupportedStreamEvent,topic,kind)\n}\n}\n'
+s+='''
+func normalizeRTDSTopic(fields map[string]json.RawMessage) error {
+	wire, parseErr := codec.Required[string](fields, "topic")
+	if parseErr != nil {
+		return parseErr
+	}
+	api := map[string]string{"comments": "comments", "crypto_prices": "prices.crypto.binance", "crypto_prices_chainlink": "prices.crypto.chainlink", "crypto_prices_twap_thirty": "prices.crypto.chainlink.twap", "crypto_prices_twap_sixty": "prices.crypto.chainlink.twap", "equity_prices": "prices.equity.pyth"}[wire]
+	if api == "" {
+		return fmt.Errorf("%w: RTDS topic %q", ErrUnsupportedStreamEvent, wire)
+	}
+	if wire == "crypto_prices_twap_thirty" || wire == "crypto_prices_twap_sixty" {
+		payload, payloadErr := codec.Required[map[string]json.RawMessage](fields, "payload")
+		if payloadErr != nil {
+			return payloadErr
+		}
+		expected := "30"
+		if wire == "crypto_prices_twap_sixty" {
+			expected = "60"
+		}
+		if string(payload["window_s"]) != expected {
+			return fmt.Errorf("TWAP window does not match topic")
+		}
+	}
+	var err error
+	fields["topic"], err = json.Marshal(api)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+'''
 (ROOT/'models/stream_events.go').write_text(s)
 subprocess.run(['gofmt','-w',str(ROOT/'models/stream_events.go')],check=True)

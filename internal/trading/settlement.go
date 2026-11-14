@@ -12,6 +12,8 @@ import (
 	"github.com/cagelin/polymarket-go/models"
 )
 
+const statusFailed = "FAILED"
+
 // WaitForOrderFillSettlement waits for placement fills; it does not wait for later resting-order fills.
 // Without placement trade IDs it returns the supplied hashes immediately; an empty result does not prove settlement.
 // A zero timeout selects thirty seconds. Cancellation never cancels the exchange order.
@@ -83,7 +85,7 @@ func (c *Client) WaitForOrderFillSettlement(ctx context.Context, order models.Ac
 				break
 			}
 			for _, trade := range page.Items {
-				if seen[trade.ID] && (trade.Status == "CONFIRMED" || trade.Status == "FAILED") {
+				if seen[trade.ID] && (trade.Status == "CONFIRMED" || trade.Status == statusFailed) {
 					settled[trade.ID] = trade
 				}
 			}
@@ -105,12 +107,16 @@ func (c *Client) WaitForOrderFillSettlement(ctx context.Context, order models.Ac
 		case <-timer.C:
 		}
 	}
+	return settlementHashes(ids, settled)
+}
+
+func settlementHashes(ids []string, settled map[string]models.ClobTrade) ([]models.TransactionHash, error) {
 	hashes := make([]models.TransactionHash, 0)
 	unique := map[string]bool{}
 	confirmed := false
 	for _, id := range ids {
 		trade := settled[id]
-		if trade.Status == "FAILED" {
+		if trade.Status == statusFailed {
 			continue
 		}
 		confirmed = true

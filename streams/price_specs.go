@@ -56,7 +56,7 @@ func priceSelection(topic string, symbols []string, provider string, types []str
 		}
 	}
 	for _, kind := range types {
-		if kind != "update" && kind != "subscribe" {
+		if kind != "update" && kind != subscribeMessage {
 			return selection{}, invalid("price event type must be update or subscribe")
 		}
 	}

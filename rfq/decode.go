@@ -26,7 +26,7 @@ func parseEvent(raw []byte) (Event, error) {
 	}
 	var event Event
 	if err = json.Unmarshal(raw, &event); err != nil {
-		return Event{}, err
+		return Event{}, fmt.Errorf("decode RFQ event: %w", err)
 	}
 	event.Type = target
 	required := []string{"rfq_id"}
@@ -106,16 +106,23 @@ func parseEvent(raw []byte) (Event, error) {
 			}
 		}
 	}
+	if err = validateEventFields(fields, required); err != nil {
+		return Event{}, err
+	}
+	return event, nil
+}
+
+func validateEventFields(fields map[string]json.RawMessage, required []string) error {
 	for _, name := range required {
 		value, fieldErr := codec.Required[string](fields, name)
 		if fieldErr != nil {
-			return Event{}, fieldErr
+			return fieldErr
 		}
 		if value == "" {
-			return Event{}, fmt.Errorf("empty RFQ %s", name)
+			return fmt.Errorf("empty RFQ %s", name)
 		}
 	}
-	return event, nil
+	return nil
 }
 func e6(fields map[string]json.RawMessage, name string) (*decimal.Big, error) {
 	text, err := codec.Required[string](fields, name)

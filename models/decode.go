@@ -11,6 +11,12 @@ import (
 	"github.com/cagelin/polymarket-go/internal/codec"
 )
 
+const (
+	versionFieldKind    = "version"
+	defaultSequenceKind = "default_sequence"
+	conditionFieldKind  = "condition"
+)
+
 // gammaField describes only wire coercions; public models remain typed structs.
 type gammaField struct {
 	name     string
@@ -33,11 +39,11 @@ func decodeGamma(data []byte, target any, rules []gammaField) error {
 				break
 			}
 		}
-		if !exists && rule.kind == "default_sequence" {
+		if !exists && rule.kind == defaultSequenceKind {
 			canonical[rule.name] = json.RawMessage("[]")
 			continue
 		}
-		if exists && string(value) == "null" && rule.kind == "default_sequence" {
+		if exists && string(value) == "null" && rule.kind == defaultSequenceKind {
 			return fmt.Errorf("%s must be an array", rule.name)
 		}
 		if !exists || string(value) == "null" {
@@ -71,7 +77,7 @@ func normalizeGammaField(value json.RawMessage, rule gammaField) (json.RawMessag
 			return nil, err
 		}
 		return json.Marshal(items)
-	case "sequence", "default_sequence":
+	case "sequence", defaultSequenceKind:
 		return codec.DecodeGammaSequence(value)
 	case "team_ordering":
 		text, err := codec.Required[string](fields, rule.name)
@@ -83,25 +89,7 @@ func normalizeGammaField(value json.RawMessage, rule gammaField) (json.RawMessag
 		}
 		return value, nil
 	case "optional_date":
-		if string(value) == `""` {
-			return json.RawMessage("null"), nil
-		}
-		text, err := codec.Required[string](fields, rule.name)
-		if err != nil {
-			return nil, err
-		}
-		// Preserve the calendar date in the supplied offset, not its UTC date.
-		if len(text) >= 10 && text[4] == '-' && text[7] == '-' {
-			if _, parseErr := codec.GammaTime(text); parseErr != nil {
-				return nil, parseErr
-			}
-			return json.Marshal(text[:10])
-		}
-		parsed, err := codec.GammaTime(text)
-		if err != nil {
-			return nil, err
-		}
-		return json.Marshal(parsed.Format(time.DateOnly))
+		return gammaOptionalDate(value, rule)
 	case "epoch_datetime":
 		return codec.GammaEpochTime(value)
 	case "decimal":
@@ -126,99 +114,140 @@ func normalizeGammaField(value json.RawMessage, rule gammaField) (json.RawMessag
 		}
 		return json.Marshal(v)
 	case "number", "float":
-		text := string(value)
-		if value[0] == '"' {
-			if err := json.Unmarshal(value, &text); err != nil {
-				return nil, err
-			}
-		}
-		if text == "true" {
-			text = "1"
-		}
-		if text == "false" {
-			text = "0"
-		}
-		v, err := strconv.ParseFloat(strings.TrimSpace(text), 64)
-		if err != nil || math.IsInf(v, 0) || math.IsNaN(v) {
-			return nil, fmt.Errorf("invalid number")
-		}
-		if rule.kind == "number" {
-			if integer, intErr := strconv.ParseInt(text, 10, 64); intErr == nil {
-				return json.RawMessage(strconv.FormatInt(integer, 10)), nil
-			}
-		}
-		return json.Marshal(v)
+		return gammaNumber(value, rule)
 	case "datetime", "date":
-		if string(value) == `""` && !rule.required && rule.kind == "datetime" {
-			return json.RawMessage("null"), nil
-		}
-		text, err := codec.Required[string](fields, rule.name)
-		if err != nil {
-			return nil, err
-		}
-		if rule.kind == "date" {
-			parsed, parseErr := time.Parse(time.DateOnly, text)
-			if parseErr != nil {
-				return nil, parseErr
-			}
-			return json.Marshal(parsed.Format(time.DateOnly))
-		}
-		parsed, err := codec.GammaTime(text)
-		if err != nil {
-			return nil, err
-		}
-		return json.Marshal(parsed)
+		return gammaDateTime(value, rule)
 	case "id":
-		if value[0] == '"' {
-			return value, nil
-		}
-		text := string(value)
-		if strings.ContainsAny(text, ".eE") || text == "true" || text == "false" {
-			return nil, fmt.Errorf("expected string or integer identifier")
-		}
-		var number json.Number
-		if err := json.Unmarshal(value, &number); err != nil {
-			return nil, err
-		}
-		return json.Marshal(text)
-	case "condition", "event_id", "request_id", "version", "resolution", "uma", "empty_text":
-		text, err := codec.Required[string](fields, rule.name)
-		if err != nil {
-			return nil, err
-		}
-		if text == "" && rule.kind != "condition" && rule.kind != "version" {
-			return json.RawMessage("null"), nil
-		}
-		switch rule.kind {
-		case "condition":
-			if !codec.ValidHex(text) {
-				return nil, fmt.Errorf("invalid condition ID")
-			}
-		case "event_id":
-			if len(text) != 66 || !codec.ValidHex(text) || !strings.HasSuffix(text, "000000") {
-				return nil, fmt.Errorf("invalid onchain event ID")
-			}
-		case "request_id":
-			if len(text) != 66 || !codec.ValidHex(text) || !strings.HasSuffix(text, "00") {
-				return nil, fmt.Errorf("invalid request ID")
-			}
-		case "version":
-			if text != "v1" && text != "v2" {
-				return nil, fmt.Errorf("invalid protocol version")
-			}
-		case "resolution":
-			if text != "inactive" && text != "active" && text != "resolved" {
-				return nil, fmt.Errorf("invalid resolution status")
-			}
-		case "uma":
-			if text != "disputed" && text != "proposed" && text != "requested" && text != "resolved" && text != "settled" {
-				return nil, fmt.Errorf("invalid UMA status")
-			}
-		}
-		return value, nil
+		return gammaIdentifier(value)
+	case conditionFieldKind, "event_id", "request_id", versionFieldKind, "resolution", "uma", "empty_text":
+		return gammaValidatedText(value, rule)
 	case "":
 		return value, nil
 	default:
 		return nil, fmt.Errorf("unknown field kind %q", rule.kind)
 	}
+}
+
+func gammaOptionalDate(value json.RawMessage, rule gammaField) (json.RawMessage, error) {
+	fields := map[string]json.RawMessage{rule.name: value}
+	if string(value) == `""` {
+		return json.RawMessage("null"), nil
+	}
+	text, err := codec.Required[string](fields, rule.name)
+	if err != nil {
+		return nil, err
+	}
+	// Preserve the calendar date in the supplied offset, not its UTC date.
+	if len(text) >= 10 && text[4] == '-' && text[7] == '-' {
+		if _, parseErr := codec.GammaTime(text); parseErr != nil {
+			return nil, parseErr
+		}
+		return json.Marshal(text[:10])
+	}
+	parsed, err := codec.GammaTime(text)
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(parsed.Format(time.DateOnly))
+}
+
+func gammaNumber(value json.RawMessage, rule gammaField) (json.RawMessage, error) {
+	text := string(value)
+	if value[0] == '"' {
+		if err := json.Unmarshal(value, &text); err != nil {
+			return nil, err
+		}
+	}
+	if text == "true" {
+		text = "1"
+	}
+	if text == "false" {
+		text = "0"
+	}
+	v, err := strconv.ParseFloat(strings.TrimSpace(text), 64)
+	if err != nil || math.IsInf(v, 0) || math.IsNaN(v) {
+		return nil, fmt.Errorf("invalid number")
+	}
+	if rule.kind == "number" {
+		if integer, intErr := strconv.ParseInt(text, 10, 64); intErr == nil {
+			return json.RawMessage(strconv.FormatInt(integer, 10)), nil
+		}
+	}
+	return json.Marshal(v)
+}
+
+func gammaDateTime(value json.RawMessage, rule gammaField) (json.RawMessage, error) {
+	fields := map[string]json.RawMessage{rule.name: value}
+	if string(value) == `""` && !rule.required && rule.kind == "datetime" {
+		return json.RawMessage("null"), nil
+	}
+	text, err := codec.Required[string](fields, rule.name)
+	if err != nil {
+		return nil, err
+	}
+	if rule.kind == "date" {
+		parsed, parseErr := time.Parse(time.DateOnly, text)
+		if parseErr != nil {
+			return nil, parseErr
+		}
+		return json.Marshal(parsed.Format(time.DateOnly))
+	}
+	parsed, err := codec.GammaTime(text)
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(parsed)
+}
+
+func gammaIdentifier(value json.RawMessage) (json.RawMessage, error) {
+	if value[0] == '"' {
+		return value, nil
+	}
+	text := string(value)
+	if strings.ContainsAny(text, ".eE") || text == "true" || text == "false" {
+		return nil, fmt.Errorf("expected string or integer identifier")
+	}
+	var number json.Number
+	if err := json.Unmarshal(value, &number); err != nil {
+		return nil, err
+	}
+	return json.Marshal(text)
+}
+
+func gammaValidatedText(value json.RawMessage, rule gammaField) (json.RawMessage, error) {
+	fields := map[string]json.RawMessage{rule.name: value}
+	text, err := codec.Required[string](fields, rule.name)
+	if err != nil {
+		return nil, err
+	}
+	if text == "" && rule.kind != conditionFieldKind && rule.kind != versionFieldKind {
+		return json.RawMessage("null"), nil
+	}
+	switch rule.kind {
+	case conditionFieldKind:
+		if !codec.ValidHex(text) {
+			return nil, fmt.Errorf("invalid condition ID")
+		}
+	case "event_id":
+		if len(text) != 66 || !codec.ValidHex(text) || !strings.HasSuffix(text, "000000") {
+			return nil, fmt.Errorf("invalid onchain event ID")
+		}
+	case "request_id":
+		if len(text) != 66 || !codec.ValidHex(text) || !strings.HasSuffix(text, "00") {
+			return nil, fmt.Errorf("invalid request ID")
+		}
+	case versionFieldKind:
+		if text != "v1" && text != "v2" {
+			return nil, fmt.Errorf("invalid protocol version")
+		}
+	case "resolution":
+		if text != "inactive" && text != "active" && text != "resolved" {
+			return nil, fmt.Errorf("invalid resolution status")
+		}
+	case "uma":
+		if text != "disputed" && text != "proposed" && text != "requested" && text != "resolved" && text != "settled" {
+			return nil, fmt.Errorf("invalid UMA status")
+		}
+	}
+	return value, nil
 }

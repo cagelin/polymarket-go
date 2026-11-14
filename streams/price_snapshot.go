@@ -2,6 +2,7 @@ package streams
 
 import (
 	"encoding/json"
+	"fmt"
 	"time"
 
 	"github.com/cagelin/polymarket-go/models"
@@ -26,16 +27,18 @@ type priceEnvelope struct {
 func priceDetails(event models.StreamEvent) (priceEnvelope, error) {
 	raw, err := json.Marshal(event)
 	if err != nil {
-		return priceEnvelope{}, err
+		return priceEnvelope{}, fmt.Errorf("encode price event: %w", err)
 	}
 	var value priceEnvelope
-	err = json.Unmarshal(raw, &value)
-	return value, err
+	if err = json.Unmarshal(raw, &value); err != nil {
+		return value, fmt.Errorf("decode price details: %w", err)
+	}
+	return value, nil
 }
 
 // snapshotFor retains two minutes of history and carries equity market-state changes.
 func snapshotFor(previous, event models.StreamEvent) models.StreamEvent {
-	if event.StreamType() == "subscribe" {
+	if event.StreamType() == subscribeMessage {
 		return event
 	}
 	current, err := priceDetails(event)
@@ -50,7 +53,7 @@ func snapshotFor(previous, event models.StreamEvent) models.StreamEvent {
 		}
 	}
 	var history []json.RawMessage
-	if old.Payload.Source == current.Payload.Source && old.Type == "subscribe" {
+	if old.Payload.Source == current.Payload.Source && old.Type == subscribeMessage {
 		history = old.Payload.Data
 	}
 	if len(history) > 0 {
@@ -95,7 +98,7 @@ func snapshotFor(previous, event models.StreamEvent) models.StreamEvent {
 	if current.Payload.MarketStatus != nil {
 		payload["market_status"] = current.Payload.MarketStatus
 	}
-	raw, err := json.Marshal(map[string]any{"topic": current.Topic, "type": "subscribe", "timestamp": current.Timestamp, "seq": current.Seq, "dropped": current.Dropped, "payload": payload})
+	raw, err := json.Marshal(map[string]any{"topic": current.Topic, "type": subscribeMessage, "timestamp": current.Timestamp, "seq": current.Seq, "dropped": current.Dropped, "payload": payload})
 	if err != nil {
 		return previous
 	}

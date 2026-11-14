@@ -50,7 +50,7 @@ func operationKey(value *string) (string, error) {
 	}
 	var raw [16]byte
 	if _, err := rand.Read(raw[:]); err != nil {
-		return "", err
+		return "", fmt.Errorf("generate session key salt: %w", err)
 	}
 	raw[6] = raw[6]&15 | 64
 	raw[8] = raw[8]&63 | 128
@@ -273,7 +273,7 @@ func (c *Client) AuthorizeSessionKey(ctx context.Context, p models.AuthorizeSess
 	var hash *string
 	if value, ok := fields["transactionHash"]; ok {
 		if err = json.Unmarshal(value, &hash); err != nil {
-			return nil, err
+			return nil, fmt.Errorf("decode session key transaction: %w", err)
 		}
 	}
 	if hash != nil && *hash == "" {

@@ -282,14 +282,14 @@ func marketDecimal(fields map[string]json.RawMessage, key string) (*decimal.Big,
 	if len(raw) > 0 && raw[0] != '"' {
 		var number json.Number
 		if err := json.Unmarshal(raw, &number); err != nil {
-			return nil, err
+			return nil, fmt.Errorf("decode market metadata: %w", err)
 		}
 		if number == "" {
 			return nil, fmt.Errorf("missing number")
 		}
 		quoted, err := json.Marshal(string(number))
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("encode normalized market metadata: %w", err)
 		}
 		return codec.DecimalField(map[string]json.RawMessage{key: quoted}, key)
 	}

@@ -60,6 +60,16 @@ func normalizeQuery(operation string, q map[string]any) error {
 			q["event_id"] = normalized
 		}
 	}
+	if err := validateQuerySelectors(operation, q); err != nil {
+		return err
+	}
+	if err := normalizeQueryWindow(operation, q); err != nil {
+		return err
+	}
+	return normalizeQueryChoices(operation, q)
+}
+
+func validateQuerySelectors(operation string, q map[string]any) error {
 	if operation == "get_resolutions" {
 		selectors := 0
 		for _, key := range []string{"question_id", "condition_id", "event_id"} {
@@ -86,6 +96,10 @@ func normalizeQuery(operation string, q map[string]any) error {
 			return input("include_pnl requires exactly one condition")
 		}
 	}
+	return nil
+}
+
+func normalizeQueryWindow(operation string, q map[string]any) error {
 	if full, _ := q["full_history"].(bool); full {
 		if q["start"] != nil || q["end"] != nil {
 			return input("full_history cannot be combined with start or end")
@@ -124,6 +138,10 @@ func normalizeQuery(operation string, q map[string]any) error {
 			}
 		}
 	}
+	return nil
+}
+
+func normalizeQueryChoices(operation string, q map[string]any) error {
 	choices := map[string]string{"side": "BUY SELL", "filter_type": "CASH TOKENS", "sort_direction": "ASC DESC", "window": "day week month all"}
 	switch operation {
 	case "list_activity":
@@ -174,6 +192,10 @@ func normalizeQuery(operation string, q map[string]any) error {
 			return input("bucket_limit must be between 1 and 90")
 		}
 	}
+	return encodeQueryChoices(q, choices)
+}
+
+func encodeQueryChoices(q map[string]any, choices map[string]string) error {
 	for key, allowed := range choices {
 		if value, ok := q[key]; ok {
 			values, sequence := value.([]string)

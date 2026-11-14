@@ -9,6 +9,12 @@ import (
 	"github.com/cagelin/polymarket-go/internal/codec"
 )
 
+const (
+	rewardEpochMillis         = "reward_epoch_ms"
+	rewardEpochMillisUnsigned = "reward_epoch_ms_unsigned"
+	streamEpochMillis         = "stream_epoch_ms"
+)
+
 func clobTime(raw json.RawMessage, kind string) (json.RawMessage, error) {
 	text := string(raw)
 	if text == `""` {
@@ -20,14 +26,14 @@ func clobTime(raw json.RawMessage, kind string) (json.RawMessage, error) {
 		}
 		digits := codec.ASCIIDigits(text)
 		numeric := strings.Trim(digits, "0123456789") == ""
-		if kind == "reward_epoch_ms" {
+		if kind == rewardEpochMillis {
 			numeric = strings.Trim(strings.TrimPrefix(digits, "-"), "0123456789") == ""
 		}
-		if kind == "stream_epoch_ms" && !numeric {
+		if kind == streamEpochMillis && !numeric {
 			return nil, fmt.Errorf("expected unsigned epoch-millisecond string")
 		}
 		if kind == "game_start_time" && numeric {
-			kind = "reward_epoch_ms_unsigned"
+			kind = rewardEpochMillisUnsigned
 		}
 		if !numeric {
 			parsed, err := codec.GammaTime(text)
@@ -38,7 +44,7 @@ func clobTime(raw json.RawMessage, kind string) (json.RawMessage, error) {
 		}
 		text = digits
 	}
-	if kind == "stream_epoch_ms" && (raw[0] != '"' || strings.HasPrefix(text, "-")) {
+	if kind == streamEpochMillis && (raw[0] != '"' || strings.HasPrefix(text, "-")) {
 		return nil, fmt.Errorf("expected unsigned epoch-millisecond string")
 	}
 	magnitude, err := strconv.ParseInt(text, 10, 64)
@@ -46,7 +52,7 @@ func clobTime(raw json.RawMessage, kind string) (json.RawMessage, error) {
 		return nil, fmt.Errorf("invalid integer epoch timestamp: %w", err)
 	}
 	seconds := float64(magnitude)
-	if kind == "reward_epoch_ms" || kind == "reward_epoch_ms_unsigned" || kind == "stream_epoch_ms" || magnitude >= 100000000000 {
+	if kind == rewardEpochMillis || kind == rewardEpochMillisUnsigned || kind == streamEpochMillis || magnitude >= 100000000000 {
 		seconds /= 1000
 	}
 	return dataTime(json.RawMessage(strconv.FormatFloat(seconds, 'g', -1, 64)), "epoch")

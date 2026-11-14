@@ -229,7 +229,7 @@ func ServerNextCursor(fields map[string]json.RawMessage) (*string, error) {
 	}
 	var cursor string
 	if err := json.Unmarshal(value, &cursor); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("decode cursor page: %w", err)
 	}
 	if cursor == "" {
 		return nil, fmt.Errorf("next_cursor must be nonempty")

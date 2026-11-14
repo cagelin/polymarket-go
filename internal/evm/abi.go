@@ -61,7 +61,7 @@ func arguments(types []string) (abi.Arguments, error) {
 	for i, name := range types {
 		value, err := abi.NewType(name, "", nil)
 		if err != nil {
-			return nil, err
+			return nil, fmt.Errorf("construct ABI argument type: %w", err)
 		}
 		args[i] = abi.Argument{Type: value}
 	}
@@ -177,7 +177,7 @@ func ProxyCalls(calls []models.TransactionCall) (string, error) {
 	}
 	tuple, err := abi.NewType("tuple[]", "", []abi.ArgumentMarshaling{{Name: "kind", Type: "uint8"}, {Name: "to", Type: "address"}, {Name: "value", Type: "uint256"}, {Name: "data", Type: "bytes"}})
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("construct proxy call tuple type: %w", err)
 	}
 	type item struct {
 		Kind  uint8
@@ -207,7 +207,7 @@ func ProxyCalls(calls []models.TransactionCall) (string, error) {
 	}
 	raw, err := (abi.Arguments{{Type: tuple}}).Pack(values)
 	if err != nil {
-		return "", err
+		return "", fmt.Errorf("encode proxy calls: %w", err)
 	}
 	return "0x" + hex.EncodeToString(append(crypto.Keccak256([]byte("proxy((uint8,address,uint256,bytes)[])"))[:4], raw...)), nil
 }

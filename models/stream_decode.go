@@ -9,6 +9,8 @@ import (
 	"github.com/ericlagergren/decimal"
 )
 
+const userStreamService = "user"
+
 func normalizeStreamPayload(raw []byte, kind string) ([]byte, error) {
 	fields, err := codec.Object(raw)
 	if err != nil {

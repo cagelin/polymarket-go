@@ -4,6 +4,7 @@ package transactions
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/url"
 	"reflect"
@@ -154,7 +155,7 @@ func (h *Handle) relayed(ctx context.Context) (*models.TransactionOutcome, error
 	}
 	var hash *string
 	if err = json.Unmarshal(hashRaw, &hash); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("decode relayer transaction hash: %w", err)
 	}
 	switch state {
 	case "STATE_CONFIRMED":

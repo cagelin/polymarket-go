@@ -2,6 +2,14 @@
 
 Scope update (2026-10-29): this SDK targets new accounts using Deposit Wallets. Legacy Safe/Proxy onboarding, migration, and live validation are excluded from support and release acceptance. Existing legacy implementation and historical tests remain, without a support commitment. EOA signing and other agreed capabilities remain in scope.
 
+## v0.3.5 — 2026-11-15
+
+- Scope lint rules to SDK code, codecs, tests and executable examples. Retain strict shadowing checks, enum coverage, external error context and a single function-complexity limit.
+- Split large query validators, model decoders and stream handlers into focused functions. Name repeated protocol values and make wallet/history enum handling explicit. Update the stream-event generator with its output.
+- Add context to external operation errors while preserving their causes with `%w`. Public method signatures remain unchanged; affected error messages now include operation context.
+
+中文：按 SDK、编解码、测试和可执行示例的职责配置 lint，保留严格遮蔽检查、枚举覆盖、外部错误上下文和单一函数复杂度限制。拆分大型参数验证、模型解析和流处理函数，提取重复协议常量，明确钱包与历史区间的枚举分支，并同步流事件生成器。外部操作错误通过 `%w` 保留原始原因并增加上下文；公开方法签名保持不变，相关错误文本增加操作说明。
+
 ## v0.3.4 — 2026-11-14
 
 - Preserve Gamma `outcomePrices` text in `Market.OutcomePricesRaw`, and event/market `closedTime` text in `ClosedTimeRaw`. Parsed prices and times keep their existing types and behavior.

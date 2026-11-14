@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/base64"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
@@ -147,12 +148,12 @@ func parseSearchPage(data []byte) (models.SearchResults, bool, *int64, error) {
 		}
 		if value, exists := pageMetadata["hasMore"]; exists && string(value) != "null" {
 			if err = json.Unmarshal(value, &more); err != nil {
-				return models.SearchResults{}, false, nil, err
+				return models.SearchResults{}, false, nil, fmt.Errorf("decode search events: %w", err)
 			}
 		}
 		if value, exists := pageMetadata["totalResults"]; exists && string(value) != "null" {
 			if err = json.Unmarshal(value, &total); err != nil {
-				return models.SearchResults{}, false, nil, err
+				return models.SearchResults{}, false, nil, fmt.Errorf("decode search pagination: %w", err)
 			}
 		}
 	}

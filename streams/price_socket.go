@@ -132,7 +132,7 @@ func (s *priceSession) request(ctx context.Context, operation string, keys []pri
 	}
 	s.rid++
 	rid := strconv.FormatUint(s.rid, 10)
-	expected := map[string]string{"auth": "authed", "subscribe": "subscribed", "unsubscribe": "unsubscribed"}[operation]
+	expected := map[string]string{"auth": "authed", subscribeMessage: "subscribed", "unsubscribe": "unsubscribed"}[operation]
 	pending := &pricePending{rid: rid, operation: expected, done: make(chan priceReply, 1), keys: keys, rejected: priceRejections{}}
 	for _, key := range keys {
 		pending.channels = append(pending.channels, wireChannel(key.topic))
@@ -188,7 +188,7 @@ func (s *priceSession) change(ctx context.Context, operation string, keys []pric
 			trial := append(slices.Clone(batch), candidate)
 			raw, err := json.Marshal(map[string]any{"op": operation, "subscriptions": trial, "rid": "18446744073709551615"})
 			if err != nil {
-				return err
+				return fmt.Errorf("encode price subscription: %w", err)
 			}
 			if len(batch) > 0 && len(raw) > 60000 {
 				break
@@ -264,54 +264,12 @@ func (s *priceSession) read(conn *websocket.Conn) {
 	}
 }
 func (s *priceSession) message(raw []byte) {
-	var frame struct{ Op, Rid, Channel, Code string }
+	var frame priceControlFrame
 	if json.Unmarshal(raw, &frame) != nil {
 		return
 	}
 	if slices.Contains([]string{"authed", "subscribed", "unsubscribed", "pong", "error"}, frame.Op) {
-		s.mu.Lock()
-		defer s.mu.Unlock()
-		pending := s.pending
-		if pending == nil || pending.rid != frame.Rid {
-			return
-		}
-		switch frame.Op {
-		case "error":
-			if !slices.Contains([]string{"bad_op", "bad_channel", "bad_filter", "sub_limit", "rate_limited", "auth_required", "auth_unavailable", "auth_expired", "auth_attempts", "auth_invalid"}, frame.Code) {
-				return
-			}
-			rejected := &sdkerrors.RequestRejectedError{Message: "price subscription rejected: " + frame.Code, Status: 200, Code: frame.Code}
-			index := slices.Index(pending.channels, frame.Channel)
-			if frame.Channel == "" || index < 0 {
-				select {
-				case pending.done <- priceReply{err: rejected}:
-				default:
-				}
-				return
-			}
-			pending.channels[index] = ""
-			pending.rejected[pending.keys[index]] = rejected
-			pending.err = pending.rejected
-		case pending.operation:
-			if len(pending.channels) > 0 {
-				index := slices.Index(pending.channels, frame.Channel)
-				if frame.Channel == "" || index < 0 {
-					return
-				}
-				pending.channels[index] = ""
-			}
-		default:
-			return
-		}
-		for _, channel := range pending.channels {
-			if channel != "" {
-				return
-			}
-		}
-		select {
-		case pending.done <- priceReply{err: pending.err}:
-		default:
-		}
+		s.controlMessage(frame)
 		return
 	}
 	event, err := models.ParseStreamEvent("price", raw)
@@ -386,7 +344,7 @@ func (s *priceSession) recover() {
 				}
 				err := s.open(s.ctx)
 				if err == nil {
-					err = s.change(s.ctx, "subscribe", keys)
+					err = s.change(s.ctx, subscribeMessage, keys)
 				}
 				var rejectedFilters priceRejections
 				if err == nil || errors.As(err, &rejectedFilters) {
@@ -489,3 +447,51 @@ func (s *priceSession) openInitial(ctx context.Context) error {
 }
 
 func wireChannel(topic string) string { return "price." + strings.TrimPrefix(topic, "prices.") }
+
+type priceControlFrame struct{ Op, Rid, Channel, Code string }
+
+func (s *priceSession) controlMessage(frame priceControlFrame) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+	pending := s.pending
+	if pending == nil || pending.rid != frame.Rid {
+		return
+	}
+	switch frame.Op {
+	case "error":
+		if !slices.Contains([]string{"bad_op", "bad_channel", "bad_filter", "sub_limit", "rate_limited", "auth_required", "auth_unavailable", "auth_expired", "auth_attempts", "auth_invalid"}, frame.Code) {
+			return
+		}
+		rejected := &sdkerrors.RequestRejectedError{Message: "price subscription rejected: " + frame.Code, Status: 200, Code: frame.Code}
+		index := slices.Index(pending.channels, frame.Channel)
+		if frame.Channel == "" || index < 0 {
+			select {
+			case pending.done <- priceReply{err: rejected}:
+			default:
+			}
+			return
+		}
+		pending.channels[index] = ""
+		pending.rejected[pending.keys[index]] = rejected
+		pending.err = pending.rejected
+	case pending.operation:
+		if len(pending.channels) > 0 {
+			index := slices.Index(pending.channels, frame.Channel)
+			if frame.Channel == "" || index < 0 {
+				return
+			}
+			pending.channels[index] = ""
+		}
+	default:
+		return
+	}
+	for _, channel := range pending.channels {
+		if channel != "" {
+			return
+		}
+	}
+	select {
+	case pending.done <- priceReply{err: pending.err}:
+	default:
+	}
+}

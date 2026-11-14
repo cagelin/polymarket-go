@@ -3,6 +3,7 @@ package rfq
 import (
 	"context"
 	"crypto/rand"
+	"fmt"
 	"math/big"
 	"time"
 
@@ -13,6 +14,12 @@ import (
 	"github.com/cagelin/polymarket-go/internal/signing"
 	"github.com/cagelin/polymarket-go/models"
 	"github.com/ericlagergren/decimal"
+)
+
+const (
+	quoteCollateral      = "collateral"
+	quoteInventory       = "inventory"
+	quoteAcknowledgement = "ACK_RFQ_QUOTE"
 )
 
 func units(value *decimal.Big) (*big.Int, error) {
@@ -39,9 +46,9 @@ func (s *Session) signedQuote(request Event, p QuoteParams, salt *big.Int, times
 	}
 	source := p.Source
 	if source == "" {
-		source = "collateral"
+		source = quoteCollateral
 	}
-	if source != "collateral" && source != "inventory" {
+	if source != quoteCollateral && source != quoteInventory {
 		return nil, &sdkerrors.UserInputError{Message: "quote source must be collateral or inventory"}
 	}
 	if request.Direction != models.Buy && request.Direction != models.Sell {
@@ -65,7 +72,7 @@ func (s *Session) signedQuote(request Event, p QuoteParams, salt *big.Int, times
 	if err != nil {
 		return nil, err
 	}
-	complement := request.Direction == models.Buy && source == "collateral" || request.Direction == models.Sell && source == "inventory"
+	complement := request.Direction == models.Buy && source == quoteCollateral || request.Direction == models.Sell && source == quoteInventory
 	orderPrice := new(big.Int).Set(price)
 	asset := request.YesPositionID
 	if complement {
@@ -75,7 +82,7 @@ func (s *Session) signedQuote(request Event, p QuoteParams, salt *big.Int, times
 	side := models.Buy
 	maker, taker := new(big.Int), new(big.Int).Set(size)
 	product := new(big.Int).Mul(orderPrice, size)
-	if source == "inventory" {
+	if source == quoteInventory {
 		side = models.Sell
 		maker.Set(size)
 		taker.Quo(product, million)
@@ -99,11 +106,11 @@ func (s *Session) signedQuote(request Event, p QuoteParams, salt *big.Int, times
 func (s *Session) Quote(ctx context.Context, request Event, p QuoteParams) (QuoteReference, error) {
 	salt, err := rand.Int(rand.Reader, new(big.Int).Lsh(big.NewInt(1), 64))
 	if err != nil {
-		return QuoteReference{}, err
+		return QuoteReference{}, fmt.Errorf("generate RFQ quote salt: %w", err)
 	}
 	body, err := s.signedQuote(request, p, salt, time.Now().Unix())
 	if err != nil {
 		return QuoteReference{}, err
 	}
-	return s.request(ctx, ackKey{kind: "ACK_RFQ_QUOTE", rfq: request.RFQID}, body)
+	return s.request(ctx, ackKey{kind: quoteAcknowledgement, rfq: request.RFQID}, body)
 }

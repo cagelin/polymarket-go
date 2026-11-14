@@ -76,6 +76,8 @@ func (s *Signer) Classify(wallet string) (models.WalletType, models.SignerType) 
 // SignatureType maps wallet ownership to the exchange wire code.
 func SignatureType(wallet models.WalletType) int {
 	switch wallet {
+	case models.WalletEOA:
+		return 0
 	case models.WalletProxy:
 		return 1
 	case models.WalletSafe:

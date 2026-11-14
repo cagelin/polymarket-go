@@ -95,71 +95,9 @@ func parsePriceEvent(raw []byte) (StreamEvent, error) {
 	if err != nil {
 		return nil, err
 	}
-	symbol, err := codec.Required[string](payload, "symbol")
+	result, kind, err := pricePayload(payload, fields["payload"], topic, snapshot)
 	if err != nil {
 		return nil, err
-	}
-	symbolRaw, err := json.Marshal(strings.ToLower(symbol))
-	if err != nil {
-		return nil, err
-	}
-	if _, err = codec.Required[string](payload, "source"); err != nil {
-		return nil, err
-	}
-	result := map[string]json.RawMessage{"symbol": symbolRaw, "source": payload["source"]}
-	twap := strings.HasSuffix(topic, ".twap")
-	if twap {
-		window, parseErr := codec.Required[int64](payload, "window_seconds")
-		if parseErr != nil || window != 60 {
-			return nil, fmt.Errorf("invalid price averaging window")
-		}
-	}
-	if strings.HasPrefix(topic, "prices.equity") && payload["market_status"] != nil {
-		status, parseErr := codec.Required[string](payload, "market_status")
-		if parseErr != nil || status != "open" && status != "closed" && status != "unknown" {
-			return nil, fmt.Errorf("invalid equity market status")
-		}
-		result["market_status"] = payload["market_status"]
-	}
-	kind := "update"
-	if snapshot {
-		kind = "subscribe"
-		points, parseErr := codec.ParseList[json.RawMessage](payload["data"])
-		if parseErr != nil {
-			return nil, parseErr
-		}
-		values := make([]map[string]json.RawMessage, 0, len(points))
-		for _, point := range points {
-			value, pointErr := pricePoint(point)
-			if pointErr != nil {
-				return nil, pointErr
-			}
-			values = append(values, value)
-		}
-		result["data"], err = json.Marshal(values)
-		if err != nil {
-			return nil, err
-		}
-	} else {
-		point, parseErr := pricePoint(fields["payload"])
-		if parseErr != nil {
-			return nil, parseErr
-		}
-		result["value"], result["timestamp"] = point["value"], point["timestamp"]
-		if !twap {
-			if payload["received_at"] != nil {
-				result["received_at"], err = priceTimestamp(payload, "received_at")
-				if err != nil {
-					return nil, err
-				}
-			}
-			if payload["is_carried_forward"] != nil {
-				if _, err = codec.Required[bool](payload, "is_carried_forward"); err != nil {
-					return nil, err
-				}
-				result["is_carried_forward"] = payload["is_carried_forward"]
-			}
-		}
 	}
 	canonical := map[string]any{"topic": topic, "type": kind, "timestamp": timestamp, "seq": fields["seq"], "payload": result}
 	if fields["dropped"] != nil {
@@ -170,4 +108,74 @@ func parsePriceEvent(raw []byte) (StreamEvent, error) {
 		return nil, err
 	}
 	return ParseStreamEvent("price_canonical", encoded)
+}
+
+func pricePayload(payload map[string]json.RawMessage, payloadRaw json.RawMessage, topic string, snapshot bool) (map[string]json.RawMessage, string, error) {
+	symbol, err := codec.Required[string](payload, "symbol")
+	if err != nil {
+		return nil, "", err
+	}
+	symbolRaw, err := json.Marshal(strings.ToLower(symbol))
+	if err != nil {
+		return nil, "", err
+	}
+	if _, err = codec.Required[string](payload, "source"); err != nil {
+		return nil, "", err
+	}
+	result := map[string]json.RawMessage{"symbol": symbolRaw, "source": payload["source"]}
+	twap := strings.HasSuffix(topic, ".twap")
+	if twap {
+		window, parseErr := codec.Required[int64](payload, "window_seconds")
+		if parseErr != nil || window != 60 {
+			return nil, "", fmt.Errorf("invalid price averaging window")
+		}
+	}
+	if strings.HasPrefix(topic, "prices.equity") && payload["market_status"] != nil {
+		status, parseErr := codec.Required[string](payload, "market_status")
+		if parseErr != nil || status != "open" && status != "closed" && status != "unknown" {
+			return nil, "", fmt.Errorf("invalid equity market status")
+		}
+		result["market_status"] = payload["market_status"]
+	}
+	kind := "update"
+	if snapshot {
+		kind = "subscribe"
+		points, parseErr := codec.ParseList[json.RawMessage](payload["data"])
+		if parseErr != nil {
+			return nil, "", parseErr
+		}
+		values := make([]map[string]json.RawMessage, 0, len(points))
+		for _, point := range points {
+			value, pointErr := pricePoint(point)
+			if pointErr != nil {
+				return nil, "", pointErr
+			}
+			values = append(values, value)
+		}
+		result["data"], err = json.Marshal(values)
+		if err != nil {
+			return nil, "", err
+		}
+	} else {
+		point, parseErr := pricePoint(payloadRaw)
+		if parseErr != nil {
+			return nil, "", parseErr
+		}
+		result["value"], result["timestamp"] = point["value"], point["timestamp"]
+		if !twap {
+			if payload["received_at"] != nil {
+				result["received_at"], err = priceTimestamp(payload, "received_at")
+				if err != nil {
+					return nil, "", err
+				}
+			}
+			if payload["is_carried_forward"] != nil {
+				if _, err = codec.Required[bool](payload, "is_carried_forward"); err != nil {
+					return nil, "", err
+				}
+				result["is_carried_forward"] = payload["is_carried_forward"]
+			}
+		}
+	}
+	return result, kind, nil
 }

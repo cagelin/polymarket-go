@@ -83,11 +83,11 @@ func comboContext(legs []string) (positionContext, error) {
 	}
 	encoded, err := (abi.Arguments{{Type: positionArrayType}}).Pack(ids)
 	if err != nil {
-		return positionContext{}, err
+		return positionContext{}, fmt.Errorf("encode position balance calls: %w", err)
 	}
 	raw, err := (abi.Arguments{{Type: positionUintType}, {Type: positionBytesType}}).Pack(big.NewInt(3), encoded)
 	if err != nil {
-		return positionContext{}, err
+		return positionContext{}, fmt.Errorf("encode position balance batch: %w", err)
 	}
 	hash := crypto.Keccak256(raw)
 	condition := "0x03" + hex.EncodeToString(hash[16:]) + strings.Repeat("0", 28)

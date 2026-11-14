@@ -13,6 +13,8 @@ import (
 	"golang.org/x/crypto/sha3"
 )
 
+const approvalERC20 = "ERC20"
+
 // GetTradingApprovalsState reads indexed allowances without requesting wallet access or submitting transactions.
 func (c *Client) GetTradingApprovalsState(ctx context.Context, wallet models.EVMAddress) (*models.TradingApprovalsState, error) {
 	owner, err := checksumAddress(string(wallet))
@@ -47,19 +49,7 @@ func maxUint256() *big.Int {
 	return new(big.Int).Sub(new(big.Int).Lsh(big.NewInt(1), 256), big.NewInt(1))
 }
 func parseApprovals(raw []byte, owner string) (*models.TradingApprovalsState, error) {
-	fields, err := codec.Object(raw)
-	if err != nil {
-		return nil, err
-	}
-	address, err := codec.Required[string](fields, "address")
-	if err != nil || !strings.EqualFold(address, owner) {
-		return nil, fmt.Errorf("approval owner differs from requested wallet")
-	}
-	chain, err := codec.Required[int64](fields, "chain_id")
-	if err != nil || chain != 137 {
-		return nil, fmt.Errorf("approval chain differs from production")
-	}
-	rows, err := codec.Required[[]json.RawMessage](fields, "contracts")
+	rows, err := approvalRows(raw, owner)
 	if err != nil {
 		return nil, err
 	}
@@ -93,29 +83,18 @@ func parseApprovals(raw []byte, owner string) (*models.TradingApprovalsState, er
 		}
 		standard, standardErr := codec.Required[string](item, "standard")
 		approved, approvedErr := codec.Required[bool](item, "approved")
-		if standardErr != nil || approvedErr != nil || (standard != "ERC20" && standard != "ERC1155") {
+		if standardErr != nil || approvedErr != nil || (standard != approvalERC20 && standard != "ERC1155") {
 			return nil, fmt.Errorf("invalid approval standard or flag")
 		}
 		if _, exists := indexed[pair]; exists {
 			return nil, fmt.Errorf("duplicate approval pair")
 		}
 		var amount *big.Int
-		if standard == "ERC20" {
-			text, amountErr := codec.Required[string](item, "amount")
+		if standard == approvalERC20 {
+			var amountErr error
+			amount, amountErr = approvalAmount(item)
 			if amountErr != nil {
 				return nil, amountErr
-			}
-			if text == "max" {
-				amount = maxUint256()
-			} else {
-				if len(text) < 1 || len(text) > 78 || strings.Trim(text, "0123456789") != "" || (len(text) > 1 && text[0] == '0') {
-					return nil, fmt.Errorf("invalid uint256 allowance")
-				}
-				var valid bool
-				amount, valid = new(big.Int).SetString(text, 10)
-				if !valid || amount.BitLen() > 256 {
-					return nil, fmt.Errorf("allowance exceeds uint256")
-				}
 			}
 		}
 		indexed[pair] = indexedApproval{standard: standard, approved: approved, amount: amount}
@@ -123,7 +102,7 @@ func parseApprovals(raw []byte, owner string) (*models.TradingApprovalsState, er
 	missing := models.MissingTradingApprovals{ERC20: []models.ERC20TradingApproval{}, ERC1155: []models.ERC1155TradingApproval{}}
 	for _, a := range required.ERC20 {
 		row, ok := indexed[strings.ToLower(string(a.TokenAddress)+"/"+string(a.Spender))]
-		if !ok || row.standard != "ERC20" || row.amount == nil {
+		if !ok || row.standard != approvalERC20 || row.amount == nil {
 			return nil, fmt.Errorf("missing required ERC20 pair")
 		}
 		if !row.approved || row.amount.Cmp(a.Amount) < 0 {
@@ -140,4 +119,42 @@ func parseApprovals(raw []byte, owner string) (*models.TradingApprovalsState, er
 		}
 	}
 	return &models.TradingApprovalsState{Missing: missing, IsFullyApproved: len(missing.ERC20) == 0 && len(missing.ERC1155) == 0}, nil
+}
+
+func approvalAmount(item map[string]json.RawMessage) (*big.Int, error) {
+	text, amountErr := codec.Required[string](item, "amount")
+	if amountErr != nil {
+		return nil, amountErr
+	}
+	if text == "max" {
+		return maxUint256(), nil
+	}
+	if len(text) < 1 || len(text) > 78 || strings.Trim(text, "0123456789") != "" || (len(text) > 1 && text[0] == '0') {
+		return nil, fmt.Errorf("invalid uint256 allowance")
+	}
+	amount, valid := new(big.Int).SetString(text, 10)
+	if !valid || amount.BitLen() > 256 {
+		return nil, fmt.Errorf("allowance exceeds uint256")
+	}
+	return amount, nil
+}
+
+func approvalRows(raw []byte, owner string) ([]json.RawMessage, error) {
+	fields, err := codec.Object(raw)
+	if err != nil {
+		return nil, err
+	}
+	address, err := codec.Required[string](fields, "address")
+	if err != nil || !strings.EqualFold(address, owner) {
+		return nil, fmt.Errorf("approval owner differs from requested wallet")
+	}
+	chain, err := codec.Required[int64](fields, "chain_id")
+	if err != nil || chain != 137 {
+		return nil, fmt.Errorf("approval chain differs from production")
+	}
+	rows, err := codec.Required[[]json.RawMessage](fields, "contracts")
+	if err != nil {
+		return nil, err
+	}
+	return rows, nil
 }

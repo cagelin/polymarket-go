@@ -6,35 +6,75 @@ linters:
     - govet
     - revive
     - staticcheck
-    - bodyclose
+    - unused
     - ineffassign
+    - bodyclose
+    - gosec
+    - misspell
+    - nolintlint
+    - predeclared
     - errorlint
     - contextcheck
     - copyloopvar
     - gocritic
-    - gosec
-    - misspell
     - nilerr
     - nilnesserr
-    - nolintlint
-    - predeclared
     - unconvert
     - wastedassign
+    - wrapcheck
+    - durationcheck
+    - exhaustive
+    - forbidigo
+    - cyclop
+    - paralleltest
+    - goconst
   settings:
+    exhaustive:
+      # Reflection switches intentionally select only relevant kinds.
+      ignore-types: ['^reflect\.Kind$']
+    wrapcheck:
+      # Cancellation errors keep their sentinel identity.
+      extra-ignore-sigs: ["(context.Context).Err()"]
+      # SDK errors retain their types and context across internal forwarding.
+      ignore-package-globs:
+        - github.com/cagelin/polymarket-go/*
+    cyclop:
+      # Bound large production control flows without stacking overlapping metrics.
+      max-complexity: 30
+    paralleltest:
+      ignore-missing: true
+    goconst:
+      ignore-tests: true
+      min-occurrences: 3
+      # JSON literals are syntax, not domain constants.
+      ignore-string-values: ['^(null|true|false|0\.0|"0")$']
+      exclude-types:
+        - Call
+        - CompositeLit
     govet:
       enable:
         - shadow
       settings:
         shadow:
           strict: true
+    errcheck:
+      check-type-assertions: true
     nolintlint:
       require-explanation: true
       require-specific: true
-    errcheck:
-      check-type-assertions: true
   exclusions:
     generated: disable
     presets: []
+    rules:
+      # Tests and executable examples have different output/error contracts.
+      - path: '(^examples/|^scripts/|_test\.go$)'
+        linters: [wrapcheck, forbidigo]
+      # Test tables and executable examples favor keeping scenarios together.
+      - path: '(^examples/|^scripts/|_test\.go$)'
+        linters: [cyclop]
+      # Codec primitives expose native parse errors; their callers add field context.
+      - path: '^(models/|internal/codec/)'
+        linters: [wrapcheck]
 issues:
   max-issues-per-linter: 0
   max-same-issues: 0

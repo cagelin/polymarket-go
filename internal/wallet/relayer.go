@@ -3,6 +3,7 @@ package wallet
 import (
 	"context"
 	"errors"
+	"fmt"
 	"math/big"
 	"net/url"
 	"regexp"
@@ -142,6 +143,8 @@ func (c *Client) relayerPayload(ctx context.Context, calls []models.TransactionC
 	}
 	body := map[string]any{"type": kind, "from": c.config.Signer.Address(), "nonce": nonce, "metadata": metadata}
 	switch c.config.Kind {
+	case models.WalletEOA:
+		return nil, &sdkerrors.UserInputError{Message: "unsupported relayer wallet type"}
 	case models.WalletDeposit:
 		timestamp := c.now().Unix()
 		if c.transport.CustomRPC() {
@@ -159,7 +162,7 @@ func (c *Client) relayerPayload(ctx context.Context, calls []models.TransactionC
 			}
 			blockTime, parseErr := strconv.ParseInt(strings.TrimPrefix(value, "0x"), 16, 64)
 			if parseErr != nil {
-				return nil, parseErr
+				return nil, fmt.Errorf("parse block timestamp: %w", parseErr)
 			}
 			timestamp = max(timestamp, blockTime)
 		}

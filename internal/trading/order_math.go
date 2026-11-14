@@ -9,6 +9,8 @@ import (
 	"github.com/ericlagergren/decimal"
 )
 
+const decimalDivide = "div"
+
 type rounding struct{ amount, price int }
 
 var tickRoundings = [...]struct {
@@ -66,10 +68,10 @@ func (m *orderMath) op(operation string, x, y *decimal.Big) *decimal.Big {
 	if m.err != nil {
 		return result
 	}
-	if operation == "div" || operation == "pow" {
+	if operation == decimalDivide || operation == "pow" {
 		ctx := codec.DecimalContext()
 		ctx.OperatingMode = decimal.Go
-		if operation == "div" {
+		if operation == decimalDivide {
 			ctx.Quo(result, x, y)
 		} else {
 			ctx.Pow(result, x, y)
@@ -132,7 +134,7 @@ func marketAmounts(price, amount, tick *decimal.Big, side models.OrderSide) (*bi
 	maker := m.round(amount, 2, decimal.ToNegativeInf)
 	operation := "mul"
 	if side == models.Buy {
-		operation = "div"
+		operation = decimalDivide
 	}
 	taker := m.amountRound(m.op(operation, maker, price), config.amount)
 	offered, requested := m.amount(maker), m.amount(taker)
@@ -142,7 +144,7 @@ func adjustBuyAmount(amount, price, maxSpend, rate, exponent, builderRate *decim
 	m := orderMath{}
 	one := decimal.New(1, 0)
 	effective := m.op("mul", rate, m.op("pow", m.op("mul", price, m.op("sub", one, price)), exponent))
-	platform := m.op("mul", m.op("div", amount, price), effective)
+	platform := m.op("mul", m.op(decimalDivide, amount, price), effective)
 	builder := m.op("mul", amount, builderRate)
 	total := m.op("add", m.op("add", amount, platform), builder)
 	if m.err != nil {
@@ -151,7 +153,7 @@ func adjustBuyAmount(amount, price, maxSpend, rate, exponent, builderRate *decim
 	if maxSpend.Cmp(total) > 0 {
 		return new(decimal.Big).Copy(amount), nil
 	}
-	result := m.op("div", maxSpend, m.op("add", m.op("add", one, m.op("div", effective, price)), builderRate))
+	result := m.op(decimalDivide, maxSpend, m.op("add", m.op("add", one, m.op(decimalDivide, effective, price)), builderRate))
 	return result, m.err
 }
 func protectedBuy(offered, requested *big.Int, price *decimal.Big) error {

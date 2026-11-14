@@ -21,12 +21,12 @@ func (c *Client) rebuildDispatch() {
 			listener := &subscriber{handle: handle, selection: selected}
 			values := selected.assets
 			switch selected.service {
-			case "user":
+			case serviceUser:
 				values = make([]string, len(selected.assets))
 				for position, asset := range selected.assets {
 					values[position] = strings.ToLower(asset)
 				}
-			case "rtds":
+			case serviceRTDS:
 				values = selected.symbols
 				if selected.symbol != "" {
 					values = []string{selected.symbol}

@@ -87,20 +87,8 @@ func historyQuery(p PriceHistoryParams, now time.Time) (map[string]any, int, err
 	if p.AsOf != nil && (p.BucketSeconds != nil || p.PageSize != nil) {
 		return fail("as_of forbids bucket_seconds and page_size")
 	}
-	if p.BucketSeconds != nil {
-		minimum := 60
-		if p.Interval != nil {
-			switch *p.Interval {
-			case models.HistoryMax, models.HistoryAll, models.HistoryMonth:
-				minimum = 600
-			case models.HistoryWeek:
-				minimum = 300
-			}
-		}
-		if *p.BucketSeconds < minimum || *p.BucketSeconds > 86400 {
-			return fail("bucket_seconds is outside the interval's supported range")
-		}
-		query["bucket_seconds"] = *p.BucketSeconds
+	if err := applyHistoryBucket(p, query); err != nil {
+		return nil, 0, err
 	}
 	pageSize := 10000
 	if p.PageSize != nil {
@@ -149,4 +137,25 @@ func parseHistoryPageMetadata(data []byte) (map[string]json.RawMessage, *string,
 		return nil, nil, fmt.Errorf("has_more and next_cursor disagree")
 	}
 	return pageMetadata, next, nil
+}
+
+func applyHistoryBucket(p PriceHistoryParams, query map[string]any) error {
+	if p.BucketSeconds != nil {
+		minimum := 60
+		if p.Interval != nil {
+			switch *p.Interval {
+			case models.HistoryDay, models.HistorySixHours, models.HistoryHour:
+				minimum = 60
+			case models.HistoryMax, models.HistoryAll, models.HistoryMonth:
+				minimum = 600
+			case models.HistoryWeek:
+				minimum = 300
+			}
+		}
+		if *p.BucketSeconds < minimum || *p.BucketSeconds > 86400 {
+			return input("bucket_seconds is outside the interval's supported range")
+		}
+		query["bucket_seconds"] = *p.BucketSeconds
+	}
+	return nil
 }

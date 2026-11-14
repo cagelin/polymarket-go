@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"math/big"
 	"strings"
 	"sync/atomic"
@@ -154,7 +155,7 @@ func (r *RPC) CallBatch(ctx context.Context, calls []models.TransactionCall) ([]
 			ID uint64 `json:"id"`
 		}
 		if err = json.Unmarshal(row, &item); err != nil {
-			return nil, err
+			return nil, fmt.Errorf("decode batch RPC response: %w", err)
 		}
 		if _, ok := byID[item.ID]; ok {
 			return nil, &sdkerrors.UnexpectedResponseError{Message: "duplicate batch RPC ID"}

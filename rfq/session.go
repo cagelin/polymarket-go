@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io"
 	"net/http"
 	"reflect"
@@ -123,7 +124,13 @@ func (s *Session) orderSigner() models.EVMAddress {
 func (s *Session) Closed() bool { s.mu.Lock(); defer s.mu.Unlock(); return s.closed }
 
 // Close cancels readers and fails pending acknowledgements.
-func (s *Session) Close() error { s.finish(nil); return s.conn.CloseNow() }
+func (s *Session) Close() error {
+	s.finish(nil)
+	if err := s.conn.CloseNow(); err != nil {
+		return fmt.Errorf("close RFQ connection: %w", err)
+	}
+	return nil
+}
 func (s *Session) finish(err error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
@@ -172,7 +179,7 @@ func (s *Session) Next(ctx context.Context) (Event, error) {
 func (s *Session) request(ctx context.Context, key ackKey, body any) (QuoteReference, error) {
 	raw, err := json.Marshal(body)
 	if err != nil {
-		return QuoteReference{}, err
+		return QuoteReference{}, fmt.Errorf("encode RFQ quote: %w", err)
 	}
 	bounded, cancel := context.WithTimeout(ctx, 30*time.Second)
 	defer cancel()
@@ -190,7 +197,7 @@ func (s *Session) request(ctx context.Context, key ackKey, body any) (QuoteRefer
 	s.sendMu.Unlock()
 	if err != nil {
 		s.finish(&sdkerrors.TransportError{Cause: err})
-		return QuoteReference{}, err
+		return QuoteReference{}, fmt.Errorf("send RFQ quote: %w", err)
 	}
 	select {
 	case result := <-pending:
@@ -277,13 +284,13 @@ func (s *Session) message(raw []byte) {
 		s.reject(fields)
 		return
 	}
-	if kind == "ACK_RFQ_QUOTE" || kind == "ACK_RFQ_QUOTE_CANCEL" || kind == "ACK_RFQ_CONFIRMATION_RESPONSE" {
+	if kind == quoteAcknowledgement || kind == "ACK_RFQ_QUOTE_CANCEL" || kind == "ACK_RFQ_CONFIRMATION_RESPONSE" {
 		var reference QuoteReference
 		if json.Unmarshal(raw, &reference) != nil || reference.RFQID == "" || reference.QuoteID == "" {
 			return
 		}
 		key := ackKey{kind: kind, rfq: reference.RFQID}
-		if kind != "ACK_RFQ_QUOTE" {
+		if kind != quoteAcknowledgement {
 			key.quote = reference.QuoteID
 		}
 		s.resolve(key, acknowledgement{reference: reference})
@@ -311,15 +318,15 @@ func (s *Session) reject(fields map[string]json.RawMessage) {
 	if failure.Message == "" {
 		failure.Message = "RFQ request rejected"
 	}
-	kind := map[string]string{"RFQ_QUOTE": "ACK_RFQ_QUOTE", "RFQ_QUOTE_CANCEL": "ACK_RFQ_QUOTE_CANCEL", "RFQ_CONFIRMATION_RESPONSE": "ACK_RFQ_CONFIRMATION_RESPONSE"}[failure.RequestType]
+	kind := map[string]string{"RFQ_QUOTE": quoteAcknowledgement, "RFQ_QUOTE_CANCEL": "ACK_RFQ_QUOTE_CANCEL", "RFQ_CONFIRMATION_RESPONSE": "ACK_RFQ_CONFIRMATION_RESPONSE"}[failure.RequestType]
 	if kind == "" {
 		return
 	}
 	key := ackKey{kind: kind, rfq: failure.RFQID}
-	if kind != "ACK_RFQ_QUOTE" {
+	if kind != quoteAcknowledgement {
 		key.quote = failure.QuoteID
 	}
-	if key.rfq == "" || (kind != "ACK_RFQ_QUOTE" && key.quote == "") {
+	if key.rfq == "" || (kind != quoteAcknowledgement && key.quote == "") {
 		s.finish(&sdkerrors.UnexpectedResponseError{Message: "uncorrelated RFQ rejection"})
 		return
 	}

@@ -76,7 +76,7 @@ func (r rfqFields) amount(key string) *decimal.Big {
 }
 func (r rfqFields) status() string {
 	status := r.text("status")
-	if !slices.Contains([]string{"AWAITING_REQUESTER_ACCEPTANCE", "AWAITING_MAKER_CONFIRMATION", "EXECUTING", "FILLED", "FAILED", "EXPIRED", "CANCELED", "MATCHED", "MINED", "CONFIRMED", "RETRYING"}, status) {
+	if !slices.Contains([]string{"AWAITING_REQUESTER_ACCEPTANCE", "AWAITING_MAKER_CONFIRMATION", "EXECUTING", "FILLED", statusFailed, "EXPIRED", "CANCELED", "MATCHED", "MINED", "CONFIRMED", "RETRYING"}, status) {
 		r.fail(fmt.Errorf("unknown RFQ status"))
 	}
 	return status
@@ -109,7 +109,7 @@ func parseComboQuote(raw []byte, submitted map[string]any) (*models.ComboQuoteRe
 	id := fields.text("rfq_id")
 	status := fields.status()
 	if fields.fields["quote"] == nil || string(fields.fields["quote"]) == "null" {
-		if !slices.Contains([]string{"FAILED", "EXPIRED", "CANCELED"}, status) {
+		if !slices.Contains([]string{statusFailed, "EXPIRED", "CANCELED"}, status) {
 			fields.fail(fmt.Errorf("RFQ response has no quote before terminal failure"))
 		}
 		detail := fields.detail()

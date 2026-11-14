@@ -116,65 +116,18 @@ func dataValue(value json.RawMessage, rule dataField) (json.RawMessage, error) {
 		}
 		return value, nil
 	case "notification_kind":
-		text := string(value)
-		if text == "true" {
-			text = "1"
-		}
-		if text == "false" {
-			text = "0"
-		}
-		number, parseErr := strconv.ParseFloat(text, 64)
-		if parseErr != nil || number != float64(rule.minimum) {
-			return nil, fmt.Errorf("invalid notification type")
-		}
-		return json.Marshal(rule.minimum)
+		return dataNotificationKind(value, rule)
 	case "notification_id":
-		text := string(value)
-		if value[0] == '"' {
-			if err = json.Unmarshal(value, &text); err != nil {
-				return nil, err
-			}
-		}
-		text = codec.ASCIIDigits(text)
-		digits := strings.TrimPrefix(text, "-")
-		if digits == "" || strings.Trim(digits, "0123456789") != "" {
-			return nil, fmt.Errorf("invalid notification ID")
-		}
-		integer, parseErr := strconv.ParseInt(text, 10, 64)
-		if parseErr != nil {
-			return nil, parseErr
-		}
-		return json.Marshal(integer)
-
+		return dataNotificationID(value)
 	case "e6_decimal":
-		text, textErr := codec.Required[string](fields, rule.name)
-		if textErr != nil {
-			return nil, textErr
-		}
-		digits := codec.ASCIIDigits(text)
-		if digits == "" || strings.Trim(digits, "0123456789") != "" {
-			return nil, fmt.Errorf("invalid base-unit integer string")
-		}
-		fields[rule.name], err = json.Marshal(digits)
-		if err != nil {
-			return nil, err
-		}
-		amount, parseErr := codec.DecimalField(fields, rule.name)
-		if parseErr != nil {
-			return nil, parseErr
-		}
-		scaled := new(decimal.Big)
-		if parseErr = codec.DecimalArithmetic("mul", scaled, amount, decimal.New(1, 6)); parseErr != nil {
-			return nil, parseErr
-		}
-		return json.Marshal(scaled.String())
+		return dataBaseUnitDecimal(value, rule)
 	case "string_decimal":
 		amount, parseErr := codec.DecimalField(fields, rule.name)
 		if parseErr != nil {
 			return nil, parseErr
 		}
 		return json.Marshal(amount.String())
-	case "reward_epoch_ms", "reward_epoch_ms_unsigned", "clob_epoch_iso", "game_start_time", "stream_epoch_ms":
+	case rewardEpochMillis, rewardEpochMillisUnsigned, "clob_epoch_iso", "game_start_time", streamEpochMillis:
 		return clobTime(value, rule.kind)
 	case "data_decimal":
 		amount, parseErr := codec.NumericDecimal(fields, rule.name, false)
@@ -185,30 +138,11 @@ func dataValue(value json.RawMessage, rule dataField) (json.RawMessage, error) {
 	case "epoch", "optional_epoch", "epoch_or_iso", "optional_epoch_or_iso":
 		return dataTime(value, rule.kind)
 	case "asset_reference":
-		text, parseErr := codec.Required[string](fields, rule.name)
-		if parseErr != nil || len(text) < 1 || len(text) > 78 || strings.Trim(text, "0123456789") != "" {
-			return nil, fmt.Errorf("invalid asset ID")
-		}
+		return dataAssetReference(value, rule)
 	case "condition_reference":
-		text, parseErr := codec.Required[string](fields, rule.name)
-		if parseErr != nil || len(text) != 66 || !codec.ValidHex(text) {
-			return nil, fmt.Errorf("invalid 32-byte condition ID")
-		}
+		return dataConditionReference(value, rule)
 	case "event_reference":
-		text := string(value)
-		if value[0] == '"' {
-			if err = json.Unmarshal(value, &text); err != nil {
-				return nil, err
-			}
-		}
-		if text == "" || strings.Trim(strings.TrimPrefix(text, "-"), "0123456789") != "" {
-			return nil, fmt.Errorf("invalid event ID")
-		}
-		number, parseErr := strconv.ParseInt(text, 10, 32)
-		if parseErr != nil {
-			return nil, parseErr
-		}
-		return json.Marshal(strconv.FormatInt(number, 10))
+		return dataEventReference(value)
 	case "strict_bool":
 		var parsed bool
 		if err = json.Unmarshal(value, &parsed); err != nil {
@@ -220,50 +154,9 @@ func dataValue(value json.RawMessage, rule dataField) (json.RawMessage, error) {
 			return nil, err
 		}
 	case "literal_bool_true", "literal_bool_false":
-		// Python Literal[bool] accepts numerically equal 0/1, not string booleans.
-		desired := rule.kind == "literal_bool_true"
-		if string(value) == strconv.FormatBool(desired) {
-			return value, nil
-		}
-		var number float64
-		if err = json.Unmarshal(value, &number); err != nil || (desired && number != 1) || (!desired && number != 0) {
-			return nil, fmt.Errorf("invalid boolean literal")
-		}
-		return json.Marshal(desired)
+		return dataBooleanLiteral(value, rule)
 	case "payout_pair":
-		var pair []json.RawMessage
-		if err = json.Unmarshal(value, &pair); err != nil || len(pair) != 2 {
-			return nil, fmt.Errorf("expected a payout pair")
-		}
-		result := make([]*decimal.Big, 2)
-		ctx := codec.DecimalContext()
-		for i, item := range pair {
-			amount, parseErr := codec.NumericDecimal(map[string]json.RawMessage{"amount": item}, "amount", false)
-			if parseErr != nil {
-				return nil, parseErr
-			}
-			result[i] = new(decimal.Big).Copy(amount)
-			// Division by 10^6 is exact before applying the arithmetic context.
-			result[i].SetScale(amount.Scale() + 6)
-			if err = codec.RoundDecimal(result[i]); err != nil {
-				return nil, err
-			}
-			if result[i].Sign() != 0 {
-				result[i].Context.Precision = decimal.UnlimitedPrecision
-				result[i].Reduce()
-			} else if amount.Sign() == 0 {
-				result[i].SetScale(min(max(amount.Scale(), -999999), 1000026))
-			}
-			// Preserve Python's preferred quotient exponent when precision allows.
-			scale := min(amount.Scale(), 1000026, 28-result[i].Precision()+result[i].Scale())
-			if result[i].Scale() < scale && scale-result[i].Scale() <= 28-result[i].Precision() {
-				ctx.Quantize(result[i], scale)
-				if err = result[i].Context.Err(); err != nil {
-					return nil, err
-				}
-			}
-		}
-		return json.Marshal(result)
+		return dataPayoutPair(value)
 	default:
 		return normalizeGammaField(value, gammaField{name: rule.name, kind: rule.kind, required: rule.required})
 	}
@@ -272,20 +165,13 @@ func dataValue(value json.RawMessage, rule dataField) (json.RawMessage, error) {
 
 func dataStep(value json.RawMessage, step string) (json.RawMessage, error) {
 	raw := string(value)
+	if dataStepNull(raw, step) {
+		return json.RawMessage("null"), nil
+	}
 	switch step {
-	case "empty_none":
-		if raw == `""` {
-			return json.RawMessage("null"), nil
-		}
-		return value, nil
 	case "empty_zero":
 		if raw == `""` {
 			return json.RawMessage(`"0"`), nil
-		}
-		return value, nil
-	case "zero_time":
-		if raw == "0" || raw == `"0"` {
-			return json.RawMessage("null"), nil
 		}
 		return value, nil
 	case "trade_status":
@@ -317,68 +203,14 @@ func dataStep(value json.RawMessage, step string) (json.RawMessage, error) {
 		if raw != "30" && raw != "60" && raw != "30.0" && raw != "60.0" {
 			return nil, fmt.Errorf("expected TWAP window 30 or 60")
 		}
-	case "optional_text":
-		if raw == `""` {
-			return json.RawMessage("null"), nil
-		}
-	case "optional_outcome_index":
-		if raw == "999" || raw == "999.0" {
-			return json.RawMessage("null"), nil
-		}
-	case "date_from_calendar_string":
-		if raw == `""` || raw == `"1970-01-01"` {
-			return json.RawMessage("null"), nil
-		}
-	case "zero_rank":
-		if raw == "0" || raw == "0.0" || raw == "false" {
-			return json.RawMessage("null"), nil
-		}
 	case "unset_price":
-		if string(value) == `""` {
-			return json.RawMessage("null"), nil
-		}
-		if raw == "69" || raw == "69.0" || raw == `"69"` {
-			return json.RawMessage("null"), nil
-		}
-	case "global_condition":
-		if raw == `"GLOBAL"` {
-			return json.RawMessage("null"), nil
-		}
+		return dataUnsetPrice(value)
 	case "optional_event_id":
-		if raw == `""` || raw == `"0"` || raw == "0" || raw == "0.0" || raw == "false" {
-			return json.RawMessage("null"), nil
-		}
-		if value[0] == '"' {
-			return value, nil
-		}
-		if raw == "true" {
-			raw = "True"
-		}
-		return json.Marshal(raw)
+		return optionalDataEventID(value)
 	case "required_event_id":
-		if value[0] == '"' {
-			if err := json.Unmarshal(value, &raw); err != nil {
-				return nil, err
-			}
-		}
-		digits := codec.ASCIIDigits(raw)
-		if digits == "" || strings.Trim(digits, "0123456789") != "" || strings.TrimLeft(digits, "0") == "" {
-			return nil, fmt.Errorf("expected positive event ID")
-		}
-		return json.Marshal(raw)
+		return requiredDataEventID(value)
 	case "validate_condition_id_response", "validate_optional_condition_id_response", "validate_combo_condition_id":
-		if err := json.Unmarshal(value, &raw); err != nil {
-			return nil, err
-		}
-		grammar := "response"
-		if step == "validate_combo_condition_id" {
-			grammar = "combo"
-		}
-		normalized, err := codec.Condition(raw, grammar)
-		if err != nil {
-			return nil, err
-		}
-		return json.Marshal(normalized)
+		return dataConditionID(value, step)
 	}
 	return value, nil
 }
@@ -408,4 +240,226 @@ func dataTime(raw json.RawMessage, kind string) (json.RawMessage, error) {
 	whole, fraction := math.Modf(seconds)
 	parsed := time.Unix(int64(whole), int64(math.RoundToEven(fraction*1e6))*1000).UTC()
 	return json.Marshal(parsed)
+}
+
+func dataNotificationKind(value json.RawMessage, rule dataField) (json.RawMessage, error) {
+	text := string(value)
+	if text == "true" {
+		text = "1"
+	}
+	if text == "false" {
+		text = "0"
+	}
+	number, parseErr := strconv.ParseFloat(text, 64)
+	if parseErr != nil || number != float64(rule.minimum) {
+		return nil, fmt.Errorf("invalid notification type")
+	}
+	return json.Marshal(rule.minimum)
+}
+
+func dataNotificationID(value json.RawMessage) (json.RawMessage, error) {
+	var err error
+	text := string(value)
+	if value[0] == '"' {
+		if err = json.Unmarshal(value, &text); err != nil {
+			return nil, err
+		}
+	}
+	text = codec.ASCIIDigits(text)
+	digits := strings.TrimPrefix(text, "-")
+	if digits == "" || strings.Trim(digits, "0123456789") != "" {
+		return nil, fmt.Errorf("invalid notification ID")
+	}
+	integer, parseErr := strconv.ParseInt(text, 10, 64)
+	if parseErr != nil {
+		return nil, parseErr
+	}
+	return json.Marshal(integer)
+}
+
+func dataBaseUnitDecimal(value json.RawMessage, rule dataField) (json.RawMessage, error) {
+	fields := map[string]json.RawMessage{rule.name: value}
+	var err error
+	text, textErr := codec.Required[string](fields, rule.name)
+	if textErr != nil {
+		return nil, textErr
+	}
+	digits := codec.ASCIIDigits(text)
+	if digits == "" || strings.Trim(digits, "0123456789") != "" {
+		return nil, fmt.Errorf("invalid base-unit integer string")
+	}
+	fields[rule.name], err = json.Marshal(digits)
+	if err != nil {
+		return nil, err
+	}
+	amount, parseErr := codec.DecimalField(fields, rule.name)
+	if parseErr != nil {
+		return nil, parseErr
+	}
+	scaled := new(decimal.Big)
+	if parseErr = codec.DecimalArithmetic("mul", scaled, amount, decimal.New(1, 6)); parseErr != nil {
+		return nil, parseErr
+	}
+	return json.Marshal(scaled.String())
+}
+
+func dataEventReference(value json.RawMessage) (json.RawMessage, error) {
+	var err error
+	text := string(value)
+	if value[0] == '"' {
+		if err = json.Unmarshal(value, &text); err != nil {
+			return nil, err
+		}
+	}
+	if text == "" || strings.Trim(strings.TrimPrefix(text, "-"), "0123456789") != "" {
+		return nil, fmt.Errorf("invalid event ID")
+	}
+	number, parseErr := strconv.ParseInt(text, 10, 32)
+	if parseErr != nil {
+		return nil, parseErr
+	}
+	return json.Marshal(strconv.FormatInt(number, 10))
+}
+
+func dataBooleanLiteral(value json.RawMessage, rule dataField) (json.RawMessage, error) {
+	var err error
+	// Python Literal[bool] accepts numerically equal 0/1, not string booleans.
+	desired := rule.kind == "literal_bool_true"
+	if string(value) == strconv.FormatBool(desired) {
+		return value, nil
+	}
+	var number float64
+	if err = json.Unmarshal(value, &number); err != nil || (desired && number != 1) || (!desired && number != 0) {
+		return nil, fmt.Errorf("invalid boolean literal")
+	}
+	return json.Marshal(desired)
+}
+
+func dataPayoutPair(value json.RawMessage) (json.RawMessage, error) {
+	var err error
+	var pair []json.RawMessage
+	if err = json.Unmarshal(value, &pair); err != nil || len(pair) != 2 {
+		return nil, fmt.Errorf("expected a payout pair")
+	}
+	result := make([]*decimal.Big, 2)
+	ctx := codec.DecimalContext()
+	for i, item := range pair {
+		amount, parseErr := codec.NumericDecimal(map[string]json.RawMessage{"amount": item}, "amount", false)
+		if parseErr != nil {
+			return nil, parseErr
+		}
+		result[i] = new(decimal.Big).Copy(amount)
+		// Division by 10^6 is exact before applying the arithmetic context.
+		result[i].SetScale(amount.Scale() + 6)
+		if err = codec.RoundDecimal(result[i]); err != nil {
+			return nil, err
+		}
+		if result[i].Sign() != 0 {
+			result[i].Context.Precision = decimal.UnlimitedPrecision
+			result[i].Reduce()
+		} else if amount.Sign() == 0 {
+			result[i].SetScale(min(max(amount.Scale(), -999999), 1000026))
+		}
+		// Preserve Python's preferred quotient exponent when precision allows.
+		scale := min(amount.Scale(), 1000026, 28-result[i].Precision()+result[i].Scale())
+		if result[i].Scale() < scale && scale-result[i].Scale() <= 28-result[i].Precision() {
+			ctx.Quantize(result[i], scale)
+			if err = result[i].Context.Err(); err != nil {
+				return nil, err
+			}
+		}
+	}
+	return json.Marshal(result)
+}
+
+func optionalDataEventID(value json.RawMessage) (json.RawMessage, error) {
+	raw := string(value)
+	if raw == `""` || raw == `"0"` || raw == "0" || raw == "0.0" || raw == "false" {
+		return json.RawMessage("null"), nil
+	}
+	if value[0] == '"' {
+		return value, nil
+	}
+	if raw == "true" {
+		raw = "True"
+	}
+	return json.Marshal(raw)
+}
+
+func requiredDataEventID(value json.RawMessage) (json.RawMessage, error) {
+	raw := string(value)
+	if value[0] == '"' {
+		if err := json.Unmarshal(value, &raw); err != nil {
+			return nil, err
+		}
+	}
+	digits := codec.ASCIIDigits(raw)
+	if digits == "" || strings.Trim(digits, "0123456789") != "" || strings.TrimLeft(digits, "0") == "" {
+		return nil, fmt.Errorf("expected positive event ID")
+	}
+	return json.Marshal(raw)
+}
+
+func dataConditionID(value json.RawMessage, step string) (json.RawMessage, error) {
+	raw := string(value)
+	if err := json.Unmarshal(value, &raw); err != nil {
+		return nil, err
+	}
+	grammar := "response"
+	if step == "validate_combo_condition_id" {
+		grammar = "combo"
+	}
+	normalized, err := codec.Condition(raw, grammar)
+	if err != nil {
+		return nil, err
+	}
+	return json.Marshal(normalized)
+}
+
+func dataUnsetPrice(value json.RawMessage) (json.RawMessage, error) {
+	raw := string(value)
+	if string(value) == `""` {
+		return json.RawMessage("null"), nil
+	}
+	if raw == "69" || raw == "69.0" || raw == `"69"` {
+		return json.RawMessage("null"), nil
+	}
+	return value, nil
+}
+
+func dataAssetReference(value json.RawMessage, rule dataField) (json.RawMessage, error) {
+	fields := map[string]json.RawMessage{rule.name: value}
+	text, parseErr := codec.Required[string](fields, rule.name)
+	if parseErr != nil || len(text) < 1 || len(text) > 78 || strings.Trim(text, "0123456789") != "" {
+		return nil, fmt.Errorf("invalid asset ID")
+	}
+	return value, nil
+}
+
+func dataConditionReference(value json.RawMessage, rule dataField) (json.RawMessage, error) {
+	fields := map[string]json.RawMessage{rule.name: value}
+	text, parseErr := codec.Required[string](fields, rule.name)
+	if parseErr != nil || len(text) != 66 || !codec.ValidHex(text) {
+		return nil, fmt.Errorf("invalid 32-byte condition ID")
+	}
+	return value, nil
+}
+
+func dataStepNull(raw, step string) bool {
+	switch step {
+	case "empty_none", "optional_text":
+		return raw == `""`
+	case "zero_time":
+		return raw == "0" || raw == `"0"`
+	case "optional_outcome_index":
+		return raw == "999" || raw == "999.0"
+	case "date_from_calendar_string":
+		return raw == `""` || raw == `"1970-01-01"`
+	case "zero_rank":
+		return raw == "0" || raw == "0.0" || raw == "false"
+	case "global_condition":
+		return raw == `"GLOBAL"`
+	default:
+		return false
+	}
 }

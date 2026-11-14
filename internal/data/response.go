@@ -24,7 +24,7 @@ func parseObject[T any](optional bool) func([]byte) (*T, error) {
 		}
 		var value T
 		if err := json.Unmarshal(raw, &value); err != nil {
-			return nil, err
+			return nil, fmt.Errorf("decode data response: %w", err)
 		}
 		return &value, nil
 	}

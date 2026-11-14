@@ -240,5 +240,9 @@ func (c *Client) newSalt(bits int) (*big.Int, error) {
 	if c.salt != nil {
 		return c.salt(bits)
 	}
-	return rand.Int(rand.Reader, new(big.Int).Lsh(big.NewInt(1), uint(bits)))
+	saltValue, saltErr := rand.Int(rand.Reader, new(big.Int).Lsh(big.NewInt(1), uint(bits)))
+	if saltErr != nil {
+		return nil, fmt.Errorf("generate order salt: %w", saltErr)
+	}
+	return saltValue, nil
 }

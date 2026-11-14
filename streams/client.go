@@ -108,8 +108,8 @@ func New(config Config) (*Client, error) {
 	if config.QueueSize < 1 {
 		return nil, invalid("stream queue size must be positive")
 	}
-	urls := map[string]string{"user": config.UserURL, "market": config.MarketURL, "sports": config.SportsURL, "rtds": config.RTDSURL}
-	defaults := map[string]string{"user": "wss://ws-subscriptions-clob.polymarket.com/ws/user", "market": "wss://ws-subscriptions-clob.polymarket.com/ws/market", "sports": "wss://sports-api.polymarket.com/ws", "rtds": "wss://ws-live-data.polymarket.com"}
+	urls := map[string]string{serviceUser: config.UserURL, serviceMarket: config.MarketURL, serviceSports: config.SportsURL, serviceRTDS: config.RTDSURL}
+	defaults := map[string]string{serviceUser: "wss://ws-subscriptions-clob.polymarket.com/ws/user", serviceMarket: "wss://ws-subscriptions-clob.polymarket.com/ws/market", serviceSports: "wss://sports-api.polymarket.com/ws", serviceRTDS: "wss://ws-live-data.polymarket.com"}
 	groups := make(map[string]*group, len(urls))
 	for service, address := range urls {
 		if address == "" {
@@ -119,10 +119,10 @@ func New(config Config) (*Client, error) {
 			return nil, err
 		}
 		interval, stale := 10*time.Second, 30*time.Second
-		if service == "rtds" {
+		if service == serviceRTDS {
 			interval, stale = 5*time.Second, 10*time.Minute
 		}
-		if service == "sports" {
+		if service == serviceSports {
 			interval = time.Second
 		}
 		groups[service] = &group{service: service, url: address, heartbeatInterval: interval, staleAfter: stale}
@@ -144,7 +144,7 @@ func (c *Client) Subscribe(ctx context.Context, specs ...Spec) (*Handle, error) 
 		}
 	}
 	for _, s := range selections {
-		if s.service == "user" && c.config.Credentials == nil {
+		if s.service == serviceUser && c.config.Credentials == nil {
 			return nil, invalid("user subscriptions require authentication")
 		}
 	}
@@ -286,7 +286,7 @@ func (c *Client) dial(ctx context.Context, address string) (*websocket.Conn, err
 		_ = response.Body.Close() // Diagnostic data is not consumed by the SDK.
 	}
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("connect stream: %w", err)
 	}
 	conn.SetReadLimit(c.config.ReadLimit)
 	return conn, nil
@@ -295,7 +295,7 @@ func sendFrames(ctx context.Context, conn *websocket.Conn, frames []any) error {
 	for _, frame := range frames {
 		raw, err := json.Marshal(frame)
 		if err != nil {
-			return err
+			return fmt.Errorf("encode subscription frame: %w", err)
 		}
 		if err = sendText(ctx, conn, raw); err != nil {
 			return err
@@ -306,7 +306,10 @@ func sendFrames(ctx context.Context, conn *websocket.Conn, frames []any) error {
 func sendText(ctx context.Context, conn *websocket.Conn, raw []byte) error {
 	writeCtx, cancel := context.WithTimeout(ctx, 5*time.Second)
 	defer cancel()
-	return conn.Write(writeCtx, websocket.MessageText, raw)
+	if err := conn.Write(writeCtx, websocket.MessageText, raw); err != nil {
+		return fmt.Errorf("send stream frame: %w", err)
+	}
+	return nil
 }
 func (c *Client) run(g *group) {
 	defer c.workers.Done()
@@ -411,7 +414,7 @@ func (c *Client) readConnection(g *group, conn *websocket.Conn) {
 			return
 		}
 		isPong := kind == websocket.MessageText && string(raw) == "PONG"
-		if g.service == "market" && !isPong && c.config.RawHandler != nil {
+		if g.service == serviceMarket && !isPong && c.config.RawHandler != nil {
 			c.config.RawHandler(RawFrame{Service: g.service, Generation: generation, Sequence: c.receiveSequence.Add(1), ReceivedAt: time.Now().UTC(), Data: raw})
 			if c.config.RawOnly {
 				continue
@@ -422,13 +425,13 @@ func (c *Client) readConnection(g *group, conn *websocket.Conn) {
 		}
 		text := string(raw)
 		switch g.service {
-		case "market", "user":
+		case serviceMarket, serviceUser:
 			if text == "PONG" {
 				c.observe(g.service, generation, "pong")
 				alive.Store(time.Now().UnixNano())
 				continue
 			}
-		case "sports":
+		case serviceSports:
 			if text == "ping" {
 				alive.Store(time.Now().UnixNano())
 				if err = sendText(ctx, conn, []byte("pong")); err != nil {
@@ -436,7 +439,7 @@ func (c *Client) readConnection(g *group, conn *websocket.Conn) {
 				}
 				continue
 			}
-		case "rtds":
+		case serviceRTDS:
 			alive.Store(time.Now().UnixNano())
 		}
 		c.deliver(g.service, raw)
@@ -455,7 +458,7 @@ func (c *Client) heartbeat(ctx context.Context, g *group, conn *websocket.Conn, 
 				_ = conn.CloseNow()
 				return
 			}
-			if service != "sports" {
+			if service != serviceSports {
 				c.observe(service, generation, "ping")
 				if err := sendText(ctx, conn, []byte("PING")); err != nil {
 					_ = conn.CloseNow()
@@ -467,7 +470,7 @@ func (c *Client) heartbeat(ctx context.Context, g *group, conn *websocket.Conn, 
 }
 func (c *Client) deliver(service string, raw []byte) {
 	var items []json.RawMessage
-	if (service == "market" || service == "user") && len(raw) > 0 && raw[0] == '[' {
+	if (service == serviceMarket || service == serviceUser) && len(raw) > 0 && raw[0] == '[' {
 		if err := json.Unmarshal(raw, &items); err != nil {
 			c.malformed.Add(1)
 			return

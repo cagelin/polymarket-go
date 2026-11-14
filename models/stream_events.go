@@ -186,17 +186,17 @@ func ParseStreamEvent(service string, raw []byte) (StreamEvent, error) {
 		return nil, err
 	}
 	switch service {
-	case "market", "user":
+	case "market", userStreamService:
 		_, topic := fields["topic"]
 		_, kind := fields["type"]
 		_, payload := fields["payload"]
 		if !topic || !kind || !payload {
 			eventType := fields["event_type"]
-			if service != "user" && (len(eventType) == 0 || string(eventType) == "null" || string(eventType) == `""`) {
+			if service != userStreamService && (len(eventType) == 0 || string(eventType) == "null" || string(eventType) == `""`) {
 				eventType = fields["type"]
 			}
 			delete(fields, "event_type")
-			if service != "user" {
+			if service != userStreamService {
 				delete(fields, "type")
 			}
 			delete(fields, "topic")
@@ -210,29 +210,7 @@ func ParseStreamEvent(service string, raw []byte) (StreamEvent, error) {
 	case "sports":
 		fields = map[string]json.RawMessage{"topic": json.RawMessage(`"sports"`), "type": json.RawMessage(`"sport_result"`), "payload": raw}
 	case "rtds":
-		wire, parseErr := codec.Required[string](fields, "topic")
-		if parseErr != nil {
-			return nil, parseErr
-		}
-		api := map[string]string{"comments": "comments", "crypto_prices": "prices.crypto.binance", "crypto_prices_chainlink": "prices.crypto.chainlink", "crypto_prices_twap_thirty": "prices.crypto.chainlink.twap", "crypto_prices_twap_sixty": "prices.crypto.chainlink.twap", "equity_prices": "prices.equity.pyth"}[wire]
-		if api == "" {
-			return nil, fmt.Errorf("%w: RTDS topic %q", ErrUnsupportedStreamEvent, wire)
-		}
-		if wire == "crypto_prices_twap_thirty" || wire == "crypto_prices_twap_sixty" {
-			payload, payloadErr := codec.Required[map[string]json.RawMessage](fields, "payload")
-			if payloadErr != nil {
-				return nil, payloadErr
-			}
-			expected := "30"
-			if wire == "crypto_prices_twap_sixty" {
-				expected = "60"
-			}
-			if string(payload["window_s"]) != expected {
-				return nil, fmt.Errorf("TWAP window does not match topic")
-			}
-		}
-		fields["topic"], err = json.Marshal(api)
-		if err != nil {
+		if err = normalizeRTDSTopic(fields); err != nil {
 			return nil, err
 		}
 	default:
@@ -249,64 +227,9 @@ func ParseStreamEvent(service string, raw []byte) (StreamEvent, error) {
 	if topic == "" || kind == "" {
 		return nil, fmt.Errorf("stream topic and type must be nonempty")
 	}
-	var event StreamEvent
-	switch topic + ":" + kind {
-	case "market:best_bid_ask":
-		event = &MarketBestBidAskEvent{}
-	case "market:book":
-		event = &MarketBookEvent{}
-	case "market:last_trade_price":
-		event = &MarketLastTradePriceEvent{}
-	case "market:price_change":
-		event = &MarketPriceChangeEvent{}
-	case "market:market_resolved":
-		event = &MarketResolvedEvent{}
-	case "market:tick_size_change":
-		event = &MarketTickSizeChangeEvent{}
-	case "market:new_market":
-		event = &NewMarketEvent{}
-	case "sports:sport_result":
-		event = &SportsResultEvent{}
-	case "comments:comment_created":
-		event = &CommentCreatedEvent{}
-	case "comments:comment_removed":
-		event = &CommentRemovedEvent{}
-	case "prices.crypto.binance:update":
-		event = &CryptoPricesBinanceEvent{}
-	case "prices.crypto.chainlink:update":
-		event = &CryptoPricesChainlinkEvent{}
-	case "prices.crypto.chainlink.twap:update":
-		event = &CryptoPricesChainlinkTwapEvent{}
-	case "prices.equity.pyth:subscribe":
-		event = &EquityPricesSubscribeEvent{}
-	case "prices.equity.pyth:update":
-		event = &EquityPricesUpdateEvent{}
-	case "comments:reaction_created":
-		event = &ReactionCreatedEvent{}
-	case "comments:reaction_removed":
-		event = &ReactionRemovedEvent{}
-	case "user:order":
-		event = &UserOrderEvent{}
-	case "user:trade":
-		event = &UserTradeEvent{}
-	case "prices.crypto:subscribe":
-		event = &CryptoPriceSnapshotEvent{}
-	case "prices.crypto:update":
-		event = &CryptoPriceUpdateEvent{}
-	case "prices.crypto.twap:subscribe":
-		event = &CryptoTwapPriceSnapshotEvent{}
-	case "prices.crypto.twap:update":
-		event = &CryptoTwapPriceUpdateEvent{}
-	case "prices.equity:subscribe":
-		event = &EquityPriceSnapshotEvent{}
-	case "prices.equity:update":
-		event = &EquityPriceUpdateEvent{}
-	case "prices.equity.twap:subscribe":
-		event = &EquityTwapPriceSnapshotEvent{}
-	case "prices.equity.twap:update":
-		event = &EquityTwapPriceUpdateEvent{}
-	default:
-		return nil, fmt.Errorf("%w: %s:%s", ErrUnsupportedStreamEvent, topic, kind)
+	event, err := newStreamEvent(topic, kind)
+	if err != nil {
+		return nil, err
 	}
 	raw, err = json.Marshal(fields)
 	if err != nil {
@@ -316,4 +239,95 @@ func ParseStreamEvent(service string, raw []byte) (StreamEvent, error) {
 		return nil, err
 	}
 	return event, nil
+}
+
+func newStreamEvent(topic, kind string) (StreamEvent, error) {
+	switch topic + ":" + kind {
+	case "market:best_bid_ask":
+		return &MarketBestBidAskEvent{}, nil
+	case "market:book":
+		return &MarketBookEvent{}, nil
+	case "market:last_trade_price":
+		return &MarketLastTradePriceEvent{}, nil
+	case "market:price_change":
+		return &MarketPriceChangeEvent{}, nil
+	case "market:market_resolved":
+		return &MarketResolvedEvent{}, nil
+	case "market:tick_size_change":
+		return &MarketTickSizeChangeEvent{}, nil
+	case "market:new_market":
+		return &NewMarketEvent{}, nil
+	case "sports:sport_result":
+		return &SportsResultEvent{}, nil
+	case "comments:comment_created":
+		return &CommentCreatedEvent{}, nil
+	case "comments:comment_removed":
+		return &CommentRemovedEvent{}, nil
+	case "prices.crypto.binance:update":
+		return &CryptoPricesBinanceEvent{}, nil
+	case "prices.crypto.chainlink:update":
+		return &CryptoPricesChainlinkEvent{}, nil
+	case "prices.crypto.chainlink.twap:update":
+		return &CryptoPricesChainlinkTwapEvent{}, nil
+	case "prices.equity.pyth:subscribe":
+		return &EquityPricesSubscribeEvent{}, nil
+	case "prices.equity.pyth:update":
+		return &EquityPricesUpdateEvent{}, nil
+	case "comments:reaction_created":
+		return &ReactionCreatedEvent{}, nil
+	case "comments:reaction_removed":
+		return &ReactionRemovedEvent{}, nil
+	case "user:order":
+		return &UserOrderEvent{}, nil
+	case "user:trade":
+		return &UserTradeEvent{}, nil
+	case "prices.crypto:subscribe":
+		return &CryptoPriceSnapshotEvent{}, nil
+	case "prices.crypto:update":
+		return &CryptoPriceUpdateEvent{}, nil
+	case "prices.crypto.twap:subscribe":
+		return &CryptoTwapPriceSnapshotEvent{}, nil
+	case "prices.crypto.twap:update":
+		return &CryptoTwapPriceUpdateEvent{}, nil
+	case "prices.equity:subscribe":
+		return &EquityPriceSnapshotEvent{}, nil
+	case "prices.equity:update":
+		return &EquityPriceUpdateEvent{}, nil
+	case "prices.equity.twap:subscribe":
+		return &EquityTwapPriceSnapshotEvent{}, nil
+	case "prices.equity.twap:update":
+		return &EquityTwapPriceUpdateEvent{}, nil
+	default:
+		return nil, fmt.Errorf("%w: %s:%s", ErrUnsupportedStreamEvent, topic, kind)
+	}
+}
+
+func normalizeRTDSTopic(fields map[string]json.RawMessage) error {
+	wire, parseErr := codec.Required[string](fields, "topic")
+	if parseErr != nil {
+		return parseErr
+	}
+	api := map[string]string{"comments": "comments", "crypto_prices": "prices.crypto.binance", "crypto_prices_chainlink": "prices.crypto.chainlink", "crypto_prices_twap_thirty": "prices.crypto.chainlink.twap", "crypto_prices_twap_sixty": "prices.crypto.chainlink.twap", "equity_prices": "prices.equity.pyth"}[wire]
+	if api == "" {
+		return fmt.Errorf("%w: RTDS topic %q", ErrUnsupportedStreamEvent, wire)
+	}
+	if wire == "crypto_prices_twap_thirty" || wire == "crypto_prices_twap_sixty" {
+		payload, payloadErr := codec.Required[map[string]json.RawMessage](fields, "payload")
+		if payloadErr != nil {
+			return payloadErr
+		}
+		expected := "30"
+		if wire == "crypto_prices_twap_sixty" {
+			expected = "60"
+		}
+		if string(payload["window_s"]) != expected {
+			return fmt.Errorf("TWAP window does not match topic")
+		}
+	}
+	var err error
+	fields["topic"], err = json.Marshal(api)
+	if err != nil {
+		return err
+	}
+	return nil
 }

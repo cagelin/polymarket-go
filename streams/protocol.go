@@ -2,6 +2,14 @@ package streams
 
 import "slices"
 
+const (
+	serviceRTDS      = "rtds"
+	serviceSports    = "sports"
+	serviceUser      = "user"
+	serviceMarket    = "market"
+	subscribeMessage = "subscribe"
+)
+
 type serverSubscription struct {
 	Topic string `json:"topic"`
 	Type  string `json:"type"`
@@ -24,7 +32,7 @@ func deriveState(selections []selection) serverState {
 			}
 		}
 		state.custom = state.custom || s.custom
-		if s.service != "rtds" {
+		if s.service != serviceRTDS {
 			continue
 		}
 		topic := map[string]string{"comments": "comments", "prices.crypto.binance": "crypto_prices", "prices.crypto.chainlink": "crypto_prices_chainlink", "prices.equity.pyth": "equity_prices"}[s.topic]
@@ -53,21 +61,21 @@ func deriveState(selections []selection) serverState {
 }
 func initialFrames(service string, state serverState) []any {
 	switch service {
-	case "market":
-		return []any{map[string]any{"type": "market", "assets_ids": state.assets, "custom_feature_enabled": state.custom}}
-	case "rtds":
-		return []any{map[string]any{"action": "subscribe", "subscriptions": state.topics}}
+	case serviceMarket:
+		return []any{map[string]any{"type": serviceMarket, "assets_ids": state.assets, "custom_feature_enabled": state.custom}}
+	case serviceRTDS:
+		return []any{map[string]any{"action": subscribeMessage, "subscriptions": state.topics}}
 	default:
 		return nil
 	}
 }
 func diffFrames(service string, before, after serverState) []any {
-	if service == "user" {
+	if service == serviceUser {
 		return userDiff(before, after)
 	}
 	var frames []any
 	switch service {
-	case "market":
+	case serviceMarket:
 		var added, removed []string
 		for _, id := range after.assets {
 			if !slices.Contains(before.assets, id) {
@@ -83,12 +91,12 @@ func diffFrames(service string, before, after serverState) []any {
 			added = []string{after.assets[0]}
 		}
 		if len(added) > 0 {
-			frames = append(frames, map[string]any{"operation": "subscribe", "assets_ids": added, "custom_feature_enabled": after.custom})
+			frames = append(frames, map[string]any{"operation": subscribeMessage, "assets_ids": added, "custom_feature_enabled": after.custom})
 		}
 		if len(removed) > 0 {
 			frames = append(frames, map[string]any{"operation": "unsubscribe", "assets_ids": removed})
 		}
-	case "rtds":
+	case serviceRTDS:
 		var added, removed []serverSubscription
 		for _, s := range after.topics {
 			if !slices.Contains(before.topics, s) {
@@ -101,7 +109,7 @@ func diffFrames(service string, before, after serverState) []any {
 			}
 		}
 		if len(added) > 0 {
-			frames = append(frames, map[string]any{"action": "subscribe", "subscriptions": added})
+			frames = append(frames, map[string]any{"action": subscribeMessage, "subscriptions": added})
 		}
 		if len(removed) > 0 {
 			frames = append(frames, map[string]any{"action": "unsubscribe", "subscriptions": removed})
@@ -111,11 +119,11 @@ func diffFrames(service string, before, after serverState) []any {
 }
 
 func (c *Client) initialFrames(service string, state serverState) []any {
-	if service != "user" {
+	if service != serviceUser {
 		return initialFrames(service, state)
 	}
 	credentials := c.config.Credentials
-	frame := map[string]any{"type": "user", "auth": map[string]string{"apiKey": credentials.Key, "secret": credentials.Secret, "passphrase": credentials.Passphrase}}
+	frame := map[string]any{"type": serviceUser, "auth": map[string]string{"apiKey": credentials.Key, "secret": credentials.Secret, "passphrase": credentials.Passphrase}}
 	if !state.all {
 		frame["markets"] = state.assets
 	}
@@ -130,11 +138,11 @@ func userDiff(before, after serverState) []any {
 	}
 	if before.all {
 		if len(after.assets) > 0 {
-			return []any{map[string]any{"operation": "subscribe", "markets": after.assets}}
+			return []any{map[string]any{"operation": subscribeMessage, "markets": after.assets}}
 		}
 		return nil
 	}
-	frames := diffFrames("market", before, after)
+	frames := diffFrames(serviceMarket, before, after)
 	for _, value := range frames {
 		if frame, ok := value.(map[string]any); ok {
 			frame["markets"] = frame["assets_ids"]

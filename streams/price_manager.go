@@ -39,57 +39,7 @@ func (c *Client) subscribePrices(ctx context.Context, values []selection) (*Hand
 	h.onClose = func() { c.releasePrices(h) }
 	pending := map[*priceSession][]priceKey{}
 	created := map[*priceSession]bool{}
-	for _, value := range values {
-		for _, symbol := range value.symbols {
-			key := priceKey{topic: value.topic, symbol: symbol, provider: value.provider}
-			var chosen *priceSession
-			for _, session := range manager.sessions {
-				session.mu.Lock()
-				_, exists := session.keys[key]
-				available := !session.closed && session.provider == key.provider
-				session.mu.Unlock()
-				if available && exists {
-					chosen = session
-					break
-				}
-			}
-			if chosen == nil {
-				for _, session := range manager.sessions {
-					session.mu.Lock()
-					target := session.keyTarget
-					if time.Since(session.lastDrop) >= time.Minute {
-						target = 64
-					}
-					available := !session.closed && session.provider == key.provider && len(session.keys) < target
-					session.mu.Unlock()
-					if available {
-						chosen = session
-						break
-					}
-				}
-			}
-			if chosen == nil {
-				chosen = newPriceSession(c, key.provider)
-				manager.sessions = append(manager.sessions, chosen)
-				created[chosen] = true
-			}
-			if !slices.Contains(manager.handles[h], chosen) {
-				manager.handles[h] = append(manager.handles[h], chosen)
-			}
-			chosen.mu.Lock()
-			state := chosen.keys[key]
-			if state == nil {
-				state = &priceState{ready: make(chan struct{})}
-				chosen.keys[key] = state
-				pending[chosen] = append(pending[chosen], key)
-			}
-			state.listeners = append(state.listeners, priceListener{handle: h, types: value.types})
-			if state.snapshot != nil && (len(value.types) == 0 || slices.Contains(value.types, "subscribe")) {
-				h.push(state.snapshot)
-			}
-			chosen.mu.Unlock()
-		}
-	}
+	c.registerPriceListeners(h, values, pending, created)
 	for session, keys := range pending {
 		session.operation.Lock()
 		var err error
@@ -100,7 +50,7 @@ func (c *Client) subscribePrices(ctx context.Context, values []selection) (*Hand
 		connected := session.conn != nil
 		session.mu.Unlock()
 		if err == nil && connected {
-			err = session.change(ctx, "subscribe", keys)
+			err = session.change(ctx, subscribeMessage, keys)
 		}
 		if err == nil && connected {
 			session.accept(keys, nil)
@@ -278,4 +228,60 @@ func (c *Client) subscribeMixed(ctx context.Context, specs []Spec, values []sele
 		}()
 	}
 	return merged, nil
+}
+
+// registerPriceListeners requires the price manager lock.
+func (c *Client) registerPriceListeners(h *Handle, values []selection, pending map[*priceSession][]priceKey, created map[*priceSession]bool) {
+	manager := &c.prices
+	for _, value := range values {
+		for _, symbol := range value.symbols {
+			key := priceKey{topic: value.topic, symbol: symbol, provider: value.provider}
+			var chosen *priceSession
+			for _, session := range manager.sessions {
+				session.mu.Lock()
+				_, exists := session.keys[key]
+				available := !session.closed && session.provider == key.provider
+				session.mu.Unlock()
+				if available && exists {
+					chosen = session
+					break
+				}
+			}
+			if chosen == nil {
+				for _, session := range manager.sessions {
+					session.mu.Lock()
+					target := session.keyTarget
+					if time.Since(session.lastDrop) >= time.Minute {
+						target = 64
+					}
+					available := !session.closed && session.provider == key.provider && len(session.keys) < target
+					session.mu.Unlock()
+					if available {
+						chosen = session
+						break
+					}
+				}
+			}
+			if chosen == nil {
+				chosen = newPriceSession(c, key.provider)
+				manager.sessions = append(manager.sessions, chosen)
+				created[chosen] = true
+			}
+			if !slices.Contains(manager.handles[h], chosen) {
+				manager.handles[h] = append(manager.handles[h], chosen)
+			}
+			chosen.mu.Lock()
+			state := chosen.keys[key]
+			if state == nil {
+				state = &priceState{ready: make(chan struct{})}
+				chosen.keys[key] = state
+				pending[chosen] = append(pending[chosen], key)
+			}
+			state.listeners = append(state.listeners, priceListener{handle: h, types: value.types})
+			if state.snapshot != nil && (len(value.types) == 0 || slices.Contains(value.types, subscribeMessage)) {
+				h.push(state.snapshot)
+			}
+			chosen.mu.Unlock()
+		}
+	}
 }

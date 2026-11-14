@@ -291,7 +291,7 @@ func (c *Client) AcceptComboQuote(ctx context.Context, quote models.ComboQuote) 
 		}
 	}
 	result := &models.ComboQuoteAcceptance{RFQID: quote.RFQID, Status: "executing", TakerOrderHash: hash}
-	if slices.Contains([]string{"FAILED", "EXPIRED", "CANCELED"}, status.Status) {
+	if slices.Contains([]string{statusFailed, "EXPIRED", "CANCELED"}, status.Status) {
 		reason := "EXECUTION_FAILED"
 		if status.Status == "EXPIRED" || status.Error != nil && status.Error.Code == "EXPIRED_RFQ" {
 			reason = "ACCEPTANCE_WINDOW_EXPIRED"
@@ -332,7 +332,7 @@ func (c *Client) WaitForComboFill(ctx context.Context, id string, timeout, inter
 				return nil, responseMessage("filled RFQ has no transaction hash")
 			}
 			return &models.ComboFillResult{RFQID: id, Status: "FILLED", TxHash: status.TxHash}, nil
-		case "FAILED", "EXPIRED", "CANCELED":
+		case statusFailed, "EXPIRED", "CANCELED":
 			return &models.ComboFillResult{RFQID: id, Status: status.Status, Error: status.Error}, nil
 		}
 		if time.Now().After(deadline) {

@@ -76,10 +76,10 @@ func copyValues(values []string, required bool) ([]string, error) {
 }
 func (p MarketSpec) normalize() (selection, error) {
 	assets, err := copyValues(p.AssetIDs, true)
-	return selection{service: "market", topic: "market", assets: assets, custom: p.CustomFeatureEnabled}, err
+	return selection{service: serviceMarket, topic: serviceMarket, assets: assets, custom: p.CustomFeatureEnabled}, err
 }
 func (SportsSpec) normalize() (selection, error) {
-	return selection{service: "sports", topic: "sports"}, nil
+	return selection{service: serviceSports, topic: serviceSports}, nil
 }
 func (p CommentsSpec) normalize() (selection, error) {
 	types := p.Types
@@ -108,21 +108,21 @@ func (p CommentsSpec) normalize() (selection, error) {
 		}
 		parent = &value
 	}
-	return selection{service: "rtds", topic: "comments", types: types, parentID: id, parentType: parent}, nil
+	return selection{service: serviceRTDS, topic: "comments", types: types, parentID: id, parentType: parent}, nil
 }
 func (p CryptoPricesSpec) normalize() (selection, error) {
 	if p.Topic != "prices.crypto.binance" && p.Topic != "prices.crypto.chainlink" {
 		return selection{}, invalid("invalid crypto price topic")
 	}
 	symbols, err := copyValues(p.Symbols, false)
-	return selection{service: "rtds", topic: p.Topic, symbols: symbols}, err
+	return selection{service: serviceRTDS, topic: p.Topic, symbols: symbols}, err
 }
 func (p CryptoPricesChainlinkTwapSpec) normalize() (selection, error) {
 	if p.WindowSeconds != 30 && p.WindowSeconds != 60 {
 		return selection{}, invalid("window_seconds must be 30 or 60")
 	}
 	symbols, err := copyValues(p.Symbols, false)
-	return selection{service: "rtds", topic: "prices.crypto.chainlink.twap", symbols: symbols, window: p.WindowSeconds}, err
+	return selection{service: serviceRTDS, topic: "prices.crypto.chainlink.twap", symbols: symbols, window: p.WindowSeconds}, err
 }
 func (p EquityPricesSpec) normalize() (selection, error) {
 	if p.Symbol == "" {
@@ -133,11 +133,11 @@ func (p EquityPricesSpec) normalize() (selection, error) {
 		return selection{}, err
 	}
 	for _, kind := range types {
-		if kind != "update" && kind != "subscribe" {
+		if kind != "update" && kind != subscribeMessage {
 			return selection{}, invalid("invalid equity event type")
 		}
 	}
-	return selection{service: "rtds", topic: "prices.equity.pyth", symbol: strings.ToLower(p.Symbol), types: types}, nil
+	return selection{service: serviceRTDS, topic: "prices.equity.pyth", symbol: strings.ToLower(p.Symbol), types: types}, nil
 }
 func (s selection) matches(event models.StreamEvent) bool {
 	if event.StreamTopic() != s.topic {
@@ -173,30 +173,6 @@ func (s selection) matches(event models.StreamEvent) bool {
 		return slices.ContainsFunc(value.Payload.AssetIDs, contains)
 	case *models.SportsResultEvent:
 		return true
-	case *models.CommentCreatedEvent:
-		p := value.Payload
-		parent := ""
-		if p.ParentEntityID != nil {
-			parent = *p.ParentEntityID
-		}
-		kind := ""
-		if p.ParentEntityType != nil {
-			kind = *p.ParentEntityType
-		}
-		return s.commentMatches(value.Type, parent, kind)
-	case *models.CommentRemovedEvent:
-		p := value.Payload
-		parent := ""
-		if p.ParentEntityID != nil {
-			parent = strconv.FormatInt(*p.ParentEntityID, 10)
-		}
-		kind := ""
-		if p.ParentEntityType != nil {
-			kind = *p.ParentEntityType
-		}
-		return s.commentMatches(value.Type, parent, kind)
-	case *models.ReactionCreatedEvent, *models.ReactionRemovedEvent:
-		return s.parentID == nil && s.parentType == nil && slices.Contains(s.types, event.StreamType())
 	case *models.CryptoPricesBinanceEvent:
 		return s.symbols == nil || slices.Contains(s.symbols, value.Payload.Symbol)
 	case *models.CryptoPricesChainlinkEvent:
@@ -208,7 +184,7 @@ func (s selection) matches(event models.StreamEvent) bool {
 	case *models.EquityPricesSubscribeEvent:
 		return s.equityMatches(value.Payload.Symbol, value.Type)
 	default:
-		return false
+		return s.commentEventMatches(event)
 	}
 }
 func (s selection) commentMatches(kind, parent, parentType string) bool {
@@ -243,7 +219,7 @@ func (p UserSpec) normalize() (selection, error) {
 	if slices.Contains(values, "") {
 		return selection{}, invalid("market must be nonempty")
 	}
-	return selection{service: "user", topic: "user", assets: values, all: len(values) == 0}, nil
+	return selection{service: serviceUser, topic: serviceUser, assets: values, all: len(values) == 0}, nil
 }
 func (s selection) userMatches(condition models.ConditionID) bool {
 	if s.all {
@@ -255,4 +231,35 @@ func (s selection) userMatches(condition models.ConditionID) bool {
 		}
 	}
 	return false
+}
+
+func (s selection) commentEventMatches(event models.StreamEvent) bool {
+	switch value := event.(type) {
+	case *models.CommentCreatedEvent:
+		p := value.Payload
+		parent := ""
+		if p.ParentEntityID != nil {
+			parent = *p.ParentEntityID
+		}
+		kind := ""
+		if p.ParentEntityType != nil {
+			kind = *p.ParentEntityType
+		}
+		return s.commentMatches(value.Type, parent, kind)
+	case *models.CommentRemovedEvent:
+		p := value.Payload
+		parent := ""
+		if p.ParentEntityID != nil {
+			parent = strconv.FormatInt(*p.ParentEntityID, 10)
+		}
+		kind := ""
+		if p.ParentEntityType != nil {
+			kind = *p.ParentEntityType
+		}
+		return s.commentMatches(value.Type, parent, kind)
+	case *models.ReactionCreatedEvent, *models.ReactionRemovedEvent:
+		return s.parentID == nil && s.parentType == nil && slices.Contains(s.types, event.StreamType())
+	default:
+		return false
+	}
 }

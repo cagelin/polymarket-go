@@ -4,6 +4,7 @@ package wallet
 import (
 	"context"
 	"encoding/json"
+	"fmt"
 	"math/big"
 	"net/http"
 	"net/url"
@@ -87,11 +88,10 @@ func (c *Client) headers(method, path string, body []byte) (http.Header, error) 
 
 // EnsureReady deploys only the current owner-derived Deposit Wallet when absent.
 func (c *Client) EnsureReady(ctx context.Context) error {
-	if c.config.Kind == models.WalletEOA {
-		return nil
-	}
 	kind := string(c.config.Kind)
 	switch c.config.Kind {
+	case models.WalletEOA:
+		return nil
 	case models.WalletDeposit:
 		kind = "WALLET"
 	case models.WalletProxy:
@@ -203,7 +203,7 @@ func (c *Client) broadcast(ctx context.Context, call models.TransactionCall) (*t
 	}
 	var hash string
 	if err = json.Unmarshal(raw, &hash); err != nil {
-		return nil, err
+		return nil, fmt.Errorf("decode relayer transactions: %w", err)
 	}
 	decoded, decodeErr := evm.Hex(hash)
 	if decodeErr != nil || len(decoded) != 32 {
@@ -242,7 +242,7 @@ func (c *Client) submitted(raw []byte) (*transactions.Handle, error) {
 	var hash *string
 	if value, ok := fields["transactionHash"]; ok {
 		if err = json.Unmarshal(value, &hash); err != nil {
-			return nil, err
+			return nil, fmt.Errorf("decode relayer transaction: %w", err)
 		}
 	}
 	if hash != nil && *hash == "" {
