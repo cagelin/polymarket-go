@@ -134,6 +134,13 @@ bounded handoff. Lifecycle callbacks may run concurrently; `Close` waits for cal
 and must be called outside them. Observation IDs are local to each client, and shutdown
 also emits `disconnected`; observations do not prove complete data coverage.
 
+Set `MarketBatches` on `streams.Config` to pace market subscriptions on one socket. Set
+`Size` (assets per batch), `Interval` (minimum time between sends), `BookTimeout` and
+`OnBatch`. The first subscription, subsequent additions and reconnects use this policy.
+Each batch waits for a fresh `book` for each asset or the timeout. The callback receives
+the generation, send time, requested assets and missing IDs before the next batch.
+Keep the callback short. A reconnect starts with fresh receipts for all active assets.
+
 Repeated short connections retain exponential retry backoff (250 ms cap initially,
 30 s maximum, each wait between half its cap and the cap). A connection must last
 30 s before resetting that backoff. Default typed APIs remain available.

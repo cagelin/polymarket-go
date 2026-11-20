@@ -735,6 +735,12 @@ type MakerRebateActivity = models.MakerRebateActivity
 // Market aliases models.Market.
 type Market = models.Market
 
+// MarketBatchConfig aliases streams.MarketBatchConfig.
+type MarketBatchConfig = streams.MarketBatchConfig
+
+// MarketBatchResult aliases streams.MarketBatchResult.
+type MarketBatchResult = streams.MarketBatchResult
+
 // MarketBestBidAskEvent aliases models.MarketBestBidAskEvent.
 type MarketBestBidAskEvent = models.MarketBestBidAskEvent
 

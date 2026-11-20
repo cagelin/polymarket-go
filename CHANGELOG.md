@@ -2,6 +2,11 @@
 
 Scope update (2026-10-29): this SDK targets new accounts using Deposit Wallets. Legacy Safe/Proxy onboarding, migration, and live validation are excluded from support and release acceptance. Existing legacy implementation and historical tests remain, without a support commitment. EOA signing and other agreed capabilities remain in scope.
 
+## v0.3.6 — 2026-11-20
+
+- Add opt-in market subscription batches with fresh book tracking on initial connections and automatic reconnects. Batch results include missing asset IDs on timeout.
+- 市场订阅支持分批发送，首次连接和重连逐批核对新盘口，超时回调列出缺少盘口的标的。
+
 ## v0.3.5 — 2026-11-15
 
 - Scope lint rules to SDK code, codecs, tests and executable examples. Retain strict shadowing checks, enum coverage, external error context and a single function-complexity limit.

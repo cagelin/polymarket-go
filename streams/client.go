@@ -35,6 +35,8 @@ type Config struct {
 	// ReadLimit bounds a complete message on every stream socket, including price
 	// sessions. Zero retains the 10 MiB default; negative values are invalid.
 	ReadLimit int64
+	// MarketBatches enables paced market subscriptions on each new connection.
+	MarketBatches *MarketBatchConfig
 
 	MarketURL   string
 	UserURL     string
@@ -70,6 +72,7 @@ type Client struct {
 type group struct {
 	service, url                  string
 	conn                          *websocket.Conn
+	batches                       *marketBatches
 	running                       bool
 	heartbeatInterval, staleAfter time.Duration
 }
@@ -91,6 +94,13 @@ func New(config Config) (*Client, error) {
 	}
 	if config.ReadLimit == 0 {
 		config.ReadLimit = 10 << 20
+	}
+	if config.MarketBatches != nil {
+		policy := *config.MarketBatches
+		if policy.Size < 1 || policy.Interval < 0 || policy.BookTimeout <= 0 || policy.OnBatch == nil {
+			return nil, invalid("market batches require a positive size and book timeout, a nonnegative interval and a result handler")
+		}
+		config.MarketBatches = &policy
 	}
 	if config.PriceURL == "" {
 		config.PriceURL = "wss://ws-live-v2.polymarket.com/ws"
@@ -170,15 +180,10 @@ func (c *Client) Subscribe(ctx context.Context, specs ...Spec) (*Handle, error) 
 	for service, state := range before {
 		g := c.groups[service]
 		after := deriveState(c.selections(service))
-		frames := diffFrames(service, state, after)
 		if g.conn == nil {
-			g.conn, err = c.dial(ctx, g.url)
-			if err == nil {
-				frames = c.initialFrames(service, after)
-			}
-		}
-		if err == nil {
-			err = sendFrames(ctx, g.conn, frames)
+			err = c.openGroup(ctx, g, after)
+		} else {
+			err = c.updateGroup(ctx, g, state, after)
 		}
 		if err != nil {
 			c.removeLocked(h)
@@ -211,7 +216,7 @@ func (c *Client) Close() error {
 	for _, g := range c.groups {
 		if g.conn != nil {
 			_ = g.conn.CloseNow()
-			g.conn = nil
+			g.conn, g.batches = nil, nil
 		}
 	}
 	for h := range c.handles {
@@ -265,12 +270,12 @@ func (c *Client) removeLocked(h *Handle) {
 		remaining := c.selections(service)
 		if len(remaining) == 0 {
 			_ = g.conn.CloseNow()
-			g.conn = nil
+			g.conn, g.batches = nil, nil
 			continue
 		}
-		if err := sendFrames(c.ctx, g.conn, diffFrames(service, state, deriveState(remaining))); err != nil {
+		if err := c.updateGroup(c.ctx, g, state, deriveState(remaining)); err != nil {
 			_ = g.conn.CloseNow()
-			g.conn = nil
+			g.conn, g.batches = nil, nil
 		}
 	}
 }
@@ -291,6 +296,40 @@ func (c *Client) dial(ctx context.Context, address string) (*websocket.Conn, err
 	conn.SetReadLimit(c.config.ReadLimit)
 	return conn, nil
 }
+
+// openGroup sends the first subscription before publishing the socket. Caller holds c.mu.
+func (c *Client) openGroup(ctx context.Context, g *group, target serverState) error {
+	conn, err := c.dial(ctx, g.url)
+	if err != nil {
+		return err
+	}
+	var batches *marketBatches
+	if g.service == serviceMarket && c.config.MarketBatches != nil {
+		batches = &marketBatches{
+			policy:  c.config.MarketBatches,
+			pending: target.assets,
+			sent:    serverState{custom: target.custom},
+			changed: make(chan struct{}, 1),
+		}
+		err = batches.send(ctx, conn, true)
+	} else {
+		err = sendFrames(ctx, conn, c.initialFrames(g.service, target))
+	}
+	if err != nil {
+		_ = conn.CloseNow()
+		return err
+	}
+	g.conn, g.batches = conn, batches
+	return nil
+}
+
+func (c *Client) updateGroup(ctx context.Context, g *group, before, after serverState) error {
+	if g.batches != nil {
+		return g.batches.update(ctx, g.conn, after)
+	}
+	return sendFrames(ctx, g.conn, diffFrames(g.service, before, after))
+}
+
 func sendFrames(ctx context.Context, conn *websocket.Conn, frames []any) error {
 	for _, frame := range frames {
 		raw, err := json.Marshal(frame)
@@ -323,15 +362,7 @@ func (c *Client) run(g *group) {
 		}
 		conn := g.conn
 		if conn == nil {
-			var err error
-			conn, err = c.dial(c.ctx, g.url)
-			if err == nil {
-				err = sendFrames(c.ctx, conn, c.initialFrames(g.service, deriveState(c.selections(g.service))))
-			}
-			if err != nil {
-				if conn != nil {
-					_ = conn.CloseNow()
-				}
+			if err := c.openGroup(c.ctx, g, deriveState(c.selections(g.service))); err != nil {
 				c.mu.Unlock()
 				if !c.backoff(attempt) {
 					c.finishGroup(g)
@@ -340,17 +371,18 @@ func (c *Client) run(g *group) {
 				attempt++
 				continue
 			}
-			g.conn = conn
+			conn = g.conn
 			c.reconnects.Add(1)
 		}
+		batches := g.batches
 		c.mu.Unlock()
 		connectedAt := time.Now()
-		c.readConnection(g, conn)
+		c.readConnection(g, conn, batches)
 		attempt = resetReconnectAttempt(attempt, time.Since(connectedAt))
 		_ = conn.CloseNow()
 		c.mu.Lock()
 		if g.conn == conn {
-			g.conn = nil
+			g.conn, g.batches = nil, nil
 		}
 		c.mu.Unlock()
 		if !c.backoff(attempt) {
@@ -394,17 +426,19 @@ func backoffContext(ctx context.Context, attempt int) bool {
 		return true
 	}
 }
-func (c *Client) readConnection(g *group, conn *websocket.Conn) {
+func (c *Client) readConnection(g *group, conn *websocket.Conn, batches *marketBatches) {
 	generation := c.connectionSequence.Add(1)
 	c.observe(g.service, generation, "connected")
 	defer c.observe(g.service, generation, "disconnected")
 	ctx, cancel := context.WithCancel(c.ctx)
-	defer cancel()
 	var alive atomic.Int64
 	alive.Store(time.Now().UnixNano())
-	heartbeatDone := make(chan struct{})
-	go func() { defer close(heartbeatDone); c.heartbeat(ctx, g, conn, &alive, generation) }()
-	defer func() { cancel(); <-heartbeatDone }()
+	var workers sync.WaitGroup
+	workers.Go(func() { c.heartbeat(ctx, g, conn, &alive, generation) })
+	if batches != nil {
+		workers.Go(func() { batches.run(ctx, conn, generation) })
+	}
+	defer func() { cancel(); workers.Wait() }()
 	for {
 		kind, raw, err := conn.Read(ctx)
 		if err != nil {
@@ -414,8 +448,12 @@ func (c *Client) readConnection(g *group, conn *websocket.Conn) {
 			return
 		}
 		isPong := kind == websocket.MessageText && string(raw) == "PONG"
+		receivedAt := time.Now().UTC()
+		if batches != nil && !isPong {
+			batches.observeBooks(raw, receivedAt)
+		}
 		if g.service == serviceMarket && !isPong && c.config.RawHandler != nil {
-			c.config.RawHandler(RawFrame{Service: g.service, Generation: generation, Sequence: c.receiveSequence.Add(1), ReceivedAt: time.Now().UTC(), Data: raw})
+			c.config.RawHandler(RawFrame{Service: g.service, Generation: generation, Sequence: c.receiveSequence.Add(1), ReceivedAt: receivedAt, Data: raw})
 			if c.config.RawOnly {
 				continue
 			}
